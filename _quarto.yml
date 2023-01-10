@@ -1,0 +1,28 @@
+project:
+  type: book
+
+book:
+  title: "Assesing uncertanties related to satellite remote sensing indices to estimate Gross Primary Production"
+  author: "Ronny A. Hernández Mora"
+  date: "2023"
+  chapters:
+    - abstract.qmd
+    - index.qmd
+    - dedication.qmd
+    - acknowledgements.qmd
+    - chapter_1_intro.qmd
+    - chapter_2_brete.qmd
+    - chapter_3_conclusions.qmd
+    - bibliography.qmd
+    - appendices.qmd
+
+bibliography: RAP.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+
+
