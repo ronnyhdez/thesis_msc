@@ -39,3 +39,6 @@ vignettes/*.pdf
 .Renviron
 
 /.quarto/
+
+_book/
+data_ard/

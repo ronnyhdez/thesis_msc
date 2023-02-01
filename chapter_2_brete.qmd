@@ -1,3 +1,11 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+execute:
+  echo: false
+  warning: false
+---
 # Assesing uncertanties related to satellite remote sensing indices to estimate Gross Primary Production 
 
 ## Introduction
@@ -37,9 +45,14 @@ Sites links:
  - https://ameriflux.lbl.gov/sites/siteinfo/US-Ton#data-citation
  - https://ameriflux.lbl.gov/sites/siteinfo/US-CMW#data-citation
  - 
+
 ## Results
 
+
+
 ## Discussion
+
+
 
 ## References
 
@@ -47,5 +60,199 @@ Sites links:
 :::
 
 ## Figures
+
+```{r, echo = FALSE, message = FALSE, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(lubridate)
+library(cowplot)
+```
+
+```{r, echo = FALSE, message = FALSE, include=FALSE}
+# Michigan
+michigan_daily_250 <-  readRDS("data_ard/michigan_daily_250.rds")
+michigan_daily_500 <-  readRDS("data_ard/michigan_daily_500.rds")
+michigan_weekly_250 <-  readRDS("data_ard/michigan_weekly_250.rds")
+michigan_weekly_500 <-  readRDS("data_ard/michigan_weekly_500.rds")
+michigan_monthly_250 <- readRDS("data_ard/michigan_montly_250.rds") 
+michigan_monthly_500 <- readRDS("data_ard/michigan_montly_500.rds") 
+
+# Borden
+borden_daily_250 <-  readRDS("data_ard/borden_daily_250.rds")
+borden_daily_500 <-  readRDS("data_ard/borden_daily_500.rds")
+borden_weekly_250 <-  readRDS("data_ard/borden_weekly_250.rds")
+borden_weekly_500 <-  readRDS("data_ard/borden_weekly_500.rds")
+borden_monthly_250 <- readRDS("data_ard/borden_montly_250.rds") 
+borden_monthly_500 <- readRDS("data_ard/borden_montly_500.rds")
+
+# Bartlett
+bartlett_daily_250 <-  readRDS("data_ard/bartlett_daily_250.rds")
+bartlett_daily_500 <-  readRDS("data_ard/bartlett_daily_500.rds")
+bartlett_weekly_250 <-  readRDS("data_ard/bartlett_weekly_250.rds")
+bartlett_weekly_500 <-  readRDS("data_ard/bartlett_weekly_500.rds")
+bartlett_monthly_250 <- readRDS("data_ard/bartlett_montly_250.rds") 
+bartlett_monthly_500 <- readRDS("data_ard/bartlett_montly_500.rds")
+```
+
+```{r, message = FALSE, fig.width = 10, fig.height = 12}
+# 500
+
+## Daily
+michigan_plot_daily <- michigan_daily_500 %>% 
+  select(date, gpp_dt_vut_ref, ends_with("mean"), total_obs) %>% 
+  pivot_longer(-c(date, gpp_dt_vut_ref, total_obs),  
+               names_to = "index", values_to = "value") %>% 
+  mutate(site = "Michigan")
+
+borden_plot_daily <- borden_daily_500 %>% 
+  select(date, gpp_dt_vut_ref, ends_with("mean"), total_obs) %>% 
+  # filter(ndvi_mean > 3 & gpp_dt_vut_ref < 20) %>% 
+  pivot_longer(-c(date, gpp_dt_vut_ref, total_obs),  
+               names_to = "index", values_to = "value") %>% 
+  mutate(site = "Borden") %>% 
+  filter(!(index == "ndvi_mean" & value < 0.5 & gpp_dt_vut_ref > 8))
+
+bartlett_plot_daily <- bartlett_daily_500 %>% 
+  select(date, gpp_dt_vut_ref, ends_with("mean"), total_obs) %>% 
+  # filter(ndvi_mean > 3 & gpp_dt_vut_ref < 20) %>% 
+  pivot_longer(-c(date, gpp_dt_vut_ref, total_obs),  
+               names_to = "index", values_to = "value") %>% 
+  mutate(site = "Bartlett")
+  
+daily_plot <- borden_plot_daily %>% 
+  bind_rows(michigan_plot_daily) %>% 
+  bind_rows(bartlett_plot_daily)
+
+## Weekly
+michigan_plot_weekly <- michigan_weekly_500 %>% 
+   select(date_start, gpp_dt_vut_ref, total_obs,
+         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+  pivot_longer(-c(date_start, gpp_dt_vut_ref, total_obs), 
+               names_to = "index", values_to = "value") %>% 
+  mutate(site = "Michigan")
+
+borden_plot_weekly <- borden_weekly_500 %>% 
+   select(date_start, gpp_dt_vut_ref, total_obs,
+         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+  pivot_longer(-c(date_start, gpp_dt_vut_ref, total_obs), 
+               names_to = "index", values_to = "value") %>% 
+  mutate(site = "Borden")
+
+bartlett_plot_weekly <- bartlett_weekly_500 %>% 
+   select(date_start, gpp_dt_vut_ref, total_obs,
+         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+  pivot_longer(-c(date_start, gpp_dt_vut_ref, total_obs), 
+               names_to = "index", values_to = "value") %>% 
+  mutate(site = "Bartlett")
+
+weekly_plot <- borden_plot_weekly %>% 
+  bind_rows(michigan_plot_weekly) %>% 
+  bind_rows(bartlett_plot_weekly)
+
+## monthly
+michigan_plot_monthly <- michigan_monthly_500 %>% 
+  select(date, gpp_dt_vut_ref, total_obs,
+         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+  pivot_longer(-c(date, gpp_dt_vut_ref,total_obs),  
+               names_to = "index", values_to = "value") %>% 
+  mutate(site = "Michigan")
+
+borden_plot_monthly <- borden_monthly_500 %>% 
+  select(date, gpp_dt_vut_ref, total_obs,
+         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+  pivot_longer(-c(date, gpp_dt_vut_ref, total_obs),  
+               names_to = "index", values_to = "value") %>% 
+  mutate(site = "Borden")
+
+bartlett_plot_monthly <- bartlett_monthly_500 %>% 
+  select(date, gpp_dt_vut_ref, total_obs,
+         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+  pivot_longer(-c(date, gpp_dt_vut_ref, total_obs),  
+               names_to = "index", values_to = "value") %>% 
+  mutate(site = "Bartlett")
+
+monthly_plot <- borden_plot_monthly %>% 
+  bind_rows(michigan_plot_monthly) %>% 
+  bind_rows(bartlett_plot_monthly)
+
+etiquetas <- c(
+  "evi_mean" = "EVI",
+  "ndvi_mean" = "NDVI",
+  "nirv_mean" = "NIRv",
+  "Borden" = "Borden",
+  "Michigan" = "Michigan",
+  "Bartlett" = "Bartlett"
+)
+
+daily_grid <- daily_plot %>% 
+  # filter(ndvi_mean > 3 & gpp_dt_vut_ref < 20)
+  mutate(month = lubridate::month(date, label = TRUE)) %>% 
+  ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
+  geom_point(aes(color = month, size = total_obs), alpha = 0.8) +
+  geom_smooth(method = "gam", se = FALSE, color = "#E20D6A") +
+  scale_color_viridis_d() + 
+  scale_fill_viridis_d(aes(month)) +
+  facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
+  scale_size(range = c(.1, 8), name = "Number of pixels") +
+  scale_x_continuous(breaks = seq(0, 1, by = .05)) +
+  scale_y_continuous(breaks = seq(0, 38, by = 4)) +
+  labs(x = "Index value", 
+       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
+       color = "Month", 
+       title = "Daily observations with 500m spatial resolution") +
+  theme_light(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 60, h = 1)) +
+  guides(size = guide_legend(order = 1), col = guide_legend(order = 2))+
+  theme(strip.text = element_text(color = "black"))
+
+
+weekly_grid <- weekly_plot %>% 
+  mutate(month = lubridate::month(date_start, label = TRUE)) %>% 
+  ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
+  geom_point(aes(color = month, size = total_obs), alpha = 0.8) +
+  geom_smooth(method = "gam", se = FALSE, color = "#E20D6A") +
+  scale_color_viridis_d() + 
+  scale_fill_viridis_d(aes(month)) +
+  facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
+  scale_size(range = c(.1, 8), name = "Number of pixels") +
+  scale_x_continuous(breaks = seq(0, 1, by = .05)) +
+  scale_y_continuous(breaks = seq(0, 38, by = 4)) +
+  labs(x = "Index value", 
+       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
+       color = "Month", 
+       title = "Weekly observations with 500m spatial resolution") +
+  theme_light(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 60, h = 1)) +
+  guides(size = guide_legend(order = 1), col = guide_legend(order = 2))+
+  theme(strip.text = element_text(color = "black"))
+
+monthly_grid <- monthly_plot %>% 
+  mutate(month = lubridate::month(date, label = TRUE)) %>% 
+  ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
+  geom_point(aes(color = month, size = total_obs), alpha = 0.8) +
+  geom_smooth(method = "lm", se = FALSE, color = "#E20D6A") +
+  scale_color_viridis_d() + 
+  scale_fill_viridis_d(aes(month)) +
+  facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
+  scale_size(range = c(.1, 8), name = "Number of pixels") +
+  scale_x_continuous(breaks = seq(0, 1, by = .05)) +
+  scale_y_continuous(breaks = seq(0, 18, by = 4)) +
+  labs(x = "Index value", 
+       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
+       color = "Month", 
+       title = "Monthly observations with 500m spatial resolution") +
+  theme_light(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 60, h = 1)) +
+  guides(size = guide_legend(order = 1), col = guide_legend(order = 2)) +
+  theme(strip.text = element_text(color = "black"))
+
+plot_grid(daily_grid,
+          weekly_grid,
+          monthly_grid,
+          nrow = 3)
+```
+
+
 
 ## Tables
