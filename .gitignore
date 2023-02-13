@@ -41,4 +41,4 @@ vignettes/*.pdf
 /.quarto/
 
 _book/
-data_ard/
+data_ard
