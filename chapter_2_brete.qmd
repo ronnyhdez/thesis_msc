@@ -51,29 +51,7 @@ Where PAR is the incident photosynthetically active radiation and fAPAR is the
 fraction of the PAR that is effectively absorbed by plants. fAPAR can be used to
 assess the primary productivity of canopies [GCOS, 2011;
 @running_continuous_2004].  LUE is the radiation use conversion efficiency term
-of the vegetation [heinsch_evaluation_2006]
-
-VI’s are a summary of satellite obtained spectral data
-[@myneni_relationship_1994] derived from optical sensors that are combined with
-climate variables to calculate GPP [@wu_predicting_2011].  This is usually done
-with some form of regression and physical methods that associate interactions
-between vegetation and incoming radiation [@fernandez-martinez_monitoring_2019]
-
-LUE models are based on the concept of radiation conversion efficiency, and take
-into consideration ecological processes [@LIU1997158]. The radiation conversion
-efficiency explains the amount of carbon that a specific type of vegetation can
-fix per unit of solar radiation [@monteith_solar_1972]. MODIS GPP product uses
-an algorithm based on this radiation conversion efficiency concept, relating the
-absorbed photosynthetically active radiation (APAR) with the LUE term
-[@heinsch_evaluation_2006]. 
-
-GPP = PAR * fAPAR * LUE
-
-Where PAR is the incident photosynthetically active radiation and fAPAR is the
-fraction of the PAR that is effectively absorbed by plants. fAPAR can be used to
-assess the primary productivity of canopies [GCOS, 2011;
-@running_continuous_2004].  LUE is the radiation use conversion efficiency term
-of the vegetation [heinsch_evaluation_2006]
+of the vegetation [@heinsch_evaluation_2006]
 
 VI’s are a summary of satellite obtained spectral data
 [@myneni_relationship_1994] derived from optical sensors that are combined with
@@ -83,41 +61,33 @@ between vegetation and incoming radiation [@fernandez-martinez_monitoring_2019]
 
 Well known VI’s used to estimate GPP are normalized difference vegetation index
 (NDVI), enhanced vegetation index (EVI), leaf area index (LAI), and fraction of
-photosynthetically active radiation (fPAR) among others (Balzarolo et al., 2019;
-Rahman et al 2005; Xie et al., 2019; Badgley et al., 2019; Zhang et al., 2020,
-Sellers et al., 1997). 
+photosynthetically active radiation (fPAR) among others [@balzarolo_influence_2019; @rahman_potential_2005; @rahman_potential_2005; @xie_assessments_2020; @badgley_terrestrial_2019; @zhang_potential_2020; @sellers_global_1994]
 
 Nonetheless, even when estimating GPP from satellite remote sensing methods is
 promising to overcome limitations as temporal and spatial scale, there are some
 challenges involved in the process. The first constraint is the use of images
 needed to address the problem of mixed-pixels, which requires determining the
-fraction of the vegetated surface and its attributable signal (Badgley et al.,
-2017). A second challenge is that photosynthesis regulation can occur with no
+fraction of the vegetated surface and its attributable signal [@badgley_canopy_2017]. A second challenge is that photosynthesis regulation can occur with no
 major changes in canopy structure or leaf pigments that can undergo without
-being detected with reflectance data (Pabon-Moreno et al., 2022; Pierrat et al.,
-2022). 
+being detected with reflectance data [@pabon-moreno_potential_2022; @pierrat_diurnal_2022] 
 
 The accuracy of GPP estimation through the use of VI’s can be affected due to
 their limitation to predict spatial, temporal, interannual variability and
-trends. (Fernández-Martínez et al., 2019) An index such as NDVI is good for
+trends. [@fernandez-martinez_monitoring_2019]. An index such as NDVI is good for
 detecting changes in seasonal variability, but it becomes saturated with high
-biomass conditions (Badgley et al., 2017). Other indices such as EVI can
+biomass conditions [@badgley_canopy_2017]. Other indices such as EVI can
 overcome this problem and be better suited for predicting GPP in large biomass
-forests (Badgley et al., 2017) but it has been evaluated in a narrow range of
+forests [@badgley_canopy_2017] but it has been evaluated in a narrow range of
 ecosystems and needs inputs of start and end dates of the growing seasons which
-can increase uncertainties (Shi et al., 2017). 
+can increase uncertainties [@shi_assessing_2017]. 
 
 To overcome these problems, other indices have been formulated in recent years.
-One of these VIs is near-infrared reflectance index (NIRv) (Badgley et al.,
-2019) NIRv is defined as the fraction of reflected NIR light that originates
+One of these VIs is near-infrared reflectance index (NIRv) [@badgley_terrestrial_2019] NIRv is defined as the fraction of reflected NIR light that originates
 from vegetation. NIRv was originally proposed as a replacement for fPAR in LUE
 models in that the NIR and PAR reflectance of vegetation are correlated and the
-scaling by NDVI corrects for soil contributions in the signal (Badgley et al.,
-2019)  NIRv has been shown to have a stronger correlation to GPP at flux towers
+scaling by NDVI corrects for soil contributions in the signal [@Badgley et al.]  NIRv has been shown to have a stronger correlation to GPP at flux towers
 and on a regional basis than fAPAR notwithstanding the fact that GPP is fAPAR
-driven.  NIRv has been extended to include a weighting with PAR (Dechant et al.,
-2022) and replacing the NIR reflectance with  NIRv radiance (Wu et al., 2020)
-Both of these approaches have been shown to have even stronger correlations with
+driven.  NIRv has been extended to include a weighting with PAR [@dechant_nirvp_2022] and replacing the NIR reflectance with  NIRv radiance [@wu_radiance-based_2020]. Both of these approaches have been shown to have even stronger correlations with
 GPP than NIRv as could be expected since they either directly or indirectly
 weight the NIRv with PAR.
 
@@ -132,15 +102,14 @@ strength of correlation between APAR and GPP depends on LUE having a linear
 relationship to observed APAR.  While this may hold in some circumstances (e.g.
 early seasonal measurements for vegetation such as crops where leaf chlorophyll
 concentration increases during the growth phase) it is not the case in general
-and definitely during stress conditions (Monteith 1972).  
+and definitely during stress conditions [@monteith_solar_1972].  
 
 Despite these efforts, relying solely on these remote satellite indices is a
-problem. Efforts to validate and quantify their accuracy are needed (Brown et
-al., 2021).  In-situ eddy-covariance flux measurements represent a solution
+problem. Efforts to validate and quantify their accuracy are needed [@brown_fiducial_2021].  In-situ eddy-covariance flux measurements represent a solution
 given that they represent site-level observations. With the calculation of the
 flux footprint, the area from the flux tower can serve as a reference point in
 which satellite images can be linked to a specific set of pixels and calculate
-the accuracy of the estimations provided by the indices. (Chu et al., 2020)
+the accuracy of the estimations provided by the indices. [@chu_representativeness_2021]. 
 
 As such, the main objective of my M.Sc. thesis is the analysis of uncertainty
 associated with the VI/LUE models since they offer the potential for GPP

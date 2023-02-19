@@ -16,11 +16,9 @@ book:
     - bibliography.qmd
     - appendices.qmd
 
-bibliography: RAP.bib
+bibliography: rap_v002.bib
 
 format:
-  html:
-    theme: cosmo
   pdf:
     documentclass: scrreprt
 
