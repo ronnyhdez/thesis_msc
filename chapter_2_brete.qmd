@@ -135,6 +135,17 @@ Dechant et al. 2022.
 
 ## Methods
 
+### Eddy Covariance sites
+
+We used three broad leaf forests from the northern hemisphere. Datasets were
+obtained from the Ameriflux portal. Specifically I used the datasets derived 
+from the Oneflux processing which have GPP. For each of the sites I use the 
+daily, weekly and monthly data.
+
+We used three broad leaf forest from the northern hemisphere with data processed
+by Ameriflux, specifically the ONEFlux processing. For each site three datasets
+were downloaded with different timed observations: daily, weekly, and monthly.
+Characteristics of these datasets are in @tbl-oneflux_datasets
 
 The second flux site is Borden Forest Research Station located in Ontario,
 Canada. This is one of the largest patches of forest in Southern Ontario which
@@ -152,5 +163,29 @@ broadleaf natural re-growth forest dominated by woody vegetation. (Lee et al.,
 
 ## Discussion
 
+
+## References
+
+Just the references of this chapter, that also needs to be included in the
+final references.
+
+::: {#refs}
+:::
+
+## Figures
+
+
+
+
+## Tables
+
+
+| Site     | ONEFlux | MODIS | Sentinel |
+| -------- | -------------------- | -------------------- | -------------------- |
+| Bartlett | Jan 2015 to Dec 2017 | Jan 2015 to Dec 2021 | Dec 2018 to Dec 2021 |
+| Borden   | Jan 2015 to Jan 2022 | Jan 2015 to Dec 2021 | Dec 2018 to Dec 2021 |
+| Michigan | Jan 2015 to Jan 2018 | Jan 2015 to Dec 2021 | Dec 2018 to Dec 2021 |
+
+: Sites ONEFlux datasets {#tbl-oneflux_datasets}
 
 
