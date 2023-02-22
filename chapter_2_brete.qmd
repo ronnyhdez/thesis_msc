@@ -128,10 +128,9 @@ associated with the VI/LUE models since they offer the potential for GPP
 estimation without requiring knowledge regarding canopy and soil properties
 other than measurements of reflected light and possibly a correction for soil
 contribution. We aim to quantify the uncertainty from some of the most used
-satellite vegetation indices with in-situ GPP data from the Santa Rosa National
-Park flux-site (Costa Rica), the Borden Forest Research Station flux-site
-(Canada), Chamela Biological Station (México)  and a corn/soybean site from
-Dechant et al. 2022.
+satellite vegetation indices with in-situ GPP data from the Bartlett 
+Experimental Forest (USA), the Borden Forest Research Station flux-site
+(Canada), and the University of Michigan Biological Station (USA).
 
 ## Methods
 
@@ -147,14 +146,29 @@ The Bartlett experimental forest is located in New Hampshire, USA (44°06′N, 7
 annual temperature of 6C. Desiptes events such as a hurricane in 1938 and small
 scale forest management, the forest mean stand age is around 120-125 years. [@ouimette_carbon_2018]
 
-The second flux site is Borden Forest Research Station located in Ontario,
-Canada. This is one of the largest patches of forest in Southern Ontario which
-has been collecting EC data since 1996 (Rogers et al., 2020).  This site has a
-forest cover of over 60% with a height that exceeds 2 m. It’s a deciduous
-broadleaf natural re-growth forest dominated by woody vegetation. (Lee et al.,
-1999).
+The second flux site is Borden Forest Research Station located in Ontario 
+(44°19′N, 79°56′W), Canada. This is one of the largest patches of forest in
+Southern Ontario which has been collecting EC data since 1996 [@rogers_response_2020].  This site has a forest cover of over 60% with a height that exceeds 2 m.
+It’s a deciduous broadleaf natural re-growth forest dominated by woody 
+vegetation. [@lee_long-term_1999].
 
-The third site is the University of Michigan Biological Station which
+The third site is the University of Michigan Biological Station which is
+located in northern Michigan (45°350 N 84°430 W). The site have a forest with
+different succesional stages and a mean height of 2m. Mean annual temperature
+is around 5.5°C. [@gough_disturbanceaccelerated_2021]
+
+### Satellite imagery
+
+We obtained the data from the collections available in Google Earth Engine,
+(See @tbl-satellite_images_datasets) for a defined square polygon with an
+area of 3km around the EC tower for each site. For each polygon, the values of
+all the bands for every pixel were used.
+
+After MODIS data was downloaded, we processed both datasets (reflectance 500m
+and 250m) 
+were processed through the following steps:
+
+
 
 
 
@@ -181,12 +195,19 @@ final references.
 ## Tables
 
 
-| Site     | Data range available| Dataset name | 
-| -------- | -------------------- | -------------------- |
-| Bartlett | Jan 2015 to Dec 2017 | US-Bar: Barlett Experimental Forest (version: beta-3)| 
-| Borden   | Jan 2015 to Jan 2022 | CA-Cbo: Ontario - Mixed Deciduous, Borden Forest Site | 
-| Michigan | Jan 2015 to Jan 2018 | US-UMB: Univ. of Mich. Biological Station (version: beta-4) | 
+| Site     | Data range available| Dataset name | Reference |
+| -------- | -------------------- | -------------------- | --------- |
+| Bartlett | Jan 2015 to Dec 2017 | US-Bar: Barlett Experimental Forest (version: beta-3)| [@staebler2019ameriflux]  |
+| Borden   | Jan 2015 to Jan 2022 | CA-Cbo: Ontario - Mixed Deciduous, Borden Forest Site | [@richardson2016ameriflux] |
+| Michigan | Jan 2015 to Jan 2018 | US-UMB: Univ. of Mich. Biological Station (version: beta-4) | [@gough2016ameriflux] |
 
 : Sites ONEFlux datasets {#tbl-oneflux_datasets}
 
 
+| Data              | Spatial resolution (m) | GEE image collection  |
+|-------------------|------------------------|-----------------------|
+| MODIS reflectance | 500                    | MODIS/006/MOD09GA     |
+| MODIS reflectance | 250                    | MODIS/061/MOD09A1     |
+| Harmonized Sentinel-2 | 20 - 60 - 10       | COPERNICUS/S2_SR_HARMONIZED |
+
+: Satellite images datasets {#tbl-satellite_images_datasets}
