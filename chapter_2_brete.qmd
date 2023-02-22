@@ -137,15 +137,15 @@ Dechant et al. 2022.
 
 ### Eddy Covariance sites
 
-We used three broad leaf forests from the northern hemisphere. Datasets were
-obtained from the Ameriflux portal. Specifically I used the datasets derived 
-from the Oneflux processing which have GPP. For each of the sites I use the 
-daily, weekly and monthly data.
+We used three deciduos broad leaf forest from the northern hemisphere with 
+data processed by Ameriflux. For each site, three datasets were used with
+GPP (GPP_DT_VUT_USTAR50) estimated by the ONEFlux processing at daily, weekly,
+and monthly timeframes. Characteristics of these datasets are in 
+@tbl-oneflux_datasets
 
-We used three broad leaf forest from the northern hemisphere with data processed
-by Ameriflux, specifically the ONEFlux processing. For each site three datasets
-were downloaded with different timed observations: daily, weekly, and monthly.
-Characteristics of these datasets are in @tbl-oneflux_datasets
+The Bartlett experimental forest is located in New Hampshire, USA (44°06′N, 71°3′W). The site has a forest with a canopy mean height around 20-22m and a mean
+annual temperature of 6C. Desiptes events such as a hurricane in 1938 and small
+scale forest management, the forest mean stand age is around 120-125 years. [@ouimette_carbon_2018]
 
 The second flux site is Borden Forest Research Station located in Ontario,
 Canada. This is one of the largest patches of forest in Southern Ontario which
@@ -154,6 +154,7 @@ forest cover of over 60% with a height that exceeds 2 m. It’s a deciduous
 broadleaf natural re-growth forest dominated by woody vegetation. (Lee et al.,
 1999).
 
+The third site is the University of Michigan Biological Station which
 
 
 
@@ -180,11 +181,11 @@ final references.
 ## Tables
 
 
-| Site     | ONEFlux | MODIS | Sentinel |
-| -------- | -------------------- | -------------------- | -------------------- |
-| Bartlett | Jan 2015 to Dec 2017 | Jan 2015 to Dec 2021 | Dec 2018 to Dec 2021 |
-| Borden   | Jan 2015 to Jan 2022 | Jan 2015 to Dec 2021 | Dec 2018 to Dec 2021 |
-| Michigan | Jan 2015 to Jan 2018 | Jan 2015 to Dec 2021 | Dec 2018 to Dec 2021 |
+| Site     | Data range available| Dataset name | 
+| -------- | -------------------- | -------------------- |
+| Bartlett | Jan 2015 to Dec 2017 | US-Bar: Barlett Experimental Forest (version: beta-3)| 
+| Borden   | Jan 2015 to Jan 2022 | CA-Cbo: Ontario - Mixed Deciduous, Borden Forest Site | 
+| Michigan | Jan 2015 to Jan 2018 | US-UMB: Univ. of Mich. Biological Station (version: beta-4) | 
 
 : Sites ONEFlux datasets {#tbl-oneflux_datasets}
 
