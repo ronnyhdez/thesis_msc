@@ -164,17 +164,20 @@ We obtained the data from the collections available in Google Earth Engine,
 area of 3km around the EC tower for each site. For each polygon, the values of
 all the bands for every pixel were used.
 
-The MODIS Surface Reflectance product consist of 7 reflectance bands from
-which three of them necessary to calculate the vegetation indices (See
-@tbl- )
+The MODIS Surface Reflectance products used are `MODIS/006/MOD09GA` (500m 
+spatial resolution) which consist of 7 reflectance bands from which three of
+them were necessary to calculate the vegetation indices (See
+@tbl-MODIS_500_indices_bands). The second MODIS product is `MODIS/061/MOD09A1`,
+(250m spatial resolution) which consists of two bands, both of them used to
+calculate the vegetation indices.
 
-For the MODIS data (`MODIS/006/MOD09GA` and `MODIS/061/MOD09A1`) the
-processing was split in three sections: filtering high quality pixels,
-scaling band values and vegetation indices calculation. The filtering of the
-highest quality pixels was done using the `state_1km` and `qc_500m` variables 
-which are bit encoded. The variable `q_scan` was discarded given that provided
-no useful information for the filtering process and `g_flags` contained the
-same value across al the observations so it wasn't used.
+For both data products, we perform a process that was split in three sections:
+filtering high quality pixels, scaling band values and vegetation indices 
+calculation. The filtering of the highest quality pixels was done using the
+`state_1km` and `qc_500m` variables which are bit encoded. The variable
+`q_scan` was discarded given that provided no useful information for the
+filtering process and `g_flags` contained the same value across all the 
+observations so it wasn't used.
 
 To be able to use the bit encoded variables, 
 
@@ -253,3 +256,13 @@ final references.
 | B2       | Blue            | 10 meters      | 496.6nm (S2A) / 492.1nm (S2B) | 0.0001    |
 
 : Harmonized Sentinel-2 Bands {#tbl-harmonized_s2_indices_bands}
+
+
+| **Name** | **Description** | **Resolution** | **Wavelength**              | **Scale** |
+|----------|-----------------|----------------|-----------------------------|-----------|
+| sur_refl_01 | Red             | 500 meters      | 620-670nm | 0.0001    |
+| sur_refl_02 | NIR             | 500 meters      | 841-876nm | 0.0001    |
+| sur_refl_03 | Blue            | 500 meters      | 459-479nm | 0.0001    |
+
+: MOD09GA.061 MODIS Bands {#tbl-MODIS_500_indices_bands}
+
