@@ -138,7 +138,7 @@ Experimental Forest (USA), the Borden Forest Research Station flux-site
 
 We used three deciduos broad leaf forest from the northern hemisphere with 
 data processed by Ameriflux. For each site, three datasets were used with
-GPP (GPP_DT_VUT_USTAR50) estimated by the ONEFlux processing at daily, weekly,
+GPP (`GPP_DT_VUT_USTAR50`) estimated by the ONEFlux processing at daily, weekly,
 and monthly timeframes. Characteristics of these datasets are in 
 @tbl-oneflux_datasets
 
@@ -153,9 +153,12 @@ It’s a deciduous broadleaf natural re-growth forest dominated by woody
 vegetation. [@lee_long-term_1999].
 
 The third site is the University of Michigan Biological Station which is
-located in northern Michigan (45°350 N 84°430 W). The site have a forest with
+located in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
 different succesional stages and a mean height of 2m. Mean annual temperature
 is around 5.5°C. [@gough_disturbanceaccelerated_2021]
+
+ - include description of the oneflux processing (gap filling, data quality,
+   gpp estimation, gpp uncertainty with DT and NT)
 
 ### Satellite imagery
 
@@ -173,11 +176,20 @@ calculate the vegetation indices.
 
 For both data products, we perform a process that was split in three sections:
 filtering high quality pixels, scaling band values and vegetation indices 
-calculation. The filtering of the highest quality pixels was done using the
-`state_1km` and `qc_500m` variables which are bit encoded. The variable
-`q_scan` was discarded given that provided no useful information for the
-filtering process and `g_flags` contained the same value across all the 
-observations so it wasn't used.
+calculation. The filtering of the highest quality pixels can be done with
+four bit encoded variables which are: `state_1km`, `qc_500m`, `q_scan`, and
+`g_flags`, plus the bands bits that were also indicators of the observation
+quality. Bit enconded variables were transformed to strings categories and
+just the best quality categories were selected in order to filter the pixels.
+We used `state_1km` and `qc_500m` variables for the filtering, given that the
+`q_scan` provided no useful infomation about the quality and `g_flags` contained
+the same exact value for all the observations. The bit strings selected for
+`state_1km` are indicated in @tbl-state_1km_bitstrings and the ones for
+`qc_500` are shown in @tbl-
+
+
+
+
 
 To be able to use the bit encoded variables, 
 
@@ -243,7 +255,7 @@ final references.
 |-------------------|------------------------|-----------------------|
 | MODIS reflectance | 500                    | MODIS/006/MOD09GA     |
 | MODIS reflectance | 250                    | MODIS/061/MOD09A1     |
-| Harmonized Sentinel-2 | 20 - 60 - 10       | COPERNICUS/S2_SR_HARMONIZED |
+| Harmonized Sentinel-2 | 20 - 60 - 10       | COPERNICUS/ S2_SR_HARMONIZED |
 
 : Satellite images datasets {#tbl-satellite_images_datasets}
 
@@ -266,3 +278,99 @@ final references.
 
 : MOD09GA.061 MODIS Bands {#tbl-MODIS_500_indices_bands}
 
+```{r, echo=FALSE}
+#| label: tbl-state_1km_bitstrings
+#| tbl-cap: "state_1km bit strings"
+#| echo: false
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(tibble)
+library(gt)
+
+tribble(
+  ~Parameter, ~Bit, ~State,
+  "cloud_state" , "00" , "clear",
+  "cloud_state" , "01" , "cloudy",
+  "cloud_state" , "10" , "mixed",
+  "cloud_state" , "11" , "not set, assumed clear",
+  "cloud_shadow_qa" , "1" , "yes", 
+  "cloud_shadow_qa" , "0" , "no",
+  "land_water_flag" , "000" , "shallow ocean",
+  "land_water_flag" , "001" , "land",
+  "land_water_flag" , "010" , "ocean coastlines and lake shorelines",
+  "land_water_flag" , "011" , "shallow inland water",
+  "land_water_flag" , "100" , "ephemeral water",
+  "land_water_flag" , "101" , "deep inland water",
+  "land_water_flag" , "110" , "continental/moderate ocean",
+  "land_water_flag" , "111" , "deep ocean",
+  "aerosol_quantity" , "00" , "climatology",
+  "aerosol_quantity" , "01" , "low",
+  "aerosol_quantity" , "10" , "average",
+  "aerosol_quantity" , "11" , "high",
+  "cirrus_detected" , "00" , "none",
+  "cirrus_detected" , "01" , "small",
+  "cirrus_detected" , "10" , "average",
+  "cirrus_detected" , "11" , "high",
+  "cloud_flag_qa" , "1", "cloud", 
+  "cloud_flag_qa" , "0", "no cloud",
+  "fire_flag_qa" , "1", "fire",
+  "fire_flag_qa" , "0", "no fire",
+  "snow_ice_flag_qa" , "1", "yes", 
+  "snow_ice_flag_qa" , "0", "no",
+  "pixel_adjacent_cloud_qa" , "1", "yes", 
+  "pixel_adjacent_cloud_qa" , "0", "no", 
+  "salt_pan_qa", "1", "yes",
+  "salt_pan_qa" , "0", "no",
+  "snow_mask_qa" ,  "1", "yes",
+  "snow_mask_qa" ,  "0", "no"
+) %>% 
+  select(Bit, State) %>% 
+  gt() %>% 
+  tab_row_group(
+    label = md("**Snow Mask**"),
+    rows = 33:34
+  ) %>% 
+  tab_row_group(
+    label = md("**Salt Pan Cloud**"),
+    rows = 31:32
+  ) %>%
+  tab_row_group(
+    label = md("**Pixel adjacent Cloud**"),
+    rows = 29:30
+  ) %>% 
+  tab_row_group(
+    label = md("**Snow Ice Flag**"),
+    rows = 27:28
+  ) %>% 
+  tab_row_group(
+    label = md("**Fire Flag**"),
+    rows = 25:26
+  ) %>% 
+  tab_row_group(
+    label = md("**Cloud Flag**"),
+    rows = 23:24
+  ) %>% 
+  tab_row_group(
+    label = md("**Cirrus Detected**"),
+    rows = 19:22
+  ) %>% 
+  tab_row_group(
+    label = md("**Aerosol Quantity**"),
+    rows = 15:18
+  ) %>% 
+  tab_row_group(
+    label = md("**Land Water**"),
+    rows = 7:14
+  ) %>% 
+  tab_row_group(
+    label = md("**Cloud Shadow**"),
+    rows = 5:6
+  ) %>% 
+  tab_row_group(
+    label = md("**Cloud State**"),
+    rows = 1:4
+  ) %>% 
+  cols_align(align = "center", columns = everything())
+```
