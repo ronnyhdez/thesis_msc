@@ -185,26 +185,15 @@ We used `state_1km` and `qc_500m` variables for the filtering, given that the
 `q_scan` provided no useful infomation about the quality and `g_flags` contained
 the same exact value for all the observations. The bit strings selected for
 `state_1km` are indicated in @tbl-state_1km_bitstrings and the ones for
-`qc_500` are shown in @tbl-
+`qc_501` are shown in @tbl-qc_scan_bit_strings.
 
+The second stage of the data processing is to scale all the bands values. For
+all the highest quality pixels obtained, we scaled every observation by a 
+factor of `0.0001`. According to documentation, any value after the scaling,
+outside of the range from `0` to `1` is considered a fill value or an
+uncorrected L1B data. Once we had all the bands values scaled, the vegetation
+indices were calculated.
 
-
-
-
-To be able to use the bit encoded variables, 
-
-
- - modis surface reflectance have 7 bands (include bands ranges)
- - state_1km and QC_500m are bit encoded.
- -  
-After MODIS data was downloaded, we processed both datasets (reflectance 500m
-and 250m) first by doing a quality processing according to the categories
-obtained through the bitwise convertion. After the filtering out of low quality
-pixels, we scaled every band by a factor of `0.0001`. Any resulting value after
-the scaling outside the range from `0` to `1` were discarded.
-
-With the highest MODIS quality observations, we calculated the vegetation
-indices NDVI, NIRv and EVI.
 
 We filtered the pixels from Sentinel images according to the `msk_cldprb` and
 `msk_snwprb` variables. After the filtering, we scaled all the observations by
@@ -278,7 +267,7 @@ final references.
 
 : MOD09GA.061 MODIS Bands {#tbl-MODIS_500_indices_bands}
 
-```{r, echo=FALSE}
+```{r}
 #| label: tbl-state_1km_bitstrings
 #| tbl-cap: "state_1km bit strings"
 #| echo: false
@@ -374,3 +363,64 @@ tribble(
   ) %>% 
   cols_align(align = "center", columns = everything())
 ```
+
+```{r}
+#| label: tbl-qc_scan_bit_strings
+#| tbl-cap: "qc_scan bit strings"
+#| echo: false
+#| message: false
+#| warning: false
+
+tribble(
+  ~Parameter, ~Bits, ~State,
+  "modland" , "00" , "ideal quality - all bands",
+  "modland" , "01" , "less than ideal quality - some or all bands",
+  "modland" , "10" , "product not produced due to cloud effects",
+  "modland" , "11" , "product not produced for other reasons",
+  "bands" , "0000" , "highest_quality",
+  "bands" , "0111" , "noisy detector",
+  "bands" , "1000" , "dead detector, data interpolated in L1B",
+  "bands" , "1001" , "solar zenith >= 86 degrees",
+  "bands" , "1010" , "solar zenith >= 85 and < 86 degrees",
+  "bands" , "1011" , "missing input",
+  "bands" , "1100" , "internal constant used",
+  "bands" , "1101" , "correction out of bounds",
+  "bands" , "1110" , "L1B data faulty",
+  "bands" , "1111" , "not processed due to deep ocean or clouds",
+  "atmospheric_correction" , "0", "no",
+  "atmospheric_correction" , "1", "yes",
+  "adjacency_correction" ,  "0", "no",
+  "adjacency_correction" ,  "1", "yes"
+) %>% 
+  select(Bits, State) %>% 
+  gt() %>% 
+  tab_row_group(
+    label = md("**Adjacency Correction**"),
+    rows = 17:18
+  ) %>% 
+  tab_row_group(
+    label = md("**Atmospheric Correction**"),
+    rows = 15:16
+  ) %>% 
+  tab_row_group(
+    label = md("**Band quality (apply for all bands)**"),
+    rows = 5:14
+  ) %>% 
+  tab_row_group(
+    label = md("**Modland**"),
+    rows = 1:4
+  ) %>% 
+  cols_align(align = "center", columns = everything()) %>% 
+  tab_style(
+    style = list(
+      cell_fill(color = "#B3B3B3")
+    ),
+    locations = cells_body(
+      columns = State,
+      rows = State %in% c("ideal quality - all bands",
+                          "highest_quality",
+                          "yes")
+    )
+  )
+```
+
