@@ -1,5 +1,12 @@
+---
+editor: 
+  markdown: 
+    wrap: 80
+---
+
 # Assesing uncertanties related to satellite remote sensing indices to estimate
-Gross Primary Production 
+
+Gross Primary Production
 
 ## Introduction
 
@@ -7,7 +14,7 @@ Gross Primary Production (GPP) is the total amount of carbon fixation by plants
 through photosynthesis [@badgley_terrestrial_2019]. Quantifying GPP is essential
 for understanding land-atmosphere carbon exchange [@kohler_global_2018],
 ecosystem function, and ecosystem responses to climate change
-[@guan_comparison_2022; @brown_fiducial_2021; @myneni_relationship_1994].  With
+[@guan_comparison_2022; @brown_fiducial_2021; @myneni_relationship_1994]. With
 recent advances in technology for remote sensing and more computational power
 available with lower costs [@gorelick_google_2017], global mapping of
 photosynthesis is being done by more scientists [@ryu_what_2019]. Given that GPP
@@ -26,16 +33,16 @@ energy fluxes between vegetation canopies and the atmosphere since the 1990s
 fluxes, is the principal approach for quantifying the exchange of CO2 between
 the land and atmosphere using advanced field instrumentation
 [@badgley_terrestrial_2019; @tramontana_predicting_2016]. Measurements provided
-using EC have a limited spatial resolution of less than < 1km2 , which bring
-spatial constraints to estimations of  ecosystem carbon and water fluxes at
-regional to global scales. [@badgley_canopy_2017].   
+using EC have a limited spatial resolution of less than \< 1km2 , which bring
+spatial constraints to estimations of ecosystem carbon and water fluxes at
+regional to global scales. [@badgley_canopy_2017].
 
 The second category of methods to estimate GPP is the satellite data-driven
 models. Because of their dependency on earth observation platforms, they are not
 spatially constrained but can have more uncertainties than the EC techniques
 [@ryu_what_2019; @wang_diagnosing_2011]. Satellite data-driven models can be
 classified into Vegetation Index models (VI), Light Use Efficiency models (LUE),
-and process-based models [@xie_assessments_2020]. 
+and process-based models [@xie_assessments_2020].
 
 LUE models are based on the concept of radiation conversion efficiency, and take
 into consideration ecological processes [@LIU1997158]. The radiation conversion
@@ -43,23 +50,23 @@ efficiency explains the amount of carbon that a specific type of vegetation can
 fix per unit of solar radiation [@monteith_solar_1972]. MODIS GPP product uses
 an algorithm based on this radiation conversion efficiency concept, relating the
 absorbed photosynthetically active radiation (APAR) with the LUE term
-[@heinsch_evaluation_2006]. 
+[@heinsch_evaluation_2006].
 
-GPP = PAR * fAPAR * LUE
+GPP = PAR \* fAPAR \* LUE
 
 Where PAR is the incident photosynthetically active radiation and fAPAR is the
 fraction of the PAR that is effectively absorbed by plants. fAPAR can be used to
 assess the primary productivity of canopies [GCOS, 2011;
-@running_continuous_2004].  LUE is the radiation use conversion efficiency term
+@running_continuous_2004]. LUE is the radiation use conversion efficiency term
 of the vegetation [@heinsch_evaluation_2006]
 
-VI’s are a summary of satellite obtained spectral data
+VI's are a summary of satellite obtained spectral data
 [@myneni_relationship_1994] derived from optical sensors that are combined with
-climate variables to calculate GPP [@wu_predicting_2011].  This is usually done
+climate variables to calculate GPP [@wu_predicting_2011]. This is usually done
 with some form of regression and physical methods that associate interactions
 between vegetation and incoming radiation [@fernandez-martinez_monitoring_2019]
 
-Well known VI’s used to estimate GPP are normalized difference vegetation index
+Well known VI's used to estimate GPP are normalized difference vegetation index
 (NDVI), enhanced vegetation index (EVI), leaf area index (LAI), and fraction of
 photosynthetically active radiation (fPAR) among others
 [@balzarolo_influence_2019; @rahman_potential_2005; @rahman_potential_2005;
@@ -74,9 +81,9 @@ fraction of the vegetated surface and its attributable signal
 [@badgley_canopy_2017]. A second challenge is that photosynthesis regulation can
 occur with no major changes in canopy structure or leaf pigments that can
 undergo without being detected with reflectance data
-[@pabon-moreno_potential_2022; @pierrat_diurnal_2022] 
+[@pabon-moreno_potential_2022; @pierrat_diurnal_2022]
 
-The accuracy of GPP estimation through the use of VI’s can be affected due to
+The accuracy of GPP estimation through the use of VI's can be affected due to
 their limitation to predict spatial, temporal, interannual variability and
 trends. [@fernandez-martinez_monitoring_2019]. An index such as NDVI is good for
 detecting changes in seasonal variability, but it becomes saturated with high
@@ -84,7 +91,7 @@ biomass conditions [@badgley_canopy_2017]. Other indices such as EVI can
 overcome this problem and be better suited for predicting GPP in large biomass
 forests [@badgley_canopy_2017] but it has been evaluated in a narrow range of
 ecosystems and needs inputs of start and end dates of the growing seasons which
-can increase uncertainties [@shi_assessing_2017]. 
+can increase uncertainties [@shi_assessing_2017].
 
 To overcome these problems, other indices have been formulated in recent years.
 One of these VIs is near-infrared reflectance index (NIRv)
@@ -92,43 +99,43 @@ One of these VIs is near-infrared reflectance index (NIRv)
 light that originates from vegetation. NIRv was originally proposed as a
 replacement for fPAR in LUE models in that the NIR and PAR reflectance of
 vegetation are correlated and the scaling by NDVI corrects for soil
-contributions in the signal [@Badgley et al.]  NIRv has been shown to have a
+contributions in the signal [@Badgley et al.] NIRv has been shown to have a
 stronger correlation to GPP at flux towers and on a regional basis than fAPAR
-notwithstanding the fact that GPP is fAPAR driven.  NIRv has been extended to
+notwithstanding the fact that GPP is fAPAR driven. NIRv has been extended to
 include a weighting with PAR [@dechant_nirvp_2022] and replacing the NIR
-reflectance with  NIRv radiance [@wu_radiance-based_2020]. Both of these
+reflectance with NIRv radiance [@wu_radiance-based_2020]. Both of these
 approaches have been shown to have even stronger correlations with GPP than NIRv
 as could be expected since they either directly or indirectly weight the NIRv
 with PAR.
 
 The stronger correlation between the NIR indices to GPP versus indices based on
 fAPAR seemingly contradicts the hypotheses in the LUE model that GPP should be
-linearly related to fAPAR.  There are two explanations: i.  Many of the reported
-comparative studies use fAPAR based on VIs and not APAR.  We hypothesize that
-the NIR indices are simply better estimators of APAR than these VI
-approximations due to lower measurement error for the NIR indices or a stronger
-physical relationship between them and APAR versus the historical VIs. The
-strength of correlation between APAR and GPP depends on LUE having a linear
-relationship to observed APAR.  While this may hold in some circumstances (e.g.
-early seasonal measurements for vegetation such as crops where leaf chlorophyll
-concentration increases during the growth phase) it is not the case in general
-and definitely during stress conditions [@monteith_solar_1972].  
+linearly related to fAPAR. There are two explanations: i. Many of the reported
+comparative studies use fAPAR based on VIs and not APAR. We hypothesize that the
+NIR indices are simply better estimators of APAR than these VI approximations
+due to lower measurement error for the NIR indices or a stronger physical
+relationship between them and APAR versus the historical VIs. The strength of
+correlation between APAR and GPP depends on LUE having a linear relationship to
+observed APAR. While this may hold in some circumstances (e.g. early seasonal
+measurements for vegetation such as crops where leaf chlorophyll concentration
+increases during the growth phase) it is not the case in general and definitely
+during stress conditions [@monteith_solar_1972].
 
 Despite these efforts, relying solely on these remote satellite indices is a
 problem. Efforts to validate and quantify their accuracy are needed
-[@brown_fiducial_2021].  In-situ eddy-covariance flux measurements represent a
+[@brown_fiducial_2021]. In-situ eddy-covariance flux measurements represent a
 solution given that they represent site-level observations. With the calculation
 of the flux footprint, the area from the flux tower can serve as a reference
 point in which satellite images can be linked to a specific set of pixels and
 calculate the accuracy of the estimations provided by the indices.
-[@chu_representativeness_2021]. 
+[@chu_representativeness_2021].
 
 As such, the main objective of my M.Sc. thesis is the analysis of uncertainty
 associated with the VI/LUE models since they offer the potential for GPP
 estimation without requiring knowledge regarding canopy and soil properties
 other than measurements of reflected light and possibly a correction for soil
 contribution. We aim to quantify the uncertainty from some of the most used
-satellite vegetation indices with in-situ GPP data from the Bartlett 
+satellite vegetation indices with in-situ GPP data from the Bartlett
 Experimental Forest (USA), the Borden Forest Research Station flux-site
 (Canada), and the University of Michigan Biological Station (USA).
 
@@ -136,38 +143,41 @@ Experimental Forest (USA), the Borden Forest Research Station flux-site
 
 ### Eddy Covariance sites
 
-We used three deciduos broad leaf forest from the northern hemisphere with 
-data processed by Ameriflux. For each site, three datasets were used with
-GPP (`GPP_DT_VUT_USTAR50`) estimated by the ONEFlux processing at daily, weekly,
-and monthly timeframes. Characteristics of these datasets are in 
+We used three deciduos broad leaf forest from the northern hemisphere with data
+processed by Ameriflux. For each site, three datasets were used with GPP
+(`GPP_DT_VUT_USTAR50`) estimated by the ONEFlux processing at daily, weekly, and
+monthly timeframes. Characteristics of these datasets are in
 @tbl-oneflux_datasets
 
-The Bartlett experimental forest is located in New Hampshire, USA (44°06′N, 71°3′W). The site has a forest with a canopy mean height around 20-22m and a mean
-annual temperature of 6C. Desiptes events such as a hurricane in 1938 and small
-scale forest management, the forest mean stand age is around 120-125 years. [@ouimette_carbon_2018]
+The Bartlett experimental forest is located in New Hampshire, USA (44°06′N,
+71°3′W). The site has a forest with a canopy mean height around 20-22m and a
+mean annual temperature of 6C. Desiptes events such as a hurricane in 1938 and
+small scale forest management, the forest mean stand age is around 120-125
+years. [@ouimette_carbon_2018]
 
-The second flux site is Borden Forest Research Station located in Ontario 
+The second flux site is Borden Forest Research Station located in Ontario
 (44°19′N, 79°56′W), Canada. This is one of the largest patches of forest in
-Southern Ontario which has been collecting EC data since 1996 [@rogers_response_2020].  This site has a forest cover of over 60% with a height that exceeds 2 m.
-It’s a deciduous broadleaf natural re-growth forest dominated by woody 
-vegetation. [@lee_long-term_1999].
+Southern Ontario which has been collecting EC data since 1996
+[@rogers_response_2020]. This site has a forest cover of over 60% with a height
+that exceeds 2 m. It's a deciduous broadleaf natural re-growth forest dominated
+by woody vegetation. [@lee_long-term_1999].
 
-The third site is the University of Michigan Biological Station which is
-located in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
-different succesional stages and a mean height of 2m. Mean annual temperature
-is around 5.5°C. [@gough_disturbanceaccelerated_2021]
+The third site is the University of Michigan Biological Station which is located
+in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
+different succesional stages and a mean height of 2m. Mean annual temperature is
+around 5.5°C. [@gough_disturbanceaccelerated_2021]
 
- - include description of the oneflux processing (gap filling, data quality,
-   gpp estimation, gpp uncertainty with DT and NT)
+-   include description of the oneflux processing (gap filling, data quality,
+    gpp estimation, gpp uncertainty with DT and NT)
 
 ### Satellite imagery
 
-We obtained the data from the collections available in Google Earth Engine,
-(See @tbl-satellite_images_datasets) for a defined square polygon with an
-area of 3km around the EC tower for each site. For each polygon, the values of
-all the bands for every pixel were used.
+We obtained the data from the collections available in Google Earth Engine, (See
+@tbl-satellite_images_datasets) for a defined square polygon with an area of 3km
+around the EC tower for each site. For each polygon, the values of all the bands
+for every pixel were used.
 
-The MODIS Surface Reflectance products used are `MODIS/006/MOD09GA` (500m 
+The MODIS Surface Reflectance products used are `MODIS/006/MOD09GA` (500m
 spatial resolution) which consist of 7 reflectance bands from which three of
 them were necessary to calculate the vegetation indices (See
 @tbl-MODIS_500_indices_bands). The second MODIS product is `MODIS/061/MOD09A1`,
@@ -175,95 +185,96 @@ them were necessary to calculate the vegetation indices (See
 calculate the vegetation indices.
 
 For both data products, we perform a process that was split in three sections:
-filtering high quality pixels, scaling band values and vegetation indices 
-calculation. The filtering of the highest quality pixels can be done with
-four bit encoded variables which are: `state_1km`, `qc_500m`, `q_scan`, and
+filtering high quality pixels, scaling band values and vegetation indices
+calculation. The filtering of the highest quality pixels can be done with four
+bit encoded variables which are: `state_1km`, `qc_500m`, `q_scan`, and
 `g_flags`, plus the bands bits that were also indicators of the observation
-quality. Bit enconded variables were transformed to strings categories and
-just the best quality categories were selected in order to filter the pixels.
-We used `state_1km` and `qc_500m` variables for the filtering, given that the
-`q_scan` provided no useful infomation about the quality and `g_flags` contained
-the same exact value for all the observations. The bit strings selected for
-`state_1km` are indicated in @tbl-state_1km_bitstrings and the ones for
-`qc_501` are shown in @tbl-qc_scan_bit_strings.
+quality. Bit enconded variables were transformed to strings categories and just
+the best quality categories were selected in order to filter the pixels. We used
+`state_1km` and `qc_500m` variables for the filtering, given that the `q_scan`
+provided no useful infomation about the quality and `g_flags` contained the same
+exact value for all the observations. The bit strings selected for `state_1km`
+are indicated in @tbl-state_1km_bitstrings and the ones for `qc_500` are shown
+in @tbl-qc_scan_bit_strings.
 
 The second stage of the data processing is to scale all the bands values. For
-all the highest quality pixels obtained, we scaled every observation by a 
-factor of `0.0001`. According to documentation, any value after the scaling,
-outside of the range from `0` to `1` is considered a fill value or an
-uncorrected L1B data. Once we had all the bands values scaled, the vegetation
-indices were calculated.
+all the highest quality pixels obtained, we scaled every observation by a factor
+of `0.0001`. According to documentation, any value after the scaling, outside of
+the range from `0` to `1` were discarded given that these values are considered
+a fill value or an uncorrected L1B data. Once we had all the bands values
+scaled, the vegetation indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv),
+and `EVI` (@eq-evi) were calculated. Given that in the MODIS product 
+(`MODIS/061/MOD09A1`) which have a spatial resolution of 250m there is no blue
+band, so `EVI` was not calculated for this dataset.
+
+$$
+NDVI = \frac{B02 - B01}{B02 + B01}
+$$ {#eq-ndvi}
+
+$$
+NIRv = B02\times\frac{B02 - B01}{B02 + B01}
+$$ {#eq-nirv}
+
+$$
+EVI = 2.5\times\frac{\mathrm{NIR} - \mathrm{Red}}{%
+          (\mathrm{NIR} + 6\times \mathrm{Red}
+          - 7.5\times \mathrm{Blue} + 1)}\\
+$$ {#eq-evi}
 
 
 We filtered the pixels from Sentinel images according to the `msk_cldprb` and
-`msk_snwprb` variables. After the filtering, we scaled all the observations by
-a factor of `0.0001` and calculated the vegetation indices NDVI, NIRv, and EVI.
-The bands used to calculate these indices are in @tbl-harmonized_s2_indices_bands
-
-
-
+`msk_snwprb` variables. After the filtering, we scaled all the observations by a
+factor of `0.0001` and calculated the vegetation indices NDVI, NIRv, and EVI.
+The bands used to calculate these indices are in
+@tbl-harmonized_s2_indices_bands
 
 ### Data Analysis
 
-
-
-
 ## Results
-
-
 
 ## Discussion
 
-
 ## References
 
-Just the references of this chapter, that also needs to be included in the
-final references.
+Just the references of this chapter, that also needs to be included in the final
+references.
 
 ::: {#refs}
 :::
 
 ## Figures
 
-
-
-
 ## Tables
 
-
-| Site     | Data range available| Dataset name | Reference |
-| -------- | -------------------- | -------------------- | --------- |
-| Bartlett | Jan 2015 to Dec 2017 | US-Bar: Barlett Experimental Forest (version: beta-3)| [@staebler2019ameriflux]  |
-| Borden   | Jan 2015 to Jan 2022 | CA-Cbo: Ontario - Mixed Deciduous, Borden Forest Site | [@richardson2016ameriflux] |
-| Michigan | Jan 2015 to Jan 2018 | US-UMB: Univ. of Mich. Biological Station (version: beta-4) | [@gough2016ameriflux] |
+| Site     | Data range available | Dataset name                                                | Reference                  |
+|----------------|------------------------|------------------------|----------------|
+| Bartlett | Jan 2015 to Dec 2017 | US-Bar: Barlett Experimental Forest (version: beta-3)       | [@staebler2019ameriflux]   |
+| Borden   | Jan 2015 to Jan 2022 | CA-Cbo: Ontario - Mixed Deciduous, Borden Forest Site       | [@richardson2016ameriflux] |
+| Michigan | Jan 2015 to Jan 2018 | US-UMB: Univ. of Mich. Biological Station (version: beta-4) | [@gough2016ameriflux]      |
 
 : Sites ONEFlux datasets {#tbl-oneflux_datasets}
 
-
-| Data              | Spatial resolution (m) | GEE image collection  |
-|-------------------|------------------------|-----------------------|
-| MODIS reflectance | 500                    | MODIS/006/MOD09GA     |
-| MODIS reflectance | 250                    | MODIS/061/MOD09A1     |
-| Harmonized Sentinel-2 | 20 - 60 - 10       | COPERNICUS/ S2_SR_HARMONIZED |
+| Data                  | Spatial resolution (m) | GEE image collection         |
+|-----------------------|------------------------|------------------------------|
+| MODIS reflectance     | 500                    | MODIS/006/MOD09GA            |
+| MODIS reflectance     | 250                    | MODIS/061/MOD09A1            |
+| Harmonized Sentinel-2 | 20 - 60 - 10           | COPERNICUS/ S2_SR_HARMONIZED |
 
 : Satellite images datasets {#tbl-satellite_images_datasets}
 
-
-
-| **Name** | **Description** | **Resolution** | **Wavelength**              | **Scale** |
-|----------|-----------------|----------------|-----------------------------|-----------|
-| B4       | Red             | 10 meters      | 664.5nm (S2A) / 665nm (S2B) | 0.0001    |
-| B8       | NIR             | 10 meters      | 835.1nm (S2A) / 833nm (S2B) | 0.0001    |
+| **Name** | **Description** | **Resolution** | **Wavelength**                | **Scale** |
+|---------------|---------------|---------------|----------------------|---------------|
+| B4       | Red             | 10 meters      | 664.5nm (S2A) / 665nm (S2B)   | 0.0001    |
+| B8       | NIR             | 10 meters      | 835.1nm (S2A) / 833nm (S2B)   | 0.0001    |
 | B2       | Blue            | 10 meters      | 496.6nm (S2A) / 492.1nm (S2B) | 0.0001    |
 
 : Harmonized Sentinel-2 Bands {#tbl-harmonized_s2_indices_bands}
 
-
-| **Name** | **Description** | **Resolution** | **Wavelength**              | **Scale** |
-|----------|-----------------|----------------|-----------------------------|-----------|
-| sur_refl_01 | Red             | 500 meters      | 620-670nm | 0.0001    |
-| sur_refl_02 | NIR             | 500 meters      | 841-876nm | 0.0001    |
-| sur_refl_03 | Blue            | 500 meters      | 459-479nm | 0.0001    |
+| **Name**    | **Description** | **Resolution** | **Wavelength** | **Scale** |
+|-------------|-----------------|----------------|----------------|-----------|
+| sur_refl_01 | Red             | 500 meters     | 620-670nm      | 0.0001    |
+| sur_refl_02 | NIR             | 500 meters     | 841-876nm      | 0.0001    |
+| sur_refl_03 | Blue            | 500 meters     | 459-479nm      | 0.0001    |
 
 : MOD09GA.061 MODIS Bands {#tbl-MODIS_500_indices_bands}
 
@@ -423,4 +434,3 @@ tribble(
     )
   )
 ```
-
