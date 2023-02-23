@@ -164,10 +164,42 @@ We obtained the data from the collections available in Google Earth Engine,
 area of 3km around the EC tower for each site. For each polygon, the values of
 all the bands for every pixel were used.
 
-After MODIS data was downloaded, we processed both datasets (reflectance 500m
-and 250m) 
-were processed through the following steps:
+The MODIS Surface Reflectance product consist of 7 reflectance bands from
+which three of them necessary to calculate the vegetation indices (See
+@tbl- )
 
+For the MODIS data (`MODIS/006/MOD09GA` and `MODIS/061/MOD09A1`) the
+processing was split in three sections: filtering high quality pixels,
+scaling band values and vegetation indices calculation. The filtering of the
+highest quality pixels was done using the `state_1km` and `qc_500m` variables 
+which are bit encoded. The variable `q_scan` was discarded given that provided
+no useful information for the filtering process and `g_flags` contained the
+same value across al the observations so it wasn't used.
+
+To be able to use the bit encoded variables, 
+
+
+ - modis surface reflectance have 7 bands (include bands ranges)
+ - state_1km and QC_500m are bit encoded.
+ -  
+After MODIS data was downloaded, we processed both datasets (reflectance 500m
+and 250m) first by doing a quality processing according to the categories
+obtained through the bitwise convertion. After the filtering out of low quality
+pixels, we scaled every band by a factor of `0.0001`. Any resulting value after
+the scaling outside the range from `0` to `1` were discarded.
+
+With the highest MODIS quality observations, we calculated the vegetation
+indices NDVI, NIRv and EVI.
+
+We filtered the pixels from Sentinel images according to the `msk_cldprb` and
+`msk_snwprb` variables. After the filtering, we scaled all the observations by
+a factor of `0.0001` and calculated the vegetation indices NDVI, NIRv, and EVI.
+The bands used to calculate these indices are in @tbl-harmonized_s2_indices_bands
+
+
+
+
+### Data Analysis
 
 
 
@@ -211,3 +243,13 @@ final references.
 | Harmonized Sentinel-2 | 20 - 60 - 10       | COPERNICUS/S2_SR_HARMONIZED |
 
 : Satellite images datasets {#tbl-satellite_images_datasets}
+
+
+
+| **Name** | **Description** | **Resolution** | **Wavelength**              | **Scale** |
+|----------|-----------------|----------------|-----------------------------|-----------|
+| B4       | Red             | 10 meters      | 664.5nm (S2A) / 665nm (S2B) | 0.0001    |
+| B8       | NIR             | 10 meters      | 835.1nm (S2A) / 833nm (S2B) | 0.0001    |
+| B2       | Blue            | 10 meters      | 496.6nm (S2A) / 492.1nm (S2B) | 0.0001    |
+
+: Harmonized Sentinel-2 Bands {#tbl-harmonized_s2_indices_bands}
