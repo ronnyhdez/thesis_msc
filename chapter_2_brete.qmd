@@ -4,9 +4,7 @@ editor:
     wrap: 80
 ---
 
-# Assesing uncertanties related to satellite remote sensing indices to estimate
-
-Gross Primary Production
+# Assesing uncertanties related to satellite remote sensing indices to estimate Gross Primary Production
 
 ## Introduction
 
@@ -45,7 +43,7 @@ classified into Vegetation Index models (VI), Light Use Efficiency models (LUE),
 and process-based models [@xie_assessments_2020].
 
 LUE models are based on the concept of radiation conversion efficiency, and take
-into consideration ecological processes [@LIU1997158]. The radiation conversion
+into consideration ecological processes [@liu1997process]. The radiation conversion
 efficiency explains the amount of carbon that a specific type of vegetation can
 fix per unit of solar radiation [@monteith_solar_1972]. MODIS GPP product uses
 an algorithm based on this radiation conversion efficiency concept, relating the
@@ -99,7 +97,7 @@ One of these VIs is near-infrared reflectance index (NIRv)
 light that originates from vegetation. NIRv was originally proposed as a
 replacement for fPAR in LUE models in that the NIR and PAR reflectance of
 vegetation are correlated and the scaling by NDVI corrects for soil
-contributions in the signal [@Badgley et al.] NIRv has been shown to have a
+contributions in the signal [@badgley_terrestrial_2019] NIRv has been shown to have a
 stronger correlation to GPP at flux towers and on a regional basis than fAPAR
 notwithstanding the fact that GPP is fAPAR driven. NIRv has been extended to
 include a weighting with PAR [@dechant_nirvp_2022] and replacing the NIR
@@ -169,6 +167,8 @@ around 5.5°C. [@gough_disturbanceaccelerated_2021]
 
 -   include description of the oneflux processing (gap filling, data quality,
     gpp estimation, gpp uncertainty with DT and NT)
+-   Include plots with trends in appendix for each site of the variables of
+  interest
 
 ### Satellite imagery
 
@@ -203,9 +203,9 @@ of `0.0001`. According to documentation, any value after the scaling, outside of
 the range from `0` to `1` were discarded given that these values are considered
 a fill value or an uncorrected L1B data. Once we had all the bands values
 scaled, the vegetation indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv),
-and `EVI` (@eq-evi) were calculated. Given that in the MODIS product 
-(`MODIS/061/MOD09A1`) which have a spatial resolution of 250m there is no blue
-band, so `EVI` was not calculated for this dataset.
+and `EVI` (@eq-evi) were calculated. Given that in the MODIS product with a
+spatial resolution of 250m (`MODIS/061/MOD09A1`) there is no blue
+band, `EVI` was not calculated for this dataset.
 
 $$
 NDVI = \frac{B02 - B01}{B02 + B01}
@@ -221,14 +221,38 @@ EVI = 2.5\times\frac{\mathrm{NIR} - \mathrm{Red}}{%
           - 7.5\times \mathrm{Blue} + 1)}\\
 $$ {#eq-evi}
 
-
-We filtered the pixels from Sentinel images according to the `msk_cldprb` and
-`msk_snwprb` variables. After the filtering, we scaled all the observations by a
-factor of `0.0001` and calculated the vegetation indices NDVI, NIRv, and EVI.
-The bands used to calculate these indices are in
+For Harmonized Sentinel-2 data the data processing consisted on using the
+`msk_cldprb` variable to filter out pixels according to the probabilities of
+containing a cloud or the `msk_snwprb` variable for presence of snow
+probability. Once the pixels without any probability of having clouds or
+snow were filtered from the rest, we scaled all the reflectance bands 
+observations by a factor of `0.0001`. With the values scaled we proceed to
+calculate the vegetation indices `NDVI` (@eq-ndvis), `NIRv` (@eq-nirvs),
+and `EVI` (@eq-evis). The bands used to calculate these indices are in
 @tbl-harmonized_s2_indices_bands
 
+$$
+NDVI = \frac{b8 - b4}{b8 + b4}
+$$ {#eq-ndvis}
+
+$$
+NIRv = b8\times\frac{b8 - b4}{b8 + b4}
+$$ {#eq-nirvs}
+
+$$
+EVI = 2.5\times\frac{\mathrm{b8} - \mathrm{b4}}{%
+          (\mathrm{b8} + 6\times \mathrm{b4}
+          - 7.5\times \mathrm{b2} + 1)}\\
+$$ {#eq-evis}
+
 ### Data Analysis
+
+
+ - data summary for satellite data in daily, weekly, monthly
+ - Data matching of satellite data with flux data per day, week and month
+ - GAM models for daily and weekly data
+ - linear model for monthly data
+
 
 ## Results
 
