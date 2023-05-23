@@ -42,4 +42,7 @@ vignettes/*.pdf
 
 _book/
 data_ard
-data/
+data
+
+# Folders created with outputs
+chapter_2_brete_files/
