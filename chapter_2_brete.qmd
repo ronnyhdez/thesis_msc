@@ -141,11 +141,17 @@ Experimental Forest (USA), the Borden Forest Research Station flux-site
 
 ### Eddy Covariance sites
 
-We used three deciduos broad leaf forest from the northern hemisphere with data
-processed by Ameriflux. For each site, three datasets were used with GPP
-(`GPP_DT_VUT_USTAR50`) estimated by the ONEFlux processing at daily, weekly, and
-monthly timeframes. Characteristics of these datasets are in
-@tbl-oneflux_datasets
+We used three deciduous broad leaf forest sites from the northern hemisphere 
+with EC data gathered by Ameriflux. For each site, three datasets were used with 
+GPP (`GPP_DT_VUT_REF`) estimated. The ONEFlux processing does the estimation of
+the CO2 fluxes into GPP and RECO from NEE through two methods known as daytime
+and nighttime. Here we selected the daytime method (DT) which uses daytime and
+nighttime to parameterize a model with two components: one based on light
+response curve and vapour pressure deficit and a second one using a 
+respiration-temperature relationship to estimate RECO which in turn is used to
+obtained the difference with NEE and get GPP. [@pastorello2020fluxnet2015]. For
+each site, three datasets were used for GPP summarized at daily, weekly, and
+monthly time frames. Characteristics of these datasets are in @tbl-oneflux_datasets
 
 The Bartlett experimental forest is located in New Hampshire, USA (44°06′N,
 71°3′W). The site has a forest with a canopy mean height around 20-22m and a
@@ -189,10 +195,10 @@ filtering high quality pixels, scaling band values and vegetation indices
 calculation. The filtering of the highest quality pixels can be done with four
 bit encoded variables which are: `state_1km`, `qc_500m`, `q_scan`, and
 `g_flags`, plus the bands bits that were also indicators of the observation
-quality. Bit enconded variables were transformed to strings categories and just
+quality. Bit encoded variables were transformed to strings categories and just
 the best quality categories were selected in order to filter the pixels. We used
 `state_1km` and `qc_500m` variables for the filtering, given that the `q_scan`
-provided no useful infomation about the quality and `g_flags` contained the same
+provided no useful information about the quality and `g_flags` contained the same
 exact value for all the observations. The bit strings selected for `state_1km`
 are indicated in @tbl-state_1km_bitstrings and the ones for `qc_500` are shown
 in @tbl-qc_scan_bit_strings.
@@ -249,6 +255,7 @@ $$ {#eq-evis}
 
 
  - data summary for satellite data in daily, weekly, monthly
+ - gpp values under 1 were filtered out  
  - Data matching of satellite data with flux data per day, week and month
  - GAM models for daily and weekly data
  - linear model for monthly data
