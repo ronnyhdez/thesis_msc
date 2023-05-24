@@ -171,6 +171,7 @@ in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
 different succesional stages and a mean height of 2m. Mean annual temperature is
 around 5.5°C. [@gough_disturbanceaccelerated_2021]
 
+
 -   include description of the oneflux processing (gap filling, data quality,
     gpp estimation, gpp uncertainty with DT and NT)
 -   Include plots with trends in appendix for each site of the variables of
@@ -262,6 +263,153 @@ $$ {#eq-evis}
 
 
 ## Results
+
+```{r data_import}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(janitor)
+library(tidyr)
+library(cowplot)
+library(lubridate)
+
+# MICHIGAN ------
+## Daily fluxes
+file <-
+  "data/FLX_US-UMB_FLUXNET2015_FULLSET_2007-2017_beta-4/FLX_US-UMB_FLUXNET2015_FULLSET_DD_2007-2017_beta-4.csv"
+
+# Read the file
+one_flux_daily <- read_csv(file) %>% 
+  clean_names() %>% 
+  # All NA values are written as -9999
+  mutate_all(~na_if(., -9999)) %>% 
+  mutate(date = ymd(timestamp)) %>% 
+  select(-timestamp) %>% 
+  filter(year(date) >= 2015)
+
+## Weekly fluxes
+file <- 
+  "data/FLX_US-UMB_FLUXNET2015_FULLSET_2007-2017_beta-4/FLX_US-UMB_FLUXNET2015_FULLSET_WW_2007-2017_beta-4.csv"
+
+one_flux_weekly <- read_csv(file) %>% 
+  clean_names() %>% 
+  # All NA values are written as -9999
+  mutate_all(~na_if(., -9999)) %>% 
+  mutate(date_start = ymd(timestamp_start),
+         date_end = ymd(timestamp_end)) %>% 
+  select(-timestamp_start, -timestamp_end) %>%
+  filter(year(date_start) >= 2015)
+
+## Monthly fluxes
+file <-
+  "data/FLX_US-UMB_FLUXNET2015_FULLSET_2007-2017_beta-4/FLX_US-UMB_FLUXNET2015_FULLSET_MM_2007-2017_beta-4.csv"
+
+one_flux_monthly <- read_csv(file) %>% 
+  clean_names() %>% 
+  # All NA values are written as -9999
+  mutate_all(~na_if(., -9999)) %>% 
+  mutate(day = "01") %>% 
+  unite(date, c("timestamp", "day"), sep = "") %>% 
+  mutate(date = ymd(date)) %>% 
+  mutate(date = zoo::as.yearmon(date)) %>% 
+  filter(year(date) >= 2015)
+
+
+```
+
+The sites have the following GPP trends for the period available for each one:
+See @fig-gpp_trends
+
+```{r}
+#| label: fig-gpp_trends
+#| fig-cap: "GPP trends for Michigan"
+#| fig-width: 7
+#| fig-height: 9
+#| echo: false
+#| message: false
+#| warning: false
+
+# GPP trends
+daily_gpp_trend <- one_flux_daily %>%
+  select(date, starts_with("gpp")) %>%
+  pivot_longer(-date, names_to = "gpp_method", values_to = "gpp_value") %>%
+  filter(gpp_method %in% c("gpp_dt_vut_25",
+                           "gpp_dt_vut_50",
+                           "gpp_dt_vut_75",
+                           "gpp_dt_vut_ref",
+                           "gpp_nt_vut_25",
+                           "gpp_nt_vut_50",
+                           "gpp_nt_vut_75",
+                           "gpp_nt_vut_ref"
+  )) %>% 
+  ggplot(aes(x = date, y = gpp_value, color = gpp_method)) +
+  geom_point() +
+  geom_line() +
+  scale_color_viridis_d() +
+  scale_x_date(date_labels = "%b%Y", breaks = "months") +
+  scale_y_continuous(breaks = seq(0, 60, by = 2)) +
+  labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
+       title = "Oneflux daily GPP") +
+  theme_light(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 90, h = 1))
+
+weekly_gpp_trend  <- one_flux_weekly %>%
+  select(date_start, starts_with("gpp")) %>%
+  pivot_longer(-date_start, names_to = "gpp_method", values_to = "gpp_value") %>%
+  filter(gpp_method %in% c("gpp_dt_vut_25",
+                           "gpp_dt_vut_50",
+                           "gpp_dt_vut_75",
+                           "gpp_dt_vut_ref",
+                           "gpp_nt_vut_25",
+                           "gpp_nt_vut_50",
+                           "gpp_nt_vut_75",
+                           "gpp_nt_vut_ref"
+  )) %>% 
+  ggplot(aes(x = date_start, y = gpp_value, color = gpp_method)) +
+  geom_point() +
+  geom_line() +
+  scale_color_viridis_d() +
+  scale_x_date(date_labels = "%b%Y", breaks = "months") +
+  scale_y_continuous(breaks = seq(0, 32, by = 2)) +
+  labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
+       title = "Oneflux weekly GPP") +
+  theme_light(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 90, h = 1))
+
+monthly_gpp_trend  <- one_flux_monthly %>%
+  select(date, starts_with("gpp")) %>%
+  pivot_longer(-date, names_to = "gpp_method", values_to = "gpp_value") %>%
+  filter(gpp_method %in% c("gpp_dt_vut_25",
+                           "gpp_dt_vut_50",
+                           "gpp_dt_vut_75",
+                           "gpp_dt_vut_ref",
+                           "gpp_nt_vut_25",
+                           "gpp_nt_vut_50",
+                           "gpp_nt_vut_75",
+                           "gpp_nt_vut_ref"
+  )) %>% 
+  mutate(date = zoo::as.Date(date)) %>%
+  ggplot(aes(x = date, y = gpp_value, color = gpp_method)) +
+  geom_point() +
+  geom_line() +
+  scale_color_viridis_d() +
+  scale_x_date(date_labels = "%b%Y", breaks = "months") +
+  scale_y_continuous(breaks = seq(0, 28, by = 2)) +
+  labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
+       title = "Oneflux monthly GPP") +
+  theme_light(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 90, h = 1))
+
+plot_grid(daily_gpp_trend,
+          weekly_gpp_trend,
+          monthly_gpp_trend,
+          nrow = 3)
+```
+
 
 ## Discussion
 
