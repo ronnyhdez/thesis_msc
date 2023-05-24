@@ -275,23 +275,40 @@ source("scripts/trend_plots.R")
 
 
 The sites have the following GPP trends for the period available for each one:
-See @fig-gpp_trends
+See @fig-michigan_gpp_trends
 
 ```{r}
-#| label: fig-gpp_trends
+#| label: fig-michigan_gpp_trends
 #| fig-cap: "GPP trends for Michigan"
 #| fig-width: 7
 #| fig-height: 9
 #| echo: false
 #| message: false
 #| warning: false
-check <- plot_grid(daily_gpp_trend,
-          weekly_gpp_trend,
-          monthly_gpp_trend,
-          nrow = 3)
-
+michigan_gpp_trends
 ```
 
+```{r}
+#| label: fig-borden_gpp_trends
+#| fig-cap: "GPP trends for Borden"
+#| fig-width: 7
+#| fig-height: 9
+#| echo: false
+#| message: false
+#| warning: false
+borden_gpp_trends
+```
+
+```{r}
+#| label: fig-bartlett_gpp_trends
+#| fig-cap: "GPP trends for Bartlett"
+#| fig-width: 7
+#| fig-height: 9
+#| echo: false
+#| message: false
+#| warning: false
+bartlett_gpp_trends
+```
 
 ## Discussion
 
