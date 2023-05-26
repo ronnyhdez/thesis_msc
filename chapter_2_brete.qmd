@@ -43,12 +43,12 @@ classified into Vegetation Index models (VI), Light Use Efficiency models (LUE),
 and process-based models [@xie_assessments_2020].
 
 LUE models are based on the concept of radiation conversion efficiency, and take
-into consideration ecological processes [@liu1997process]. The radiation conversion
-efficiency explains the amount of carbon that a specific type of vegetation can
-fix per unit of solar radiation [@monteith_solar_1972]. MODIS GPP product uses
-an algorithm based on this radiation conversion efficiency concept, relating the
-absorbed photosynthetically active radiation (APAR) with the LUE term
-[@heinsch_evaluation_2006].
+into consideration ecological processes [@liu1997process]. The radiation
+conversion efficiency explains the amount of carbon that a specific type of
+vegetation can fix per unit of solar radiation [@monteith_solar_1972]. MODIS GPP
+product uses an algorithm based on this radiation conversion efficiency concept,
+relating the absorbed photosynthetically active radiation (APAR) with the LUE
+term [@heinsch_evaluation_2006].
 
 GPP = PAR \* fAPAR \* LUE
 
@@ -97,10 +97,10 @@ One of these VIs is near-infrared reflectance index (NIRv)
 light that originates from vegetation. NIRv was originally proposed as a
 replacement for fPAR in LUE models in that the NIR and PAR reflectance of
 vegetation are correlated and the scaling by NDVI corrects for soil
-contributions in the signal [@badgley_terrestrial_2019] NIRv has been shown to have a
-stronger correlation to GPP at flux towers and on a regional basis than fAPAR
-notwithstanding the fact that GPP is fAPAR driven. NIRv has been extended to
-include a weighting with PAR [@dechant_nirvp_2022] and replacing the NIR
+contributions in the signal [@badgley_terrestrial_2019] NIRv has been shown to
+have a stronger correlation to GPP at flux towers and on a regional basis than
+fAPAR notwithstanding the fact that GPP is fAPAR driven. NIRv has been extended
+to include a weighting with PAR [@dechant_nirvp_2022] and replacing the NIR
 reflectance with NIRv radiance [@wu_radiance-based_2020]. Both of these
 approaches have been shown to have even stronger correlations with GPP than NIRv
 as could be expected since they either directly or indirectly weight the NIRv
@@ -141,21 +141,22 @@ Experimental Forest (USA), the Borden Forest Research Station flux-site
 
 ### Eddy Covariance sites
 
-We used three deciduous broad leaf forest sites from the northern hemisphere 
-with EC data gathered by Ameriflux. For each site, three datasets were used with 
+We used three deciduous broad leaf forest sites from the northern hemisphere
+with EC data gathered by Ameriflux. For each site, three datasets were used with
 GPP (`GPP_DT_VUT_REF`) estimated. The ONEFlux processing does the estimation of
 the CO2 fluxes into GPP and RECO from NEE through two methods known as daytime
 and nighttime. Here we selected the daytime method (DT) which uses daytime and
 nighttime to parameterize a model with two components: one based on light
-response curve and vapour pressure deficit and a second one using a 
+response curve and vapour pressure deficit and a second one using a
 respiration-temperature relationship to estimate RECO which in turn is used to
 obtained the difference with NEE and get GPP. [@pastorello2020fluxnet2015]. For
 each site, three datasets were used for GPP summarized at daily, weekly, and
-monthly time frames. Characteristics of these datasets are in @tbl-oneflux_datasets
+monthly time frames. Characteristics of these datasets are in
+@tbl-oneflux_datasets
 
 The Bartlett experimental forest is located in New Hampshire, USA (44°06′N,
 71°3′W). The site has a forest with a canopy mean height around 20-22m and a
-mean annual temperature of 6C. Desiptes events such as a hurricane in 1938 and
+mean annual temperature of 6C. Despite events such as a hurricane in 1938 and
 small scale forest management, the forest mean stand age is around 120-125
 years. [@ouimette_carbon_2018]
 
@@ -171,53 +172,52 @@ in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
 different succesional stages and a mean height of 2m. Mean annual temperature is
 around 5.5°C. [@gough_disturbanceaccelerated_2021]
 
-
 -   include description of the ONEFlux processing (gap filling, data quality,
     gpp estimation, gpp uncertainty with DT and NT)
 -   Include plots with trends in appendix for each site of the variables of
-  interest
+    interest
 
 ### Satellite imagery
 
 We obtained the data from collections available in Google Earth Engine (See
-@tbl-satellite_images_datasets). A square polygon with an area of 3km 
+@tbl-satellite_images_datasets). A square polygon with an area of 3km
 surrounding the EC tower was defined for each site, and the complete data pixel
 values within this polygon was extracted for analysis.
 
-Two MODIS (Moderate Resolution Imaging Spectroradiometer) products were utilized:
-`MODIS/006/MOD09GA` and `MODIS/061/MOD09A1`. The `MOD09GA` product has a spatial
-resolution of 500m and consists of 7 reflectance bands, with 3 of them being 
-used to calculate vegetation indices. The `MOD09A1` product has a spatial 
+Two MODIS (Moderate Resolution Imaging Spectroradiometer) products were
+utilized: `MODIS/006/MOD09GA` and `MODIS/061/MOD09A1`. The `MOD09GA` product has
+a spatial resolution of 500m and consists of 7 reflectance bands, with 3 of them
+being used to calculate vegetation indices. The `MOD09A1` product has a spatial
 resolution of 250m and consists of two bands, both used for vegetation index
 calculation.
 
 The data processing involved three main steps: filtering high-quality pixels,
-scaling band values, and calculating vegetation indices. High-quality pixels 
-were filtered using four bit-encoded variables: `state_1km`, `qc_500m`, `q_scan`,
-and `g_flags` along with each of the bands bits quality indicators. These 
-variables provided information about the observation quality. The bit-encoded 
-variables were transformed into categorical strings, and only the categories 
-indicating the best quality were selected to filter the pixels. For filtering,
-the `state_1km` and `qc_500m` variables were used, as `q_scan` was not 
-informative and `g_flags` had the same value for all observations. The specific 
-bit strings selected for `state_1km` are shown in @tbl-state_1km_bitstrings and
-for `qc_500m` in @tbl-qc_scan_bit_strings.
+scaling band values, and calculating vegetation indices. High-quality pixels
+were filtered using four bit-encoded variables: `state_1km`, `qc_500m`,
+`q_scan`, and `g_flags` along with each of the bands bits quality indicators.
+These variables provided information about the observation quality. The
+bit-encoded variables were transformed into categorical strings, and only the
+categories indicating the best quality were selected to filter the pixels. For
+filtering, the `state_1km` and `qc_500m` variables were used, as `q_scan` was
+not informative and `g_flags` had the same value for all observations. The
+specific bit strings selected for `state_1km` are shown in
+@tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
 
-In the second stage of the data processing, after filtering for the highest 
-quality pixels, all the bands values were scaled. For each observation, 
-regardless of the specific band, a scaling factor of `0.0001` was applied. This 
-scaling factor was used to adjust the magnitude of the values and ensure 
+In the second stage of the data processing, after filtering for the highest
+quality pixels, all the bands values were scaled. For each observation,
+regardless of the specific band, a scaling factor of `0.0001` was applied. This
+scaling factor was used to adjust the magnitude of the values and ensure
 consistency in the data.
 
-According to the documentation, any scaled value that fell outside the range of 
-`0` to `1` was considered a fill value or uncorrected Level 1B data and was 
-subsequently discarded. These values were deemed unreliable or lacking 
-meaningful information for the analysis. 
+According to the documentation, any scaled value that fell outside the range of
+`0` to `1` was considered a fill value or uncorrected Level 1B data and was
+subsequently discarded. These values were deemed unreliable or lacking
+meaningful information for the analysis.
 
-Once all the band values were scaled within the valid range the vegetation 
-indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), and `EVI` (@eq-evi) were 
-calculated. However, since the MODIS product with a spatial resolution of 250m 
-(`MODIS/061/MOD09A1`) does not include the blue band EVI calculations were not 
+Once all the band values were scaled within the valid range the vegetation
+indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), and `EVI` (@eq-evi) were
+calculated. However, since the MODIS product with a spatial resolution of 250m
+(`MODIS/061/MOD09A1`) does not include the blue band EVI calculations were not
 performed for this dataset.
 
 $$
@@ -237,11 +237,11 @@ $$ {#eq-evi}
 For Harmonized Sentinel-2 data the data processing consisted on using the
 `msk_cldprb` variable to filter out pixels according to the probabilities of
 containing a cloud or the `msk_snwprb` variable for presence of snow
-probability. Once the pixels without any probability of having clouds or
-snow were filtered from the rest, we scaled all the reflectance bands 
-observations by a factor of `0.0001`. With the values scaled we proceed to
-calculate the vegetation indices `NDVI` (@eq-ndvis), `NIRv` (@eq-nirvs),
-and `EVI` (@eq-evis). The bands used to calculate these indices are in
+probability. Once the pixels without any probability of having clouds or snow
+were filtered from the rest, we scaled all the reflectance bands observations by
+a factor of `0.0001`. With the values scaled we proceed to calculate the
+vegetation indices `NDVI` (@eq-ndvis), `NIRv` (@eq-nirvs), and `EVI` (@eq-evis).
+The bands used to calculate these indices are in
 @tbl-harmonized_s2_indices_bands
 
 $$
@@ -260,64 +260,79 @@ $$ {#eq-evis}
 
 ### Data Preparation
 
-In the study, three datasets were prepared for each site: a daily dataset, 
-a weekly dataset, and a monthly dataset. These datasets were generated from the
-satellite images and the ONEFLuxprocess in order to capture variations in 
+In the study, three datasets were prepared for each site: a daily dataset, a
+weekly dataset, and a monthly dataset. These datasets were generated from the
+satellite images and the ONEFluxprocess in order to capture variations in
 vegetation indices (VI), band values, and Gross Primary Production (GPP) over
 different time scales.
 
-The daily dataset included the VI values, band values, and GPP measurements 
-collected on a daily basis. This dataset provided a high-resolution 
-representation of the variables, allowing for a detailed analysis of their 
-daily fluctuations.
+The daily dataset included the VI values, band values, and GPP measurements
+collected on a daily basis. This dataset provided a high-resolution
+representation of the variables, allowing for a detailed analysis of their daily
+fluctuations.
 
-The weekly and monthly datasets were derived from the corresponding daily 
+The weekly and monthly datasets were derived from the corresponding daily
 dataset. These datasets contained summarized values of the VI's and band values,
-aggregated over the weekly and monthly time frames, respectively. The 
+aggregated over the weekly and monthly time frames, respectively. The
 aggregation process involved calculating an average for the VI's and band values
 within each week or month.
 
-For the GPP values in the weekly and monthly datasets, rather than summarizing 
-the daily GPP values, the GPP measurements for the weekly and monthly time 
-frames were obtained directly from the ONEFlux process, which provided a 
+For the GPP values in the weekly and monthly datasets, rather than summarizing
+the daily GPP values, the GPP measurements for the weekly and monthly time
+frames were obtained directly from the ONEFlux process, which provided a
 reliable estimation of GPP for these longer time intervals.
 
 By creating these three datasets (daily, weekly, and monthly), the study allowed
-for a comprehensive analysis of the VI's, band values, and GPP at different 
+for a comprehensive analysis of the VI's, band values, and GPP at different
 temporal resolutions. This approach provided insights into the temporal dynamics
-and patterns of the variables, enabling a more thorough understanding of the 
+and patterns of the variables, enabling a more thorough understanding of the
 ecological processes and relationships under investigation.
 
+For each site and across all time scales (daily, weekly, and monthly), a
+filtering step was implemented to remove GPP (Gross Primary Production) values
+that were less than 1 gC m^-2^ d^-1^ . By filtering out GPP values less than 1,
+the study aimed to exclude values that were potentially unreliable or
+insignificant in terms of representing meaningful vegetation productivity. GPP
+values below this threshold were considered to be either below the detection
+limit or not enough to contribute significantly to the overall analysis. 
 
-
-Given
-
-
- - data summary for satellite data in daily, weekly, monthly
- - gpp values under 1 were filtered out  
- - Data matching of satellite data with flux data per day, week and month
-
+-   Data matching of satellite data with flux data per day, week and month
 
 ### Data Analysis
 
- - GAM models for daily and weekly data
- - linear model for monthly data
- - Random Forests
- - AutoML
+Various methodologies were employed to estimate Gross Primary Production (GPP) 
+by utilizing Vegetation Indices (VIs) and spectral bands derived from satellite 
+images. The choice of model for GPP estimation varied depending on the specific 
+time scale under consideration. This approach aimed to enhance the accuracy of 
+GPP estimation by employing models tailored to the characteristics of each time
+scale. 
+
+#### GAM models for daily and weekly data
+
+Considering the non-normal distribution and variability observed in 
+the data values for both daily and weekly datasets, a Generalized Additive Model
+(GAM) was developed to estimate Gross Primary Production (GPP)
+
+### LM for monthly data
+
+Given the low variation of the data values when summarized in a monthly time 
+scale, a linear model was selected to estimate GPP
+
+#### Random Forests
+
+
+#### AutoML
+
 
 ## Results
 
 ### Monthly GPP and VI's relations
 
-
 ### Daily and weekly GPP and VI's relations
-
 
 ### Random Forest as a better prediction model
 
-
 ### The potential of AutoML approaches for GPP predictions
-
 
 ```{r data_import}
 #| echo: false
@@ -327,7 +342,6 @@ Given
 # Source the objects created for the complete GPP trends
 source("scripts/trend_plots.R")
 ```
-
 
 The sites have the following GPP trends for the period available for each one:
 See @fig-michigan_gpp_trends
@@ -369,8 +383,8 @@ bartlett_gpp_trends
 
 ## References
 
-**Just the references of this chapter, that also needs to be included in the final
-references.**
+**Just the references of this chapter, that also needs to be included in the
+final references.**
 
 ::: {#refs}
 :::
@@ -380,7 +394,7 @@ references.**
 ## Tables
 
 | Site     | Data range available | Dataset name                                                | Reference                  |
-|----------------|------------------------|------------------------|----------------|
+|------------------|----------------------|----------------------|------------------|
 | Bartlett | Jan 2015 to Dec 2017 | US-Bar: Barlett Experimental Forest (version: beta-3)       | [@staebler2019ameriflux]   |
 | Borden   | Jan 2015 to Jan 2022 | CA-Cbo: Ontario - Mixed Deciduous, Borden Forest Site       | [@richardson2016ameriflux] |
 | Michigan | Jan 2015 to Jan 2018 | US-UMB: Univ. of Mich. Biological Station (version: beta-4) | [@gough2016ameriflux]      |
@@ -396,7 +410,7 @@ references.**
 : Satellite images datasets {#tbl-satellite_images_datasets}
 
 | **Name** | **Description** | **Resolution** | **Wavelength**                | **Scale** |
-|---------------|---------------|---------------|----------------------|---------------|
+|----------------|----------------|----------------|-----------------|----------------|
 | B4       | Red             | 10 meters      | 664.5nm (S2A) / 665nm (S2B)   | 0.0001    |
 | B8       | NIR             | 10 meters      | 835.1nm (S2A) / 833nm (S2B)   | 0.0001    |
 | B2       | Blue            | 10 meters      | 496.6nm (S2A) / 492.1nm (S2B) | 0.0001    |
