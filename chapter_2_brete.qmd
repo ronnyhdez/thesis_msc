@@ -179,40 +179,46 @@ around 5.5°C. [@gough_disturbanceaccelerated_2021]
 
 ### Satellite imagery
 
-We obtained the data from the collections available in Google Earth Engine, (See
-@tbl-satellite_images_datasets) for a defined square polygon with an area of 3km
-around the EC tower for each site. For each polygon, the values of all the bands
-for every pixel were used.
+We obtained the data from collections available in Google Earth Engine (See
+@tbl-satellite_images_datasets). A square polygon with an area of 3km 
+surrounding the EC tower was defined for each site, and the complete data pixel
+values within this polygon was extracted for analysis.
 
-The MODIS Surface Reflectance products used are `MODIS/006/MOD09GA` (500m
-spatial resolution) which consist of 7 reflectance bands from which three of
-them were necessary to calculate the vegetation indices (See
-@tbl-MODIS_500_indices_bands). The second MODIS product is `MODIS/061/MOD09A1`,
-(250m spatial resolution) which consists of two bands, both of them used to
-calculate the vegetation indices.
+Two MODIS (Moderate Resolution Imaging Spectroradiometer) products were utilized:
+`MODIS/006/MOD09GA` and `MODIS/061/MOD09A1`. The `MOD09GA` product has a spatial
+resolution of 500m and consists of 7 reflectance bands, with 3 of them being 
+used to calculate vegetation indices. The `MOD09A1` product has a spatial 
+resolution of 250m and consists of two bands, both used for vegetation index
+calculation.
 
-For both data products, we perform a process that was split in three sections:
-filtering high quality pixels, scaling band values and vegetation indices
-calculation. The filtering of the highest quality pixels can be done with four
-bit encoded variables which are: `state_1km`, `qc_500m`, `q_scan`, and
-`g_flags`, plus the bands bits that were also indicators of the observation
-quality. Bit encoded variables were transformed to strings categories and just
-the best quality categories were selected in order to filter the pixels. We used
-`state_1km` and `qc_500m` variables for the filtering, given that the `q_scan`
-provided no useful information about the quality and `g_flags` contained the same
-exact value for all the observations. The bit strings selected for `state_1km`
-are indicated in @tbl-state_1km_bitstrings and the ones for `qc_500` are shown
-in @tbl-qc_scan_bit_strings.
+The data processing involved three main steps: filtering high-quality pixels,
+scaling band values, and calculating vegetation indices. High-quality pixels 
+were filtered using four bit-encoded variables: `state_1km`, `qc_500m`, `q_scan`,
+and `g_flags` along with each of the bands bits quality indicators. These 
+variables provided information about the observation quality. The bit-encoded 
+variables were transformed into categorical strings, and only the categories 
+indicating the best quality were selected to filter the pixels. For filtering,
+the `state_1km` and `qc_500m` variables were used, as `q_scan` was not 
+informative and `g_flags` had the same value for all observations. The specific 
+bit strings selected for `state_1km` are shown in @tbl-state_1km_bitstrings and
+for `qc_500m` in @tbl-qc_scan_bit_strings.
 
-The second stage of the data processing is to scale all the bands values. For
-all the highest quality pixels obtained, we scaled every observation by a factor
-of `0.0001`. According to documentation, any value after the scaling, outside of
-the range from `0` to `1` were discarded given that these values are considered
-a fill value or an uncorrected L1B data. Once we had all the bands values
-scaled, the vegetation indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv),
-and `EVI` (@eq-evi) were calculated. Given that in the MODIS product with a
-spatial resolution of 250m (`MODIS/061/MOD09A1`) there is no blue
-band, `EVI` was not calculated for this dataset.
+In the second stage of the data processing, after filtering for the highest 
+quality pixels, all the bands values were scaled. For each observation, 
+regardless of the specific band, a scaling factor of `0.0001` was applied. This 
+scaling factor was used to adjust the magnitude of the values and ensure 
+consistency in the data.
+
+According to the documentation, any scaled value that fell outside the range of 
+`0` to `1` was considered a fill value or uncorrected Level 1B data and was 
+subsequently discarded. These values were deemed unreliable or lacking 
+meaningful information for the analysis. 
+
+Once all the band values were scaled within the valid range the vegetation 
+indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), and `EVI` (@eq-evi) were 
+calculated. However, since the MODIS product with a spatial resolution of 250m 
+(`MODIS/061/MOD09A1`) does not include the blue band EVI calculations were not 
+performed for this dataset.
 
 $$
 NDVI = \frac{B02 - B01}{B02 + B01}
