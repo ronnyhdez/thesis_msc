@@ -172,7 +172,7 @@ different succesional stages and a mean height of 2m. Mean annual temperature is
 around 5.5°C. [@gough_disturbanceaccelerated_2021]
 
 
--   include description of the oneflux processing (gap filling, data quality,
+-   include description of the ONEFlux processing (gap filling, data quality,
     gpp estimation, gpp uncertainty with DT and NT)
 -   Include plots with trends in appendix for each site of the variables of
   interest
@@ -252,17 +252,66 @@ EVI = 2.5\times\frac{\mathrm{b8} - \mathrm{b4}}{%
           - 7.5\times \mathrm{b2} + 1)}\\
 $$ {#eq-evis}
 
-### Data Analysis
+### Data Preparation
+
+In the study, three datasets were prepared for each site: a daily dataset, 
+a weekly dataset, and a monthly dataset. These datasets were generated from the
+satellite images and the ONEFLuxprocess in order to capture variations in 
+vegetation indices (VI), band values, and Gross Primary Production (GPP) over
+different time scales.
+
+The daily dataset included the VI values, band values, and GPP measurements 
+collected on a daily basis. This dataset provided a high-resolution 
+representation of the variables, allowing for a detailed analysis of their 
+daily fluctuations.
+
+The weekly and monthly datasets were derived from the corresponding daily 
+dataset. These datasets contained summarized values of the VI's and band values,
+aggregated over the weekly and monthly time frames, respectively. The 
+aggregation process involved calculating an average for the VI's and band values
+within each week or month.
+
+For the GPP values in the weekly and monthly datasets, rather than summarizing 
+the daily GPP values, the GPP measurements for the weekly and monthly time 
+frames were obtained directly from the ONEFlux process, which provided a 
+reliable estimation of GPP for these longer time intervals.
+
+By creating these three datasets (daily, weekly, and monthly), the study allowed
+for a comprehensive analysis of the VI's, band values, and GPP at different 
+temporal resolutions. This approach provided insights into the temporal dynamics
+and patterns of the variables, enabling a more thorough understanding of the 
+ecological processes and relationships under investigation.
+
+
+
+Given
 
 
  - data summary for satellite data in daily, weekly, monthly
  - gpp values under 1 were filtered out  
  - Data matching of satellite data with flux data per day, week and month
+
+
+### Data Analysis
+
  - GAM models for daily and weekly data
  - linear model for monthly data
-
+ - Random Forests
+ - AutoML
 
 ## Results
+
+### Monthly GPP and VI's relations
+
+
+### Daily and weekly GPP and VI's relations
+
+
+### Random Forest as a better prediction model
+
+
+### The potential of AutoML approaches for GPP predictions
+
 
 ```{r data_import}
 #| echo: false
