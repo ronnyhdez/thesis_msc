@@ -141,24 +141,24 @@ Experimental Forest (USA), the Borden Forest Research Station flux-site
 
 ### Eddy Covariance sites
 
-We used three deciduous broad leaf forest sites from the northern hemisphere
-with EC data gathered by Ameriflux. For each site, three datasets were used with
-GPP (`GPP_DT_VUT_REF`) estimated. The ONEFlux processing does the estimation of
-the CO2 fluxes into GPP and RECO from NEE through two methods known as daytime
-and nighttime. Here we selected the daytime method (DT) which uses daytime and
-nighttime to parameterize a model with two components: one based on light
-response curve and vapour pressure deficit and a second one using a
-respiration-temperature relationship to estimate RECO which in turn is used to
-obtained the difference with NEE and get GPP. [@pastorello2020fluxnet2015]. For
-each site, three datasets were used for GPP summarized at daily, weekly, and
-monthly time frames. Characteristics of these datasets are in
-@tbl-oneflux_datasets
+We used three deciduous broadleaf forest sites located in the northern 
+hemisphere with eddy covariance (EC) data collected by Ameriflux. For each site,
+we used daily, weekly, and monthly GPP (GPP_DT_VUT_REF variable) data estimated
+using the FLUXNET2015 workflow [@pastorello2020fluxnet2015]. The ONEFlux 
+processing does the estimation of the CO~2~ fluxes into GPP and RECO from NEE 
+through two methods known as daytime and nighttime. Here we selected the daytime
+method (DT) which uses daytime and nighttime to parameterize a model with two
+components: one based on light response curve and vapour pressure deficit and a
+second one using a respiration-temperature relationship to estimate RECO which 
+in turn is used to obtain the difference with NEE and provide GPP. [@pastorello2020fluxnet2015].
+
+For each site, GPP was used in the analysis with three datasets representing daily, weekly, and monthly time scales. @fig-michigan_gpp_trends displays the GPP trends for the University of Michigan Biological Station, @fig-bartlett_gpp_trends illustrates the GPP trends for the Bartlett experimental forest, and @fig-borden_gpp_trends showcases the GPP trends for the Borden Forest Research Station. Additional details regarding the characteristics of these datasets can be found in Table @tbl-oneflux_datasets.
 
 The Bartlett experimental forest is located in New Hampshire, USA (44°06′N,
-71°3′W). The site has a forest with a canopy mean height around 20-22m and a
-mean annual temperature of 6C. Despite events such as a hurricane in 1938 and
-small scale forest management, the forest mean stand age is around 120-125
-years. [@ouimette_carbon_2018]
+71°3′W). This site is characterized by a forest with an average canopy height 
+ranging from 20 to 22 meters with a mean annual temperature of 6C. 
+Despite events such as a hurricane in 1938 and small scale forest management,
+the forest mean stand age is around 120-125 years. [@ouimette_carbon_2018]
 
 The second flux site is Borden Forest Research Station located in Ontario
 (44°19′N, 79°56′W), Canada. This is one of the largest patches of forest in
@@ -172,10 +172,55 @@ in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
 different succesional stages and a mean height of 2m. Mean annual temperature is
 around 5.5°C. [@gough_disturbanceaccelerated_2021]
 
+```{r data_import}
+#| echo: false
+#| message: false
+#| warning: false
+
+# Source the objects created for the complete GPP trends
+source("scripts/trend_plots.R")
+```
+
+The sites have the following GPP trends for the period available for each one:
+See @fig-michigan_gpp_trends
+
+```{r}
+#| label: fig-michigan_gpp_trends
+#| fig-cap: "GPP trends for Michigan"
+#| fig-width: 7
+#| fig-height: 9
+#| echo: false
+#| message: false
+#| warning: false
+michigan_gpp_trends
+```
+
+```{r}
+#| label: fig-borden_gpp_trends
+#| fig-cap: "GPP trends for Borden"
+#| fig-width: 7
+#| fig-height: 9
+#| echo: false
+#| message: false
+#| warning: false
+borden_gpp_trends
+```
+
+```{r}
+#| label: fig-bartlett_gpp_trends
+#| fig-cap: "GPP trends for Bartlett"
+#| fig-width: 7
+#| fig-height: 9
+#| echo: false
+#| message: false
+#| warning: false
+bartlett_gpp_trends
+```
+
+The GPP for each of the sites can
+
 -   include description of the ONEFlux processing (gap filling, data quality,
     gpp estimation, gpp uncertainty with DT and NT)
--   Include plots with trends in appendix for each site of the variables of
-    interest
 
 ### Satellite imagery
 
@@ -294,35 +339,33 @@ that were less than 1 gC m^-2^ d^-1^ . By filtering out GPP values less than 1,
 the study aimed to exclude values that were potentially unreliable or
 insignificant in terms of representing meaningful vegetation productivity. GPP
 values below this threshold were considered to be either below the detection
-limit or not enough to contribute significantly to the overall analysis. 
+limit or not enough to contribute significantly to the overall analysis.
 
 -   Data matching of satellite data with flux data per day, week and month
 
 ### Data Analysis
 
-Various methodologies were employed to estimate Gross Primary Production (GPP) 
-by utilizing Vegetation Indices (VIs) and spectral bands derived from satellite 
-images. The choice of model for GPP estimation varied depending on the specific 
-time scale under consideration. This approach aimed to enhance the accuracy of 
+Various methodologies were employed to estimate Gross Primary Production (GPP)
+by utilizing Vegetation Indices (VIs) and spectral bands derived from satellite
+images. The choice of model for GPP estimation varied depending on the specific
+time scale under consideration. This approach aimed to enhance the accuracy of
 GPP estimation by employing models tailored to the characteristics of each time
-scale. 
+scale.
 
 #### GAM models for daily and weekly data
 
-Considering the non-normal distribution and variability observed in 
-the data values for both daily and weekly datasets, a Generalized Additive Model
-(GAM) was developed to estimate Gross Primary Production (GPP)
+Considering the non-normal distribution and variability observed in the data
+values for both daily and weekly datasets, a Generalized Additive Model (GAM)
+was developed to estimate Gross Primary Production (GPP)
 
 ### LM for monthly data
 
-Given the low variation of the data values when summarized in a monthly time 
+Given the low variation of the data values when summarized in a monthly time
 scale, a linear model was selected to estimate GPP
 
 #### Random Forests
 
-
 #### AutoML
-
 
 ## Results
 
@@ -334,50 +377,7 @@ scale, a linear model was selected to estimate GPP
 
 ### The potential of AutoML approaches for GPP predictions
 
-```{r data_import}
-#| echo: false
-#| message: false
-#| warning: false
 
-# Source the objects created for the complete GPP trends
-source("scripts/trend_plots.R")
-```
-
-The sites have the following GPP trends for the period available for each one:
-See @fig-michigan_gpp_trends
-
-```{r}
-#| label: fig-michigan_gpp_trends
-#| fig-cap: "GPP trends for Michigan"
-#| fig-width: 7
-#| fig-height: 9
-#| echo: false
-#| message: false
-#| warning: false
-michigan_gpp_trends
-```
-
-```{r}
-#| label: fig-borden_gpp_trends
-#| fig-cap: "GPP trends for Borden"
-#| fig-width: 7
-#| fig-height: 9
-#| echo: false
-#| message: false
-#| warning: false
-borden_gpp_trends
-```
-
-```{r}
-#| label: fig-bartlett_gpp_trends
-#| fig-cap: "GPP trends for Bartlett"
-#| fig-width: 7
-#| fig-height: 9
-#| echo: false
-#| message: false
-#| warning: false
-bartlett_gpp_trends
-```
 
 ## Discussion
 
@@ -394,7 +394,7 @@ final references.**
 ## Tables
 
 | Site     | Data range available | Dataset name                                                | Reference                  |
-|------------------|----------------------|----------------------|------------------|
+|-------------------|---------------------|---------------------|-------------------|
 | Bartlett | Jan 2015 to Dec 2017 | US-Bar: Barlett Experimental Forest (version: beta-3)       | [@staebler2019ameriflux]   |
 | Borden   | Jan 2015 to Jan 2022 | CA-Cbo: Ontario - Mixed Deciduous, Borden Forest Site       | [@richardson2016ameriflux] |
 | Michigan | Jan 2015 to Jan 2018 | US-UMB: Univ. of Mich. Biological Station (version: beta-4) | [@gough2016ameriflux]      |
@@ -410,7 +410,7 @@ final references.**
 : Satellite images datasets {#tbl-satellite_images_datasets}
 
 | **Name** | **Description** | **Resolution** | **Wavelength**                | **Scale** |
-|----------------|----------------|----------------|-----------------|----------------|
+|----------------|----------------|----------------|----------------|----------------|
 | B4       | Red             | 10 meters      | 664.5nm (S2A) / 665nm (S2B)   | 0.0001    |
 | B8       | NIR             | 10 meters      | 835.1nm (S2A) / 833nm (S2B)   | 0.0001    |
 | B2       | Blue            | 10 meters      | 496.6nm (S2A) / 492.1nm (S2B) | 0.0001    |
