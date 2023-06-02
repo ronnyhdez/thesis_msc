@@ -367,18 +367,6 @@ scale, a linear model was selected to estimate GPP
 
 #### AutoML
 
-## Results
-
-
-
-### Monthly GPP and VI's relations
-
-For the linear models, the ...
-
- - ndvi lo hace peor en 2 de 3
- - entre cada sitio no hay mucha diferencia
- - bartlett es el que tiene mejores rsquares
-
 ```{r ar_data_import}
 #| echo: false
 #| message: false
@@ -428,7 +416,8 @@ daily_grid <-
        title = "Daily observations with 500m spatial resolution") +
   theme_light(base_size = 10) +
   theme(axis.text.x = element_text(angle = 60, h = 1)) +
-  guides(size = guide_legend(order = 1), col = guide_legend(order = 2)) +
+  guides(size = guide_legend(order = 1, keyheight = 0.1),
+         col = guide_legend(order = 2, keyheight = 0.1)) +
   theme(strip.text = element_text(size = 10, color = "black"),
         strip.background = element_blank())
 
@@ -449,7 +438,8 @@ weekly_grid <- weekly_plot_500 %>%
        title = "Weekly observations with 500m spatial resolution") +
   theme_light(base_size = 10) +
   theme(axis.text.x = element_text(angle = 60, h = 1)) +
-  guides(size = guide_legend(order = 1), col = guide_legend(order = 2)) +
+  guides(size = guide_legend(order = 1, keyheight = 0.1),
+         col = guide_legend(order = 2, keyheight = 0.1)) +
   theme(strip.text = element_text(size = 10, color = "black"),
         strip.background = element_blank())
 
@@ -470,14 +460,139 @@ monthly_grid <- monthly_plot_500 %>%
        title = "Monthly observations with 500m spatial resolution") +
   theme_light(base_size = 10) +
   theme(axis.text.x = element_text(angle = 60, h = 1)) +
-  guides(size = guide_legend(order = 1), col = guide_legend(order = 2)) +
+  guides(size = guide_legend(order = 1, keyheight = 0.1),
+         col = guide_legend(order = 2, keyheight = 0.1)) +
   theme(strip.text = element_text(size = 10, color = "black"),
         strip.background = element_blank())
 
 plot_grid(daily_grid,
           weekly_grid,
           monthly_grid,
-          nrow = 3)
+          nrow = 3,
+          labels = c('A', 'B', 'C'))
+```
+
+
+
+## Results
+
+
+
+### Monthly GPP and VI's relations
+
+For the linear models, the ...
+
+ - ndvi lo hace peor en 2 de 3
+ - entre cada sitio no hay mucha diferencia
+ - bartlett es el que tiene mejores rsquares
+
+```{r lm_monthly}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(purrr)
+library(broom)
+library(gt)
+
+# Prepare data with all sites
+ind_bar <- bartlett_monthly_500 %>% 
+  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, nirv_mean) %>% 
+  mutate(site = "Bartlett")
+
+ind_bor <- borden_monthly_500 %>% 
+  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, nirv_mean) %>% 
+  mutate(site = "Borden")
+
+ind_mich <- michigan_monthly_500 %>% 
+  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, nirv_mean) %>% 
+  mutate(site = "Michigan")
+
+ind_sites <- bind_rows(ind_bar, ind_bor, ind_mich)
+
+# Linear model for all sites EVI
+evi_lm <- ind_sites %>%
+  nest(data = c(-site)) %>%
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ evi_mean, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance)
+  ) 
+
+evi_fit <- evi_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(index = "EVI")
+
+evi_glance <- evi_lm %>% 
+  unnest(glanced) %>%
+  select(-data, -fit, -tidied) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(index = "EVI")
+
+# Linear model for all sites NDVI
+ndvi_lm <- ind_sites %>%
+  nest(data = c(-site)) %>%
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ ndvi_mean, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance)
+  )
+
+ndvi_fit <- ndvi_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(index = "NDVI")
+
+ndvi_glance <- ndvi_lm %>% 
+  unnest(glanced) %>%
+  select(-data, -fit, -tidied) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(index = "NDVI")
+
+# Linear model for all sites NIRv
+nirv_lm <- ind_sites %>%
+  nest(data = c(-site)) %>%
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ nirv_mean, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance)
+  )
+
+nirv_fit <- nirv_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(index = "NIRv")
+
+nirv_glance <- nirv_lm %>% 
+  unnest(glanced) %>%
+  select(-data, -fit, -tidied) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(index = "NIRv")
+```
+
+
+```{r lm_monthly_table}
+#| label: tbl-lm_model_results
+#| tbl-cap: "Linear models for all sites at 500m"
+#| echo: false
+#| message: false
+#| warning: false
+# Create table
+bind_rows(evi_glance,
+          ndvi_glance,
+          nirv_glance) %>% 
+  select(site, index, r.squared, adj.r.squared, statistic, p.value, AIC, BIC) %>% 
+  group_by(site) %>% 
+  arrange(desc(adj.r.squared)) %>% 
+  gt(
+    rowname_col = "index",
+    groupname_col = "site"
+  ) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  )
 ```
 
 ### Daily and weekly GPP and VI's relations
