@@ -516,7 +516,8 @@ evi_lm <- ind_sites %>%
   mutate(
     fit = map(data, ~ lm(gpp_dt_vut_ref ~ evi_mean, data = .x)),
     tidied = map(fit, tidy),
-    glanced = map(fit, glance)
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
   ) 
 
 evi_fit <- evi_lm %>% 
@@ -525,8 +526,9 @@ evi_fit <- evi_lm %>%
   mutate(index = "EVI")
 
 evi_glance <- evi_lm %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
   unnest(glanced) %>%
-  select(-data, -fit, -tidied) %>% 
+  select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(index = "EVI")
 
@@ -536,7 +538,8 @@ ndvi_lm <- ind_sites %>%
   mutate(
     fit = map(data, ~ lm(gpp_dt_vut_ref ~ ndvi_mean, data = .x)),
     tidied = map(fit, tidy),
-    glanced = map(fit, glance)
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
   )
 
 ndvi_fit <- ndvi_lm %>% 
@@ -545,8 +548,9 @@ ndvi_fit <- ndvi_lm %>%
   mutate(index = "NDVI")
 
 ndvi_glance <- ndvi_lm %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
   unnest(glanced) %>%
-  select(-data, -fit, -tidied) %>% 
+  select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(index = "NDVI")
 
@@ -556,7 +560,8 @@ nirv_lm <- ind_sites %>%
   mutate(
     fit = map(data, ~ lm(gpp_dt_vut_ref ~ nirv_mean, data = .x)),
     tidied = map(fit, tidy),
-    glanced = map(fit, glance)
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
   )
 
 nirv_fit <- nirv_lm %>% 
@@ -565,10 +570,11 @@ nirv_fit <- nirv_lm %>%
   mutate(index = "NIRv")
 
 nirv_glance <- nirv_lm %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
   unnest(glanced) %>%
-  select(-data, -fit, -tidied) %>% 
+  select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
-  mutate(index = "NIRv")
+  mutate(index = "NIRv") 
 ```
 
 
@@ -582,17 +588,21 @@ nirv_glance <- nirv_lm %>%
 bind_rows(evi_glance,
           ndvi_glance,
           nirv_glance) %>% 
-  select(site, index, r.squared, adj.r.squared, statistic, p.value, AIC, BIC) %>% 
+  select(site, index, r.squared, adj.r.squared, rmse, 
+         statistic, p.value, AIC, BIC) %>% 
   group_by(site) %>% 
   arrange(desc(adj.r.squared)) %>% 
   gt(
     rowname_col = "index",
     groupname_col = "site"
   ) %>% 
+  fmt_number(
+    columns = 3:8,
+    decimals = 3) %>% 
   tab_options(
     row_group.background.color = "#E9E0E1",
     row_group.font.weight = "bold"
-  )
+  ) 
 ```
 
 ### Daily and weekly GPP and VI's relations
