@@ -352,18 +352,34 @@ time scale under consideration. This approach aimed to enhance the accuracy of
 GPP estimation by employing models tailored to the characteristics of each time
 scale.
 
+#### LM for monthly data
+
+Considering the reduced variability observed when the data values were 
+aggregated on a monthly time scale, a linear model was was selected to estimate 
+GPP. In total, nine models were constructed to assess the performance of each VI 
+individually at each site. This comprehensive analysis aimed to evaluate and 
+compare the effectiveness of the different VIs in capturing GPP variations within 
+the study sites.
+
 #### GAM models for daily and weekly data
 
 Considering the non-normal distribution and variability observed in the data
 values for both daily and weekly datasets, a Generalized Additive Model (GAM)
 was developed to estimate Gross Primary Production (GPP)
 
-#### LM for monthly data
-
-Given the low variation of the data values when summarized in a monthly time
-scale, a linear model was selected to estimate GPP
 
 #### Random Forests
+
+Regression Random forests were used as an approach to predict GPP by incorporating all available bands values from the MODIS dataset and the VIs. The primary 
+objective was to assess the relative importance of these variables in predicting
+GPP. The RF models were created using both daily and weekly datasets allowing 
+for an analysis of GPP prediction across different time scales.
+
+To implement the RF models, the `ranger` package [@wright_ranger_2017] was 
+employed, utilizing 1000 trees within the forest ensemble. The models were 
+trained using bootstrap resampling with 100 folds, which helps to improve the
+robustness and accuracy of the predictions. 
+
 
 #### AutoML
 
@@ -480,11 +496,21 @@ plot_grid(daily_grid,
 
 ### Monthly GPP and VI's relations
 
-For the linear models, the ...
+The @tbl-lm_model_results provides a summary of linear models used for 
+Gross Primary Production (GPP) estimation at each site, employing the vegetation
+indices as predictors. For each site and predictor, the table includes the 
+relevant model summary statistics, such as r-squared, adjusted r-squared, 
+root mean square error (RMSE), p-value, as well as other metrics like the Akaike 
+Information Criterion (AIC) and Bayesian Information Criterion (BIC). These 
+statistics serve to assess the performance and accuracy of the linear models in 
+estimating GPP using vegetation indices as predictors.
 
- - ndvi lo hace peor en 2 de 3
- - entre cada sitio no hay mucha diferencia
- - bartlett es el que tiene mejores rsquares
+Based on the Root Mean Square Error (RMSE), NDVI performed less favourably  on 
+two out of the three sites. However, the performance difference among the sites 
+was not substantial, with the Bartlett experimental forest exhibiting slightly 
+better results compared to the other sites. These findings suggest that while 
+NDVI may not be the optimal vegetation index for GPP estimation at these sites,
+there may still be variations in performance across different locations.
 
 ```{r lm_monthly}
 #| echo: false
@@ -580,7 +606,7 @@ nirv_glance <- nirv_lm %>%
 
 ```{r lm_monthly_table}
 #| label: tbl-lm_model_results
-#| tbl-cap: "Linear models for all sites at 500m"
+#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices (Per site)"
 #| echo: false
 #| message: false
 #| warning: false
@@ -589,7 +615,7 @@ bind_rows(evi_glance,
           ndvi_glance,
           nirv_glance) %>% 
   select(site, index, r.squared, adj.r.squared, rmse, 
-         statistic, p.value, AIC, BIC) %>% 
+         statistic, AIC, BIC,  p.value) %>% 
   group_by(site) %>% 
   arrange(desc(adj.r.squared)) %>% 
   gt(
@@ -599,6 +625,10 @@ bind_rows(evi_glance,
   fmt_number(
     columns = 3:8,
     decimals = 3) %>% 
+  fmt_scientific(
+    columns = 9,
+    decimals = 3
+  ) %>% 
   tab_options(
     row_group.background.color = "#E9E0E1",
     row_group.font.weight = "bold"
