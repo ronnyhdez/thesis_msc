@@ -20,7 +20,10 @@ bibliography: rap_v002.bib
 
 format:
   pdf:
+    tbl-cap-location: top
     documentclass: scrreprt
+    lof: true
+    lot: true
 
 
 
