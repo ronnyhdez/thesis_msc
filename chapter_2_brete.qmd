@@ -139,6 +139,35 @@ Experimental Forest (USA), the Borden Forest Research Station flux-site
 
 ## Methods
 
+```{r libraries and sources}
+#| echo: false
+#| message: false
+#| warning: false
+
+# Libraries
+library(ggplot2)
+library(cowplot)
+library(lubridate)
+library(purrr)
+library(broom)
+library(gt)
+library(tidymodels)
+library(broom)
+library(usemodels)
+library(vip)
+
+# Source files
+# Source the objects created for the complete GPP trends.
+# This file will source the code and load objects to memory.
+source("scripts/trend_plots.R")
+
+# Source the objects created for the complete GPP trends
+source("scripts/models_data_preparation.R")
+
+# Source file with functions to plot rf predictions
+source("R/plot_exploratory.R")
+```
+
 ### Eddy Covariance sites
 
 We used three deciduous broadleaf forest sites located in the northern 
@@ -171,15 +200,6 @@ The third site is the University of Michigan Biological Station which is located
 in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
 different succesional stages and a mean height of 2m. Mean annual temperature is
 around 5.5°C. [@gough_disturbanceaccelerated_2021]
-
-```{r data_import}
-#| echo: false
-#| message: false
-#| warning: false
-
-# Source the objects created for the complete GPP trends
-source("scripts/trend_plots.R")
-```
 
 The sites have the following GPP trends for the period available for each one:
 See @fig-michigan_gpp_trends
@@ -385,14 +405,7 @@ robustness and accuracy of the predictions.
 
 #### AutoML
 
-```{r ar_data_import}
-#| echo: false
-#| message: false
-#| warning: false
 
-# Source the objects created for the complete GPP trends
-source("scripts/models_data_preparation.R")
-```
 
 ```{r}
 #| label: fig-gpp_vi_relation
@@ -403,9 +416,7 @@ source("scripts/models_data_preparation.R")
 #| message: false
 #| warning: false
 
-library(ggplot2)
-library(cowplot)
-library(lubridate)
+## Make sure the source of file "scripts/trend_plots.R" was successful
 etiquetas <- c(
   "evi_mean" = "EVI",
   "ndvi_mean" = "NDVI",
@@ -491,7 +502,6 @@ plot_grid(daily_grid,
 ```
 
 
-
 ## Results
 
 
@@ -518,10 +528,6 @@ there may still be variations in performance across different locations.
 #| echo: false
 #| message: false
 #| warning: false
-
-library(purrr)
-library(broom)
-library(gt)
 
 # Prepare data with all sites
 ind_bar <- bartlett_monthly_500 %>% 
@@ -612,6 +618,7 @@ nirv_glance <- nirv_lm %>%
 #| echo: false
 #| message: false
 #| warning: false
+
 # Create table
 bind_rows(evi_glance,
           ndvi_glance,
@@ -642,6 +649,10 @@ bind_rows(evi_glance,
 ### Random Forest as a better prediction model
 
 ```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
 # 500
 # Dataset to use: daily_500 for all sites
 bor <- borden_daily_500 %>% 
@@ -680,23 +691,20 @@ mich <- michigan_weekly_500 %>%
 weekly_500_rf <- bind_rows(bor, bar, mich)
 ```
 
-```{r}
-library(tidymodels)
-library(broom)
-library(usemodels)
-library(vip)
+```{r daily_500_rf}
+#| echo: false
+#| message: false
+#| warning: false
 
-source("R/plot_exploratory.R")
-daily_500_rf_test <- daily_500_rf %>%
-  select(-site)
+## Make sure that the source of the file "R/plot_exploratory.R" was succesful
 
 set.seed(123)
-daily_500_split <- initial_split(daily_500_rf_test)
+daily_500_split <- initial_split(daily_500_rf, strata = site)
 daily_500_train <- training(daily_500_split)
 daily_500_test <- testing(daily_500_split)
 
 set.seed(234)
-# daily_500_folds
+# daily_500_folds 
 daily_500_folds <- bootstraps(daily_500_train,
                               times = 100,
                               strata = gpp_dt_vut_ref)
@@ -705,22 +713,27 @@ ranger_recipe <-
   recipe(formula = gpp_dt_vut_ref ~ ., data = daily_500_train) %>% 
   step_select(-site, -total_obs)
 
-ranger_spec <-
-  rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>%
-  set_mode("regression") %>%
-  set_engine("ranger")
+ranger_spec <- 
+  rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
+  set_mode("regression") %>% 
+  set_engine("ranger") 
 
-ranger_workflow <-
-  workflow() %>%
-  add_recipe(ranger_recipe) %>%
-  add_model(ranger_spec)
+ranger_workflow <- 
+  workflow() %>% 
+  add_recipe(ranger_recipe) %>% 
+  add_model(ranger_spec) 
+
+
+set.seed(3156)
 
 # Conditional to re-run model if no artifac was saved before.
-if (fs::file_exists("models/daily_500_fit_site.rds")) {
-  daily_500_fit <- readRDS("models/daily_500_fit_site.rds")
-} else {
-  set.seed(3156)
+if (fs::file_exists("models/daily_500_fit_site.rds") & 
+    fs::file_exists("models/daily_500_site_ranger_tune.rds")) {
   
+  daily_500_fit <- readRDS("models/daily_500_fit_site.rds")
+  ranger_tune <- readRDS("models/daily_500_site_ranger_tune.rds")
+  
+} else {  
   doParallel::registerDoParallel()
   ranger_tune <-
     tune_grid(ranger_workflow, 
@@ -734,22 +747,42 @@ if (fs::file_exists("models/daily_500_fit_site.rds")) {
   daily_500_fit <- last_fit(final_rf, daily_500_split)
   
   ## last_fit is saved if no model has been trained and saved.
+  saveRDS(ranger_tune, "models/daily_500_site_ranger_tune.rds")
   saveRDS(daily_500_fit, "models/daily_500_fit_site.rds")
 }
+```
 
-# To check the predictions with all original values from the dataset
-# broom::augment(daily_500_fit)
+
+```{r predictions_plot_daily_500_rf}
+#| label: fig-daily_500_rf
+#| fig-cap: "Random Forest model"
+#| fig-width: 5
+#| fig-height: 7
+#| echo: false
+#| message: false
+#| warning: false
 
 # Explore RF results
 ## Check the metrics
 metrics <- collect_metrics(daily_500_fit) 
 
 ## Collect predictions
-plot_predictions(daily_500_fit, metrics, 3, 3, 23, 22) 
+plot_predictions(daily_500_fit, metrics, 3, 3, 23, 22)
+```
+
+
+```{r vip_plot_daily_500_rf}
+#| label: fig-vip_daily_500_rf
+#| fig-cap: "Random Forest model"
+#| fig-width: 5
+#| fig-height: 7
+#| echo: false
+#| message: false
+#| warning: false
 
 ## Feature importance
 imp_spec <- ranger_spec %>%
-  finalize_model(select_best(daily_500_fit)) %>%
+  finalize_model(select_best(ranger_tune)) %>%
   set_engine("ranger", importance = "permutation")
 
 workflow() %>%
