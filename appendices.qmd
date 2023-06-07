@@ -1,1 +1,175 @@
 # Appendices
+
+| **Name** | **Description** | **Resolution** | **Wavelength**                | **Scale** |
+|----------------|----------------|----------------|----------------|----------------|
+| B4       | Red             | 10 meters      | 664.5nm (S2A) / 665nm (S2B)   | 0.0001    |
+| B8       | NIR             | 10 meters      | 835.1nm (S2A) / 833nm (S2B)   | 0.0001    |
+| B2       | Blue            | 10 meters      | 496.6nm (S2A) / 492.1nm (S2B) | 0.0001    |
+
+: Harmonized Sentinel-2 Bands {#tbl-harmonized_s2_indices_bands}
+
+| **Name**    | **Description** | **Resolution** | **Wavelength** | **Scale** |
+|-------------|-----------------|----------------|----------------|-----------|
+| sur_refl_01 | Red             | 500 meters     | 620-670nm      | 0.0001    |
+| sur_refl_02 | NIR             | 500 meters     | 841-876nm      | 0.0001    |
+| sur_refl_03 | Blue            | 500 meters     | 459-479nm      | 0.0001    |
+
+: MOD09GA.061 MODIS Bands {#tbl-MODIS_500_indices_bands}
+
+```{r}
+#| label: tbl-state_1km_bitstrings
+#| tbl-cap: "state_1km bit strings"
+#| echo: false
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(tibble)
+library(gt)
+
+tribble(
+  ~Parameter, ~Bit, ~State,
+  "cloud_state" , "00" , "clear",
+  "cloud_state" , "01" , "cloudy",
+  "cloud_state" , "10" , "mixed",
+  "cloud_state" , "11" , "not set, assumed clear",
+  "cloud_shadow_qa" , "1" , "yes", 
+  "cloud_shadow_qa" , "0" , "no",
+  "land_water_flag" , "000" , "shallow ocean",
+  "land_water_flag" , "001" , "land",
+  "land_water_flag" , "010" , "ocean coastlines and lake shorelines",
+  "land_water_flag" , "011" , "shallow inland water",
+  "land_water_flag" , "100" , "ephemeral water",
+  "land_water_flag" , "101" , "deep inland water",
+  "land_water_flag" , "110" , "continental/moderate ocean",
+  "land_water_flag" , "111" , "deep ocean",
+  "aerosol_quantity" , "00" , "climatology",
+  "aerosol_quantity" , "01" , "low",
+  "aerosol_quantity" , "10" , "average",
+  "aerosol_quantity" , "11" , "high",
+  "cirrus_detected" , "00" , "none",
+  "cirrus_detected" , "01" , "small",
+  "cirrus_detected" , "10" , "average",
+  "cirrus_detected" , "11" , "high",
+  "cloud_flag_qa" , "1", "cloud", 
+  "cloud_flag_qa" , "0", "no cloud",
+  "fire_flag_qa" , "1", "fire",
+  "fire_flag_qa" , "0", "no fire",
+  "snow_ice_flag_qa" , "1", "yes", 
+  "snow_ice_flag_qa" , "0", "no",
+  "pixel_adjacent_cloud_qa" , "1", "yes", 
+  "pixel_adjacent_cloud_qa" , "0", "no", 
+  "salt_pan_qa", "1", "yes",
+  "salt_pan_qa" , "0", "no",
+  "snow_mask_qa" ,  "1", "yes",
+  "snow_mask_qa" ,  "0", "no"
+) %>% 
+  select(Bit, State) %>% 
+  gt() %>% 
+  tab_row_group(
+    label = md("**Snow Mask**"),
+    rows = 33:34
+  ) %>% 
+  tab_row_group(
+    label = md("**Salt Pan Cloud**"),
+    rows = 31:32
+  ) %>%
+  tab_row_group(
+    label = md("**Pixel adjacent Cloud**"),
+    rows = 29:30
+  ) %>% 
+  tab_row_group(
+    label = md("**Snow Ice Flag**"),
+    rows = 27:28
+  ) %>% 
+  tab_row_group(
+    label = md("**Fire Flag**"),
+    rows = 25:26
+  ) %>% 
+  tab_row_group(
+    label = md("**Cloud Flag**"),
+    rows = 23:24
+  ) %>% 
+  tab_row_group(
+    label = md("**Cirrus Detected**"),
+    rows = 19:22
+  ) %>% 
+  tab_row_group(
+    label = md("**Aerosol Quantity**"),
+    rows = 15:18
+  ) %>% 
+  tab_row_group(
+    label = md("**Land Water**"),
+    rows = 7:14
+  ) %>% 
+  tab_row_group(
+    label = md("**Cloud Shadow**"),
+    rows = 5:6
+  ) %>% 
+  tab_row_group(
+    label = md("**Cloud State**"),
+    rows = 1:4
+  ) %>% 
+  cols_align(align = "center", columns = everything())
+```
+
+```{r}
+#| label: tbl-qc_scan_bit_strings
+#| tbl-cap: "qc_scan bit strings"
+#| echo: false
+#| message: false
+#| warning: false
+
+tribble(
+  ~Parameter, ~Bits, ~State,
+  "modland" , "00" , "ideal quality - all bands",
+  "modland" , "01" , "less than ideal quality - some or all bands",
+  "modland" , "10" , "product not produced due to cloud effects",
+  "modland" , "11" , "product not produced for other reasons",
+  "bands" , "0000" , "highest_quality",
+  "bands" , "0111" , "noisy detector",
+  "bands" , "1000" , "dead detector, data interpolated in L1B",
+  "bands" , "1001" , "solar zenith >= 86 degrees",
+  "bands" , "1010" , "solar zenith >= 85 and < 86 degrees",
+  "bands" , "1011" , "missing input",
+  "bands" , "1100" , "internal constant used",
+  "bands" , "1101" , "correction out of bounds",
+  "bands" , "1110" , "L1B data faulty",
+  "bands" , "1111" , "not processed due to deep ocean or clouds",
+  "atmospheric_correction" , "0", "no",
+  "atmospheric_correction" , "1", "yes",
+  "adjacency_correction" ,  "0", "no",
+  "adjacency_correction" ,  "1", "yes"
+) %>% 
+  select(Bits, State) %>% 
+  gt() %>% 
+  tab_row_group(
+    label = md("**Adjacency Correction**"),
+    rows = 17:18
+  ) %>% 
+  tab_row_group(
+    label = md("**Atmospheric Correction**"),
+    rows = 15:16
+  ) %>% 
+  tab_row_group(
+    label = md("**Band quality (apply for all bands)**"),
+    rows = 5:14
+  ) %>% 
+  tab_row_group(
+    label = md("**Modland**"),
+    rows = 1:4
+  ) %>% 
+  cols_align(align = "center", columns = everything()) %>% 
+  tab_style(
+    style = list(
+      cell_fill(color = "#B3B3B3")
+    ),
+    locations = cells_body(
+      columns = State,
+      rows = State %in% c("ideal quality - all bands",
+                          "highest_quality",
+                          "yes")
+    )
+  )
+```
+
