@@ -648,7 +648,7 @@ bind_rows(evi_glance,
 
 ### Random Forest as a better prediction model
 
-```{r}
+```{r data_preparation_rf}
 #| echo: false
 #| message: false
 #| warning: false
@@ -691,6 +691,8 @@ mich <- michigan_weekly_500 %>%
 weekly_500_rf <- bind_rows(bor, bar, mich)
 ```
 
+#### Daily 500
+
 ```{r daily_500_rf}
 #| echo: false
 #| message: false
@@ -723,7 +725,6 @@ ranger_workflow <-
   add_recipe(ranger_recipe) %>% 
   add_model(ranger_spec) 
 
-
 set.seed(3156)
 
 # Conditional to re-run model if no artifac was saved before.
@@ -755,9 +756,7 @@ if (fs::file_exists("models/daily_500_fit_site.rds") &
 
 ```{r predictions_plot_daily_500_rf}
 #| label: fig-daily_500_rf
-#| fig-cap: "Random Forest model"
-#| fig-width: 5
-#| fig-height: 7
+#| fig-cap: "GPP observed and predicted values for all the sites. The dashed line represents a 1:1 relation."
 #| echo: false
 #| message: false
 #| warning: false
@@ -767,15 +766,13 @@ if (fs::file_exists("models/daily_500_fit_site.rds") &
 metrics <- collect_metrics(daily_500_fit) 
 
 ## Collect predictions
-plot_predictions(daily_500_fit, metrics, 3, 3, 23, 22)
+plot_predictions(daily_500_fit, metrics, 3, 3, 23, 22) 
 ```
 
 
 ```{r vip_plot_daily_500_rf}
 #| label: fig-vip_daily_500_rf
-#| fig-cap: "Random Forest model"
-#| fig-width: 5
-#| fig-height: 7
+#| fig-cap: "Variable of importance derived from the Random forest model for the daily values at 500 m spatial resolution model."
 #| echo: false
 #| message: false
 #| warning: false
@@ -789,6 +786,99 @@ workflow() %>%
   add_recipe(ranger_recipe) %>%
   add_model(imp_spec) %>%
   fit(daily_500_train) %>%
+  extract_fit_parsnip() %>%
+  vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
+  theme_light(base_size = 12)
+```
+
+#### Weekly 500
+
+```{r weekly_500_rf}
+#| echo: false
+#| message: false
+#| warning: false
+set.seed(123)
+
+weekly_500_split <- initial_split(weekly_500_rf, strata = site)
+weekly_500_train <- training(weekly_500_split)
+weekly_500_test <- testing(weekly_500_split)
+
+set.seed(234)
+weekly_500_folds <- bootstraps(weekly_500_train,
+                              times = 100,
+                              strata = gpp_dt_vut_ref)
+ranger_recipe <- 
+  recipe(formula = gpp_dt_vut_ref ~ ., data = weekly_500_train) %>% 
+  step_select(-site, -total_obs)
+
+ranger_spec <- 
+  rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
+  set_mode("regression") %>% 
+  set_engine("ranger") 
+
+ranger_workflow <- 
+  workflow() %>% 
+  add_recipe(ranger_recipe) %>% 
+  add_model(ranger_spec) 
+
+# Conditional to re-run model if no artifac was saved before.
+if (fs::file_exists("models/weekly_500_fit_site.rds")) {
+  weekly_500_fit <- readRDS("models/weekly_500_fit_site.rds")
+  ranger_tune <- readRDS("models/weekly_500_site_ranger_tune.rds")
+} else {
+  set.seed(3156)
+  
+  doParallel::registerDoParallel()
+  ranger_tune <-
+    tune_grid(ranger_workflow, 
+              resamples = weekly_500_folds, 
+              grid = 12)
+  
+  # Final fit
+  final_rf <- ranger_workflow %>% 
+    finalize_workflow(select_best(ranger_tune))
+  
+  weekly_500_fit <- last_fit(final_rf, weekly_500_split)
+  
+  ## last_fit is saved if no model has been trained and saved.
+  saveRDS(ranger_tune, "models/weekly_500_site_ranger_tune.rds")
+  saveRDS(weekly_500_fit, "models/weekly_500_fit_site.rds")
+}
+```
+
+
+```{r predictions_plot_weekly_500_rf}
+#| label: fig-weekly_500_rf
+#| fig-cap: "GPP observed and predicted values for all the sites. The dashed line represents a 1:1 relation."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Explore RF results
+## Check the metrics
+metrics <- collect_metrics(weekly_500_fit) 
+
+## Collect predictions
+plot_predictions(weekly_500_fit, metrics, 3, 3, 23, 22)
+```
+
+
+```{r vip_plot_weekly_500_rf}
+#| label: fig-vip_weekly_500_rf
+#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+## Feature importance
+imp_spec <- ranger_spec %>%
+  finalize_model(select_best(ranger_tune)) %>%
+  set_engine("ranger", importance = "permutation")
+
+workflow() %>%
+  add_recipe(ranger_recipe) %>%
+  add_model(imp_spec) %>%
+  fit(weekly_500_train) %>%
   extract_fit_parsnip() %>%
   vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
   theme_light(base_size = 12)
