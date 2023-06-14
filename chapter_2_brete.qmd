@@ -139,6 +139,36 @@ Experimental Forest (USA), the Borden Forest Research Station flux-site
 
 ## Methods
 
+```{r libraries and sources}
+#| echo: false
+#| message: false
+#| warning: false
+
+# Libraries
+library(ggplot2)
+library(cowplot)
+library(lubridate)
+library(purrr)
+library(broom)
+library(gt)
+library(tidymodels)
+library(broom)
+library(usemodels)
+library(vip)
+library(h2o)
+
+# Source files
+# Source the objects created for the complete GPP trends.
+# This file will source the code and load objects to memory.
+source("scripts/trend_plots.R")
+
+# Source the objects created for the complete GPP trends
+source("scripts/models_data_preparation.R")
+
+# Source file with functions to plot rf predictions
+source("R/plot_exploratory.R")
+```
+
 ### Eddy Covariance sites
 
 We used three deciduous broadleaf forest sites located in the northern 
@@ -171,15 +201,6 @@ The third site is the University of Michigan Biological Station which is located
 in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
 different succesional stages and a mean height of 2m. Mean annual temperature is
 around 5.5°C. [@gough_disturbanceaccelerated_2021]
-
-```{r data_import}
-#| echo: false
-#| message: false
-#| warning: false
-
-# Source the objects created for the complete GPP trends
-source("scripts/trend_plots.R")
-```
 
 The sites have the following GPP trends for the period available for each one:
 See @fig-michigan_gpp_trends
@@ -385,14 +406,7 @@ robustness and accuracy of the predictions.
 
 #### AutoML
 
-```{r ar_data_import}
-#| echo: false
-#| message: false
-#| warning: false
 
-# Source the objects created for the complete GPP trends
-source("scripts/models_data_preparation.R")
-```
 
 ```{r}
 #| label: fig-gpp_vi_relation
@@ -403,9 +417,7 @@ source("scripts/models_data_preparation.R")
 #| message: false
 #| warning: false
 
-library(ggplot2)
-library(cowplot)
-library(lubridate)
+## Make sure the source of file "scripts/trend_plots.R" was successful
 etiquetas <- c(
   "evi_mean" = "EVI",
   "ndvi_mean" = "NDVI",
@@ -490,7 +502,7 @@ plot_grid(daily_grid,
           labels = c('A', 'B', 'C'))
 ```
 
-
+\newpage
 
 ## Results
 
@@ -518,10 +530,6 @@ there may still be variations in performance across different locations.
 #| echo: false
 #| message: false
 #| warning: false
-
-library(purrr)
-library(broom)
-library(gt)
 
 # Prepare data with all sites
 ind_bar <- bartlett_monthly_500 %>% 
@@ -612,6 +620,7 @@ nirv_glance <- nirv_lm %>%
 #| echo: false
 #| message: false
 #| warning: false
+
 # Create table
 bind_rows(evi_glance,
           ndvi_glance,
@@ -639,9 +648,17 @@ bind_rows(evi_glance,
 
 ### Daily and weekly GPP and VI's relations
 
+```{r}
+
+```
+
 ### Random Forest as a better prediction model
 
-```{r}
+```{r data_preparation_rf}
+#| echo: false
+#| message: false
+#| warning: false
+
 # 500
 # Dataset to use: daily_500 for all sites
 bor <- borden_daily_500 %>% 
@@ -680,23 +697,22 @@ mich <- michigan_weekly_500 %>%
 weekly_500_rf <- bind_rows(bor, bar, mich)
 ```
 
-```{r}
-library(tidymodels)
-library(broom)
-library(usemodels)
-library(vip)
+#### Daily 500
 
-source("R/plot_exploratory.R")
-daily_500_rf_test <- daily_500_rf %>%
-  select(-site)
+```{r daily_500_rf}
+#| echo: false
+#| message: false
+#| warning: false
+
+## Make sure that the source of the file "R/plot_exploratory.R" was succesful
 
 set.seed(123)
-daily_500_split <- initial_split(daily_500_rf_test)
+daily_500_split <- initial_split(daily_500_rf, strata = site)
 daily_500_train <- training(daily_500_split)
 daily_500_test <- testing(daily_500_split)
 
 set.seed(234)
-# daily_500_folds
+# daily_500_folds 
 daily_500_folds <- bootstraps(daily_500_train,
                               times = 100,
                               strata = gpp_dt_vut_ref)
@@ -705,22 +721,26 @@ ranger_recipe <-
   recipe(formula = gpp_dt_vut_ref ~ ., data = daily_500_train) %>% 
   step_select(-site, -total_obs)
 
-ranger_spec <-
-  rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>%
-  set_mode("regression") %>%
-  set_engine("ranger")
+ranger_spec <- 
+  rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
+  set_mode("regression") %>% 
+  set_engine("ranger") 
 
-ranger_workflow <-
-  workflow() %>%
-  add_recipe(ranger_recipe) %>%
-  add_model(ranger_spec)
+ranger_workflow <- 
+  workflow() %>% 
+  add_recipe(ranger_recipe) %>% 
+  add_model(ranger_spec) 
+
+set.seed(3156)
 
 # Conditional to re-run model if no artifac was saved before.
-if (fs::file_exists("models/daily_500_fit_site.rds")) {
-  daily_500_fit <- readRDS("models/daily_500_fit_site.rds")
-} else {
-  set.seed(3156)
+if (fs::file_exists("models/daily_500_fit_site.rds") & 
+    fs::file_exists("models/daily_500_site_ranger_tune.rds")) {
   
+  daily_500_fit <- readRDS("models/daily_500_fit_site.rds")
+  ranger_tune <- readRDS("models/daily_500_site_ranger_tune.rds")
+  
+} else {  
   doParallel::registerDoParallel()
   ranger_tune <-
     tune_grid(ranger_workflow, 
@@ -734,11 +754,18 @@ if (fs::file_exists("models/daily_500_fit_site.rds")) {
   daily_500_fit <- last_fit(final_rf, daily_500_split)
   
   ## last_fit is saved if no model has been trained and saved.
+  saveRDS(ranger_tune, "models/daily_500_site_ranger_tune.rds")
   saveRDS(daily_500_fit, "models/daily_500_fit_site.rds")
 }
+```
 
-# To check the predictions with all original values from the dataset
-# broom::augment(daily_500_fit)
+
+```{r predictions_plot_daily_500_rf}
+#| label: fig-daily_500_rf
+#| fig-cap: "GPP observed and predicted values for all the sites. The dashed line represents a 1:1 relation."
+#| echo: false
+#| message: false
+#| warning: false
 
 # Explore RF results
 ## Check the metrics
@@ -746,10 +773,19 @@ metrics <- collect_metrics(daily_500_fit)
 
 ## Collect predictions
 plot_predictions(daily_500_fit, metrics, 3, 3, 23, 22) 
+```
+
+
+```{r vip_plot_daily_500_rf}
+#| label: fig-vip_daily_500_rf
+#| fig-cap: "Variable of importance derived from the Random forest model for the daily values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
 
 ## Feature importance
 imp_spec <- ranger_spec %>%
-  finalize_model(select_best(daily_500_fit)) %>%
+  finalize_model(select_best(ranger_tune)) %>%
   set_engine("ranger", importance = "permutation")
 
 workflow() %>%
@@ -761,12 +797,164 @@ workflow() %>%
   theme_light(base_size = 12)
 ```
 
+#### Weekly 500
+
+```{r weekly_500_rf}
+#| echo: false
+#| message: false
+#| warning: false
+set.seed(123)
+
+weekly_500_split <- initial_split(weekly_500_rf, strata = site)
+weekly_500_train <- training(weekly_500_split)
+weekly_500_test <- testing(weekly_500_split)
+
+set.seed(234)
+weekly_500_folds <- bootstraps(weekly_500_train,
+                              times = 100,
+                              strata = gpp_dt_vut_ref)
+ranger_recipe <- 
+  recipe(formula = gpp_dt_vut_ref ~ ., data = weekly_500_train) %>% 
+  step_select(-site, -total_obs)
+
+ranger_spec <- 
+  rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
+  set_mode("regression") %>% 
+  set_engine("ranger") 
+
+ranger_workflow <- 
+  workflow() %>% 
+  add_recipe(ranger_recipe) %>% 
+  add_model(ranger_spec) 
+
+# Conditional to re-run model if no artifac was saved before.
+if (fs::file_exists("models/weekly_500_fit_site.rds")) {
+  weekly_500_fit <- readRDS("models/weekly_500_fit_site.rds")
+  ranger_tune <- readRDS("models/weekly_500_site_ranger_tune.rds")
+} else {
+  set.seed(3156)
+  
+  doParallel::registerDoParallel()
+  ranger_tune <-
+    tune_grid(ranger_workflow, 
+              resamples = weekly_500_folds, 
+              grid = 12)
+  
+  # Final fit
+  final_rf <- ranger_workflow %>% 
+    finalize_workflow(select_best(ranger_tune))
+  
+  weekly_500_fit <- last_fit(final_rf, weekly_500_split)
+  
+  ## last_fit is saved if no model has been trained and saved.
+  saveRDS(ranger_tune, "models/weekly_500_site_ranger_tune.rds")
+  saveRDS(weekly_500_fit, "models/weekly_500_fit_site.rds")
+}
+```
+
+
+```{r predictions_plot_weekly_500_rf}
+#| label: fig-weekly_500_rf
+#| fig-cap: "GPP observed and predicted values for all the sites. The dashed line represents a 1:1 relation."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Explore RF results
+## Check the metrics
+metrics <- collect_metrics(weekly_500_fit) 
+
+## Collect predictions
+plot_predictions(weekly_500_fit, metrics, 4, 4, 20, 21)
+```
+
+
+```{r vip_plot_weekly_500_rf}
+#| label: fig-vip_weekly_500_rf
+#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+## Feature importance
+imp_spec <- ranger_spec %>%
+  finalize_model(select_best(ranger_tune)) %>%
+  set_engine("ranger", importance = "permutation")
+
+workflow() %>%
+  add_recipe(ranger_recipe) %>%
+  add_model(imp_spec) %>%
+  fit(weekly_500_train) %>%
+  extract_fit_parsnip() %>%
+  vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
+  theme_light(base_size = 12)
+```
+
 
 ### The potential of AutoML approaches for GPP predictions
 
 
+```{r}
+#| label: fig-predictions_automl_500
+#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+predictions_automl <- readRDS("models/predictions_automl.rds")
+perf <- readRDS("models/performance_automl.rds")
+
+rsq <- h2o.r2(perf)
+rmse <- h2o.rmse(perf)
+
+predictions_automl %>% 
+  ggplot(aes(x = predict, y = gpp_dt_vut_ref)) +
+  geom_text(aes(x = 3, y = 18,
+                label = paste("rmse:", round(rmse, 3))),
+            stat = "unique") +
+  geom_text(aes(x = 3, y = 17,
+                label = paste("rsq:", round(rsq, 3))),
+            stat = "unique") +
+  geom_abline(lty = 2) +
+  geom_point(alpha = 0.5, size = 3, aes(shape = site)) +
+  coord_fixed() +
+  labs(x = "Predicted value", 
+       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
+       title = "Regression RF") +
+  coord_fixed() +
+  theme_light(base_size = 15)
+```
+
+
+```{r}
+#| label: fig-vip_daily_500_automl
+#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+readRDS("models/automl_va_plot.rds")
+```
+
+\newpage
 
 ## Discussion
+
+
+
+Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id. Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi quis ipsa aut. Temporibus ut rerum ea a est voluptate.
+
+Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta doloremque. Et reiciendis et animi ut enim. Fugiat consequatur hic laborum culpa blanditiis explicabo nobis quae. Quae pariatur quo et hic autem.
+
+Sunt velit eos repellat inventore quia sunt. Et optio aut distinctio non expedita nulla sint. Explicabo sint tempore est in sunt dolores et. Modi sint earum veniam perspiciatis. Velit at beatae nam fugiat iusto.
+
+Sed velit ipsum in qui expedita praesentium. Neque vero optio qui cumque sint. Error possimus dolor quisquam vero aut.
+
+Autem non labore numquam. Eveniet facere id qui impedit. Sunt temporibus sit neque fugiat. Consequatur sit maiores dolorum libero provident a laudantium. Ipsum sit fugiat quis consectetur sed a provident veritatis. Consequuntur laudantium aut libero facere animi ipsum et hic.
+
+
+\pagebreak
+\newpage
 
 ## References
 
