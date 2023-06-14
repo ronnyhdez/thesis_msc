@@ -155,6 +155,7 @@ library(tidymodels)
 library(broom)
 library(usemodels)
 library(vip)
+library(h2o)
 
 # Source files
 # Source the objects created for the complete GPP trends.
@@ -501,6 +502,7 @@ plot_grid(daily_grid,
           labels = c('A', 'B', 'C'))
 ```
 
+\newpage
 
 ## Results
 
@@ -645,6 +647,10 @@ bind_rows(evi_glance,
 ```
 
 ### Daily and weekly GPP and VI's relations
+
+```{r}
+
+```
 
 ### Random Forest as a better prediction model
 
@@ -859,7 +865,7 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
 metrics <- collect_metrics(weekly_500_fit) 
 
 ## Collect predictions
-plot_predictions(weekly_500_fit, metrics, 3, 3, 23, 22)
+plot_predictions(weekly_500_fit, metrics, 4, 4, 20, 21)
 ```
 
 
@@ -888,8 +894,67 @@ workflow() %>%
 ### The potential of AutoML approaches for GPP predictions
 
 
+```{r}
+#| label: fig-predictions_automl_500
+#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+predictions_automl <- readRDS("models/predictions_automl.rds")
+perf <- readRDS("models/performance_automl.rds")
+
+rsq <- h2o.r2(perf)
+rmse <- h2o.rmse(perf)
+
+predictions_automl %>% 
+  ggplot(aes(x = predict, y = gpp_dt_vut_ref)) +
+  geom_text(aes(x = 3, y = 18,
+                label = paste("rmse:", round(rmse, 3))),
+            stat = "unique") +
+  geom_text(aes(x = 3, y = 17,
+                label = paste("rsq:", round(rsq, 3))),
+            stat = "unique") +
+  geom_abline(lty = 2) +
+  geom_point(alpha = 0.5, size = 3, aes(shape = site)) +
+  coord_fixed() +
+  labs(x = "Predicted value", 
+       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
+       title = "Regression RF") +
+  coord_fixed() +
+  theme_light(base_size = 15)
+```
+
+
+```{r}
+#| label: fig-vip_daily_500_automl
+#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+readRDS("models/automl_va_plot.rds")
+```
+
+\newpage
 
 ## Discussion
+
+
+
+Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id. Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi quis ipsa aut. Temporibus ut rerum ea a est voluptate.
+
+Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta doloremque. Et reiciendis et animi ut enim. Fugiat consequatur hic laborum culpa blanditiis explicabo nobis quae. Quae pariatur quo et hic autem.
+
+Sunt velit eos repellat inventore quia sunt. Et optio aut distinctio non expedita nulla sint. Explicabo sint tempore est in sunt dolores et. Modi sint earum veniam perspiciatis. Velit at beatae nam fugiat iusto.
+
+Sed velit ipsum in qui expedita praesentium. Neque vero optio qui cumque sint. Error possimus dolor quisquam vero aut.
+
+Autem non labore numquam. Eveniet facere id qui impedit. Sunt temporibus sit neque fugiat. Consequatur sit maiores dolorum libero provident a laudantium. Ipsum sit fugiat quis consectetur sed a provident veritatis. Consequuntur laudantium aut libero facere animi ipsum et hic.
+
+
+\pagebreak
+\newpage
 
 ## References
 
