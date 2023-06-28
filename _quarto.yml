@@ -11,8 +11,9 @@ book:
     - dedication.qmd
     - acknowledgements.qmd
     - chapter_1_intro.qmd
-    - chapter_2_brete.qmd
-    - chapter_3_conclusions.qmd
+    - chapter_2_lm.qmd
+    - chapter_3_ml.qmd
+    - chapter_4_conclusions.qmd
     - bibliography.qmd
     - appendices.qmd
 
@@ -26,4 +27,5 @@ format:
     lot: true
 
 
+    
 
