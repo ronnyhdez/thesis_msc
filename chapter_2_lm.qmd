@@ -1,9 +1,3 @@
----
-editor: 
-  markdown: 
-    wrap: 80
----
-
 # Assesing uncertanties related to satellite remote sensing indices to estimate Gross Primary Production
 
 ## Introduction
@@ -660,6 +654,7 @@ final references.**
 
 ::: {#refs}
 :::
+
 
 ## Tables
 
