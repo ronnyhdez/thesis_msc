@@ -26,7 +26,8 @@ format:
     documentclass: scrreprt
     lof: true
     lot: true
-    section-refs-bibliography: rap_v002.bib
+    filters:
+     - section-refs.lua # needs pandoc version >= 2.11 to work
 
 
     
