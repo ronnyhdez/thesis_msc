@@ -647,14 +647,6 @@ Autem non labore numquam. Eveniet facere id qui impedit. Sunt temporibus sit neq
 
 \newpage
 
-## References
-
-**Just the references of this chapter, that also needs to be included in the
-final references.**
-
-::: {#refs}
-:::
-
 
 ## Tables
 
@@ -674,4 +666,11 @@ final references.**
 
 : Satellite images datasets {#tbl-satellite_images_datasets}
 
+## References
+
+**Just the references of this chapter, that also needs to be included in the
+final references.**
+
+::: {#refs}
+:::
 

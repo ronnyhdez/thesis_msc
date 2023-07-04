@@ -26,6 +26,7 @@ format:
     documentclass: scrreprt
     lof: true
     lot: true
+    page-breaks: true
     filters:
      - section-refs.lua # needs pandoc version >= 2.11 to work
 
