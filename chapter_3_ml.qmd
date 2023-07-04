@@ -1,8 +1,3 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 # Use of machine learning methods to predict GPP from VI's on a daily and weekly basis
 
 ## Introduction
@@ -304,6 +299,7 @@ workflow() %>%
 
 ### The potential of AutoML approaches for GPP predictions
 
+#### Daily autoML
 
 ```{r}
 #| label: fig-predictions_automl_500
@@ -337,7 +333,7 @@ predictions_automl %>%
 ```
 
 
-```{r}
+```{r automl_importance_variable}
 #| label: fig-vip_daily_500_automl
 #| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
 #| echo: false
@@ -347,11 +343,65 @@ predictions_automl %>%
 readRDS("models/automl_va_plot.rds")
 ```
 
+#### Weekly autoML
+
+
+```{r}
+#| label: fig-predictions_automl_weekly_500
+#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+predictions_automl <- readRDS("models/predictions_automl_weekly.rds")
+perf <- readRDS("models/performance_automl_weekly.rds")
+
+rsq <- h2o.r2(perf)
+rmse <- h2o.rmse(perf)
+
+predictions_automl %>% 
+  ggplot(aes(x = predict, y = gpp_dt_vut_ref)) +
+  geom_text(aes(x = 3, y = 18,
+                label = paste("rmse:", round(rmse, 3))),
+            stat = "unique") +
+  geom_text(aes(x = 3, y = 17,
+                label = paste("rsq:", round(rsq, 3))),
+            stat = "unique") +
+  geom_abline(lty = 2) +
+  geom_point(alpha = 0.5, size = 3, aes(shape = site)) +
+  coord_fixed() +
+  labs(x = "Predicted value", 
+       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
+       title = "Regression RF") +
+  coord_fixed() +
+  theme_light(base_size = 15)
+```
+
+
+```{r automl_importance_variable_weekly}
+#| label: fig-vip_daily_500_automl_weekly
+#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+readRDS("models/automl_va_plot_weekly.rds")
+```
+
+\pagebreak
+
+\newpage
+
+{{< pagebreak >}}
+
+:::
+
+:::
 
 ## Discussion
 
 
-
+sdfsdagfdgetrretgh
 
 \newpage
 
@@ -362,4 +412,3 @@ final references.**
 
 ::: {#refs}
 :::
-

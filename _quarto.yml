@@ -17,7 +17,8 @@ book:
     - bibliography.qmd
     - appendices.qmd
 
-bibliography: rap_v002.bib
+bibliography: 
+ - rap_v002.bib
 
 format:
   pdf:
@@ -25,6 +26,9 @@ format:
     documentclass: scrreprt
     lof: true
     lot: true
+    page-breaks: true
+    filters:
+     - section-refs.lua # needs pandoc version >= 2.11 to work
 
 
     
