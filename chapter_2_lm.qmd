@@ -275,7 +275,8 @@ subsequently discarded. These values were deemed unreliable or lacking
 meaningful information for the analysis.
 
 Once all the band values were scaled within the valid range the vegetation
-indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), and `EVI` (@eq-evi) were
+indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi),
+`kNDVI` (@eq-kndvi), and `CCI` (@eq-cci)were
 calculated. However, since the MODIS product with a spatial resolution of 250m
 (`MODIS/061/MOD09A1`) does not include the blue band EVI calculations were not
 performed for this dataset.
@@ -294,29 +295,38 @@ EVI = 2.5\times\frac{\mathrm{NIR} - \mathrm{Red}}{%
           - 7.5\times \mathrm{Blue} + 1)}\\
 $$ {#eq-evi}
 
-For Harmonized Sentinel-2 data the data processing consisted on using the
-`msk_cldprb` variable to filter out pixels according to the probabilities of
-containing a cloud or the `msk_snwprb` variable for presence of snow
-probability. Once the pixels without any probability of having clouds or snow
-were filtered from the rest, we scaled all the reflectance bands observations by
-a factor of `0.0001`. With the values scaled we proceed to calculate the
-vegetation indices `NDVI` (@eq-ndvis), `NIRv` (@eq-nirvs), and `EVI` (@eq-evis).
-The bands used to calculate these indices are in
-@tbl-harmonized_s2_indices_bands
 
 $$
-NDVI = \frac{b8 - b4}{b8 + b4}
-$$ {#eq-ndvis}
+kNDVI = tanh(\mathrm{NDVI}^2)
+$$ {#eq-kndvi}
 
 $$
-NIRv = b8\times\frac{b8 - b4}{b8 + b4}
-$$ {#eq-nirvs}
+CCI = \frac{Green - Red}{Green + Red}
+$$ {#eq-cci}
 
-$$
-EVI = 2.5\times\frac{\mathrm{b8} - \mathrm{b4}}{%
-          (\mathrm{b8} + 6\times \mathrm{b4}
-          - 7.5\times \mathrm{b2} + 1)}\\
-$$ {#eq-evis}
+<!-- For Harmonized Sentinel-2 data the data processing consisted on using the -->
+<!-- `msk_cldprb` variable to filter out pixels according to the probabilities of -->
+<!-- containing a cloud or the `msk_snwprb` variable for presence of snow -->
+<!-- probability. Once the pixels without any probability of having clouds or snow -->
+<!-- were filtered from the rest, we scaled all the reflectance bands observations by -->
+<!-- a factor of `0.0001`. With the values scaled we proceed to calculate the -->
+<!-- vegetation indices `NDVI` (@eq-ndvis), `NIRv` (@eq-nirvs), and `EVI` (@eq-evis). -->
+<!-- The bands used to calculate these indices are in -->
+<!-- @tbl-harmonized_s2_indices_bands -->
+
+<!-- $$ -->
+<!-- NDVI = \frac{b8 - b4}{b8 + b4} -->
+<!-- $$ {#eq-ndvis} -->
+
+<!-- $$ -->
+<!-- NIRv = b8\times\frac{b8 - b4}{b8 + b4} -->
+<!-- $$ {#eq-nirvs} -->
+
+<!-- $$ -->
+<!-- EVI = 2.5\times\frac{\mathrm{b8} - \mathrm{b4}}{% -->
+<!--           (\mathrm{b8} + 6\times \mathrm{b4} -->
+<!--           - 7.5\times \mathrm{b2} + 1)}\\ -->
+<!-- $$ {#eq-evis} -->
 
 ### Data Preparation
 
