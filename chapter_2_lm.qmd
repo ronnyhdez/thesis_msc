@@ -397,6 +397,8 @@ etiquetas <- c(
   "evi_mean" = "EVI",
   "ndvi_mean" = "NDVI",
   "nirv_mean" = "NIRv",
+  "kndvi_mean" = "kNDVI",
+  "cci_mean" = "CCI",
   "Borden" = "Borden",
   "Michigan" = "Michigan",
   "Bartlett" = "Bartlett"
@@ -508,15 +510,18 @@ there may still be variations in performance across different locations.
 
 # Prepare data with all sites
 ind_bar <- bartlett_monthly_500 %>% 
-  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, nirv_mean) %>% 
+  select(gpp_dt_vut_ref, evi_mean, ndvi_mean,
+		 nirv_mean, kndvi_mean, cci_mean) %>% 
   mutate(site = "Bartlett")
 
 ind_bor <- borden_monthly_500 %>% 
-  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, nirv_mean) %>% 
+  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, 
+		 nirv_mean, kndvi_mean, cci_mean) %>% 
   mutate(site = "Borden")
 
 ind_mich <- michigan_monthly_500 %>% 
-  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, nirv_mean) %>% 
+  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, 
+		 nirv_mean, kndvi_mean, cci_mean) %>% 
   mutate(site = "Michigan")
 
 ind_sites <- bind_rows(ind_bar, ind_bor, ind_mich)
@@ -586,7 +591,52 @@ nirv_glance <- nirv_lm %>%
   select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(index = "NIRv") 
+
+# Linear model for all sites kNDVI
+kndvi_lm <- ind_sites %>%
+  nest(data = c(-site)) %>%
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ kndvi_mean, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
+  )
+
+kndvi_fit <- kndvi_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(index = "kNDVI")
+
+kndvi_glance <- kndvi_lm %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  unnest(glanced) %>%
+  select(-data, -fit, -tidied) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(index = "kNDVI")
+
+# Linear model for all sites kNDVI
+cci_lm <- ind_sites %>%
+  nest(data = c(-site)) %>%
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ cci_mean, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
+  )
+
+cci_fit <- cci_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(index = "CCI")
+
+cci_glance <- cci_lm %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  unnest(glanced) %>%
+  select(-data, -fit, -tidied) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(index = "CCI")
 ```
+
 
 
 ```{r lm_monthly_table}
@@ -596,10 +646,13 @@ nirv_glance <- nirv_lm %>%
 #| message: false
 #| warning: false
 
+
 # Create table
 bind_rows(evi_glance,
           ndvi_glance,
-          nirv_glance) %>% 
+          nirv_glance,
+		  kndvi_glance,
+		  cci_glance) %>% 
   select(site, index, r.squared, adj.r.squared, rmse, 
          statistic, AIC, BIC,  p.value) %>% 
   group_by(site) %>% 
