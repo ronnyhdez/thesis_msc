@@ -75,21 +75,21 @@ daily_plot_500 <- borden_plot_daily %>%
 ## Weekly ----------------------------------------------------------------------
 michigan_plot_weekly <- michigan_weekly_500 %>% 
   select(date_start, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date_start, gpp_dt_vut_ref, total_obs), 
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Michigan")
 
 borden_plot_weekly <- borden_weekly_500 %>% 
   select(date_start, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date_start, gpp_dt_vut_ref, total_obs), 
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Borden")
 
 bartlett_plot_weekly <- bartlett_weekly_500 %>% 
   select(date_start, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date_start, gpp_dt_vut_ref, total_obs), 
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Bartlett")
@@ -101,21 +101,21 @@ weekly_plot_500 <- borden_plot_weekly %>%
 # Monthly ----------------------------------------------------------------------
 michigan_plot_monthly <- michigan_monthly_500 %>% 
   select(date, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date, gpp_dt_vut_ref, total_obs),  
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Michigan")
 
 borden_plot_monthly <- borden_monthly_500 %>% 
   select(date, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date, gpp_dt_vut_ref, total_obs),  
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Borden")
 
 bartlett_plot_monthly <- bartlett_monthly_500 %>% 
   select(date, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date, gpp_dt_vut_ref, total_obs),  
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Bartlett")
@@ -157,21 +157,21 @@ daily_plot_250 <- borden_plot_daily %>%
 ## Weekly ----------------------------------------------------------------------
 michigan_plot_weekly <- michigan_weekly_250 %>% 
   select(date_start, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date_start, gpp_dt_vut_ref, total_obs), 
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Michigan")
 
 borden_plot_weekly <- borden_weekly_250 %>% 
   select(date_start, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date_start, gpp_dt_vut_ref, total_obs), 
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Borden")
 
 bartlett_plot_weekly <- bartlett_weekly_250 %>% 
   select(date_start, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date_start, gpp_dt_vut_ref, total_obs), 
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Bartlett")
@@ -183,21 +183,21 @@ weekly_plot_250 <- borden_plot_weekly %>%
 # Monthly ----------------------------------------------------------------------
 michigan_plot_monthly <- michigan_monthly_250 %>% 
   select(date, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date, gpp_dt_vut_ref, total_obs),  
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Michigan")
 
 borden_plot_monthly <- borden_monthly_250 %>% 
   select(date, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date, gpp_dt_vut_ref, total_obs),  
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Borden")
 
 bartlett_plot_monthly <- bartlett_monthly_250 %>% 
   select(date, gpp_dt_vut_ref, total_obs,
-         starts_with(c("ndvi", "evi", "nirv")) & ends_with("mean")) %>% 
+         starts_with(c("ndvi", "evi", "nirv", "kndvi", "cci")) & ends_with("mean")) %>% 
   pivot_longer(-c(date, gpp_dt_vut_ref, total_obs),  
                names_to = "index", values_to = "value") %>% 
   mutate(site = "Bartlett")
