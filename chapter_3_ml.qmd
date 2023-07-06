@@ -168,7 +168,7 @@ if (fs::file_exists("models/daily_500_fit_site.rds") &
 
 ```{r predictions_plot_daily_500_rf}
 #| label: fig-daily_500_rf
-#| fig-cap: "GPP observed and predicted values for all the sites. The dashed line represents a 1:1 relation."
+#| fig-cap: GPP observed and predicted values from the Random Forest model for all the sites at a daily basis. The red line represents a 1:1 relation.
 #| echo: false
 #| message: false
 #| warning: false
@@ -178,7 +178,7 @@ if (fs::file_exists("models/daily_500_fit_site.rds") &
 metrics <- collect_metrics(daily_500_fit) 
 
 ## Collect predictions
-plot_predictions(daily_500_fit, metrics, 4, 4, 23, 22) 
+plot_predictions_rf(daily_500_fit, metrics, 4, 4, 23, 22) 
 ```
 
 
@@ -261,7 +261,7 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
 
 ```{r predictions_plot_weekly_500_rf}
 #| label: fig-weekly_500_rf
-#| fig-cap: "GPP observed and predicted values for all the sites. The dashed line represents a 1:1 relation."
+#| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a weekly basis. The red line represents a 1:1 relation."
 #| echo: false
 #| message: false
 #| warning: false
@@ -271,7 +271,7 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
 metrics <- collect_metrics(weekly_500_fit) 
 
 ## Collect predictions
-plot_predictions(weekly_500_fit, metrics, 4, 4, 20, 21)
+plot_predictions_rf(weekly_500_fit, metrics, 4, 4, 16, 17)
 ```
 
 
@@ -293,7 +293,7 @@ workflow() %>%
   fit(weekly_500_train) %>%
   extract_fit_parsnip() %>%
   vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
-  theme_light(base_size = 12)
+  theme_classic(base_size = 12)
 ```
 
 
@@ -303,7 +303,7 @@ workflow() %>%
 
 ```{r}
 #| label: fig-predictions_automl_500
-#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| fig-cap: "Variable of importance derived from the autoML model for the daily values at 500 m spatial resolution model."
 #| echo: false
 #| message: false
 #| warning: false
@@ -314,28 +314,13 @@ perf <- readRDS("models/performance_automl.rds")
 rsq <- h2o.r2(perf)
 rmse <- h2o.rmse(perf)
 
-predictions_automl %>% 
-  ggplot(aes(x = predict, y = gpp_dt_vut_ref)) +
-  geom_text(aes(x = 3, y = 18,
-                label = paste("rmse:", round(rmse, 3))),
-            stat = "unique") +
-  geom_text(aes(x = 3, y = 17,
-                label = paste("rsq:", round(rsq, 3))),
-            stat = "unique") +
-  geom_abline(lty = 2) +
-  geom_point(alpha = 0.5, size = 3, aes(shape = site)) +
-  coord_fixed() +
-  labs(x = "Predicted value", 
-       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
-       title = "Regression RF") +
-  coord_fixed() +
-  theme_light(base_size = 15)
+plot_predictions_automl(predictions_automl, rmse, rsq, 2, 2, 15, 16)
 ```
 
 
 ```{r automl_importance_variable}
 #| label: fig-vip_daily_500_automl
-#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| fig-cap: "Variable of importance derived from the autoML model for the daily values at 500 m spatial resolution model."
 #| echo: false
 #| message: false
 #| warning: false
@@ -348,7 +333,7 @@ readRDS("models/automl_va_plot.rds")
 
 ```{r}
 #| label: fig-predictions_automl_weekly_500
-#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| fig-cap: "Variable of importance derived from the autoML model for the weekly values at 500 m spatial resolution model."
 #| echo: false
 #| message: false
 #| warning: false
@@ -359,28 +344,13 @@ perf <- readRDS("models/performance_automl_weekly.rds")
 rsq <- h2o.r2(perf)
 rmse <- h2o.rmse(perf)
 
-predictions_automl %>% 
-  ggplot(aes(x = predict, y = gpp_dt_vut_ref)) +
-  geom_text(aes(x = 3, y = 18,
-                label = paste("rmse:", round(rmse, 3))),
-            stat = "unique") +
-  geom_text(aes(x = 3, y = 17,
-                label = paste("rsq:", round(rsq, 3))),
-            stat = "unique") +
-  geom_abline(lty = 2) +
-  geom_point(alpha = 0.5, size = 3, aes(shape = site)) +
-  coord_fixed() +
-  labs(x = "Predicted value", 
-       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
-       title = "Regression RF") +
-  coord_fixed() +
-  theme_light(base_size = 15)
+plot_predictions_automl(predictions_automl, rmse, rsq, 3, 3, 15, 16)
 ```
 
 
 ```{r automl_importance_variable_weekly}
 #| label: fig-vip_daily_500_automl_weekly
-#| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| fig-cap: "Variable of importance derived from the autoML model for the weekly values at 500 m spatial resolution model."
 #| echo: false
 #| message: false
 #| warning: false
@@ -388,20 +358,21 @@ predictions_automl %>%
 readRDS("models/automl_va_plot_weekly.rds")
 ```
 
-\pagebreak
 
 \newpage
-
-{{< pagebreak >}}
-
-:::
-
-:::
 
 ## Discussion
 
 
-sdfsdagfdgetrretgh
+Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id. Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi quis ipsa aut. Temporibus ut rerum ea a est voluptate.
+
+Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta doloremque. Et reiciendis et animi ut enim. Fugiat consequatur hic laborum culpa blanditiis explicabo nobis quae. Quae pariatur quo et hic autem.
+
+Sunt velit eos repellat inventore quia sunt. Et optio aut distinctio non expedita nulla sint. Explicabo sint tempore est in sunt dolores et. Modi sint earum veniam perspiciatis. Velit at beatae nam fugiat iusto.
+
+Sed velit ipsum in qui expedita praesentium. Neque vero optio qui cumque sint. Error possimus dolor quisquam vero aut.
+
+Autem non labore numquam. Eveniet facere id qui impedit. Sunt temporibus sit neque fugiat. Consequatur sit maiores dolorum libero provident a laudantium. Ipsum sit fugiat quis consectetur sed a provident veritatis. Consequuntur laudantium aut libero facere animi ipsum et hic.
 
 \newpage
 
