@@ -178,7 +178,7 @@ if (fs::file_exists("models/daily_500_fit_site.rds") &
 metrics <- collect_metrics(daily_500_fit) 
 
 ## Collect predictions
-plot_predictions(daily_500_fit, metrics, 3, 3, 23, 22) 
+plot_predictions(daily_500_fit, metrics, 4, 4, 23, 22) 
 ```
 
 
