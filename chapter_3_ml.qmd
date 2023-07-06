@@ -178,7 +178,7 @@ if (fs::file_exists("models/daily_500_fit_site.rds") &
 metrics <- collect_metrics(daily_500_fit) 
 
 ## Collect predictions
-plot_predictions_rf(daily_500_fit, metrics, 4, 4, 23, 22) 
+plot_predictions_rf(daily_500_fit, metrics, 4, 4, 23.5, 22) 
 ```
 
 
@@ -314,18 +314,24 @@ perf <- readRDS("models/performance_automl.rds")
 rsq <- h2o.r2(perf)
 rmse <- h2o.rmse(perf)
 
-plot_predictions_automl(predictions_automl, rmse, rsq, 2, 2, 15, 16)
+plot_predictions_automl(predictions_automl, rmse, rsq, 3, 3, 15, 16)
 ```
 
 
 ```{r automl_importance_variable}
 #| label: fig-vip_daily_500_automl
 #| fig-cap: "Variable of importance derived from the autoML model for the daily values at 500 m spatial resolution model."
+#| fig-width: 7
+#| fig-height: 8
 #| echo: false
 #| message: false
 #| warning: false
 
-readRDS("models/automl_va_plot.rds")
+readRDS("models/automl_va_plot.rds") +
+  theme_classic(base_size = 12) +
+  scale_fill_viridis_c(direction = -1) +
+  labs(title = NULL, x = "Model ID") +
+  theme(axis.text.x = element_text(angle = 55, h = 1))
 ```
 
 #### Weekly autoML
@@ -344,18 +350,24 @@ perf <- readRDS("models/performance_automl_weekly.rds")
 rsq <- h2o.r2(perf)
 rmse <- h2o.rmse(perf)
 
-plot_predictions_automl(predictions_automl, rmse, rsq, 3, 3, 15, 16)
+plot_predictions_automl(predictions_automl, rmse, rsq, 4, 4, 15, 16)
 ```
 
 
 ```{r automl_importance_variable_weekly}
 #| label: fig-vip_daily_500_automl_weekly
 #| fig-cap: "Variable of importance derived from the autoML model for the weekly values at 500 m spatial resolution model."
+#| fig-width: 7
+#| fig-height: 8
 #| echo: false
 #| message: false
 #| warning: false
 
-readRDS("models/automl_va_plot_weekly.rds")
+readRDS("models/automl_va_plot_weekly.rds") +
+  theme_classic(base_size = 12) +
+  scale_fill_viridis_c(direction = -1) +
+  labs(title = NULL, x = "Model ID") +
+  theme(axis.text.x = element_text(angle = 55, h = 1))
 ```
 
 
