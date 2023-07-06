@@ -1,1 +1,18 @@
 # Introduction
+
+Abrir con primer lanzamiento de satelite y primer indice.
+ - Recordar lansat
+ - Recordar MODIS
+ - Hablar un poco de NDVI
+ - Hablar luego de encargo a mae de EVI y porqué
+ - Luego de que se han desarrollado muchos m'as indices
+ - Hacer clasificacion de indices con lo explicaba daniel pabon y
+   su categorizacion de indices.
+ - Mencionar luego que hay indices para caracteristicas biofisicas y
+   otros que se pueden usar para funcionamiento de la vegetation
+
+Hacer categorizacion de incertidumbre en indices
+
+
+Buscar como explica camps de vals que hizo relaciones individuales de
+cada uno de los indices con GPP de fluxnet.

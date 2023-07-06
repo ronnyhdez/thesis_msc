@@ -40,7 +40,8 @@ one_flux_michigan_monthly <- read_flux_file(file = file, timeframe = "monthly")
 ## Create plots ----
 
 ### Daily plot ----
-daily_gpp_trend <- one_flux_michigan_daily %>%
+daily_gpp_trend <-
+  one_flux_michigan_daily %>%
   select(date, starts_with("gpp")) %>%
   pivot_longer(-date, names_to = "gpp_method", values_to = "gpp_value") %>%
   filter(gpp_method %in% c("gpp_dt_vut_25",
@@ -56,11 +57,11 @@ daily_gpp_trend <- one_flux_michigan_daily %>%
   geom_point() +
   geom_line() +
   scale_color_viridis_d() +
-  scale_x_date(date_labels = "%b%Y", breaks = "months") +
+  scale_x_date(date_labels = "%b%Y", breaks = "2 months") +
   scale_y_continuous(breaks = seq(0, 60, by = 2)) +
   labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
        title = "Oneflux daily GPP") +
-  theme_light(base_size = 12) +
+  theme_classic(base_size = 12) +
   theme(axis.text.x = element_text(angle = 90, h = 1))
 
 ### Weekly plot ----
@@ -80,11 +81,11 @@ weekly_gpp_trend  <- one_flux_michigan_weekly %>%
   geom_point() +
   geom_line() +
   scale_color_viridis_d() +
-  scale_x_date(date_labels = "%b%Y", breaks = "months") +
+  scale_x_date(date_labels = "%b%Y", breaks = "2 months") +
   scale_y_continuous(breaks = seq(0, 32, by = 2)) +
   labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
        title = "Oneflux weekly GPP") +
-  theme_light(base_size = 12) +
+  theme_classic(base_size = 12) +
   theme(axis.text.x = element_text(angle = 90, h = 1))
 
 ### Monthly plot ----
@@ -105,11 +106,11 @@ monthly_gpp_trend  <- one_flux_michigan_monthly %>%
   geom_point() +
   geom_line() +
   scale_color_viridis_d() +
-  scale_x_date(date_labels = "%b%Y", breaks = "months") +
+  scale_x_date(date_labels = "%b%Y", breaks = "2 months") +
   scale_y_continuous(breaks = seq(0, 28, by = 2)) +
   labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
        title = "Oneflux monthly GPP") +
-  theme_light(base_size = 12) +
+  theme_classic(base_size = 12) +
   theme(axis.text.x = element_text(angle = 90, h = 1))
 
 ## Export cowplot ----
@@ -141,15 +142,16 @@ one_flux_borden_monthly <- read_flux_file(file = file, timeframe = "monthly")
 daily_gpp_trend <- one_flux_borden_daily %>%
   select(date, starts_with("gpp")) %>%
   pivot_longer(-date, names_to = "gpp_method", values_to = "gpp_value") %>%
+  filter(gpp_value > 0 & gpp_value < 34) %>% 
   ggplot(aes(x = date, y = gpp_value, color = gpp_method)) +
   geom_point() +
   geom_line() +
   scale_color_viridis_d() +
-  scale_x_date(date_labels = "%b%Y", breaks = "months") +
-  scale_y_continuous(breaks = seq(0, 60, by = 2)) +
+  scale_x_date(date_labels = "%b%Y", breaks = "2 months") +
+  scale_y_continuous(breaks = seq(-19, 60, by = 4)) +
   labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
        title = "Oneflux daily Borden GPP") +
-  theme_light(base_size = 12) +
+  theme_classic(base_size = 12) +
   theme(axis.text.x = element_text(angle = 90, h = 1))
 
 ### Weekly plot ----
@@ -160,11 +162,11 @@ weekly_gpp_trend  <- one_flux_borden_weekly %>%
   geom_point() +
   geom_line() +
   scale_color_viridis_d() +
-  scale_x_date(date_labels = "%b%Y", breaks = "months") +
-  scale_y_continuous(breaks = seq(0, 32, by = 2)) +
+  scale_x_date(date_labels = "%b%Y", breaks = "2 months") +
+  scale_y_continuous(breaks = seq(0, 32, by = 4)) +
   labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
        title = "Oneflux wekly Borden GPP") +
-  theme_light(base_size = 12) +
+  theme_classic(base_size = 12) +
   theme(axis.text.x = element_text(angle = 90, h = 1))
 
 ### Monthly plot ----
@@ -176,11 +178,11 @@ monthly_gpp_trend  <- one_flux_borden_monthly %>%
   geom_point() +
   geom_line() +
   scale_color_viridis_d() +
-  scale_x_date(date_labels = "%b%Y", breaks = "months") +
-  scale_y_continuous(breaks = seq(0, 28, by = 2)) +
+  scale_x_date(date_labels = "%b%Y", breaks = "2 months") +
+  scale_y_continuous(breaks = seq(0, 28, by = 4)) +
   labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
        title = "Oneflux monthly Borden GPP") +
-  theme_light(base_size = 12) +
+  theme_classic(base_size = 12) +
   theme(axis.text.x = element_text(angle = 90, h = 1))
 
 ## Export cowplot ----
@@ -226,11 +228,11 @@ daily_gpp_trend <- one_flux_bartlett_daily %>%
   geom_point() +
   geom_line() +
   scale_color_viridis_d() +
-  scale_x_date(date_labels = "%b%Y", breaks = "months") +
+  scale_x_date(date_labels = "%b%Y", breaks = "2 months") +
   scale_y_continuous(breaks = seq(0, 60, by = 2)) +
   labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
        title = "Oneflux daily Bartlett GPP") +
-  theme_light(base_size = 12) +
+  theme_classic(base_size = 12) +
   theme(axis.text.x = element_text(angle = 90, h = 1))
 
 ### Weekly plot ----
@@ -250,11 +252,11 @@ weekly_gpp_trend  <- one_flux_bartlett_weekly %>%
   geom_point() +
   geom_line() +
   scale_color_viridis_d() +
-  scale_x_date(date_labels = "%b%Y", breaks = "months") +
+  scale_x_date(date_labels = "%b%Y", breaks = "2 months") +
   scale_y_continuous(breaks = seq(0, 32, by = 2)) +
   labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
        title = "Oneflux wekly Bartlett GPP") +
-  theme_light(base_size = 12) +
+  theme_classic(base_size = 12) +
   theme(axis.text.x = element_text(angle = 90, h = 1))
 
 monthly_gpp_trend  <- one_flux_bartlett_monthly %>%
@@ -274,11 +276,11 @@ monthly_gpp_trend  <- one_flux_bartlett_monthly %>%
   geom_point() +
   geom_line() +
   scale_color_viridis_d() +
-  scale_x_date(date_labels = "%b%Y", breaks = "months") +
+  scale_x_date(date_labels = "%b%Y", breaks = "2 months") +
   scale_y_continuous(breaks = seq(0, 28, by = 2)) +
   labs(x = "Date", y = expression(GPP~(gC~m^{"-2"}~d^-1)), color = "Index",
        title = "Oneflux monthly Bartlett GPP") +
-  theme_light(base_size = 12) +
+  theme_classic(base_size = 12) +
   theme(axis.text.x = element_text(angle = 90, h = 1))
 
 ## Export cowplot ----
