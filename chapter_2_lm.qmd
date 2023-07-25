@@ -44,10 +44,10 @@ and process-based models [@xie_assessments_2020].
 LUE models are based on the concept of radiation conversion efficiency, and take
 into consideration ecological processes [@liu1997process]. The radiation
 conversion efficiency explains the amount of carbon that a specific type of
-vegetation can fix per unit of solar radiation [@monteith_solar_1972]. MODIS GPP
-product uses an algorithm based on this radiation conversion efficiency concept,
-relating the absorbed photosynthetically active radiation (APAR) with the LUE
-term [@heinsch_evaluation_2006].
+vegetation can fix per unit of solar radiation [@monteith_solar_1972]. The
+Moderate Resolution Imaging Spectroradiometer (MODIS) GPP product uses an 
+algorithm based on this radiation conversion efficiency concept, relating the
+absorbed photosynthetically active radiation (APAR) with the LUE term [@heinsch_evaluation_2006].
 
 GPP = PAR \* fAPAR \* LUE
 
@@ -175,12 +175,13 @@ We used three deciduous broadleaf forest sites located in the northern
 hemisphere with eddy covariance (EC) data collected by Ameriflux. For each site,
 we used daily, weekly, and monthly GPP (GPP_DT_VUT_REF variable) data estimated
 using the FLUXNET2015 workflow [@pastorello2020fluxnet2015]. The ONEFlux 
-processing does the estimation of the CO~2~ fluxes into GPP and RECO from NEE 
-through two methods known as daytime and nighttime. Here we selected the daytime
-method (DT) which uses daytime and nighttime to parameterize a model with two
-components: one based on light response curve and vapour pressure deficit and a
-second one using a respiration-temperature relationship to estimate RECO which 
-in turn is used to obtain the difference with NEE and provide GPP. [@pastorello2020fluxnet2015].
+processing does the estimation of the CO~2~ fluxes into GPP and Ecosystem 
+Respiration (RECO) from Net Ecosystem Exchange (NEE) through two methods known
+as daytime and nighttime. Here we selected the daytime method (DT) which uses
+daytime and nighttime to parameterize a model with two components: one based on 
+light response curve and vapour pressure deficit and a second one using a
+respiration-temperature relationship to estimate RECO which in turn is used to
+obtain the difference with NEE and provide GPP. [@pastorello2020fluxnet2015].
 
 For each site, GPP was used in the analysis with three datasets representing daily, weekly, and monthly time scales. @fig-michigan_gpp_trends displays the GPP trends for the University of Michigan Biological Station, @fig-bartlett_gpp_trends illustrates the GPP trends for the Bartlett experimental forest, and @fig-borden_gpp_trends showcases the GPP trends for the Borden Forest Research Station. Additional details regarding the characteristics of these datasets can be found in Table @tbl-oneflux_datasets.
 
