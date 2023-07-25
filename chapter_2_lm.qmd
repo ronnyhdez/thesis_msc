@@ -245,17 +245,17 @@ The GPP for each of the sites can
 
 ### Satellite imagery
 
-We obtained the data from collections available in Google Earth Engine (See
-@tbl-satellite_images_datasets). A square polygon with an area of 3km
-surrounding the EC tower was defined for each site, and the complete data pixel
-values within this polygon was extracted for analysis.
+We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate Resolution
+Imaging Spectroradiometer (MODIS), specifically the collection MOD09GA Version 
+6.1 product. A square polygon with an area of 3km surrounding the EC tower was 
+defined for each site, and the complete data pixel values within this polygon 
+was extracted for analysis.
 
-Two MODIS (Moderate Resolution Imaging Spectroradiometer) products were
-utilized: `MODIS/006/MOD09GA` and `MODIS/061/MOD09A1`. The `MOD09GA` product has
-a spatial resolution of 500m and consists of 7 reflectance bands, with 3 of them
-being used to calculate vegetation indices. The `MOD09A1` product has a spatial
-resolution of 250m and consists of two bands, both used for vegetation index
-calculation.
+The MODIS (MOD09GA Version 6.1 product) contains the surface spectral reflectance
+from bands to 1 through 7 with a spatial resolution of 500m, with corrections 
+for atmospheric conditions such as aerosols, gasses and Rayleigh scattering 
+[@vermote2021modis]. Bands used to derived the vegetation indices are shown in
+@tbl-MODIS_500_indices_bands
 
 The data processing involved three main steps: filtering high-quality pixels,
 scaling band values, and calculating vegetation indices. High-quality pixels
@@ -1270,13 +1270,22 @@ Autem non labore numquam. Eveniet facere id qui impedit. Sunt temporibus sit neq
 
 : Sites ONEFlux datasets {#tbl-oneflux_datasets}
 
-| Data                  | Spatial resolution (m) | GEE image collection         |
-|-----------------------|------------------------|------------------------------|
-| MODIS reflectance     | 500                    | MODIS/006/MOD09GA            |
-| MODIS reflectance     | 250                    | MODIS/061/MOD09A1            |
-| Harmonized Sentinel-2 | 20 - 60 - 10           | COPERNICUS/ S2_SR_HARMONIZED |
+| **Name**    | **Description** | **Resolution** | **Wavelength** | **Scale** |
+|-------------|-----------------|----------------|----------------|-----------|
+| sur_refl_01 | Red             | 500 meters     | 620-670nm      | 0.0001    |
+| sur_refl_02 | NIR             | 500 meters     | 841-876nm      | 0.0001    |
+| sur_refl_03 | Blue            | 500 meters     | 459-479nm      | 0.0001    |
+| sur_refl_04 | Green           | 500 meters     | 545-565nm      | 0.0001    |
 
-: Satellite images datasets {#tbl-satellite_images_datasets}
+: MOD09GA.061 MODIS Bands {#tbl-MODIS_500_indices_bands}
+
+<!-- | Data                  | Spatial resolution (m) | GEE image collection         | -->
+<!-- |-----------------------|------------------------|------------------------------| -->
+<!-- | MODIS reflectance     | 500                    | MODIS/006/MOD09GA            | -->
+<!-- | MODIS reflectance     | 250                    | MODIS/061/MOD09A1            | -->
+<!-- | Harmonized Sentinel-2 | 20 - 60 - 10           | COPERNICUS/ S2_SR_HARMONIZED | -->
+
+<!-- : Satellite images datasets {#tbl-satellite_images_datasets} -->
 
 ## References
 
