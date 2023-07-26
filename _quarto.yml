@@ -10,6 +10,7 @@ book:
     - index.qmd
     - dedication.qmd
     - acknowledgements.qmd
+    - list_abbreviations.qmd
     - chapter_1_intro.qmd
     - chapter_2_lm.qmd
     - chapter_3_ml.qmd

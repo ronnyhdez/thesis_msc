@@ -1,20 +1,12 @@
 # Appendices
 
-| **Name** | **Description** | **Resolution** | **Wavelength**                | **Scale** |
-|----------------|----------------|----------------|----------------|----------------|
-| B4       | Red             | 10 meters      | 664.5nm (S2A) / 665nm (S2B)   | 0.0001    |
-| B8       | NIR             | 10 meters      | 835.1nm (S2A) / 833nm (S2B)   | 0.0001    |
-| B2       | Blue            | 10 meters      | 496.6nm (S2A) / 492.1nm (S2B) | 0.0001    |
+<!-- | **Name** | **Description** | **Resolution** | **Wavelength**                | **Scale** | -->
+<!-- |----------------|----------------|----------------|----------------|----------------| -->
+<!-- | B4       | Red             | 10 meters      | 664.5nm (S2A) / 665nm (S2B)   | 0.0001    | -->
+<!-- | B8       | NIR             | 10 meters      | 835.1nm (S2A) / 833nm (S2B)   | 0.0001    | -->
+<!-- | B2       | Blue            | 10 meters      | 496.6nm (S2A) / 492.1nm (S2B) | 0.0001    | -->
 
-: Harmonized Sentinel-2 Bands {#tbl-harmonized_s2_indices_bands}
-
-| **Name**    | **Description** | **Resolution** | **Wavelength** | **Scale** |
-|-------------|-----------------|----------------|----------------|-----------|
-| sur_refl_01 | Red             | 500 meters     | 620-670nm      | 0.0001    |
-| sur_refl_02 | NIR             | 500 meters     | 841-876nm      | 0.0001    |
-| sur_refl_03 | Blue            | 500 meters     | 459-479nm      | 0.0001    |
-
-: MOD09GA.061 MODIS Bands {#tbl-MODIS_500_indices_bands}
+<!-- : Harmonized Sentinel-2 Bands {#tbl-harmonized_s2_indices_bands} -->
 
 ```{r}
 #| label: tbl-state_1km_bitstrings

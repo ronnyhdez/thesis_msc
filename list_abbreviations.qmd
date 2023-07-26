@@ -1,0 +1,50 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# List of Abbreviations {.unnumbered}
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(tibble)
+library(gt)
+
+tribble(
+  ~"abb", ~"meaning",
+  "GPP" , "Gross Primary Production",
+  "EC", "Eddy Covariance",
+  "VI", "Vegetation Index",
+  "LUE", "Light Use Efficiency",
+  "MODIS", "Moderate Resolution Imaging Spectroradiometer",
+  "APAR", "Absorbed Photosynthetically Active Radiation",
+  "PAR", "Photosynthetically Active Radiation",
+  "fAPAR", "fraction of Photosynthetically Active Radiation",
+  "LAI", "Leaf Area Index",
+  "EVI", "Enhanced Vegetation Index",
+  "NDVI", "Normalized Difference Vegetation Index",
+  "NIRv", "Near-Infrared Reflectance Index",
+  "DT", "Day Time method",
+  "RECO", "Ecosystem Respiration",
+  "NEE", "Net Ecosystem Exchange",
+  "GEE", "Google Earth Engine",
+  "GAM", "Generalized Additive Model",
+  "LM", "Linear Model",
+  "RMSE", "root mean square error",
+  "AIC", "Akaike Information Criterion", 
+  "BIC", "Bayesian Information Criterion", 
+  "NIR", "Near Infrared",
+  "CCI", "Chlorophyll/Carotenoid Index",
+  "kNDVI", "Normalized Difference Vegetation Index based on kernel methods"
+) %>% 
+  arrange(abb) %>% 
+  gt()
+
+```
+
+
