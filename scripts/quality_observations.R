@@ -1,27 +1,21 @@
 # Quality pixels filtering
+## Script to create plots with quality label in each of the observations
 
-```{r}
+# Libraries and 
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-
 source("R/scale_reflectance_bands.R")
 source("R/create_bit_string.R")
 source("R/calculate_indices.R")
 source("R/filter_quality_pixels.R")
-```
 
 # Bartlett
-
-```{r}
 reflectance_500 <- 
   readRDS("data_satellite_processed/bartlett_modis_reflectance_500_clean.rds") %>% 
   mutate(id = row_number())
-```
 
 ## Identifying quality pixels
-
-```{r, message = FALSE}
 ## Obtain bitstrings
 qc_500_bitstring <- obtain_bit_qc_df(data = reflectance_500, 
                                      variable = "qc_500m",
@@ -34,11 +28,8 @@ state_1km_bitstring <- obtain_bit_qc_df(data = reflectance_500,
 ## Obtain quality descriptions
 qc_500_description <- obtain_qc_bit_description(qc_500_bitstring)
 state_1km_description <-  obtain_state_1km_description(state_1km_bitstring)
-```
 
 ## Preparing MODIS satellite data
-
-```{r, message = FALSE}
 ## Filter by highest quality categories
 reflectance_500_filtered <- filter_modis_pixels_500(data = reflectance_500,
                                                     state_1km = state_1km_description,
@@ -51,11 +42,8 @@ reflectance_500_filtered <- filter_modis_pixels_500(data = reflectance_500,
                     red = "sur_refl_b01",
                     blue = "sur_refl_b03",
                     green = "sur_refl_b04")
-```
 
-## Join
-
-```{r}
+## Join Bartlett observations
 rf <- reflectance_500_filtered %>% 
   select(id) %>% 
   mutate(quality = "high")
@@ -65,19 +53,13 @@ all_bartlett <- reflectance_500 %>%
   left_join(rf, by = "id") %>% 
   mutate(quality = replace_na(quality, "other"),
          site = "Bartlett")
-```
 
-# Borden
-
-```{r}
+# Borden ----
 reflectance_500 <- 
   readRDS("data_satellite_processed/borden_modis_reflectance_500_clean.rds") %>% 
   mutate(id = row_number())
-```
 
 ## Identifying quality pixels
-
-```{r, message = FALSE}
 ## Obtain bitstrings
 qc_500_bitstring <- obtain_bit_qc_df(data = reflectance_500, 
                                      variable = "qc_500m",
@@ -90,11 +72,8 @@ state_1km_bitstring <- obtain_bit_qc_df(data = reflectance_500,
 ## Obtain quality descriptions
 qc_500_description <- obtain_qc_bit_description(qc_500_bitstring)
 state_1km_description <-  obtain_state_1km_description(state_1km_bitstring)
-```
 
 ## Preparing MODIS satellite data
-
-```{r, message = FALSE}
 ## Filter by highest quality categories
 reflectance_500_filtered <- filter_modis_pixels_500(data = reflectance_500,
                                                     state_1km = state_1km_description,
@@ -107,11 +86,8 @@ reflectance_500_filtered <- filter_modis_pixels_500(data = reflectance_500,
                     red = "sur_refl_b01",
                     blue = "sur_refl_b03",
                     green = "sur_refl_b04")
-```
 
-## Join
-
-```{r}
+## Join Borden observations
 rf <- reflectance_500_filtered %>% 
   select(id) %>% 
   mutate(quality = "high")
@@ -121,20 +97,13 @@ all_borden <- reflectance_500 %>%
   left_join(rf, by = "id") %>% 
   mutate(quality = replace_na(quality, "other"),
          site = "Borden")
-```
 
-
-# Michigan
-
-```{r}
+# Michigan ----
 reflectance_500 <- 
   readRDS("data_satellite_processed/michigan_modis_reflectance_500_clean.rds") %>% 
   mutate(id = row_number())
-```
 
 ## Identifying quality pixels
-
-```{r, message = FALSE}
 ## Obtain bitstrings
 qc_500_bitstring <- obtain_bit_qc_df(data = reflectance_500, 
                                      variable = "qc_500m",
@@ -147,11 +116,9 @@ state_1km_bitstring <- obtain_bit_qc_df(data = reflectance_500,
 ## Obtain quality descriptions
 qc_500_description <- obtain_qc_bit_description(qc_500_bitstring)
 state_1km_description <-  obtain_state_1km_description(state_1km_bitstring)
-```
+
 
 ## Preparing MODIS satellite data
-
-```{r, message = FALSE}
 ## Filter by highest quality categories
 reflectance_500_filtered <- filter_modis_pixels_500(data = reflectance_500,
                                                     state_1km = state_1km_description,
@@ -164,11 +131,7 @@ reflectance_500_filtered <- filter_modis_pixels_500(data = reflectance_500,
                     red = "sur_refl_b01",
                     blue = "sur_refl_b03",
                     green = "sur_refl_b04")
-```
-
-## Join
-
-```{r}
+## Join Michigan observations
 rf <- reflectance_500_filtered %>% 
   select(id) %>% 
   mutate(quality = "high")
@@ -178,12 +141,9 @@ all_michigan <- reflectance_500 %>%
   left_join(rf, by = "id") %>% 
   mutate(quality = replace_na(quality, "other"),
          site = "Michigan")
-```
 
 # Plot
-
-```{r}
-## Join all observations
+## Join all 3 sites datasets with observations classified according to quality ----
 all <- bind_rows(all_bartlett, all_borden, all_michigan)
 
 ## Remove all unnecesary objects
@@ -211,8 +171,8 @@ all %>%
   scale_fill_viridis_d(begin = 0.2, end = 0.8) +
   labs(x = "Date", 
        y = "Total observations (pixels)",
-       fill = "Quality") +
+       fill = "Site") +
   theme_bw(base_size = 12)
-```
+
 
 
