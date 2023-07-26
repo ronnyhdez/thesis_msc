@@ -1,0 +1,99 @@
+# Quality pixels filtering
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+source("R/scale_reflectance_bands.R")
+source("R/create_bit_string.R")
+source("R/calculate_indices.R")
+source("R/filter_quality_pixels.R")
+```
+
+# Bartlett
+```{r}
+reflectance_500 <- 
+  readRDS("data_satellite_processed/bartlett_modis_reflectance_500_clean.rds") %>% 
+  mutate(id = row_number())
+```
+
+## Identifying quality pixels
+
+```{r, message = FALSE}
+## Obtain bitstrings
+qc_500_bitstring <- obtain_bit_qc_df(data = reflectance_500, 
+                                     variable = "qc_500m",
+                                     bits = 32)
+
+state_1km_bitstring <- obtain_bit_qc_df(data = reflectance_500,
+                                        variable = "state_1km", 
+                                        bits = 16)
+
+## Obtain quality descriptions
+qc_500_description <- obtain_qc_bit_description(qc_500_bitstring)
+state_1km_description <-  obtain_state_1km_description(state_1km_bitstring)
+```
+
+## Preparing MODIS satellite data
+
+```{r, message = FALSE}
+## Filter by highest quality categories
+reflectance_500_filtered <- filter_modis_pixels_500(data = reflectance_500,
+                                                    state_1km = state_1km_description,
+                                                    qc_500 = qc_500_description,
+                                                    quality = "highest") %>% 
+  # Scaling band values
+  scale_modis_reflectance_bands() %>% 
+  # Indices calculation
+  calculate_indices(nir = "sur_refl_b02",
+                    red = "sur_refl_b01",
+                    blue = "sur_refl_b03",
+                    green = "sur_refl_b04")
+```
+
+
+```{r}
+rf <- reflectance_500_filtered %>% 
+  select(id) %>% 
+  mutate(quality = "high")
+
+all <- reflectance_500 %>% 
+  select(id, starts_with("sur"), date) %>% 
+  left_join(rf, by = "id") %>% 
+  mutate(quality = replace_na(quality, "other"))
+
+all %>% 
+  mutate(site = "Bartlett") %>% 
+  ggplot(aes(x = site, fill = quality)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d() +
+  labs(x = "Site", 
+       y = "Total observations (pixels)",
+       fill = "Quality") +
+  theme_bw(base_size = 12)
+```
+
+```{r}
+all %>% 
+  group_by(zoo::yearmon(date), quality) %>% 
+  tally() 
+
+all %>% 
+  mutate(year_mon = zoo::as.yearmon(date)) %>% 
+  ggplot(aes(x = year_mon, fill = quality)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d() +
+  labs(x = "Site", 
+       y = "Total observations (pixels)",
+       fill = "Quality") +
+  theme_bw(base_size = 12)
+
+
+all %>% 
+  mutate(year_mon = zoo::as.yearmon(date)) %>% glimpse()
+  ggplot(aes(year_mon, value)) +
+  geom_area(aes(fill = type))
+```
+
+
