@@ -264,8 +264,8 @@ were filtered using four bit-encoded variables: `state_1km`, `qc_500m`,
 `q_scan`, and `g_flags` along with each of the bands bits quality indicators.
 These variables provided information about the observation quality. The
 bit-encoded variables were transformed into categorical strings, and only the
-categories indicating the best quality were selected to filter the pixels. For
-filtering, the `state_1km` and `qc_500m` variables were used, as `q_scan` was
+categories indicating the best quality were selected to filter the pixels (@fig-quality_pixels).
+For filtering, the `state_1km` and `qc_500m` variables were used, as `q_scan` was
 not informative and `g_flags` had the same value for all observations. The
 specific bit strings selected for `state_1km` are shown in
 @tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
@@ -372,6 +372,24 @@ insignificant in terms of representing meaningful vegetation productivity. GPP
 values below this threshold were considered to be either below the detection
 limit or not enough to contribute significantly to the overall analysis.
 
+```{r}
+#| label: fig-quality_pixels
+#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis)"
+#| echo: false
+#| message: false
+#| warning: false
+source("scripts/quality_observations.R")
+
+all %>% 
+  ggplot(aes(x = site, fill = quality)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d(begin = 0.34, end = 0.8) +
+  labs(x = "Site", 
+       y = "Total observations (pixels)",
+       fill = "Quality") +
+  theme_bw(base_size = 12)
+
+```
 -   Data matching of satellite data with flux data per day, week and month
 
 ### Data Analysis
@@ -399,7 +417,7 @@ values for both daily and weekly datasets, a Generalized Additive Model (GAM)
 was developed to estimate Gross Primary Production (GPP)
 
 
-```{r}
+```{r gpp_vi_realtions_all_sites}
 #| label: fig-gpp_vi_relation
 #| fig-cap: "GPP VI's relation at different time scales per site"
 #| fig-width: 7
@@ -500,8 +518,6 @@ plot_grid(daily_grid,
 \newpage
 
 ## Results
-
-
 
 ### Monthly GPP and VI's relations
 

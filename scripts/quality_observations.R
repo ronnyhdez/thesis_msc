@@ -152,27 +152,27 @@ rm(all_bartlett, all_borden, all_michigan,
    reflectance_500, reflectance_500_filtered,
    rf, state_1km_bitstring, state_1km_description)
 
-## Stacked bar plot for the 3 sites
-all %>% 
-  ggplot(aes(x = site, fill = quality)) +
-  geom_bar(position = "stack") +
-  scale_fill_viridis_d(begin = 0.34, end = 0.8) +
-  labs(x = "Site", 
-       y = "Total observations (pixels)",
-       fill = "Quality") +
-  theme_bw(base_size = 12)
+# ## Stacked bar plot for the 3 sites
+# all %>% 
+#   ggplot(aes(x = site, fill = quality)) +
+#   geom_bar(position = "stack") +
+#   scale_fill_viridis_d(begin = 0.34, end = 0.8) +
+#   labs(x = "Site", 
+#        y = "Total observations (pixels)",
+#        fill = "Quality") +
+#   theme_bw(base_size = 12)
 
-## Number of observations per month per site
-all %>% 
-  filter(quality == "high") %>% 
-  mutate(year_mon = zoo::as.yearmon(date)) %>% 
-  ggplot(aes(x = year_mon, fill = site)) +
-  geom_bar(position = "stack") +
-  scale_fill_viridis_d(begin = 0.2, end = 0.8) +
-  labs(x = "Date", 
-       y = "Total observations (pixels)",
-       fill = "Site") +
-  theme_bw(base_size = 12)
+# ## Number of observations per month per site
+# all %>% 
+#   filter(quality == "high") %>% 
+#   mutate(year_mon = zoo::as.yearmon(date)) %>% 
+#   ggplot(aes(x = year_mon, fill = site)) +
+#   geom_bar(position = "stack") +
+#   scale_fill_viridis_d(begin = 0.2, end = 0.8) +
+#   labs(x = "Date", 
+#        y = "Total observations (pixels)",
+#        fill = "Site") +
+#   theme_bw(base_size = 12)
 
 
 
