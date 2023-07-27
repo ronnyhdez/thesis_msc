@@ -292,11 +292,11 @@ indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi),
 <!-- include the blue band EVI calculations were not performed for this dataset. -->
 
 $$
-NDVI = \frac{B02 - B01}{B02 + B01}
+NDVI = \frac{NIR - Red}{NIR + Red}
 $$ {#eq-ndvi}
 
 $$
-NIRv = B02\times\frac{B02 - B01}{B02 + B01}
+NIRv = NIR\times\frac{NIR - Red}{NIR + Red}
 $$ {#eq-nirv}
 
 $$
@@ -423,7 +423,7 @@ was developed to estimate Gross Primary Production (GPP)
 
 ```{r gpp_vi_realtions_all_sites}
 #| label: fig-gpp_vi_relation
-#| fig-cap: "GPP VI's relation at different time scales per site"
+#| fig-cap: "Relationship between MODIS 500m derived vegetation indices and GPP. Every observation corresponds to the observed GPP from a flux tower site (Borden Forest Research Station, Bartlett Experimental Forest or U. Michigan Biological Station) The summarized vegetation indices NDVI (Normalized difference vegetation index), NIRv (Near Infrared vegetation), CCI (Chlorophyll/Carotenoid Index), kNDVI (Normalized Difference Vegetation Index based on kernel methods), and EVI (Enhanced Vegetation Index) per date (daily, weekly, and monthly). The number of pixels corresponds to the number of observations used to obtain the mean of the vegetation index. The red line indicates the Generalized Additive Model for the daily and weekly relations and the Lineal Model for monthly values"
 #| fig-width: 7
 #| fig-height: 9
 #| echo: false
