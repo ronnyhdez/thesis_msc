@@ -43,8 +43,8 @@ tribble(
   "kNDVI", "Normalized Difference Vegetation Index based on kernel methods"
 ) %>% 
   arrange(abb) %>% 
-  gt()
-
+  gt() %>% 
+  tab_options(column_labels.hidden = TRUE)
 ```
 
 

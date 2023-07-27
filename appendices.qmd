@@ -165,3 +165,23 @@ tribble(
   )
 ```
 
+```{r}
+#| label: fig-complete_quality_pixels
+#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis)"
+#| echo: false
+#| message: false
+#| warning: false
+source("scripts/quality_observations.R")
+
+all %>%
+  filter(quality == "high") %>%
+  mutate(year_mon = zoo::as.yearmon(date)) %>%
+  ggplot(aes(x = year_mon, fill = site)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d(begin = 0.2, end = 0.8) +
+  labs(x = "Date",
+       y = "Total observations (pixels)",
+       fill = "Site") +
+  theme_bw(base_size = 12)
+```
+

@@ -239,10 +239,10 @@ borden_gpp_trends
 bartlett_gpp_trends
 ```
 
-The GPP for each of the sites can
+<!-- The GPP for each of the sites can -->
 
--   include description of the ONEFlux processing (gap filling, data quality,
-    gpp estimation, gpp uncertainty with DT and NT)
+<!-- -   include description of the ONEFlux processing (gap filling, data quality, -->
+<!--     gpp estimation, gpp uncertainty with DT and NT) -->
 
 ### Satellite imagery
 
@@ -265,6 +265,7 @@ were filtered using four bit-encoded variables: `state_1km`, `qc_500m`,
 These variables provided information about the observation quality. The
 bit-encoded variables were transformed into categorical strings, and only the
 categories indicating the best quality were selected to filter the pixels (@fig-quality_pixels).
+
 For filtering, the `state_1km` and `qc_500m` variables were used, as `q_scan` was
 not informative and `g_flags` had the same value for all observations. The
 specific bit strings selected for `state_1km` are shown in
@@ -279,13 +280,16 @@ consistency in the data.
 According to the documentation, any scaled value that fell outside the range of
 `0` to `1` was considered a fill value or uncorrected Level 1B data and was
 subsequently discarded. These values were deemed unreliable or lacking
-meaningful information for the analysis.
+meaningful information for the analysis. The complete selected high quality
+pixels for the complete period per each of the sites is shown in @fig-complete_quality_pixels
 
 Once all the band values were scaled within the valid range the vegetation
 indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi),
-`kNDVI` (@eq-kndvi), and `CCI` (@eq-cci) were calculated. However, since the
-MODIS product with a spatial resolution of 250m (`MODIS/061/MOD09A1`) does not
-include the blue band EVI calculations were not performed for this dataset.
+`kNDVI` (@eq-kndvi), and `CCI` (@eq-cci) were calculated.
+
+<!-- However, since the -->
+<!-- MODIS product with a spatial resolution of 250m (`MODIS/061/MOD09A1`) does not -->
+<!-- include the blue band EVI calculations were not performed for this dataset. -->
 
 $$
 NDVI = \frac{B02 - B01}{B02 + B01}
