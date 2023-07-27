@@ -47,9 +47,11 @@ conversion efficiency explains the amount of carbon that a specific type of
 vegetation can fix per unit of solar radiation [@monteith_solar_1972]. The
 Moderate Resolution Imaging Spectroradiometer (MODIS) GPP product uses an 
 algorithm based on this radiation conversion efficiency concept, relating the
-absorbed photosynthetically active radiation (APAR) with the LUE term [@heinsch_evaluation_2006].
+absorbed photosynthetically active radiation (APAR) with the LUE term [@heinsch_evaluation_2006] as shown in @eq-gpp .
 
-GPP = PAR \* fAPAR \* LUE
+$$
+GPP = PAR \times fAPAR \times LUE
+$$ {#eq-gpp}
 
 Where PAR is the incident photosynthetically active radiation and fAPAR is the
 fraction of the PAR that is effectively absorbed by plants. fAPAR can be used to
@@ -135,6 +137,8 @@ contribution. We aim to quantify the uncertainty from some of the most used
 satellite vegetation indices with in-situ GPP data from the Bartlett
 Experimental Forest (USA), the Borden Forest Research Station flux-site
 (Canada), and the University of Michigan Biological Station (USA).
+
+\newpage
 
 ## Methods
 
