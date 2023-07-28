@@ -47,9 +47,11 @@ conversion efficiency explains the amount of carbon that a specific type of
 vegetation can fix per unit of solar radiation [@monteith_solar_1972]. The
 Moderate Resolution Imaging Spectroradiometer (MODIS) GPP product uses an 
 algorithm based on this radiation conversion efficiency concept, relating the
-absorbed photosynthetically active radiation (APAR) with the LUE term [@heinsch_evaluation_2006].
+absorbed photosynthetically active radiation (APAR) with the LUE term [@heinsch_evaluation_2006] as shown in @eq-gpp .
 
-GPP = PAR \* fAPAR \* LUE
+$$
+GPP = PAR \times fAPAR \times LUE
+$$ {#eq-gpp}
 
 Where PAR is the incident photosynthetically active radiation and fAPAR is the
 fraction of the PAR that is effectively absorbed by plants. fAPAR can be used to
@@ -135,6 +137,8 @@ contribution. We aim to quantify the uncertainty from some of the most used
 satellite vegetation indices with in-situ GPP data from the Bartlett
 Experimental Forest (USA), the Borden Forest Research Station flux-site
 (Canada), and the University of Michigan Biological Station (USA).
+
+\newpage
 
 ## Methods
 
@@ -239,18 +243,18 @@ borden_gpp_trends
 bartlett_gpp_trends
 ```
 
-The GPP for each of the sites can
+<!-- The GPP for each of the sites can -->
 
--   include description of the ONEFlux processing (gap filling, data quality,
-    gpp estimation, gpp uncertainty with DT and NT)
+<!-- -   include description of the ONEFlux processing (gap filling, data quality, -->
+<!--     gpp estimation, gpp uncertainty with DT and NT) -->
 
 ### Satellite imagery
 
-We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate Resolution
-Imaging Spectroradiometer (MODIS), specifically the collection MOD09GA Version 
-6.1 product. A square polygon with an area of 3km surrounding the EC tower was 
-defined for each site, and the complete data pixel values within this polygon 
-was extracted for analysis.
+We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate 
+Resolution Imaging Spectroradiometer (MODIS), specifically the collection 
+MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding 
+the EC tower was defined for each site, and the complete data pixel values 
+within this polygon was extracted for analysis.
 
 The MODIS (MOD09GA Version 6.1 product) contains the surface spectral reflectance
 from bands to 1 through 7 with a spatial resolution of 500m, with corrections 
@@ -264,9 +268,10 @@ were filtered using four bit-encoded variables: `state_1km`, `qc_500m`,
 `q_scan`, and `g_flags` along with each of the bands bits quality indicators.
 These variables provided information about the observation quality. The
 bit-encoded variables were transformed into categorical strings, and only the
-categories indicating the best quality were selected to filter the pixels. For
-filtering, the `state_1km` and `qc_500m` variables were used, as `q_scan` was
-not informative and `g_flags` had the same value for all observations. The
+categories indicating the best quality were selected to filter the pixels (@fig-quality_pixels).
+
+For filtering, the `state_1km` and `qc_500m` variables were used, as `q_scan` 
+was not informative and `g_flags` had the same value for all observations. The
 specific bit strings selected for `state_1km` are shown in
 @tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
 
@@ -279,20 +284,25 @@ consistency in the data.
 According to the documentation, any scaled value that fell outside the range of
 `0` to `1` was considered a fill value or uncorrected Level 1B data and was
 subsequently discarded. These values were deemed unreliable or lacking
-meaningful information for the analysis.
+meaningful information for the analysis. The complete selected high quality
+pixels for the complete period per each of the sites is shown in @fig-complete_quality_pixels
 
 Once all the band values were scaled within the valid range the vegetation
 indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi),
-`kNDVI` (@eq-kndvi), and `CCI` (@eq-cci) were calculated. However, since the
-MODIS product with a spatial resolution of 250m (`MODIS/061/MOD09A1`) does not
-include the blue band EVI calculations were not performed for this dataset.
+`kNDVI` (@eq-kndvi), and `CCI` (@eq-cci) were calculated and then matched with
+the corresponding date in the flux datasets. The resulting values used for the
+analysis are shown in @fig-quality_pixels
+
+<!-- However, since the -->
+<!-- MODIS product with a spatial resolution of 250m (`MODIS/061/MOD09A1`) does not -->
+<!-- include the blue band EVI calculations were not performed for this dataset. -->
 
 $$
-NDVI = \frac{B02 - B01}{B02 + B01}
+NDVI = \frac{NIR - Red}{NIR + Red}
 $$ {#eq-ndvi}
 
 $$
-NIRv = B02\times\frac{B02 - B01}{B02 + B01}
+NIRv = NIR\times\frac{NIR - Red}{NIR + Red}
 $$ {#eq-nirv}
 
 $$
@@ -338,14 +348,14 @@ $$ {#eq-cci}
 
 In the study, three datasets were prepared for each site: a daily dataset, a
 weekly dataset, and a monthly dataset. These datasets were generated from the
-satellite images and the ONEFluxprocess in order to capture variations in
-vegetation indices (VI), band values, and Gross Primary Production (GPP) over
-different time scales.
+satellite imagery data with the selected high quality pixels and the
+ONEFluxprocess data in order to capture variations in vegetation indices (VI),
+band values, and Gross Primary Production (GPP) over different time scales.
 
-The daily dataset included the VI values, band values, and GPP measurements
-collected on a daily basis. This dataset provided a high-resolution
-representation of the variables, allowing for a detailed analysis of their daily
-fluctuations.
+The daily dataset included the VI values, band values only from the high quality
+pixels, and GPP measurements derived from the ONEFlux process collected on a
+daily basis. This dataset provided a high-resolution representation of the
+variables, allowing for a detailed analysis of their daily fluctuations.
 
 The weekly and monthly datasets were derived from the corresponding daily
 dataset. These datasets contained summarized values of the VI's and band values,
@@ -372,7 +382,64 @@ insignificant in terms of representing meaningful vegetation productivity. GPP
 values below this threshold were considered to be either below the detection
 limit or not enough to contribute significantly to the overall analysis.
 
--   Data matching of satellite data with flux data per day, week and month
+```{r}
+#| label: fig-quality_pixels
+#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis) per site."
+#| echo: false
+#| message: false
+#| warning: false
+source("scripts/quality_observations.R")
+
+all %>% 
+  ggplot(aes(x = site, fill = quality)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d(begin = 0.34, end = 0.8) +
+  labs(x = "Site", 
+       y = "Total observations (pixels)",
+       fill = "Quality") +
+  theme_bw(base_size = 12)
+```
+
+```{r}
+#| label: fig-obs_used_analysis
+#| fig-cap: "Monthly distribution of high-quality MODIS observations after joining with flux observations containing Gross Primary Productivity (GPP) values higher than 1."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Dataset used to analyze the data
+daily_plot_500 %>% 
+  # Dataset have all indices per row, so for the same date there are 5 obs
+  filter(index == "ndvi_mean") %>% 
+  group_by(site, date) %>% 
+  tally() %>% 
+  group_by(site) %>% 
+  mutate(year_mon = zoo::as.yearmon(date)) %>% 
+  ggplot(aes(x = year_mon, fill = site)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d(begin = 0.2, end = 0.8) +
+  labs(x = "Date",
+       y = "Total observations",
+       fill = "Site") +
+  theme_bw(base_size = 12) 
+
+# daily_plot_500 %>% 
+#   pivot_wider(names_from = index, values_from = value) %>% 
+#   select(date, total_obs, site) %>% 
+#   mutate(year_mon = zoo::as.yearmon(date)) %>% 
+#   group_by(site, year_mon) %>% 
+#   tally() %>% 
+#   ungroup() %>% 
+#   mutate(year_mon = as.factor(year_mon)) %>%
+#   ggplot(aes(x = year_mon, y = n, fill = site)) +
+#   geom_bar(stat = "identity", position = "stack") +
+#   scale_fill_viridis_d(begin = 0.2, end = 0.8) +
+#   labs(x = "Date",
+#        y = "Total observations",
+#        fill = "Site") +
+#   theme_bw(base_size = 12) +
+#   theme(axis.text.x = element_text(angle = 90, h = 1))
+```
 
 ### Data Analysis
 
@@ -399,9 +466,9 @@ values for both daily and weekly datasets, a Generalized Additive Model (GAM)
 was developed to estimate Gross Primary Production (GPP)
 
 
-```{r}
+```{r gpp_vi_realtions_all_sites}
 #| label: fig-gpp_vi_relation
-#| fig-cap: "GPP VI's relation at different time scales per site"
+#| fig-cap: "Relationship between MODIS 500m derived vegetation indices and GPP. Every observation corresponds to the observed GPP from a flux tower site (Borden Forest Research Station, Bartlett Experimental Forest or U. Michigan Biological Station) The summarized vegetation indices NDVI (Normalized difference vegetation index), NIRv (Near Infrared vegetation), CCI (Chlorophyll/Carotenoid Index), kNDVI (Normalized Difference Vegetation Index based on kernel methods), and EVI (Enhanced Vegetation Index) per date (daily, weekly, and monthly). The number of pixels corresponds to the number of observations used to obtain the mean of the vegetation index. The red line indicates the Generalized Additive Model for the daily and weekly relations and the Lineal Model for monthly values"
 #| fig-width: 7
 #| fig-height: 9
 #| echo: false
@@ -500,8 +567,6 @@ plot_grid(daily_grid,
 \newpage
 
 ## Results
-
-
 
 ### Monthly GPP and VI's relations
 
@@ -656,10 +721,9 @@ cci_glance <- cci_lm %>%
 ```
 
 
-
 ```{r lm_monthly_table}
 #| label: tbl-lm_model_results
-#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices (Per site)"
+#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly basis (per site)."
 #| echo: false
 #| message: false
 #| warning: false

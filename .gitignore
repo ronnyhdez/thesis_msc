@@ -43,6 +43,7 @@ vignettes/*.pdf
 _book/
 data_ard
 data
+data_satellite_processed 
 
 # Folders created with outputs
 chapter_2_brete_files/

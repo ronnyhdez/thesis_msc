@@ -16,7 +16,7 @@ library(tibble)
 library(gt)
 
 tribble(
-  ~"abb", ~"meaning",
+  ~"Abbreviation", ~"Full phrase ",
   "GPP" , "Gross Primary Production",
   "EC", "Eddy Covariance",
   "VI", "Vegetation Index",
@@ -42,9 +42,9 @@ tribble(
   "CCI", "Chlorophyll/Carotenoid Index",
   "kNDVI", "Normalized Difference Vegetation Index based on kernel methods"
 ) %>% 
-  arrange(abb) %>% 
-  gt()
-
+  arrange(Abbreviation) %>% 
+  gt() %>% 
+  tab_options(column_labels.hidden = TRUE)
 ```
 
 
