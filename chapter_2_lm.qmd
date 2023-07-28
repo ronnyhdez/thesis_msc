@@ -250,11 +250,11 @@ bartlett_gpp_trends
 
 ### Satellite imagery
 
-We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate Resolution
-Imaging Spectroradiometer (MODIS), specifically the collection MOD09GA Version 
-6.1 product. A square polygon with an area of 3km surrounding the EC tower was 
-defined for each site, and the complete data pixel values within this polygon 
-was extracted for analysis.
+We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate 
+Resolution Imaging Spectroradiometer (MODIS), specifically the collection 
+MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding 
+the EC tower was defined for each site, and the complete data pixel values 
+within this polygon was extracted for analysis.
 
 The MODIS (MOD09GA Version 6.1 product) contains the surface spectral reflectance
 from bands to 1 through 7 with a spatial resolution of 500m, with corrections 
@@ -270,8 +270,8 @@ These variables provided information about the observation quality. The
 bit-encoded variables were transformed into categorical strings, and only the
 categories indicating the best quality were selected to filter the pixels (@fig-quality_pixels).
 
-For filtering, the `state_1km` and `qc_500m` variables were used, as `q_scan` was
-not informative and `g_flags` had the same value for all observations. The
+For filtering, the `state_1km` and `qc_500m` variables were used, as `q_scan` 
+was not informative and `g_flags` had the same value for all observations. The
 specific bit strings selected for `state_1km` are shown in
 @tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
 
@@ -289,7 +289,9 @@ pixels for the complete period per each of the sites is shown in @fig-complete_q
 
 Once all the band values were scaled within the valid range the vegetation
 indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi),
-`kNDVI` (@eq-kndvi), and `CCI` (@eq-cci) were calculated.
+`kNDVI` (@eq-kndvi), and `CCI` (@eq-cci) were calculated and then matched with
+the corresponding date in the flux datasets. The resulting values used for the
+analysis are shown in @fig-quality_pixels
 
 <!-- However, since the -->
 <!-- MODIS product with a spatial resolution of 250m (`MODIS/061/MOD09A1`) does not -->
@@ -346,14 +348,14 @@ $$ {#eq-cci}
 
 In the study, three datasets were prepared for each site: a daily dataset, a
 weekly dataset, and a monthly dataset. These datasets were generated from the
-satellite images and the ONEFluxprocess in order to capture variations in
-vegetation indices (VI), band values, and Gross Primary Production (GPP) over
-different time scales.
+satellite imagery data with the selected high quality pixels and the
+ONEFluxprocess data in order to capture variations in vegetation indices (VI),
+band values, and Gross Primary Production (GPP) over different time scales.
 
-The daily dataset included the VI values, band values, and GPP measurements
-collected on a daily basis. This dataset provided a high-resolution
-representation of the variables, allowing for a detailed analysis of their daily
-fluctuations.
+The daily dataset included the VI values, band values only from the high quality
+pixels, and GPP measurements derived from the ONEFlux process collected on a
+daily basis. This dataset provided a high-resolution representation of the
+variables, allowing for a detailed analysis of their daily fluctuations.
 
 The weekly and monthly datasets were derived from the corresponding daily
 dataset. These datasets contained summarized values of the VI's and band values,
@@ -382,7 +384,7 @@ limit or not enough to contribute significantly to the overall analysis.
 
 ```{r}
 #| label: fig-quality_pixels
-#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis)"
+#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis) per site."
 #| echo: false
 #| message: false
 #| warning: false
@@ -396,9 +398,48 @@ all %>%
        y = "Total observations (pixels)",
        fill = "Quality") +
   theme_bw(base_size = 12)
-
 ```
--   Data matching of satellite data with flux data per day, week and month
+
+```{r}
+#| label: fig-obs_used_analysis
+#| fig-cap: "Monthly distribution of high-quality MODIS observations after joining with flux observations containing Gross Primary Productivity (GPP) values higher than 1."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Dataset used to analyze the data
+daily_plot_500 %>% 
+  # Dataset have all indices per row, so for the same date there are 5 obs
+  filter(index == "ndvi_mean") %>% 
+  group_by(site, date) %>% 
+  tally() %>% 
+  group_by(site) %>% 
+  mutate(year_mon = zoo::as.yearmon(date)) %>% 
+  ggplot(aes(x = year_mon, fill = site)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d(begin = 0.2, end = 0.8) +
+  labs(x = "Date",
+       y = "Total observations",
+       fill = "Site") +
+  theme_bw(base_size = 12) 
+
+# daily_plot_500 %>% 
+#   pivot_wider(names_from = index, values_from = value) %>% 
+#   select(date, total_obs, site) %>% 
+#   mutate(year_mon = zoo::as.yearmon(date)) %>% 
+#   group_by(site, year_mon) %>% 
+#   tally() %>% 
+#   ungroup() %>% 
+#   mutate(year_mon = as.factor(year_mon)) %>%
+#   ggplot(aes(x = year_mon, y = n, fill = site)) +
+#   geom_bar(stat = "identity", position = "stack") +
+#   scale_fill_viridis_d(begin = 0.2, end = 0.8) +
+#   labs(x = "Date",
+#        y = "Total observations",
+#        fill = "Site") +
+#   theme_bw(base_size = 12) +
+#   theme(axis.text.x = element_text(angle = 90, h = 1))
+```
 
 ### Data Analysis
 
@@ -680,10 +721,9 @@ cci_glance <- cci_lm %>%
 ```
 
 
-
 ```{r lm_monthly_table}
 #| label: tbl-lm_model_results
-#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices (Per site)"
+#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly basis (per site)."
 #| echo: false
 #| message: false
 #| warning: false
