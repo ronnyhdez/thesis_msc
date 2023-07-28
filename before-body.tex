@@ -6,30 +6,30 @@ $if(title)$
 \thispagestyle{empty}
 {\centering
 \hbox{}\vskip 0cm plus 1fill
-{\Huge\bfseries $title$ \par}
+{\Large\bfseries $title$ \par}
 $if(subtitle)$
 \vspace{3ex}
-{\Large\bfseries $subtitle$ \par}
+{\small\bfseries $subtitle$ \par}
 $endif$
 \vspace{12ex}
 $for(by-author)$
 {\Large\bfseries $by-author.name.literal$ \par}
 \vspace{3ex}
-{\Large ORCID: $by-author.orcid$ \par}
+{\small ORCID: $by-author.orcid$ \par}
 \vskip 0cm plus 2fill
+\vspace{5ex}
+{\large A thesis submitted in partial fulfillment of the requirements for the degree of \par}
 {\bfseries\large Master of Science \par}
-\vspace{3ex}
-{\bfseries\large $date$ \par}
-\vspace{12ex}
+\vskip 0cm plus 2fill
+\vspace{5ex}
 $for(by-author.affiliations)$%
 $if(it.department)$%
 {\bfseries\large $it.department$ \par}
-\vspace{3ex}
 $endif$%
 {\bfseries\large $it.name$ \par}
-$endfor$$endfor$%
 \vspace{12ex}
-{\small Submitted in total fulfilment of the requirements
-of the degree of Doctor of Philosophy \par}
+{\bfseries\large $date$ \par}
+\vspace{12ex}
 }
+$endfor$$endfor$%
 $endif$
