@@ -47,4 +47,3 @@ tribble(
   tab_options(column_labels.hidden = TRUE)
 ```
 
-
