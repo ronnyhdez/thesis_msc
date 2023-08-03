@@ -32,6 +32,7 @@ format:
   pdf:
     template-partials:
       - before-body.tex
+      - toc.tex
     tbl-cap-location: top
     documentclass: scrreprt
     lof: true
@@ -39,15 +40,16 @@ format:
     page-breaks: true
     geometry:
       - inner=3cm
-      - outer=4cm
-      - top=3cm
-      - bottom=4cm
-      - headsep=22pt
-      - headheight=11pt
+      - outer=3cm
+      - top=2cm
+      - bottom=2cm
+      - headsep=8pt
+      - headheight=4pt
       - footskip=33pt
       - ignorehead
       - ignorefoot
       - heightrounded
+    linestretch: 1.5
     filters:
      - section-refs.lua # needs pandoc version >= 2.11 to work
 
