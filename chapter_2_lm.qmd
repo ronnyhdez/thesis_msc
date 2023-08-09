@@ -350,7 +350,7 @@ In the study, three datasets were prepared for each site: a daily dataset, a
 weekly dataset, and a monthly dataset. These datasets were generated from the
 satellite imagery data with the selected high quality pixels and the
 ONEFluxprocess data in order to capture variations in vegetation indices (VI),
-band values, and Gross Primary Production (GPP) over different time scales.
+band values, and GPP over different time scales.
 
 The daily dataset included the VI values, band values only from the high quality
 pixels, and GPP measurements derived from the ONEFlux process collected on a
