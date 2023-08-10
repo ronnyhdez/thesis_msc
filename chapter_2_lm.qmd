@@ -375,7 +375,7 @@ and patterns of the variables, enabling a more thorough understanding of the
 ecological processes and relationships under investigation.
 
 For each site and across all time scales (daily, weekly, and monthly), a
-filtering step was implemented to remove GPP (Gross Primary Production) values
+filtering step was implemented to remove GPP values
 that were less than 1 gC m^-2^ d^-1^ . By filtering out GPP values less than 1,
 the study aimed to exclude values that were potentially unreliable or
 insignificant in terms of representing meaningful vegetation productivity. GPP
@@ -443,8 +443,8 @@ daily_plot_500 %>%
 
 ### Data Analysis
 
-Various methodologies were employed to estimate Gross Primary Production (GPP)
-by utilizing Vegetation Indices (VIs) and spectral bands derived from satellite
+Various methodologies were employed to estimate GPP
+by utilizing VIs and spectral bands derived from satellite
 images. The choice of model for GPP estimation varied depending on the specific
 time scale under consideration. This approach aimed to enhance the accuracy of
 GPP estimation by employing models tailored to the characteristics of each time
@@ -463,7 +463,7 @@ the study sites.
 
 Considering the non-normal distribution and variability observed in the data
 values for both daily and weekly datasets, a Generalized Additive Model (GAM)
-was developed to estimate Gross Primary Production (GPP)
+was developed to estimate GPP.
 
 
 ```{r gpp_vi_realtions_all_sites}
@@ -570,8 +570,8 @@ plot_grid(daily_grid,
 
 ### Monthly GPP and VI's relations
 
-The @tbl-lm_model_results provides a summary of linear models used for 
-Gross Primary Production (GPP) estimation at each site, employing the vegetation
+The @tbl provides a summary of linear models used for 
+GPP estimation at each site, employing the vegetation
 indices as predictors. For each site and predictor, the table includes the 
 relevant model summary statistics, such as r-squared, adjusted r-squared, 
 root mean square error (RMSE), p-value, as well as other metrics like the Akaike 
@@ -586,175 +586,139 @@ better results compared to the other sites. These findings suggest that while
 NDVI may not be the optimal vegetation index for GPP estimation at these sites,
 there may still be variations in performance across different locations.
 
+The complete metrics results for each of the monthly lm models are in
+@tbl-complete_lm_monthly_results
+
+
 ```{r lm_monthly}
-#| echo: false
-#| message: false
-#| warning: false
-
-# Prepare data with all sites
-ind_bar <- bartlett_monthly_500 %>% 
-  select(gpp_dt_vut_ref, evi_mean, ndvi_mean,
-		 nirv_mean, kndvi_mean, cci_mean) %>% 
-  mutate(site = "Bartlett")
-
-ind_bor <- borden_monthly_500 %>% 
-  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, 
-		 nirv_mean, kndvi_mean, cci_mean) %>% 
-  mutate(site = "Borden")
-
-ind_mich <- michigan_monthly_500 %>% 
-  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, 
-		 nirv_mean, kndvi_mean, cci_mean) %>% 
-  mutate(site = "Michigan")
-
-ind_sites <- bind_rows(ind_bar, ind_bor, ind_mich)
-
-# Linear model for all sites EVI
-evi_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ evi_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  ) 
-
-evi_fit <- evi_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "EVI")
-
-evi_glance <- evi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied, -augmented) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "EVI")
-
-# Linear model for all sites NDVI
-ndvi_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ ndvi_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-
-ndvi_fit <- ndvi_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "NDVI")
-
-ndvi_glance <- ndvi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied, -augmented) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "NDVI")
-
-# Linear model for all sites NIRv
-nirv_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ nirv_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-
-nirv_fit <- nirv_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "NIRv")
-
-nirv_glance <- nirv_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied, -augmented) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "NIRv") 
-
-# Linear model for all sites kNDVI
-kndvi_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ kndvi_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-
-kndvi_fit <- kndvi_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "kNDVI")
-
-kndvi_glance <- kndvi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "kNDVI")
-
-# Linear model for all sites kNDVI
-cci_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ cci_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-
-cci_fit <- cci_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "CCI")
-
-cci_glance <- cci_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "CCI")
-```
-
-
-```{r lm_monthly_table}
-#| label: tbl-lm_model_results
+#| label: tbl-lm_monthly_results
 #| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly basis (per site)."
+#| tbl-colwidths: [40,40]
 #| echo: false
 #| message: false
 #| warning: false
 
+source("scripts/lm_preparation.R")
 
-# Create table
-bind_rows(evi_glance,
-          ndvi_glance,
-          nirv_glance,
-		  kndvi_glance,
-		  cci_glance) %>% 
-  select(site, index, r.squared, adj.r.squared, rmse, 
-         statistic, AIC, BIC,  p.value) %>% 
-  group_by(site) %>% 
-  arrange(desc(adj.r.squared)) %>% 
-  gt(
-    rowname_col = "index",
-    groupname_col = "site"
+# Monthly table
+bind_rows(evi_glance_monthly,
+          ndvi_glance_monthly,
+          nirv_glance_monthly,
+          cci_glance_monthly) %>% 
+  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  pivot_wider(names_from = index, 
+              values_from = c(r.squared, adj.r.squared, rmse)) %>%
+  gt() %>%
+  tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
+  tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
+  tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
+  tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
+  cols_label(
+    .list = list(
+      "site" = "Site",
+      "r.squared_EVI" = "R2",
+      "adj.r.squared_EVI" = "adj R2",
+      "rmse_EVI" = "RMSE",
+      "r.squared_NDVI" = "R2",
+      "adj.r.squared_NDVI" = "adj R2",
+      "rmse_NDVI" = "RMSE",
+      "r.squared_NIRv" = "R2",
+      "adj.r.squared_NIRv" = "adj R2",
+      "rmse_NIRv" = "RMSE",
+      "r.squared_CCI" = "R2",
+      "adj.r.squared_CCI" = "adj R2",
+      "rmse_CCI" = "RMSE"
+    )
   ) %>% 
   fmt_number(
-    columns = 3:8,
-    decimals = 3) %>% 
-  fmt_scientific(
-    columns = 9,
-    decimals = 3
-  ) %>% 
+    columns = 2:13,
+    decimals = 2) %>% 
   tab_options(
     row_group.background.color = "#E9E0E1",
     row_group.font.weight = "bold"
-  ) 
+  ) %>% 
+  cols_width(everything() ~ px(50))
+
+# Weekly table
+bind_rows(evi_glance_weekly,
+          ndvi_glance_weekly,
+          nirv_glance_weekly,
+          cci_glance_weekly) %>% 
+  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  pivot_wider(names_from = index, 
+              values_from = c(r.squared, adj.r.squared, rmse)) %>%
+  gt() %>%
+  tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
+  tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
+  tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
+  tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
+  cols_label(
+    .list = list(
+      "site" = "Site",
+      "r.squared_EVI" = "R2",
+      "adj.r.squared_EVI" = "adj R2",
+      "rmse_EVI" = "RMSE",
+      "r.squared_NDVI" = "R2",
+      "adj.r.squared_NDVI" = "adj R2",
+      "rmse_NDVI" = "RMSE",
+      "r.squared_NIRv" = "R2",
+      "adj.r.squared_NIRv" = "adj R2",
+      "rmse_NIRv" = "RMSE",
+      "r.squared_CCI" = "R2",
+      "adj.r.squared_CCI" = "adj R2",
+      "rmse_CCI" = "RMSE"
+    )
+  ) %>% 
+  fmt_number(
+    columns = 2:13,
+    decimals = 2) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) %>% 
+  cols_width(everything() ~ px(50))
+
+# Daily table
+bind_rows(evi_glance_daily,
+          ndvi_glance_daily,
+          nirv_glance_daily,
+          cci_glance_daily) %>% 
+  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  pivot_wider(names_from = index, 
+              values_from = c(r.squared, adj.r.squared, rmse)) %>%
+  gt() %>%
+  tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
+  tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
+  tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
+  tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
+  cols_label(
+    .list = list(
+      "site" = "Site",
+      "r.squared_EVI" = "R2",
+      "adj.r.squared_EVI" = "adj R2",
+      "rmse_EVI" = "RMSE",
+      "r.squared_NDVI" = "R2",
+      "adj.r.squared_NDVI" = "adj R2",
+      "rmse_NDVI" = "RMSE",
+      "r.squared_NIRv" = "R2",
+      "adj.r.squared_NIRv" = "adj R2",
+      "rmse_NIRv" = "RMSE",
+      "r.squared_CCI" = "R2",
+      "adj.r.squared_CCI" = "adj R2",
+      "rmse_CCI" = "RMSE"
+    )
+  ) %>% 
+  fmt_number(
+    columns = 2:13,
+    decimals = 2) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) %>% 
+  cols_width(everything() ~ px(50))
 ```
+
+
 
 ### Daily and weekly GPP and VI's relations
 

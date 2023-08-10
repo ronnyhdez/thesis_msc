@@ -185,3 +185,39 @@ all %>%
   theme_bw(base_size = 12)
 ```
 
+```{r lm_monthly_table}
+#| label: tbl-complete_lm_monthly_results
+#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly basis (per site)."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Run the lm models
+source("scripts/lm_preparation.R")
+
+# Create table with complete models metrics
+bind_rows(evi_glance_monthly,
+          ndvi_glance_monthly,
+          nirv_glance_monthly,
+		  # kndvi_glance,
+		  cci_glance_monthly) %>% 
+  select(site, index, r.squared, adj.r.squared, rmse, 
+         statistic, AIC, BIC,  p.value) %>% 
+  group_by(site) %>% 
+  arrange(desc(adj.r.squared)) %>% 
+  gt(
+    rowname_col = "index",
+    groupname_col = "site"
+  ) %>% 
+  fmt_number(
+    columns = 3:8,
+    decimals = 3) %>% 
+  fmt_scientific(
+    columns = 9,
+    decimals = 3
+  ) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) 
+```
