@@ -637,6 +637,7 @@ bind_rows(evi_glance_monthly,
           nirv_glance_monthly,
           cci_glance_monthly) %>% 
   select(site, index, r.squared, adj.r.squared, rmse) %>%
+  bind_rows(all_sites_glance_monthly) %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, adj.r.squared, rmse)) %>%
   gt() %>%
@@ -676,6 +677,7 @@ bind_rows(evi_glance_weekly,
           nirv_glance_weekly,
           cci_glance_weekly) %>% 
   select(site, index, r.squared, adj.r.squared, rmse) %>%
+  bind_rows(all_sites_glance_weekly) %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, adj.r.squared, rmse)) %>%
   gt() %>%
@@ -715,6 +717,7 @@ bind_rows(evi_glance_daily,
           nirv_glance_daily,
           cci_glance_daily) %>% 
   select(site, index, r.squared, adj.r.squared, rmse) %>%
+  bind_rows(all_sites_glance_daily) %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, adj.r.squared, rmse)) %>%
   gt() %>%

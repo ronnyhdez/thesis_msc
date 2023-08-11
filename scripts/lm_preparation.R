@@ -142,6 +142,39 @@ cci_glance_monthly <- cci_lm %>%
   arrange(desc(r.squared)) %>% 
   mutate(index = "CCI")
 
+# Linear model for all sites
+all_sites_lm <- ind_sites %>% 
+  select(-kndvi_mean) %>% 
+  pivot_longer(cols = c(ends_with("mean")), names_to = "index", values_to = "value") %>% 
+  nest(data = c(-index)) %>% 
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ value, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
+  )
+
+all_fit <- all_sites_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(site = "All")
+
+all_sites_glance_monthly <- all_sites_lm  %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  unnest(glanced) %>% 
+  select(-data, -fit, -tidied) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(site = "All") %>% 
+  select(site, index, r.squared, adj.r.squared, rmse) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "EVI",
+    index == "ndvi_mean" ~ "NDVI",
+    # index == "kndvi_mean" ~ "kNDVI",
+    index == "nirv_mean" ~ "NIRv",
+    index == "cci_mean" ~ "CCI",
+    .default = index
+  ))
+
 # WEEKLY LMS ------------------------------------------------------------------
 # Prepare data with all sites
 ind_bar <- bartlett_weekly_500 %>% 
@@ -227,7 +260,7 @@ nirv_glance_weekly <- nirv_lm %>%
   arrange(desc(r.squared)) %>% 
   mutate(index = "NIRv") 
 
-# Linear model for all sites kNDVI
+# Linear model for all sites CCI
 cci_lm <- ind_sites %>%
   nest(data = c(-site)) %>%
   mutate(
@@ -248,6 +281,41 @@ cci_glance_weekly <- cci_lm %>%
   select(-data, -fit, -tidied) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(index = "CCI")
+
+all_sites_lm <- ind_sites %>% 
+  select(-kndvi_mean) %>% 
+  pivot_longer(cols = c(ends_with("mean")), names_to = "index", values_to = "value") %>% 
+  nest(data = c(-index)) %>% 
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ value, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
+  )
+
+all_fit <- all_sites_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(site = "All")
+
+all_sites_glance_weekly <- all_sites_lm  %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  unnest(glanced) %>% 
+  select(-data, -fit, -tidied) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(site = "All") %>% 
+  select(site, index, r.squared, adj.r.squared, rmse) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "EVI",
+    index == "ndvi_mean" ~ "NDVI",
+    # index == "kndvi_mean" ~ "kNDVI",
+    index == "nirv_mean" ~ "NIRv",
+    index == "cci_mean" ~ "CCI",
+    .default = index
+  ))
+
+
+
 
 # DAILY LMS ------------------------------------------------------------------
 # Prepare data with all sites
@@ -334,7 +402,7 @@ nirv_glance_daily <- nirv_lm %>%
   arrange(desc(r.squared)) %>% 
   mutate(index = "NIRv") 
 
-# Linear model for all sites kNDVI
+# Linear model for all sites CCI
 cci_lm <- ind_sites %>%
   nest(data = c(-site)) %>%
   mutate(
@@ -355,4 +423,42 @@ cci_glance_daily <- cci_lm %>%
   select(-data, -fit, -tidied) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(index = "CCI")
+
+# Linear model for all sites
+all_sites_lm <- ind_sites %>% 
+  select(-kndvi_mean) %>% 
+  pivot_longer(cols = c(ends_with("mean")), names_to = "index", values_to = "value") %>% 
+  nest(data = c(-index)) %>% 
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ value, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
+  )
+
+all_fit <- all_sites_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(site = "All")
+
+all_sites_glance_daily <- all_sites_lm %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  unnest(glanced) %>% 
+  select(-data, -fit, -tidied) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(site = "All") %>% 
+  select(site, index, r.squared, adj.r.squared, rmse) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "EVI",
+    index == "ndvi_mean" ~ "NDVI",
+    # index == "kndvi_mean" ~ "kNDVI",
+    index == "nirv_mean" ~ "NIRv",
+    index == "cci_mean" ~ "CCI",
+    .default = index
+  ))
+  
+
+
+
+
 
