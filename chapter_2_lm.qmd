@@ -668,7 +668,7 @@ bind_rows(evi_glance_monthly,
     )
   ) %>% 
   fmt_number(
-    columns = 2:13,
+    columns = 2:16,
     decimals = 2) %>% 
   tab_options(
     row_group.background.color = "#E9E0E1",
@@ -714,7 +714,7 @@ bind_rows(evi_glance_weekly,
     )
   ) %>% 
   fmt_number(
-    columns = 2:13,
+    columns = 2:16,
     decimals = 2) %>% 
   tab_options(
     row_group.background.color = "#E9E0E1",
@@ -760,7 +760,7 @@ bind_rows(evi_glance_daily,
     )
   ) %>% 
   fmt_number(
-    columns = 2:13,
+    columns = 2:16,
     decimals = 2) %>% 
   tab_options(
     row_group.background.color = "#E9E0E1",
