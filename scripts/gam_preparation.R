@@ -134,14 +134,28 @@ all_sites_indices_daily <- models %>%
   arrange(desc(rsq))
 
 
-## all VI's (G)
-single_vis_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 9) +
-                          # s(kndvi_mean, k = 9) +
-                          s(evi_mean, k = 50) +
-                          s(nirv_mean, k = 50) +
-                          s(cci_mean, k = 50), 
+# GAM model for all VI's [G]
+single_vis_daily <- gam(gpp_dt_vut_ref ~ ndvi_mean +
+                          # kndvi_mean +
+                          s(evi_mean) +
+                          s(nirv_mean) +
+                          s(cci_mean),
                         data = daily_gam, 
                         method = 'REML')
+
+# **Daily models outputs**
+all_vis_monthly <- tribble(
+  ~index, ~rsq, ~rmse, ~mae,
+  "All", summary(single_vis_daily)[["r.sq"]],
+  sqrt(mean((single_vis_daily[["residuals"]])^2)),
+  mean(abs(single_vis_daily[["residuals"]]))
+) %>% 
+  mutate(site = "All") %>% 
+  select(index, site, rsq, rmse, mae)
+
+
+
+# GAM model for all sites and all indices (covariates) [D]
 
 
 

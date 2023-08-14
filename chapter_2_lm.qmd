@@ -809,7 +809,8 @@ bind_rows(evi_glance_daily,
 source("scripts/gam_preparation.R")
 
 all_sites_indices_daily %>% 
-  bind_rows(all_sites_daily) %>% 
+  bind_rows(all_sites_daily,
+            all_vis_monthly) %>% 
   pivot_wider(names_from = index,
               values_from = c(rsq, mae, rmse)) %>% 
   gt() %>%
@@ -832,10 +833,10 @@ all_sites_indices_daily %>%
       "rmse_nirv_mean" = "RMSE",
       "rsq_cci_mean" = "R2",
       "mae_cci_mean" = "MAE",
-      "rmse_cci_mean" = "RMSE"
-      # "r.squared_All" = "R2",
-      # "adj.r.squared_All" = "adj R2",
-      # "rmse_All" = "RMSE"
+      "rmse_cci_mean" = "RMSE",
+      "rsq_All" = "R2",
+      "mae_All" = "MAE",
+      "rmse_All" = "RMSE"
     )
   ) %>% 
   fmt_number(
