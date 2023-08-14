@@ -32,117 +32,7 @@ ind_mich <- michigan_monthly_500 %>%
 
 ind_sites <- bind_rows(ind_bar, ind_bor, ind_mich)
 
-# Linear model for all sites EVI
-evi_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ evi_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  ) 
-
-evi_fit <- evi_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "EVI")
-
-evi_glance_monthly <- evi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied, -augmented) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "EVI")
-
-# Linear model for all sites NDVI
-ndvi_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ ndvi_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-
-ndvi_fit <- ndvi_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "NDVI")
-
-ndvi_glance_monthly <- ndvi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied, -augmented) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "NDVI")
-
-# Linear model for all sites NIRv
-nirv_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ nirv_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-
-nirv_fit <- nirv_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "NIRv")
-
-nirv_glance_monthly <- nirv_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied, -augmented) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "NIRv") 
-
-# # Linear model for all sites kNDVI
-# kndvi_lm <- ind_sites %>%
-#   nest(data = c(-site)) %>%
-#   mutate(
-#     fit = map(data, ~ lm(gpp_dt_vut_ref ~ kndvi_mean, data = .x)),
-#     tidied = map(fit, tidy),
-#     glanced = map(fit, glance),
-#     augmented = map(fit, augment)
-#   )
-# 
-# kndvi_fit <- kndvi_lm %>% 
-#   unnest(tidied) %>%
-#   select(-data, -fit, -glanced) %>% 
-#   mutate(index = "kNDVI")
-# 
-# kndvi_glance <- kndvi_lm %>% 
-#   mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-#   unnest(glanced) %>%
-#   select(-data, -fit, -tidied) %>% 
-#   arrange(desc(r.squared)) %>% 
-#   mutate(index = "kNDVI")
-
-# Linear model for all sites kNDVI
-cci_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ cci_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-
-cci_fit <- cci_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "CCI")
-
-cci_glance_monthly <- cci_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "CCI")
-
-# Linear model for all sites
+# Linear model for all sites [A]
 all_sites_lm <- ind_sites %>% 
   select(-kndvi_mean) %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index", values_to = "value") %>% 
@@ -175,7 +65,118 @@ all_sites_glance_monthly <- all_sites_lm  %>%
     .default = index
   ))
 
-# Linear model for all VI's
+# Linear model for all sites EVI [B]
+evi_lm <- ind_sites %>%
+  nest(data = c(-site)) %>%
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ evi_mean, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
+  ) 
+
+evi_fit <- evi_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(index = "EVI")
+
+evi_glance_monthly <- evi_lm %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  unnest(glanced) %>%
+  select(-data, -fit, -tidied, -augmented) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(index = "EVI")
+
+# Linear model for all sites NDVI [B]
+ndvi_lm <- ind_sites %>%
+  nest(data = c(-site)) %>%
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ ndvi_mean, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
+  )
+
+ndvi_fit <- ndvi_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(index = "NDVI")
+
+ndvi_glance_monthly <- ndvi_lm %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  unnest(glanced) %>%
+  select(-data, -fit, -tidied, -augmented) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(index = "NDVI")
+
+# Linear model for all sites NIRv [B]
+nirv_lm <- ind_sites %>%
+  nest(data = c(-site)) %>%
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ nirv_mean, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
+  )
+
+nirv_fit <- nirv_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(index = "NIRv")
+
+nirv_glance_monthly <- nirv_lm %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  unnest(glanced) %>%
+  select(-data, -fit, -tidied, -augmented) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(index = "NIRv") 
+
+# Linear model for all sites CCI [B]
+cci_lm <- ind_sites %>%
+  nest(data = c(-site)) %>%
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ cci_mean, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
+  )
+
+cci_fit <- cci_lm %>% 
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>% 
+  mutate(index = "CCI")
+
+cci_glance_monthly <- cci_lm %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  unnest(glanced) %>%
+  select(-data, -fit, -tidied) %>% 
+  arrange(desc(r.squared)) %>% 
+  mutate(index = "CCI")
+
+# # Linear model for all sites kNDVI
+# kndvi_lm <- ind_sites %>%
+#   nest(data = c(-site)) %>%
+#   mutate(
+#     fit = map(data, ~ lm(gpp_dt_vut_ref ~ kndvi_mean, data = .x)),
+#     tidied = map(fit, tidy),
+#     glanced = map(fit, glance),
+#     augmented = map(fit, augment)
+#   )
+# 
+# kndvi_fit <- kndvi_lm %>% 
+#   unnest(tidied) %>%
+#   select(-data, -fit, -glanced) %>% 
+#   mutate(index = "kNDVI")
+# 
+# kndvi_glance <- kndvi_lm %>% 
+#   mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+#   unnest(glanced) %>%
+#   select(-data, -fit, -tidied) %>% 
+#   arrange(desc(r.squared)) %>% 
+#   mutate(index = "kNDVI")
+
+
+# Linear model for all VI's [C]
 all_vis_lm <- ind_sites %>%
   select(-kndvi_mean) %>%
   # pivot_longer(cols = c(ends_with("mean")), names_to = "index", values_to = "value") %>%
@@ -211,7 +212,7 @@ all_vis_glance_monthly <- all_vis_lm  %>%
   ))
 
 
-# Linear model for all sites and all indices (covariates)
+# Linear model for all sites and all indices (covariates) [D]
 all_sites_all_indices <- lm(gpp_dt_vut_ref ~ evi_mean +
                               ndvi_mean + nirv_mean +
                               cci_mean, data = ind_sites)
