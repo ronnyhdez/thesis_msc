@@ -682,7 +682,9 @@ bind_rows(evi_glance_weekly,
           nirv_glance_weekly,
           cci_glance_weekly) %>% 
   select(site, index, r.squared, adj.r.squared, rmse) %>%
-  bind_rows(all_sites_glance_weekly) %>% 
+  bind_rows(all_sites_glance_weekly,
+            all_sites_all_indices_glance_weekly,
+            all_vis_glance_weekly) %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, adj.r.squared, rmse)) %>%
   gt() %>%
@@ -690,6 +692,7 @@ bind_rows(evi_glance_weekly,
   tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
   tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
   tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
+  tab_spanner(label = "All", columns = ends_with("All")) %>% 
   cols_label(
     .list = list(
       "site" = "Site",
@@ -704,7 +707,10 @@ bind_rows(evi_glance_weekly,
       "rmse_NIRv" = "RMSE",
       "r.squared_CCI" = "R2",
       "adj.r.squared_CCI" = "adj R2",
-      "rmse_CCI" = "RMSE"
+      "rmse_CCI" = "RMSE",
+      "r.squared_All" = "R2",
+      "adj.r.squared_All" = "adj R2",
+      "rmse_All" = "RMSE"
     )
   ) %>% 
   fmt_number(
@@ -722,7 +728,9 @@ bind_rows(evi_glance_daily,
           nirv_glance_daily,
           cci_glance_daily) %>% 
   select(site, index, r.squared, adj.r.squared, rmse) %>%
-  bind_rows(all_sites_glance_daily) %>% 
+    bind_rows(all_sites_glance_daily,
+            all_sites_all_indices_glance_daily,
+            all_vis_glance_daily)  %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, adj.r.squared, rmse)) %>%
   gt() %>%
@@ -730,6 +738,7 @@ bind_rows(evi_glance_daily,
   tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
   tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
   tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
+  tab_spanner(label = "All", columns = ends_with("All")) %>% 
   cols_label(
     .list = list(
       "site" = "Site",
@@ -744,7 +753,10 @@ bind_rows(evi_glance_daily,
       "rmse_NIRv" = "RMSE",
       "r.squared_CCI" = "R2",
       "adj.r.squared_CCI" = "adj R2",
-      "rmse_CCI" = "RMSE"
+      "rmse_CCI" = "RMSE",
+      "r.squared_All" = "R2",
+      "adj.r.squared_All" = "adj R2",
+      "rmse_All" = "RMSE"
     )
   ) %>% 
   fmt_number(
