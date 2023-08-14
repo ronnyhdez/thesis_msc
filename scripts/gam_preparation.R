@@ -30,20 +30,12 @@ daily_gam <- daily_plot_500 %>%
          nirv_mean, cci_mean, site) %>% 
   mutate(site = as.factor(site))
 
-# GAM model for all sites [E]
-group_site <- daily_gam %>% 
-  pivot_longer(cols = c(ends_with("mean")), names_to = "index",
-               values_to = "value") %>% 
-  nest(data = c(-index)) 
-
+# Create functions to extract metrics
 mod_fun <- function(df) {
   gam(gpp_dt_vut_ref ~ s(value, k = 10), 
       data = df, 
       method = 'REML')
 }
-
-models <- group_site %>% 
-  mutate(model = map(data, mod_fun))
 
 rsq_fun <- function(mod) {
   summary(mod)[["r.sq"]]
@@ -57,6 +49,15 @@ mae_fun <- function(mod) {
   mean(abs(mod[["residuals"]]))
 }
 
+# GAM model for all sites [E]
+group_site <- daily_gam %>% 
+  pivot_longer(cols = c(ends_with("mean")), names_to = "index",
+               values_to = "value") %>% 
+  nest(data = c(-index)) 
+
+models <- group_site %>% 
+  mutate(model = map(data, mod_fun))
+
 all_sites_daily <- models %>% 
   transmute(index,
             rsq = map_dbl(model, rsq_fun),
@@ -64,93 +65,73 @@ all_sites_daily <- models %>%
             mae = map_dbl(model, mae_fun)) %>% 
   mutate(site = "All") 
 
-
-
-
-
- # Daily ndvi 
-model_ndvi_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# Daily evi 
-model_evi_daily <- gam(gpp_dt_vut_ref ~ s(evi_mean, k = 10), 
-                       data = daily_gam, 
-                       method = 'REML')
-
-# Daily nirv 
-model_nirv_daily <- gam(gpp_dt_vut_ref ~ s(nirv_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# # Daily kndvi
-# model_kndvi_daily <- gam(gpp_dt_vut_ref ~ s(kndvi_mean, k = 10), 
-#                          data = daily_gam, 
-#                          method = 'REML')
-
-# Daily cci
-model_cci_daily <- gam(gpp_dt_vut_ref ~ s(cci_mean, k = 10), 
-                       data = daily_gam, 
-                       method = 'REML')
-
-# **Daily models outputs**
-summ_ndvi_daily <- summary(model_ndvi_daily)
-summ_evi_daily <- summary(model_evi_daily)
-summ_nirv_daily <- summary(model_nirv_daily)
-# summ_kndvi_daily <- summary(model_kndvi_daily)
-summ_cci_daily <- summary(model_cci_daily)
-
-# Tables for comparison (this can be a function)
-s_table_evi_daily <- summ_evi_daily[["s.table"]] %>% as.data.frame()
-s_table_ndvi_daily <- summ_ndvi_daily[["s.table"]] %>% as.data.frame()
-s_table_nirv_daily <- summ_nirv_daily[["s.table"]] %>% as.data.frame()
-# s_table_kndvi_daily <- summ_kndvi_daily[["s.table"]] %>% as.data.frame()
-s_table_cci_daily <- summ_cci_daily[["s.table"]] %>% as.data.frame()
-
-p_table_evi_daily <- summ_evi_daily[["p.table"]] %>% as.data.frame()
-p_table_ndvi_daily <- summ_ndvi_daily[["p.table"]] %>% as.data.frame()
-p_table_nirv_daily <- summ_nirv_daily[["p.table"]] %>% as.data.frame()
-# p_table_kndvi_daily <- summ_kndvi_daily[["p.table"]] %>% as.data.frame()
-p_table_cci_daily <- summ_cci_daily[["p.table"]] %>% as.data.frame()
-
-
-## Table:
-
-# Daily table
-
-
-
-
-
+#  # Daily ndvi 
+# model_ndvi_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 10), 
+#                         data = daily_gam, 
+#                         method = 'REML')
+# 
+# # Daily evi 
+# model_evi_daily <- gam(gpp_dt_vut_ref ~ s(evi_mean, k = 10), 
+#                        data = daily_gam, 
+#                        method = 'REML')
+# 
+# # Daily nirv 
+# model_nirv_daily <- gam(gpp_dt_vut_ref ~ s(nirv_mean, k = 10), 
+#                         data = daily_gam, 
+#                         method = 'REML')
+# 
+# # # Daily kndvi
+# # model_kndvi_daily <- gam(gpp_dt_vut_ref ~ s(kndvi_mean, k = 10), 
+# #                          data = daily_gam, 
+# #                          method = 'REML')
+# 
+# # Daily cci
+# model_cci_daily <- gam(gpp_dt_vut_ref ~ s(cci_mean, k = 10), 
+#                        data = daily_gam, 
+#                        method = 'REML')
+# 
+# # **Daily models outputs**
+# summ_ndvi_daily <- summary(model_ndvi_daily)
+# summ_evi_daily <- summary(model_evi_daily)
+# summ_nirv_daily <- summary(model_nirv_daily)
+# # summ_kndvi_daily <- summary(model_kndvi_daily)
+# summ_cci_daily <- summary(model_cci_daily)
+# 
+# # Tables for comparison (this can be a function)
+# s_table_evi_daily <- summ_evi_daily[["s.table"]] %>% as.data.frame()
+# s_table_ndvi_daily <- summ_ndvi_daily[["s.table"]] %>% as.data.frame()
+# s_table_nirv_daily <- summ_nirv_daily[["s.table"]] %>% as.data.frame()
+# # s_table_kndvi_daily <- summ_kndvi_daily[["s.table"]] %>% as.data.frame()
+# s_table_cci_daily <- summ_cci_daily[["s.table"]] %>% as.data.frame()
+# 
+# p_table_evi_daily <- summ_evi_daily[["p.table"]] %>% as.data.frame()
+# p_table_ndvi_daily <- summ_ndvi_daily[["p.table"]] %>% as.data.frame()
+# p_table_nirv_daily <- summ_nirv_daily[["p.table"]] %>% as.data.frame()
+# # p_table_kndvi_daily <- summ_kndvi_daily[["p.table"]] %>% as.data.frame()
+# p_table_cci_daily <- summ_cci_daily[["p.table"]] %>% as.data.frame()
 
 
 # GAM model for all sites EVI [F]
+group_site <- daily_gam %>% 
+  pivot_longer(cols = c(ends_with("mean")), names_to = "index",
+               values_to = "value") %>% 
+  nest(data = c(-index, -site)) 
 
+mod_fun <- function(df) {
+  gam(gpp_dt_vut_ref ~ s(value, k = 10), 
+      data = df, 
+      method = 'REML')
+}
 
-model_ndvi_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
+models <- group_site %>% 
+  mutate(model = map(data, mod_fun))
 
-
-
-
-
-
-mutate(rmse = (sqrt(mean((model_nirv_daily[["residuals"]])^2))))
-
-
-# GAM model for all VI's [G]
-
-
-
-
-
-
-
-
-
-
-
+all_sites_indices_daily <- models %>% 
+  transmute(index, site,
+            rsq = map_dbl(model, rsq_fun),
+            rmse = map_dbl(model, rmse_fun),
+            mae = map_dbl(model, mae_fun)) %>% 
+  arrange(desc(rsq))
 
 
 ## all VI's (G)
