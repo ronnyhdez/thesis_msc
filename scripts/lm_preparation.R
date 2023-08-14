@@ -175,6 +175,64 @@ all_sites_glance_monthly <- all_sites_lm  %>%
     .default = index
   ))
 
+# Linear model for all VI's
+
+all_vis_lm <- ind_sites %>%
+  select(-kndvi_mean) %>%
+  # pivot_longer(cols = c(ends_with("mean")), names_to = "index", values_to = "value") %>%
+  nest(data = c(-site)) %>%
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ evi_mean +
+                           ndvi_mean + nirv_mean +
+                           cci_mean, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
+  )
+
+all_fit <- all_vis_lm %>%
+  unnest(tidied) %>%
+  select(-data, -fit, -glanced) %>%
+  mutate(site = "All")
+
+all_vis_glance_monthly <- all_vis_lm  %>%
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>%
+  unnest(glanced) %>%
+  select(-data, -fit, -tidied) %>%
+  arrange(desc(r.squared)) %>%
+  mutate(index = "All") %>%
+  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  mutate(index = case_when(
+    index == "evi_mean" ~ "EVI",
+    index == "ndvi_mean" ~ "NDVI",
+    # index == "kndvi_mean" ~ "kNDVI",
+    index == "nirv_mean" ~ "NIRv",
+    index == "cci_mean" ~ "CCI",
+    .default = index
+  ))
+
+
+# Linear model for all sites and all indices (covariates)
+all_sites_all_indices <- lm(gpp_dt_vut_ref ~ evi_mean +
+                              ndvi_mean + nirv_mean +
+                              cci_mean, data = ind_sites)
+
+# summary(all_sites_all_indices)
+
+metrics <- augment(all_sites_all_indices) %>% 
+  select(gpp_dt_vut_ref, .resid) %>% 
+  mutate(rmse = (sqrt(mean((.resid)^2))))
+
+rmse <- sqrt(mean((metrics$.resid)^2))
+
+all_sites_all_indices_glance_monthly <- glance(all_sites_all_indices) %>% 
+  mutate(rmse = rmse,
+         site = "All",
+         index = "All") %>% 
+  select(site, index, r.squared, adj.r.squared, rmse)
+
+
+
 # WEEKLY LMS ------------------------------------------------------------------
 # Prepare data with all sites
 ind_bar <- bartlett_weekly_500 %>% 

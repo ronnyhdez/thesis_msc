@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Appendices
 
 <!-- | **Name** | **Description** | **Resolution** | **Wavelength**                | **Scale** | -->
@@ -233,69 +238,19 @@ bind_rows(evi_glance_monthly,
 **The following tables represent the results of each model as gpp~VI and it's not segregated by site.**
 
 ```{r}
-#| label: tbl-gam_model_results_pvalue
-#| tbl-cap: "Summary of the individual GAM models for GPP estimation using the VIs" 
 #| echo: false
 #| message: false
 #| warning: false
+source("scripts/gam_preparation.R")
+```
 
-# Libraries
-library(ggplot2)
-library(cowplot)
-library(lubridate)
-library(purrr)
-library(broom)
-library(gt)
-library(tidymodels)
-library(broom)
-library(usemodels)
-library(vip)
-library(h2o)
-library(mgcv) 
 
-daily_gam <- daily_plot_500 %>% 
-  pivot_wider(names_from = index, values_from = value) %>% 
-  mutate(site = as.factor(site))
-
-# Daily ndvi 
-model_ndvi_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# Daily evi 
-model_evi_daily <- gam(gpp_dt_vut_ref ~ s(evi_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# Daily nirv 
-model_nirv_daily <- gam(gpp_dt_vut_ref ~ s(nirv_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# Daily kndvi
-model_kndvi_daily <- gam(gpp_dt_vut_ref ~ s(kndvi_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# Daily cci
-model_cci_daily <- gam(gpp_dt_vut_ref ~ s(cci_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# **Daily models outputs**
-summ_ndvi_daily <- summary(model_ndvi_daily)
-summ_evi_daily <- summary(model_evi_daily)
-summ_nirv_daily <- summary(model_nirv_daily)
-summ_kndvi_daily <- summary(model_kndvi_daily)
-summ_cci_daily <- summary(model_cci_daily)
-
-# Tables for comparison (this can be a function)
-s_table_evi_daily <- summ_evi_daily[["s.table"]] %>% as.data.frame()
-s_table_ndvi_daily <- summ_ndvi_daily[["s.table"]] %>% as.data.frame()
-s_table_nirv_daily <- summ_nirv_daily[["s.table"]] %>% as.data.frame()
-s_table_kndvi_daily <- summ_kndvi_daily[["s.table"]] %>% as.data.frame()
-s_table_cci_daily <- summ_cci_daily[["s.table"]] %>% as.data.frame()
-
+```{r}
+#| label: tbl-gam_model_results_pvalue
+#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs" 
+#| echo: false
+#| message: false
+#| warning: false
 bind_rows(s_table_ndvi_daily, s_table_evi_daily, 
           s_table_nirv_daily, s_table_kndvi_daily,
           s_table_cci_daily) %>% 
@@ -309,17 +264,10 @@ bind_rows(s_table_ndvi_daily, s_table_evi_daily,
 
 ```{r}
 #| label: tbl-gam_model_results
-#| tbl-cap: "Summary of the individual GAM models for GPP estimation using the VIs" 
+#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs" 
 #| echo: false
 #| message: false
 #| warning: false
-
-p_table_evi_daily <- summ_evi_daily[["p.table"]] %>% as.data.frame()
-p_table_ndvi_daily <- summ_ndvi_daily[["p.table"]] %>% as.data.frame()
-p_table_nirv_daily <- summ_nirv_daily[["p.table"]] %>% as.data.frame()
-p_table_kndvi_daily <- summ_kndvi_daily[["p.table"]] %>% as.data.frame()
-p_table_cci_daily <- summ_cci_daily[["p.table"]] %>% as.data.frame()
-
 bind_rows(p_table_evi_daily, p_table_ndvi_daily, 
           p_table_nirv_daily, p_table_kndvi_daily,
           p_table_cci_daily) %>% 
@@ -346,6 +294,26 @@ bind_rows(p_table_evi_daily, p_table_ndvi_daily,
  - Borden have the most complex models given the nature of its data values
  - In that kind of data behaviour, EVI seems to not perform as well 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #### SD GAM model with smooth terms for all covariates
 
 **SD: Single Daily**
@@ -363,7 +331,7 @@ bind_rows(p_table_evi_daily, p_table_ndvi_daily,
 
 # Model with smooth term for all covariates
 single_vis_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 9) +
-                          s(kndvi_mean, k = 9) +
+                          # s(kndvi_mean, k = 9) +
                           s(evi_mean, k = 50) +
                           s(nirv_mean, k = 50) +
                           s(cci_mean, k = 50),
@@ -406,7 +374,7 @@ gratia::appraise(single_vis_daily)
 #| message: false
 #| warning: false
 single_vis_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 9) +
-                          s(kndvi_mean, k = 9) +
+                          # s(kndvi_mean, k = 9) +
                           s(evi_mean, k = 50) +
                           s(nirv_mean, k = 50) +
                           s(cci_mean, k = 50) +
@@ -442,7 +410,7 @@ gratia::appraise(single_vis_daily)
 #| message: false
 #| warning: false
 single_vis_daily <- gam(gpp_dt_vut_ref ~ ndvi_mean +
-                          kndvi_mean +
+                          # kndvi_mean +
                           s(evi_mean) +
                           s(nirv_mean) +
                           s(cci_mean) +
@@ -508,7 +476,7 @@ gratia::appraise(single_vis_daily)
 #| warning: false
 model_vis_daily <- gam(gpp_dt_vut_ref ~ 
                          s(ndvi_mean, by = site) +
-                         s(kndvi_mean, by = site) +
+                         # s(kndvi_mean, by = site) +
                          s(evi_mean, by = site) +
                          s(nirv_mean, by = site) +
                          s(cci_mean, by = site),
@@ -525,7 +493,8 @@ summary(model_vis_daily)
 #| warning: false
 gratia::draw(model_vis_daily, 
              # scales = "fixed",
-             residuals = TRUE) +
+             residuals = TRUE,
+             ncol = 3) +
   theme_bw(base_size = 10)
 
 gratia::appraise(model_vis_daily)

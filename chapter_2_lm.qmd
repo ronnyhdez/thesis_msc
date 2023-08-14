@@ -623,12 +623,11 @@ The complete metrics results for each of the monthly lm models are in
 
 ```{r lm_monthly}
 #| label: tbl-lm_monthly_results
-#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly basis (per site)."
-#| tbl-colwidths: [40,40]
+#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
+#| tbl-colwidths: [50,50]
 #| echo: false
 #| message: false
 #| warning: false
-
 source("scripts/lm_preparation.R")
 
 # Monthly table
@@ -637,7 +636,9 @@ bind_rows(evi_glance_monthly,
           nirv_glance_monthly,
           cci_glance_monthly) %>% 
   select(site, index, r.squared, adj.r.squared, rmse) %>%
-  bind_rows(all_sites_glance_monthly) %>% 
+  bind_rows(all_sites_glance_monthly,
+            all_sites_all_indices_glance_monthly,
+            all_vis_glance_monthly) %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, adj.r.squared, rmse)) %>%
   gt() %>%
@@ -645,6 +646,7 @@ bind_rows(evi_glance_monthly,
   tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
   tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
   tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
+  tab_spanner(label = "All", columns = ends_with("All")) %>% 
   cols_label(
     .list = list(
       "site" = "Site",
@@ -659,7 +661,10 @@ bind_rows(evi_glance_monthly,
       "rmse_NIRv" = "RMSE",
       "r.squared_CCI" = "R2",
       "adj.r.squared_CCI" = "adj R2",
-      "rmse_CCI" = "RMSE"
+      "rmse_CCI" = "RMSE",
+      "r.squared_All" = "R2",
+      "adj.r.squared_All" = "adj R2",
+      "rmse_All" = "RMSE"
     )
   ) %>% 
   fmt_number(
@@ -756,31 +761,38 @@ bind_rows(evi_glance_daily,
 
 ### Daily and weekly GPP and VI's relations
 
-**TODO: Single vs Individual GAM model**
+<!-- **TODO: Single vs Individual GAM model** -->
 
-*This is a section under construction. Several models are presented in order
-to discuss which one will be better to describe the patterns found*
+<!-- *This is a section under construction. Several models are presented in order -->
+<!-- to discuss which one will be better to describe the patterns found* -->
 
-Richard's suggestion is to create a single model using all indices as covariates.
-The notes are described also in the issue [Ref #49](https://github.com/ronnyhdez/thesis_msc/issues/49)
+<!-- Richard's suggestion is to create a single model using all indices as covariates. -->
+<!-- The notes are described also in the issue [Ref #49](https://github.com/ronnyhdez/thesis_msc/issues/49) -->
 
-**Single model**
+<!-- **Single model** -->
 
- - Using all the indices that I have as multiple predictors will allow me to 
- explore the relation between GPP and each VI while also considering potential
- interactions. But this will be an examination of the combined effects of the 
- VIs on GPP and determine their relative importance.
+<!--  - Using all the indices that I have as multiple predictors will allow me to  -->
+<!--  explore the relation between GPP and each VI while also considering potential -->
+<!--  interactions. But this will be an examination of the combined effects of the  -->
+<!--  VIs on GPP and determine their relative importance. -->
 
-**Individual model**
+<!-- **Individual model** -->
 
- - A separate GAM model for each VI will allow me to explore the relation 
- between GPP and each VI separately, without the exploration of potential 
- interactions between the VIs. 
- 
- - But, do I want to explore if there are interactions? If there is an 
- interaction, what would be the meaning of an interaction between indices?
+<!--  - A separate GAM model for each VI will allow me to explore the relation  -->
+<!--  between GPP and each VI separately, without the exploration of potential  -->
+<!--  interactions between the VIs.  -->
 
- - With the individual GAM models, I think that I can uncover individual trends, that otherwise would be hidden among all the VIs. [**simpson's paradox**](https://en.wikipedia.org/wiki/Simpson%27s_paradox)
+<!--  - But, do I want to explore if there are interactions? If there is an  -->
+<!--  interaction, what would be the meaning of an interaction between indices? -->
+
+<!--  - With the individual GAM models, I think that I can uncover individual trends, that otherwise would be hidden among all the VIs. [**simpson's paradox**](https://en.wikipedia.org/wiki/Simpson%27s_paradox) -->
+
+
+```{r}
+source("scripts/gam_preparation.R")
+
+
+```
 
 
 \newpage
