@@ -808,9 +808,10 @@ bind_rows(evi_glance_daily,
 #| warning: false
 source("scripts/gam_preparation.R")
 
-all_sites_indices_daily %>% 
-  bind_rows(all_sites_daily,
-            all_vis_monthly) %>% 
+all_sites_daily %>% 
+  bind_rows(all_sites_indices_daily,
+            all_vis_daily,
+            all_sites_all_vis_daily) %>% 
   pivot_wider(names_from = index,
               values_from = c(rsq, mae, rmse)) %>% 
   gt() %>%
@@ -840,7 +841,7 @@ all_sites_indices_daily %>%
     )
   ) %>% 
   fmt_number(
-    columns = 2:13,
+    columns = 2:16,
     decimals = 2) %>% 
   tab_options(
     row_group.background.color = "#E9E0E1",

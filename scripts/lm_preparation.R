@@ -211,14 +211,12 @@ all_vis_glance_monthly <- all_vis_lm  %>%
     .default = index
   ))
 
-
 # Linear model for all sites and all indices (covariates) [D]
 all_sites_all_indices <- lm(gpp_dt_vut_ref ~ evi_mean +
                               ndvi_mean + nirv_mean +
                               cci_mean, data = ind_sites)
 
 # summary(all_sites_all_indices)
-
 metrics <- augment(all_sites_all_indices) %>% 
   select(gpp_dt_vut_ref, .resid) %>% 
   mutate(rmse = (sqrt(mean((.resid)^2))))
@@ -230,8 +228,6 @@ all_sites_all_indices_glance_monthly <- glance(all_sites_all_indices) %>%
          site = "All",
          index = "All") %>% 
   select(site, index, r.squared, adj.r.squared, rmse)
-
-
 
 # WEEKLY LMS ------------------------------------------------------------------
 # Prepare data with all sites
