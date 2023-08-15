@@ -790,7 +790,11 @@ vis_site_glance_daily %>%
 
 <!--  - With the individual GAM models, I think that I can uncover individual trends, that otherwise would be hidden among all the VIs. [**simpson's paradox**](https://en.wikipedia.org/wiki/Simpson%27s_paradox) -->
 
-
+\begingroup
+\setlength{\LTleft}{0pt minus 500pt}
+\setlength{\LTright}{0pt minus 500pt}
+\fontsize{5pt}{7pt}\selectfont
+\addtolength{\tabcolsep}{-3pt}
 ```{r}
 #| label: tbl-gam_model_results_pvalue
 #| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs" 
@@ -799,6 +803,7 @@ vis_site_glance_daily %>%
 #| warning: false
 source("scripts/gam_preparation.R")
 
+# Daily table
 all_sites_gam_daily %>% 
   bind_rows(vis_sites_gam_daily,
             all_sites_all_vis_gam_daily,
@@ -840,8 +845,94 @@ all_sites_gam_daily %>%
     row_group.font.weight = "bold"
   ) %>% 
   cols_width(everything() ~ px(50))
-```
 
+# Weekly table
+all_sites_gam_weekly %>% 
+  bind_rows(vis_sites_gam_weekly,
+            all_sites_all_vis_gam_weekly,
+            all_vis_gam_weekly,
+            ) %>% 
+  pivot_wider(names_from = index,
+              values_from = c(rsq, mae, rmse)) %>% 
+  gt() %>%
+  tab_spanner(label = md("NDVI"), columns = contains("NDVI")) %>%
+  tab_spanner(label = "EVI", columns = contains("EVI")) %>%
+  tab_spanner(label = "NIRv", columns = contains("NIRv")) %>%
+  tab_spanner(label = "CCI", columns = contains("CCI")) %>% 
+  tab_spanner(label = "All", columns = contains("All")) %>% 
+  cols_label(
+    .list = list(
+      "site" = "Site",
+      "rsq_evi_mean" = "R2",
+      "mae_evi_mean" = "MAE",
+      "rmse_evi_mean" = "RMSE",
+      "rsq_ndvi_mean" = "R2",
+      "mae_ndvi_mean" = "MAE",
+      "rmse_ndvi_mean" = "RMSE",
+      "rsq_nirv_mean" = "R2",
+      "mae_nirv_mean" = "MAE",
+      "rmse_nirv_mean" = "RMSE",
+      "rsq_cci_mean" = "R2",
+      "mae_cci_mean" = "MAE",
+      "rmse_cci_mean" = "RMSE",
+      "rsq_All" = "R2",
+      "mae_All" = "MAE",
+      "rmse_All" = "RMSE"
+    )
+  ) %>% 
+  fmt_number(
+    columns = 2:16,
+    decimals = 2) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) %>% 
+  cols_width(everything() ~ px(50))
+
+# Monthly table
+all_sites_gam_monthly %>% 
+  bind_rows(vis_sites_gam_monthly,
+            all_sites_all_vis_gam_monthly,
+            all_vis_gam_monthly,
+            ) %>% 
+  pivot_wider(names_from = index,
+              values_from = c(rsq, mae, rmse)) %>% 
+  gt() %>%
+  tab_spanner(label = md("NDVI"), columns = contains("NDVI")) %>%
+  tab_spanner(label = "EVI", columns = contains("EVI")) %>%
+  tab_spanner(label = "NIRv", columns = contains("NIRv")) %>%
+  tab_spanner(label = "CCI", columns = contains("CCI")) %>% 
+  tab_spanner(label = "All", columns = contains("All")) %>% 
+  cols_label(
+    .list = list(
+      "site" = "Site",
+      "rsq_evi_mean" = "R2",
+      "mae_evi_mean" = "MAE",
+      "rmse_evi_mean" = "RMSE",
+      "rsq_ndvi_mean" = "R2",
+      "mae_ndvi_mean" = "MAE",
+      "rmse_ndvi_mean" = "RMSE",
+      "rsq_nirv_mean" = "R2",
+      "mae_nirv_mean" = "MAE",
+      "rmse_nirv_mean" = "RMSE",
+      "rsq_cci_mean" = "R2",
+      "mae_cci_mean" = "MAE",
+      "rmse_cci_mean" = "RMSE",
+      "rsq_All" = "R2",
+      "mae_All" = "MAE",
+      "rmse_All" = "RMSE"
+    )
+  ) %>% 
+  fmt_number(
+    columns = 2:16,
+    decimals = 2) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) %>% 
+  cols_width(everything() ~ px(50))
+```
+\endgroup
 
 \newpage
 

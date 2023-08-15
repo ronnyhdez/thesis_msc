@@ -179,12 +179,226 @@ all_sites_all_vis_gam_daily <- tribble(
   select(index, site, rsq, rmse, mae)
 
 
+# WEEKLY GAMS ------------------------------------------------------------------
+# Prepare data with all sites
+weekly_gam <- weekly_plot_500 %>% 
+  pivot_wider(names_from = index, values_from = value) %>% 
+  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, 
+         nirv_mean, cci_mean, site) %>% 
+  mutate(site = as.factor(site))
+
+# Create functions to extract metrics
+rsq_fun <- function(mod) {
+  summary(mod)[["r.sq"]]
+}
+
+rmse_fun <- function(mod) {
+  sqrt(mean((mod[["residuals"]])^2))
+}
+
+mae_fun <- function(mod) {
+  mean(abs(mod[["residuals"]]))
+}
+
+# GAM model for all sites [E | Diff VIs]
+group_site <- weekly_gam %>% 
+  pivot_longer(cols = c(ends_with("mean")), names_to = "index",
+               values_to = "value") %>% 
+  nest(data = c(-index)) 
+
+mod_fun <- function(df) {
+  gam(gpp_dt_vut_ref ~ s(value, k = 10), 
+      data = df, 
+      method = 'REML')
+}
+
+models <- group_site %>% 
+  mutate(model = map(data, mod_fun))
+
+all_sites_gam_weekly <- models %>% 
+  transmute(index,
+            rsq = map_dbl(model, rsq_fun),
+            rmse = map_dbl(model, rmse_fun),
+            mae = map_dbl(model, mae_fun)) %>% 
+  mutate(site = "All") %>% 
+  select(site, index, rsq, mae, rmse)
+
+# GAM model for all sites diff VIs [F | Diff VIS + site]
+group_site <- weekly_gam %>% 
+  pivot_longer(cols = c(ends_with("mean")), names_to = "index",
+               values_to = "value") %>% 
+  nest(data = c(-index, -site)) 
+
+mod_fun <- function(df) {
+  gam(gpp_dt_vut_ref ~ s(value, k = 10), 
+      data = df, 
+      method = 'REML')
+}
+
+models <- group_site %>% 
+  mutate(model = map(data, mod_fun))
+
+vis_sites_gam_weekly <- models %>% 
+  transmute(index, site,
+            rsq = map_dbl(model, rsq_fun),
+            rmse = map_dbl(model, rmse_fun),
+            mae = map_dbl(model, mae_fun)) %>% 
+  arrange(desc(rsq))
+
+# GAM model for all VI's [G | All VIs]
+mod_fun <- function(df) {
+  gam(gpp_dt_vut_ref ~ ndvi_mean +
+        # kndvi_mean +
+        s(evi_mean) +
+        s(nirv_mean) +
+        s(cci_mean),
+      data = weekly_gam, 
+      method = 'REML')
+}
+
+group_site <- weekly_gam %>% 
+  nest(data = c(-site)) 
+
+models <- group_site %>% 
+  mutate(model = map(data, mod_fun),
+         index = "All")
+
+all_vis_gam_weekly <- models %>% 
+  transmute(index, site,
+            rsq = map_dbl(model, rsq_fun),
+            rmse = map_dbl(model, rmse_fun),
+            mae = map_dbl(model, mae_fun)) %>% 
+  arrange(desc(rsq))
+
+# GAM model for all sites and all indices (covariates) [H | All VIs + site]
+single_vis_weekly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
+                          # kndvi_mean +
+                          s(evi_mean) +
+                          s(nirv_mean) +
+                          s(cci_mean),
+                        data = weekly_gam, 
+                        method = 'REML')
+
+# **Daily models outputs**
+all_sites_all_vis_gam_weekly <- tribble(
+  ~index, ~rsq, ~rmse, ~mae,
+  "All", summary(single_vis_daily)[["r.sq"]],
+  sqrt(mean((single_vis_daily[["residuals"]])^2)),
+  mean(abs(single_vis_daily[["residuals"]]))
+) %>% 
+  mutate(site = "All") %>% 
+  select(index, site, rsq, rmse, mae)
 
 
+# MONTHLY GAMS ------------------------------------------------------------------
+# Prepare data with all sites
+monthly_gam <- monthly_plot_500 %>% 
+  pivot_wider(names_from = index, values_from = value) %>% 
+  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, 
+         nirv_mean, cci_mean, site) %>% 
+  mutate(site = as.factor(site))
 
+# Create functions to extract metrics
+rsq_fun <- function(mod) {
+  summary(mod)[["r.sq"]]
+}
 
+rmse_fun <- function(mod) {
+  sqrt(mean((mod[["residuals"]])^2))
+}
 
+mae_fun <- function(mod) {
+  mean(abs(mod[["residuals"]]))
+}
 
+# GAM model for all sites [E | Diff VIs]
+group_site <- monthly_gam %>% 
+  pivot_longer(cols = c(ends_with("mean")), names_to = "index",
+               values_to = "value") %>% 
+  nest(data = c(-index)) 
+
+mod_fun <- function(df) {
+  gam(gpp_dt_vut_ref ~ s(value, k = 10), 
+      data = df, 
+      method = 'REML')
+}
+
+models <- group_site %>% 
+  mutate(model = map(data, mod_fun))
+
+all_sites_gam_monthly <- models %>% 
+  transmute(index,
+            rsq = map_dbl(model, rsq_fun),
+            rmse = map_dbl(model, rmse_fun),
+            mae = map_dbl(model, mae_fun)) %>% 
+  mutate(site = "All") %>% 
+  select(site, index, rsq, mae, rmse)
+
+# GAM model for all sites diff VIs [F | Diff VIS + site]
+group_site <- monthly_gam %>% 
+  pivot_longer(cols = c(ends_with("mean")), names_to = "index",
+               values_to = "value") %>% 
+  nest(data = c(-index, -site)) 
+
+mod_fun <- function(df) {
+  gam(gpp_dt_vut_ref ~ s(value, k = 10), 
+      data = df, 
+      method = 'REML')
+}
+
+models <- group_site %>% 
+  mutate(model = map(data, mod_fun))
+
+vis_sites_gam_monthly <- models %>% 
+  transmute(index, site,
+            rsq = map_dbl(model, rsq_fun),
+            rmse = map_dbl(model, rmse_fun),
+            mae = map_dbl(model, mae_fun)) %>% 
+  arrange(desc(rsq))
+
+# GAM model for all VI's [G | All VIs]
+mod_fun <- function(df) {
+  gam(gpp_dt_vut_ref ~ ndvi_mean +
+        # kndvi_mean +
+        s(evi_mean) +
+        s(nirv_mean) +
+        s(cci_mean),
+      data = weekly_gam, 
+      method = 'REML')
+}
+
+group_site <- monthly_gam %>% 
+  nest(data = c(-site)) 
+
+models <- group_site %>% 
+  mutate(model = map(data, mod_fun),
+         index = "All")
+
+all_vis_gam_monthly <- models %>% 
+  transmute(index, site,
+            rsq = map_dbl(model, rsq_fun),
+            rmse = map_dbl(model, rmse_fun),
+            mae = map_dbl(model, mae_fun)) %>% 
+  arrange(desc(rsq))
+
+# GAM model for all sites and all indices (covariates) [H | All VIs + site]
+single_vis_monthly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
+                           # kndvi_mean +
+                           s(evi_mean) +
+                           s(nirv_mean) +
+                           s(cci_mean),
+                         data = weekly_gam, 
+                         method = 'REML')
+
+# **Daily models outputs**
+all_sites_all_vis_gam_monthly <- tribble(
+  ~index, ~rsq, ~rmse, ~mae,
+  "All", summary(single_vis_daily)[["r.sq"]],
+  sqrt(mean((single_vis_daily[["residuals"]])^2)),
+  mean(abs(single_vis_daily[["residuals"]]))
+) %>% 
+  mutate(site = "All") %>% 
+  select(index, site, rsq, rmse, mae)
 
 
 

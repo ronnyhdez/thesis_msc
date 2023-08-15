@@ -231,107 +231,107 @@ bind_rows(evi_glance_monthly,
   ) 
 ```
 
-## Complete GAM metrics
-
-#### Individual Daily GAM models
-
-**The following tables represent the results of each model as gpp~VI and it's not segregated by site.**
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-source("scripts/gam_preparation.R")
-```
+<!-- ## Complete GAM metrics -->
+
+<!-- #### Individual Daily GAM models -->
+
+<!-- **The following tables represent the results of each model as gpp~VI and it's not segregated by site.** -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- source("scripts/gam_preparation.R") -->
+<!-- ``` -->
 
 
-```{r}
-#| label: tbl-gam_model_results_pvalue
-#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs" 
-#| echo: false
-#| message: false
-#| warning: false
-bind_rows(s_table_ndvi_daily, s_table_evi_daily, 
-          s_table_nirv_daily, s_table_kndvi_daily,
-          s_table_cci_daily) %>% 
-  tibble::rownames_to_column("Model response variable") %>% 
-  gt() %>% 
-  tab_header(
-    title = "Individual daily GAM models ouput",
-    subtitle = "MODIS derived indices for all sites"
-  )
-```
+<!-- ```{r} -->
+<!-- #| label: tbl-gam_model_results_pvalue -->
+<!-- #| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"  -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- bind_rows(s_table_ndvi_daily, s_table_evi_daily,  -->
+<!--           s_table_nirv_daily, s_table_kndvi_daily, -->
+<!--           s_table_cci_daily) %>%  -->
+<!--   tibble::rownames_to_column("Model response variable") %>%  -->
+<!--   gt() %>%  -->
+<!--   tab_header( -->
+<!--     title = "Individual daily GAM models ouput", -->
+<!--     subtitle = "MODIS derived indices for all sites" -->
+<!--   ) -->
+<!-- ``` -->
 
-```{r}
-#| label: tbl-gam_model_results
-#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs" 
-#| echo: false
-#| message: false
-#| warning: false
-bind_rows(p_table_evi_daily, p_table_ndvi_daily, 
-          p_table_nirv_daily, p_table_kndvi_daily,
-          p_table_cci_daily) %>% 
-  tibble::rownames_to_column("parameter") %>% 
-  bind_cols(
-    tribble(
-      ~index, ~r_squared,
-      "evi", summ_evi_daily[["r.sq"]],
-      "ndvi", summ_ndvi_daily[["r.sq"]],
-      "nirv", summ_nirv_daily[["r.sq"]],
-      "kndvi", summ_kndvi_daily[["r.sq"]],
-      "cci", summ_cci_daily[["r.sq"]]
-    ) 
-  ) %>% 
-  relocate(index) %>% 
-  arrange(desc(r_squared)) %>% 
-  gt() %>% 
-  tab_header(
-    title = "GAM daily models ouput",
-    subtitle = "MODIS derived indices for all sites"
-  )
-```
+<!-- ```{r} -->
+<!-- #| label: tbl-gam_model_results -->
+<!-- #| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"  -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- bind_rows(p_table_evi_daily, p_table_ndvi_daily,  -->
+<!--           p_table_nirv_daily, p_table_kndvi_daily, -->
+<!--           p_table_cci_daily) %>%  -->
+<!--   tibble::rownames_to_column("parameter") %>%  -->
+<!--   bind_cols( -->
+<!--     tribble( -->
+<!--       ~index, ~r_squared, -->
+<!--       "evi", summ_evi_daily[["r.sq"]], -->
+<!--       "ndvi", summ_ndvi_daily[["r.sq"]], -->
+<!--       "nirv", summ_nirv_daily[["r.sq"]], -->
+<!--       "kndvi", summ_kndvi_daily[["r.sq"]], -->
+<!--       "cci", summ_cci_daily[["r.sq"]] -->
+<!--     )  -->
+<!--   ) %>%  -->
+<!--   relocate(index) %>%  -->
+<!--   arrange(desc(r_squared)) %>%  -->
+<!--   gt() %>%  -->
+<!--   tab_header( -->
+<!--     title = "GAM daily models ouput", -->
+<!--     subtitle = "MODIS derived indices for all sites" -->
+<!--   ) -->
+<!-- ``` -->
 
- - Borden have the most complex models given the nature of its data values
- - In that kind of data behaviour, EVI seems to not perform as well 
+<!--  - Borden have the most complex models given the nature of its data values -->
+<!--  - In that kind of data behaviour, EVI seems to not perform as well  -->
 
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
 
 
 
-# **Daily models outputs**
-summ_single_daily <- summary(single_vis_daily)
-summ_single_daily
+<!-- # **Daily models outputs** -->
+<!-- summ_single_daily <- summary(single_vis_daily) -->
+<!-- summ_single_daily -->
 
 
 
-all_vis_gam <- ind_sites %>%
-  select(-kndvi_mean) %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ evi_mean +
-                           ndvi_mean + nirv_mean +
-                           cci_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-```
+<!-- all_vis_gam <- ind_sites %>% -->
+<!--   select(-kndvi_mean) %>% -->
+<!--   nest(data = c(-site)) %>% -->
+<!--   mutate( -->
+<!--     fit = map(data, ~ lm(gpp_dt_vut_ref ~ evi_mean + -->
+<!--                            ndvi_mean + nirv_mean + -->
+<!--                            cci_mean, data = .x)), -->
+<!--     tidied = map(fit, tidy), -->
+<!--     glanced = map(fit, glance), -->
+<!--     augmented = map(fit, augment) -->
+<!--   ) -->
+<!-- ``` -->
 
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(single_vis_daily, 
-             scales = "fixed",
-             residuals = TRUE) 
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- gratia::draw(single_vis_daily,  -->
+<!--              scales = "fixed", -->
+<!--              residuals = TRUE)  -->
 
-gratia::appraise(single_vis_daily)
-```
+<!-- gratia::appraise(single_vis_daily) -->
+<!-- ``` -->
 
 
 
@@ -350,420 +350,420 @@ gratia::appraise(single_vis_daily)
 
 
 
-#### SD GAM model with smooth terms for all covariates
+<!-- #### SD GAM model with smooth terms for all covariates -->
 
-**SD: Single Daily**
+<!-- **SD: Single Daily** -->
 
- - The following results are including ndvi and kndvi with smooth terms, but 
- they don't show a non-linear relation with GPP.
- - I changed the `k` parameter several times, but no improvements arised.
- - The GAM model was specified as follows:
-  - `gpp ~ s(ndvi_mean, k = 10) + s(evi_mean, k = 10) + s(nirv_mean, k = 10) + s(kndvi_mean, k = 10) + s(cci_mean, k = 10)`
+<!--  - The following results are including ndvi and kndvi with smooth terms, but  -->
+<!--  they don't show a non-linear relation with GPP. -->
+<!--  - I changed the `k` parameter several times, but no improvements arised. -->
+<!--  - The GAM model was specified as follows: -->
+<!--   - `gpp ~ s(ndvi_mean, k = 10) + s(evi_mean, k = 10) + s(nirv_mean, k = 10) + s(kndvi_mean, k = 10) + s(cci_mean, k = 10)` -->
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
 
-# Model with smooth term for all covariates
-single_vis_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 9) +
-                          # s(kndvi_mean, k = 9) +
-                          s(evi_mean, k = 50) +
-                          s(nirv_mean, k = 50) +
-                          s(cci_mean, k = 50),
-                        data = daily_gam, 
-                        method = 'REML')
+<!-- # Model with smooth term for all covariates -->
+<!-- single_vis_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 9) + -->
+<!--                           # s(kndvi_mean, k = 9) + -->
+<!--                           s(evi_mean, k = 50) + -->
+<!--                           s(nirv_mean, k = 50) + -->
+<!--                           s(cci_mean, k = 50), -->
+<!--                         data = daily_gam,  -->
+<!--                         method = 'REML') -->
 
-# **Daily models outputs**
-summ_single_daily <- summary(single_vis_daily)
-summ_single_daily
+<!-- # **Daily models outputs** -->
+<!-- summ_single_daily <- summary(single_vis_daily) -->
+<!-- summ_single_daily -->
 
-gam.check(single_vis_daily)
-```
+<!-- gam.check(single_vis_daily) -->
+<!-- ``` -->
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(single_vis_daily, 
-             scales = "fixed",
-             residuals = TRUE) 
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- gratia::draw(single_vis_daily,  -->
+<!--              scales = "fixed", -->
+<!--              residuals = TRUE)  -->
 
-gratia::appraise(single_vis_daily)
-```
+<!-- gratia::appraise(single_vis_daily) -->
+<!-- ``` -->
 
-#### SD GAM model with smooth terms for all covariates and including site
+<!-- #### SD GAM model with smooth terms for all covariates and including site -->
 
-**SD: Single Daily**
+<!-- **SD: Single Daily** -->
 
- - This model included `site` as covariate (without smooth term)
- - Including the `site` term improves the R2 with respect to the above model
- from `0.652` to `0.727`
- - The following results are including ndvi and kndvi with smooth terms, but 
- they don't show a non-linear relation with GPP.
- - I changed the `k` parameter several times, but no improvements arised.
- - The GAM model was specified as follows:
-  - `gpp ~ s(ndvi_mean, k = 10) + s(evi_mean, k = 10) + s(nirv_mean, k = 10) + s(kndvi_mean, k = 10) + s(cci_mean, k = 10)`
+<!--  - This model included `site` as covariate (without smooth term) -->
+<!--  - Including the `site` term improves the R2 with respect to the above model -->
+<!--  from `0.652` to `0.727` -->
+<!--  - The following results are including ndvi and kndvi with smooth terms, but  -->
+<!--  they don't show a non-linear relation with GPP. -->
+<!--  - I changed the `k` parameter several times, but no improvements arised. -->
+<!--  - The GAM model was specified as follows: -->
+<!--   - `gpp ~ s(ndvi_mean, k = 10) + s(evi_mean, k = 10) + s(nirv_mean, k = 10) + s(kndvi_mean, k = 10) + s(cci_mean, k = 10)` -->
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-single_vis_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 9) +
-                          # s(kndvi_mean, k = 9) +
-                          s(evi_mean, k = 50) +
-                          s(nirv_mean, k = 50) +
-                          s(cci_mean, k = 50) +
-                          site,
-                        data = daily_gam, 
-                        method = 'REML')
-
-# **Daily models outputs**
-summ_single_daily <- summary(single_vis_daily)
-summ_single_daily
-```
-
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- single_vis_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 9) + -->
+<!--                           # s(kndvi_mean, k = 9) + -->
+<!--                           s(evi_mean, k = 50) + -->
+<!--                           s(nirv_mean, k = 50) + -->
+<!--                           s(cci_mean, k = 50) + -->
+<!--                           site, -->
+<!--                         data = daily_gam,  -->
+<!--                         method = 'REML') -->
+
+<!-- # **Daily models outputs** -->
+<!-- summ_single_daily <- summary(single_vis_daily) -->
+<!-- summ_single_daily -->
+<!-- ``` -->
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(single_vis_daily, 
-             scales = "fixed",
-             residuals = TRUE) 
-
-gratia::appraise(single_vis_daily)
-```
-
-#### SD GAM model with smooth terms just for evi, nirv, cci
-
- - On the next model, I remove kndvi and ndvi from the non-linear model
- specification.
- - `site` included as covariate
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-single_vis_daily <- gam(gpp_dt_vut_ref ~ ndvi_mean +
-                          # kndvi_mean +
-                          s(evi_mean) +
-                          s(nirv_mean) +
-                          s(cci_mean) +
-                          site,
-                        data = daily_gam, 
-                        method = 'REML')
-
-# **Daily models outputs**
-summ_single_daily <- summary(single_vis_daily)
-summ_single_daily
-
-# check <- residuals(single_vis_daily)
-```
-
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(single_vis_daily, 
-             scales = "fixed",
-             residuals = TRUE) 
-
-gratia::appraise(single_vis_daily)
-
-# **Code to create table if single model is selected**
-# # Tables for comparison (this can be a function)
-# # s_table_evi_daily <- 
-# summ_single_daily[["s.table"]] %>% 
-#   as.data.frame() %>% 
-#   tibble::rownames_to_column("parameter") %>% 
-#   gt() %>% 
-#   tab_header(
-#     title = "GAM daily models ouput",
-#     subtitle = "MODIS derived indices for all sites"
-#   )
-# 
-# summ_single_daily[["p.table"]] %>% 
-#   as.data.frame() %>% 
-#   tibble::rownames_to_column("parameter") %>% 
-#   bind_cols(
-#     tribble(
-#       ~index, ~r_squared,
-#       "single", summ_single_daily[["r.sq"]]
-#     ) 
-#   ) %>% 
-#   relocate(index) %>% 
-#   arrange(desc(r_squared)) %>% 
-#   gt() %>% 
-#   tab_header(
-#     title = "Single daily GAM model ouput",
-#     subtitle = "MODIS derived indices for all sites"
-#   )
-```
-
-#### SD GAM model with smooth terms by site
-
- - On the next model, I included all VIs with a smooth term by site.
- 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-model_vis_daily <- gam(gpp_dt_vut_ref ~ 
-                         s(ndvi_mean, by = site) +
-                         # s(kndvi_mean, by = site) +
-                         s(evi_mean, by = site) +
-                         s(nirv_mean, by = site) +
-                         s(cci_mean, by = site),
-                       data = daily_gam, 
-                       method = 'REML')
-
-summary(model_vis_daily)
-```
-
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(model_vis_daily, 
-             # scales = "fixed",
-             residuals = TRUE,
-             ncol = 3) +
-  theme_bw(base_size = 10)
-
-gratia::appraise(model_vis_daily)
-```
-
-#### Individual Weekly GAM models
-
-```{r}
-#| label: tbl-weekly_gam_model_results_pvalue
-#| tbl-cap: "Summary of the individual GAM models for GPP estimation using the VIs" 
-#| echo: false
-#| message: false
-#| warning: false
-weekly_gam <- weekly_plot_500 %>% 
-  pivot_wider(names_from = index, values_from = value)
-
-# Weekly evi
-model_evi_weekly <- gam(gpp_dt_vut_ref ~ s(evi_mean), 
-                        data = weekly_gam, 
-                        method = 'REML')
-
-# Weekly ndvi
-model_ndvi_weekly <- gam(gpp_dt_vut_ref ~ s(ndvi_mean), 
-                         data = weekly_gam, 
-                         method = 'REML')
-
-# Weekly nirv
-model_nirv_weekly <- gam(gpp_dt_vut_ref ~ s(nirv_mean), 
-                         data = weekly_gam, 
-                         method = 'REML')
-
-# Weekly kndvi
-model_kndvi_weekly <- gam(gpp_dt_vut_ref ~ s(kndvi_mean), 
-                         data = weekly_gam, 
-                         method = 'REML')
-
-# Weekly cci
-model_cci_weekly <- gam(gpp_dt_vut_ref ~ s(cci_mean), 
-                         data = weekly_gam, 
-                         method = 'REML')
-
-# **Weekly models outputs**
-summ_evi_weekly <- summary(model_evi_weekly)
-summ_ndvi_weekly <- summary(model_ndvi_weekly)
-summ_nirv_weekly <- summary(model_nirv_weekly)
-summ_kndvi_weekly <- summary(model_kndvi_weekly)
-summ_cci_weekly <- summary(model_cci_weekly)
-
-# Tables for comparison (rhis can be a function)
-s_table_evi_weekly <- summ_evi_weekly[["s.table"]] %>% as.data.frame()
-s_table_ndvi_weekly <- summ_ndvi_weekly[["s.table"]] %>% as.data.frame()
-s_table_nirv_weekly <- summ_nirv_weekly[["s.table"]] %>% as.data.frame()
-s_table_kndvi_weekly <- summ_kndvi_weekly[["s.table"]] %>% as.data.frame()
-s_table_cci_weekly <- summ_cci_weekly[["s.table"]] %>% as.data.frame()
-
-bind_rows(s_table_ndvi_weekly, s_table_evi_weekly, 
-          s_table_nirv_weekly, s_table_kndvi_weekly,
-          s_table_cci_weekly) %>% 
-  tibble::rownames_to_column("parameter") %>% 
-  gt() %>% 
-  tab_header(
-    title = "GAM weekly models ouput",
-    subtitle = "MODIS derived indices for all sites"
-  )
-```
-
-```{r}
-#| label: tbl-weekly_gam_model_results
-#| tbl-cap: "Summary of the individual GAM models for GPP estimation using the VIs" 
-#| echo: false
-#| message: false
-#| warning: false
-
-p_table_evi_weekly <- summ_evi_weekly[["p.table"]] %>% as.data.frame()
-p_table_ndvi_weekly <- summ_ndvi_weekly[["p.table"]] %>% as.data.frame()
-p_table_nirv_weekly <- summ_nirv_weekly[["p.table"]] %>% as.data.frame()
-p_table_kndvi_weekly <- summ_kndvi_weekly[["p.table"]] %>% as.data.frame()
-p_table_cci_weekly <- summ_cci_weekly[["p.table"]] %>% as.data.frame()
-
-bind_rows(p_table_evi_weekly, p_table_ndvi_weekly, 
-          p_table_nirv_weekly, p_table_kndvi_weekly,
-          p_table_cci_weekly) %>% 
-  tibble::rownames_to_column("parameter") %>% 
-  bind_cols(
-    tribble(
-      ~index, ~r_squared,
-      "evi", summ_evi_weekly[["r.sq"]],
-      "ndvi", summ_ndvi_weekly[["r.sq"]],
-      "nirv", summ_nirv_weekly[["r.sq"]],
-      "kndvi", summ_kndvi_weekly[["r.sq"]],
-      "cci", summ_cci_weekly[["r.sq"]]
-    ) 
-  ) %>% 
-  relocate(index) %>% 
-  arrange(desc(r_squared)) %>% 
-  gt() %>% 
-  tab_header(
-    title = "GAM weekly models ouput",
-    subtitle = "MODIS derived indices for all sites"
-  )
-```
-
-#### SW GAM model with smooth terms for all covariates
-
-**SW: Single Weekly GAM model**
-
- - The following results are including nirv, ndvi and kndvi, but they don't 
- show a non-linear relation with GPP
- - On the next model, I remove kndvi and ndvi from the non-linear model
- specification.
- - The GAM model was specified as follows:
-  - `gpp ~ s(ndvi_mean) + s(evi_mean) + s(nirv_mean) + s(kndvi_mean) + s(cci_mean)`
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-single_vis_weekly <- gam(gpp_dt_vut_ref ~ s(ndvi_mean) +
-                          s(kndvi_mean) +
-                          s(evi_mean) +
-                          s(nirv_mean) +
-                          s(cci_mean),
-                        data = weekly_gam, 
-                        method = 'REML')
-
-# **Daily models outputs**
-summ_single_weekly <- summary(single_vis_weekly)
-summ_single_weekly
-
-# gam.check(single_vis_weekly)
-```
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(single_vis_weekly, 
-             # scales = "fixed",
-             residuals = TRUE) 
-
-gratia::appraise(single_vis_weekly)
-```
-
-#### SW GAM model with smooth terms for all covariates and including site
-
-**SW: Single Weekly GAM model**
-
- - The following results are including nirv, ndvi and kndvi, but they don't 
- show a non-linear relation with GPP
- - On the next model, I remove kndvi and ndvi from the non-linear model
- specification.
- - The GAM model was specified as follows:
-  - `gpp ~ s(ndvi_mean) + s(evi_mean) + s(nirv_mean) + s(kndvi_mean) + s(cci_mean)`
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-
-weekly_gam <- weekly_gam %>% 
-  mutate(site = as.factor(site))
-
-single_vis_weekly <- gam(gpp_dt_vut_ref ~ s(ndvi_mean) +
-                           s(evi_mean) +
-                           s(nirv_mean)+
-                           s(kndvi_mean) +
-                           s(cci_mean) +
-                           site,
-                         data = weekly_gam, 
-                         method = 'REML')
-
-summary(single_vis_weekly)
-```
-
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-# ggplot(aes(y = gpp_dt_vut_ref, x = ndvi_mean), data = weekly_gam) +
-#   geom_point() +
-#   geom_smooth(method = "gam") +
-#   facet_wrap(~site)
-# 
-# ggplot(aes(y = gpp_dt_vut_ref, kndvi_mean), data = weekly_gam) +
-#   geom_point() +
-#   geom_smooth(method = "gam") +
-#   facet_wrap(~site)
-# 
-# ggplot(aes(y = gpp_dt_vut_ref, evi_mean), data = weekly_gam) +
-#   geom_point() +
-#   geom_smooth(method = "gam") +
-#   facet_wrap(~site)
-
-gratia::draw(single_vis_weekly, 
-             scales = "fixed",
-             residuals = TRUE) 
-
-gratia::appraise(single_vis_weekly)
-```
-
-#### SW GAM model with smooth terms by site
-
- - On the next model, I included all VIs with a smooth term by site.
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-
-weekly_gam <- weekly_gam %>% 
-  mutate(site = as.factor(site))
-
-single_vis_weekly <- gam(gpp_dt_vut_ref ~ 
-                         s(ndvi_mean, by = site) +
-                         s(kndvi_mean, by = site) +
-                         s(evi_mean, by = site) +
-                         s(nirv_mean, by = site) +
-                         s(cci_mean, by = site),
-                         data = weekly_gam, 
-                         method = 'REML')
-
-summary(single_vis_weekly)
-```
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(single_vis_weekly, 
-             # scales = "fixed",
-             residuals = TRUE) 
-
-gratia::appraise(single_vis_weekly)
-```
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- gratia::draw(single_vis_daily,  -->
+<!--              scales = "fixed", -->
+<!--              residuals = TRUE)  -->
+
+<!-- gratia::appraise(single_vis_daily) -->
+<!-- ``` -->
+
+<!-- #### SD GAM model with smooth terms just for evi, nirv, cci -->
+
+<!--  - On the next model, I remove kndvi and ndvi from the non-linear model -->
+<!--  specification. -->
+<!--  - `site` included as covariate -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- single_vis_daily <- gam(gpp_dt_vut_ref ~ ndvi_mean + -->
+<!--                           # kndvi_mean + -->
+<!--                           s(evi_mean) + -->
+<!--                           s(nirv_mean) + -->
+<!--                           s(cci_mean) + -->
+<!--                           site, -->
+<!--                         data = daily_gam,  -->
+<!--                         method = 'REML') -->
+
+<!-- # **Daily models outputs** -->
+<!-- summ_single_daily <- summary(single_vis_daily) -->
+<!-- summ_single_daily -->
+
+<!-- # check <- residuals(single_vis_daily) -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- gratia::draw(single_vis_daily,  -->
+<!--              scales = "fixed", -->
+<!--              residuals = TRUE)  -->
+
+<!-- gratia::appraise(single_vis_daily) -->
+
+<!-- # **Code to create table if single model is selected** -->
+<!-- # # Tables for comparison (this can be a function) -->
+<!-- # # s_table_evi_daily <-  -->
+<!-- # summ_single_daily[["s.table"]] %>%  -->
+<!-- #   as.data.frame() %>%  -->
+<!-- #   tibble::rownames_to_column("parameter") %>%  -->
+<!-- #   gt() %>%  -->
+<!-- #   tab_header( -->
+<!-- #     title = "GAM daily models ouput", -->
+<!-- #     subtitle = "MODIS derived indices for all sites" -->
+<!-- #   ) -->
+<!-- #  -->
+<!-- # summ_single_daily[["p.table"]] %>%  -->
+<!-- #   as.data.frame() %>%  -->
+<!-- #   tibble::rownames_to_column("parameter") %>%  -->
+<!-- #   bind_cols( -->
+<!-- #     tribble( -->
+<!-- #       ~index, ~r_squared, -->
+<!-- #       "single", summ_single_daily[["r.sq"]] -->
+<!-- #     )  -->
+<!-- #   ) %>%  -->
+<!-- #   relocate(index) %>%  -->
+<!-- #   arrange(desc(r_squared)) %>%  -->
+<!-- #   gt() %>%  -->
+<!-- #   tab_header( -->
+<!-- #     title = "Single daily GAM model ouput", -->
+<!-- #     subtitle = "MODIS derived indices for all sites" -->
+<!-- #   ) -->
+<!-- ``` -->
+
+<!-- #### SD GAM model with smooth terms by site -->
+
+<!--  - On the next model, I included all VIs with a smooth term by site. -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- model_vis_daily <- gam(gpp_dt_vut_ref ~  -->
+<!--                          s(ndvi_mean, by = site) + -->
+<!--                          # s(kndvi_mean, by = site) + -->
+<!--                          s(evi_mean, by = site) + -->
+<!--                          s(nirv_mean, by = site) + -->
+<!--                          s(cci_mean, by = site), -->
+<!--                        data = daily_gam,  -->
+<!--                        method = 'REML') -->
+
+<!-- summary(model_vis_daily) -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- gratia::draw(model_vis_daily,  -->
+<!--              # scales = "fixed", -->
+<!--              residuals = TRUE, -->
+<!--              ncol = 3) + -->
+<!--   theme_bw(base_size = 10) -->
+
+<!-- gratia::appraise(model_vis_daily) -->
+<!-- ``` -->
+
+<!-- #### Individual Weekly GAM models -->
+
+<!-- ```{r} -->
+<!-- #| label: tbl-weekly_gam_model_results_pvalue -->
+<!-- #| tbl-cap: "Summary of the individual GAM models for GPP estimation using the VIs"  -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- weekly_gam <- weekly_plot_500 %>%  -->
+<!--   pivot_wider(names_from = index, values_from = value) -->
+
+<!-- # Weekly evi -->
+<!-- model_evi_weekly <- gam(gpp_dt_vut_ref ~ s(evi_mean),  -->
+<!--                         data = weekly_gam,  -->
+<!--                         method = 'REML') -->
+
+<!-- # Weekly ndvi -->
+<!-- model_ndvi_weekly <- gam(gpp_dt_vut_ref ~ s(ndvi_mean),  -->
+<!--                          data = weekly_gam,  -->
+<!--                          method = 'REML') -->
+
+<!-- # Weekly nirv -->
+<!-- model_nirv_weekly <- gam(gpp_dt_vut_ref ~ s(nirv_mean),  -->
+<!--                          data = weekly_gam,  -->
+<!--                          method = 'REML') -->
+
+<!-- # Weekly kndvi -->
+<!-- model_kndvi_weekly <- gam(gpp_dt_vut_ref ~ s(kndvi_mean),  -->
+<!--                          data = weekly_gam,  -->
+<!--                          method = 'REML') -->
+
+<!-- # Weekly cci -->
+<!-- model_cci_weekly <- gam(gpp_dt_vut_ref ~ s(cci_mean),  -->
+<!--                          data = weekly_gam,  -->
+<!--                          method = 'REML') -->
+
+<!-- # **Weekly models outputs** -->
+<!-- summ_evi_weekly <- summary(model_evi_weekly) -->
+<!-- summ_ndvi_weekly <- summary(model_ndvi_weekly) -->
+<!-- summ_nirv_weekly <- summary(model_nirv_weekly) -->
+<!-- summ_kndvi_weekly <- summary(model_kndvi_weekly) -->
+<!-- summ_cci_weekly <- summary(model_cci_weekly) -->
+
+<!-- # Tables for comparison (rhis can be a function) -->
+<!-- s_table_evi_weekly <- summ_evi_weekly[["s.table"]] %>% as.data.frame() -->
+<!-- s_table_ndvi_weekly <- summ_ndvi_weekly[["s.table"]] %>% as.data.frame() -->
+<!-- s_table_nirv_weekly <- summ_nirv_weekly[["s.table"]] %>% as.data.frame() -->
+<!-- s_table_kndvi_weekly <- summ_kndvi_weekly[["s.table"]] %>% as.data.frame() -->
+<!-- s_table_cci_weekly <- summ_cci_weekly[["s.table"]] %>% as.data.frame() -->
+
+<!-- bind_rows(s_table_ndvi_weekly, s_table_evi_weekly,  -->
+<!--           s_table_nirv_weekly, s_table_kndvi_weekly, -->
+<!--           s_table_cci_weekly) %>%  -->
+<!--   tibble::rownames_to_column("parameter") %>%  -->
+<!--   gt() %>%  -->
+<!--   tab_header( -->
+<!--     title = "GAM weekly models ouput", -->
+<!--     subtitle = "MODIS derived indices for all sites" -->
+<!--   ) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| label: tbl-weekly_gam_model_results -->
+<!-- #| tbl-cap: "Summary of the individual GAM models for GPP estimation using the VIs"  -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+
+<!-- p_table_evi_weekly <- summ_evi_weekly[["p.table"]] %>% as.data.frame() -->
+<!-- p_table_ndvi_weekly <- summ_ndvi_weekly[["p.table"]] %>% as.data.frame() -->
+<!-- p_table_nirv_weekly <- summ_nirv_weekly[["p.table"]] %>% as.data.frame() -->
+<!-- p_table_kndvi_weekly <- summ_kndvi_weekly[["p.table"]] %>% as.data.frame() -->
+<!-- p_table_cci_weekly <- summ_cci_weekly[["p.table"]] %>% as.data.frame() -->
+
+<!-- bind_rows(p_table_evi_weekly, p_table_ndvi_weekly,  -->
+<!--           p_table_nirv_weekly, p_table_kndvi_weekly, -->
+<!--           p_table_cci_weekly) %>%  -->
+<!--   tibble::rownames_to_column("parameter") %>%  -->
+<!--   bind_cols( -->
+<!--     tribble( -->
+<!--       ~index, ~r_squared, -->
+<!--       "evi", summ_evi_weekly[["r.sq"]], -->
+<!--       "ndvi", summ_ndvi_weekly[["r.sq"]], -->
+<!--       "nirv", summ_nirv_weekly[["r.sq"]], -->
+<!--       "kndvi", summ_kndvi_weekly[["r.sq"]], -->
+<!--       "cci", summ_cci_weekly[["r.sq"]] -->
+<!--     )  -->
+<!--   ) %>%  -->
+<!--   relocate(index) %>%  -->
+<!--   arrange(desc(r_squared)) %>%  -->
+<!--   gt() %>%  -->
+<!--   tab_header( -->
+<!--     title = "GAM weekly models ouput", -->
+<!--     subtitle = "MODIS derived indices for all sites" -->
+<!--   ) -->
+<!-- ``` -->
+
+<!-- #### SW GAM model with smooth terms for all covariates -->
+
+<!-- **SW: Single Weekly GAM model** -->
+
+<!--  - The following results are including nirv, ndvi and kndvi, but they don't  -->
+<!--  show a non-linear relation with GPP -->
+<!--  - On the next model, I remove kndvi and ndvi from the non-linear model -->
+<!--  specification. -->
+<!--  - The GAM model was specified as follows: -->
+<!--   - `gpp ~ s(ndvi_mean) + s(evi_mean) + s(nirv_mean) + s(kndvi_mean) + s(cci_mean)` -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- single_vis_weekly <- gam(gpp_dt_vut_ref ~ s(ndvi_mean) + -->
+<!--                           s(kndvi_mean) + -->
+<!--                           s(evi_mean) + -->
+<!--                           s(nirv_mean) + -->
+<!--                           s(cci_mean), -->
+<!--                         data = weekly_gam,  -->
+<!--                         method = 'REML') -->
+
+<!-- # **Daily models outputs** -->
+<!-- summ_single_weekly <- summary(single_vis_weekly) -->
+<!-- summ_single_weekly -->
+
+<!-- # gam.check(single_vis_weekly) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- gratia::draw(single_vis_weekly,  -->
+<!--              # scales = "fixed", -->
+<!--              residuals = TRUE)  -->
+
+<!-- gratia::appraise(single_vis_weekly) -->
+<!-- ``` -->
+
+<!-- #### SW GAM model with smooth terms for all covariates and including site -->
+
+<!-- **SW: Single Weekly GAM model** -->
+
+<!--  - The following results are including nirv, ndvi and kndvi, but they don't  -->
+<!--  show a non-linear relation with GPP -->
+<!--  - On the next model, I remove kndvi and ndvi from the non-linear model -->
+<!--  specification. -->
+<!--  - The GAM model was specified as follows: -->
+<!--   - `gpp ~ s(ndvi_mean) + s(evi_mean) + s(nirv_mean) + s(kndvi_mean) + s(cci_mean)` -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+
+<!-- weekly_gam <- weekly_gam %>%  -->
+<!--   mutate(site = as.factor(site)) -->
+
+<!-- single_vis_weekly <- gam(gpp_dt_vut_ref ~ s(ndvi_mean) + -->
+<!--                            s(evi_mean) + -->
+<!--                            s(nirv_mean)+ -->
+<!--                            s(kndvi_mean) + -->
+<!--                            s(cci_mean) + -->
+<!--                            site, -->
+<!--                          data = weekly_gam,  -->
+<!--                          method = 'REML') -->
+
+<!-- summary(single_vis_weekly) -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- # ggplot(aes(y = gpp_dt_vut_ref, x = ndvi_mean), data = weekly_gam) + -->
+<!-- #   geom_point() + -->
+<!-- #   geom_smooth(method = "gam") + -->
+<!-- #   facet_wrap(~site) -->
+<!-- #  -->
+<!-- # ggplot(aes(y = gpp_dt_vut_ref, kndvi_mean), data = weekly_gam) + -->
+<!-- #   geom_point() + -->
+<!-- #   geom_smooth(method = "gam") + -->
+<!-- #   facet_wrap(~site) -->
+<!-- #  -->
+<!-- # ggplot(aes(y = gpp_dt_vut_ref, evi_mean), data = weekly_gam) + -->
+<!-- #   geom_point() + -->
+<!-- #   geom_smooth(method = "gam") + -->
+<!-- #   facet_wrap(~site) -->
+
+<!-- gratia::draw(single_vis_weekly,  -->
+<!--              scales = "fixed", -->
+<!--              residuals = TRUE)  -->
+
+<!-- gratia::appraise(single_vis_weekly) -->
+<!-- ``` -->
+
+<!-- #### SW GAM model with smooth terms by site -->
+
+<!--  - On the next model, I included all VIs with a smooth term by site. -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+
+<!-- weekly_gam <- weekly_gam %>%  -->
+<!--   mutate(site = as.factor(site)) -->
+
+<!-- single_vis_weekly <- gam(gpp_dt_vut_ref ~  -->
+<!--                          s(ndvi_mean, by = site) + -->
+<!--                          s(kndvi_mean, by = site) + -->
+<!--                          s(evi_mean, by = site) + -->
+<!--                          s(nirv_mean, by = site) + -->
+<!--                          s(cci_mean, by = site), -->
+<!--                          data = weekly_gam,  -->
+<!--                          method = 'REML') -->
+
+<!-- summary(single_vis_weekly) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- gratia::draw(single_vis_weekly,  -->
+<!--              # scales = "fixed", -->
+<!--              residuals = TRUE)  -->
+
+<!-- gratia::appraise(single_vis_weekly) -->
+<!-- ``` -->
 
