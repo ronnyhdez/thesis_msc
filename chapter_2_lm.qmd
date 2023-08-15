@@ -631,13 +631,10 @@ The complete metrics results for each of the monthly lm models are in
 source("scripts/lm_preparation.R")
 
 # Monthly table
-bind_rows(evi_glance_monthly,
-          ndvi_glance_monthly,
-          nirv_glance_monthly,
-          cci_glance_monthly) %>% 
+vis_site_glance_montly %>% 
   select(site, index, r.squared, adj.r.squared, rmse) %>%
   bind_rows(all_sites_glance_monthly,
-            all_sites_all_indices_glance_monthly,
+            all_sites_all_vis_glance_monthly,
             all_vis_glance_monthly) %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, adj.r.squared, rmse)) %>%
@@ -677,13 +674,10 @@ bind_rows(evi_glance_monthly,
   cols_width(everything() ~ px(50))
 
 # Weekly table
-bind_rows(evi_glance_weekly,
-          ndvi_glance_weekly,
-          nirv_glance_weekly,
-          cci_glance_weekly) %>% 
+vis_site_glance_weekly  %>%
   select(site, index, r.squared, adj.r.squared, rmse) %>%
   bind_rows(all_sites_glance_weekly,
-            all_sites_all_indices_glance_weekly,
+            all_sites_all_vis_glance_weekly,
             all_vis_glance_weekly) %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, adj.r.squared, rmse)) %>%
@@ -723,13 +717,10 @@ bind_rows(evi_glance_weekly,
   cols_width(everything() ~ px(50))
 
 # Daily table
-bind_rows(evi_glance_daily,
-          ndvi_glance_daily,
-          nirv_glance_daily,
-          cci_glance_daily) %>% 
+vis_site_glance_daily %>%
   select(site, index, r.squared, adj.r.squared, rmse) %>%
   bind_rows(all_sites_glance_daily,
-            all_sites_all_indices_glance_daily,
+            all_sites_all_vis_glance_daily,
             all_vis_glance_daily)  %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, adj.r.squared, rmse)) %>%

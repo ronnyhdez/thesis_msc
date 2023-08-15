@@ -153,6 +153,12 @@ cci_glance_monthly <- cci_lm %>%
   arrange(desc(r.squared)) %>% 
   mutate(index = "CCI")
 
+vis_site_glance_montly <- bind_rows(evi_glance_monthly,
+          ndvi_glance_monthly,
+          nirv_glance_monthly,
+          cci_glance_monthly) 
+
+
 # # Linear model for all sites kNDVI
 # kndvi_lm <- ind_sites %>%
 #   nest(data = c(-site)) %>%
@@ -223,7 +229,7 @@ metrics <- augment(all_sites_all_indices) %>%
 
 rmse <- sqrt(mean((metrics$.resid)^2))
 
-all_sites_all_indices_glance_monthly <- glance(all_sites_all_indices) %>% 
+all_sites_all_vis_glance_monthly <- glance(all_sites_all_indices) %>% 
   mutate(rmse = rmse,
          site = "All",
          index = "All") %>% 
@@ -336,6 +342,21 @@ cci_glance_weekly <- cci_lm %>%
   arrange(desc(r.squared)) %>% 
   mutate(index = "CCI")
 
+vis_site_glance_weekly <- bind_rows(evi_glance_weekly,
+          ndvi_glance_weekly,
+          nirv_glance_weekly,
+          cci_glance_weekly) 
+
+
+
+
+
+
+
+
+
+
+
 all_sites_lm <- ind_sites %>% 
   select(-kndvi_mean) %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index", values_to = "value") %>% 
@@ -417,7 +438,7 @@ metrics <- augment(all_sites_all_indices) %>%
 
 rmse <- sqrt(mean((metrics$.resid)^2))
 
-all_sites_all_indices_glance_weekly <- glance(all_sites_all_indices) %>% 
+all_sites_all_vis_glance_weekly <- glance(all_sites_all_indices) %>% 
   mutate(rmse = rmse,
          site = "All",
          index = "All") %>% 
@@ -531,6 +552,20 @@ cci_glance_daily <- cci_lm %>%
   arrange(desc(r.squared)) %>% 
   mutate(index = "CCI")
 
+vis_site_glance_daily <- bind_rows(evi_glance_daily,
+          ndvi_glance_daily,
+          nirv_glance_daily,
+          cci_glance_daily) 
+
+
+
+
+
+
+
+
+
+
 # Linear model for all sites
 all_sites_lm <- ind_sites %>% 
   select(-kndvi_mean) %>% 
@@ -613,7 +648,7 @@ metrics <- augment(all_sites_all_indices) %>%
 
 rmse <- sqrt(mean((metrics$.resid)^2))
 
-all_sites_all_indices_glance_daily <- glance(all_sites_all_indices) %>% 
+all_sites_all_vis_glance_daily <- glance(all_sites_all_indices) %>% 
   mutate(rmse = rmse,
          site = "All",
          index = "All") %>% 

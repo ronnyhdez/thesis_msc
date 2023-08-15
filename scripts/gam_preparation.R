@@ -58,7 +58,7 @@ group_site <- daily_gam %>%
 models <- group_site %>% 
   mutate(model = map(data, mod_fun))
 
-all_sites_daily <- models %>% 
+all_sites_gam_daily <- models %>% 
   transmute(index,
             rsq = map_dbl(model, rsq_fun),
             rmse = map_dbl(model, rmse_fun),
@@ -112,7 +112,7 @@ all_sites_daily <- models %>%
 # p_table_cci_daily <- summ_cci_daily[["p.table"]] %>% as.data.frame()
 
 
-# GAM model for all sites EVI [F]
+# GAM model for all sites diff VIs [F]
 group_site <- daily_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -127,7 +127,7 @@ mod_fun <- function(df) {
 models <- group_site %>% 
   mutate(model = map(data, mod_fun))
 
-all_sites_indices_daily <- models %>% 
+vis_sites_gam_daily <- models %>% 
   transmute(index, site,
             rsq = map_dbl(model, rsq_fun),
             rmse = map_dbl(model, rmse_fun),
