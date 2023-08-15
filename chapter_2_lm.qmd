@@ -799,10 +799,11 @@ vis_site_glance_daily %>%
 #| warning: false
 source("scripts/gam_preparation.R")
 
-all_sites_daily %>% 
-  bind_rows(all_sites_indices_daily,
-            all_vis_daily,
-            all_sites_all_vis_daily) %>% 
+all_sites_gam_daily %>% 
+  bind_rows(vis_sites_gam_daily,
+            all_sites_all_vis_gam_daily,
+            all_vis_gam_daily,
+            ) %>% 
   pivot_wider(names_from = index,
               values_from = c(rsq, mae, rmse)) %>% 
   gt() %>%

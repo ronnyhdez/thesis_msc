@@ -31,12 +31,6 @@ daily_gam <- daily_plot_500 %>%
   mutate(site = as.factor(site))
 
 # Create functions to extract metrics
-mod_fun <- function(df) {
-  gam(gpp_dt_vut_ref ~ s(value, k = 10), 
-      data = df, 
-      method = 'REML')
-}
-
 rsq_fun <- function(mod) {
   summary(mod)[["r.sq"]]
 }
@@ -49,11 +43,17 @@ mae_fun <- function(mod) {
   mean(abs(mod[["residuals"]]))
 }
 
-# GAM model for all sites [E]
+# GAM model for all sites [E | Diff VIs]
 group_site <- daily_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
   nest(data = c(-index)) 
+
+mod_fun <- function(df) {
+  gam(gpp_dt_vut_ref ~ s(value, k = 10), 
+      data = df, 
+      method = 'REML')
+}
 
 models <- group_site %>% 
   mutate(model = map(data, mod_fun))
@@ -112,7 +112,7 @@ all_sites_gam_daily <- models %>%
 # p_table_cci_daily <- summ_cci_daily[["p.table"]] %>% as.data.frame()
 
 
-# GAM model for all sites diff VIs [F]
+# GAM model for all sites diff VIs [F | Diff VIS + site]
 group_site <- daily_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -134,8 +134,7 @@ vis_sites_gam_daily <- models %>%
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
 
-
-# GAM model for all sites and all indices (covariates) [G]
+# GAM model for all VI's [G | All VIs]
 mod_fun <- function(df) {
   gam(gpp_dt_vut_ref ~ ndvi_mean +
         # kndvi_mean +
@@ -153,14 +152,14 @@ models <- group_site %>%
   mutate(model = map(data, mod_fun),
          index = "All")
 
-all_vis_daily <- models %>% 
+all_vis_gam_daily <- models %>% 
   transmute(index, site,
             rsq = map_dbl(model, rsq_fun),
             rmse = map_dbl(model, rmse_fun),
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
 
-# GAM model for all VI's [H]
+# GAM model for all sites and all indices (covariates) [H | All VIs + site]
 single_vis_daily <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                           # kndvi_mean +
                           s(evi_mean) +
@@ -170,7 +169,7 @@ single_vis_daily <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                         method = 'REML')
 
 # **Daily models outputs**
-all_sites_all_vis_daily <- tribble(
+all_sites_all_vis_gam_daily <- tribble(
   ~index, ~rsq, ~rmse, ~mae,
   "All", summary(single_vis_daily)[["r.sq"]],
   sqrt(mean((single_vis_daily[["residuals"]])^2)),

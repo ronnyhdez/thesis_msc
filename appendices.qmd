@@ -295,7 +295,43 @@ bind_rows(p_table_evi_daily, p_table_ndvi_daily,
  - In that kind of data behaviour, EVI seems to not perform as well 
 
 
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
 
+
+
+# **Daily models outputs**
+summ_single_daily <- summary(single_vis_daily)
+summ_single_daily
+
+
+
+all_vis_gam <- ind_sites %>%
+  select(-kndvi_mean) %>%
+  nest(data = c(-site)) %>%
+  mutate(
+    fit = map(data, ~ lm(gpp_dt_vut_ref ~ evi_mean +
+                           ndvi_mean + nirv_mean +
+                           cci_mean, data = .x)),
+    tidied = map(fit, tidy),
+    glanced = map(fit, glance),
+    augmented = map(fit, augment)
+  )
+```
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+gratia::draw(single_vis_daily, 
+             scales = "fixed",
+             residuals = TRUE) 
+
+gratia::appraise(single_vis_daily)
+```
 
 
 
