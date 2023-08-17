@@ -594,25 +594,27 @@ plot_grid(daily_grid,
 
 ## Results
 
-### Monthly GPP and VI's relations
+### Analysis of GPP-Vegetation Index Relationships Using Linear Models
+<!-- ### Monthly GPP and VI's relations -->
 
-The @tbl provides a summary of linear models used for 
-GPP estimation at each site, employing the vegetation
-indices as predictors. For each site and predictor, the table includes the 
-relevant model summary statistics, such as r-squared, adjusted r-squared, 
-root mean square error (RMSE), p-value, as well as other metrics like the Akaike 
-Information Criterion (AIC) and Bayesian Information Criterion (BIC). These 
-statistics serve to assess the performance and accuracy of the linear models in 
-estimating GPP using vegetation indices as predictors.
+The @tbl provides a summary of linear models used for GPP estimation at each 
+site, employing the vegetation indices as predictors. For each site and 
+predictor, the table includes the relevant model summary statistics, such as r-squared, adjusted r-squared, and root mean square error (RMSE). More metrics such as the
+p-value, the Akaike Information Criterion (AIC) and Bayesian Information
+Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
 
 Based on the Root Mean Square Error (RMSE), NDVI performed less favourably  on 
-two out of the three sites. However, the performance difference among the sites 
-was not substantial, with the Bartlett experimental forest exhibiting slightly 
-better results compared to the other sites. These findings suggest that while 
+two out of the three sites compared with the other indices. However, the 
+performance difference among the sites was not substantial, with the Bartlett
+experimental forest exhibiting slightly better results on all of their GPP ~ VIs
+relations compared to the other sites. These findings suggest that while 
 NDVI may not be the optimal vegetation index for GPP estimation at these sites,
 there may still be variations in performance across different locations.
 
-The complete metrics results for each of the monthly lm models are in
+When using all the indices as covariates within the linear model, the model's 
+performance demonstrates better outcomes compared to using any single index alone
+
+The complete metrics results for each of the linear models are in
 @tbl-complete_lm_monthly_results
 
 \begingroup
@@ -762,7 +764,9 @@ vis_site_glance_daily %>%
 
 \endgroup
 
-### Daily and weekly GPP and VI's relations
+### Analysis of GPP-Vegetation Index Relationships Using GAM Models
+
+<!-- ### Daily and weekly GPP and VI's relations -->
 
 <!-- **TODO: Single vs Individual GAM model** -->
 
@@ -797,7 +801,7 @@ vis_site_glance_daily %>%
 \addtolength{\tabcolsep}{-3pt}
 ```{r}
 #| label: tbl-gam_model_results_pvalue
-#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs" 
+#| tbl-cap: "Table 2.3: Summary of GAM models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis." 
 #| echo: false
 #| message: false
 #| warning: false
@@ -937,8 +941,6 @@ all_sites_gam_monthly %>%
 \newpage
 
 ## Discussion
-
-
 
 Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id. Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi quis ipsa aut. Temporibus ut rerum ea a est voluptate.
 
