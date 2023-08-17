@@ -189,6 +189,14 @@ obtain the difference with NEE and provide GPP. [@pastorello2020fluxnet2015].
 
 For each site, GPP was used in the analysis with three datasets representing daily, weekly, and monthly time scales. @fig-michigan_gpp_trends displays the GPP trends for the University of Michigan Biological Station, @fig-bartlett_gpp_trends illustrates the GPP trends for the Bartlett experimental forest, and @fig-borden_gpp_trends showcases the GPP trends for the Borden Forest Research Station. Additional details regarding the characteristics of these datasets can be found in Table @tbl-oneflux_datasets.
 
+| Site     | Data range available | Dataset name                                                | Reference                  |
+|-------------------|---------------------|---------------------|-------------------|
+| Bartlett | Jan 2015 to Dec 2017 | US-Bar: Barlett Experimental Forest (version: beta-3)       | [@staebler2019ameriflux]   |
+| Borden   | Jan 2015 to Jan 2022 | CA-Cbo: Ontario - Mixed Deciduous, Borden Forest Site       | [@richardson2016ameriflux] |
+| Michigan | Jan 2015 to Jan 2018 | US-UMB: Univ. of Mich. Biological Station (version: beta-4) | [@gough2016ameriflux]      |
+
+: Sites ONEFlux datasets {#tbl-oneflux_datasets}
+
 The Bartlett experimental forest is located in New Hampshire, USA (44°06′N,
 71°3′W). This site is characterized by a forest with an average canopy height 
 ranging from 20 to 22 meters with a mean annual temperature of 6C. 
@@ -261,6 +269,24 @@ from bands to 1 through 7 with a spatial resolution of 500m, with corrections
 for atmospheric conditions such as aerosols, gasses and Rayleigh scattering 
 [@vermote2021modis]. Bands used to derived the vegetation indices are shown in
 @tbl-MODIS_500_indices_bands
+
+
+| **Name**    | **Description** | **Resolution** | **Wavelength** | **Scale** |
+|-------------|-----------------|----------------|----------------|-----------|
+| sur_refl_01 | Red             | 500 meters     | 620-670nm      | 0.0001    |
+| sur_refl_02 | NIR             | 500 meters     | 841-876nm      | 0.0001    |
+| sur_refl_03 | Blue            | 500 meters     | 459-479nm      | 0.0001    |
+| sur_refl_04 | Green           | 500 meters     | 545-565nm      | 0.0001    |
+
+: MOD09GA.061 MODIS Bands {#tbl-MODIS_500_indices_bands}
+
+<!-- | Data                  | Spatial resolution (m) | GEE image collection         | -->
+<!-- |-----------------------|------------------------|------------------------------| -->
+<!-- | MODIS reflectance     | 500                    | MODIS/006/MOD09GA            | -->
+<!-- | MODIS reflectance     | 250                    | MODIS/061/MOD09A1            | -->
+<!-- | Harmonized Sentinel-2 | 20 - 60 - 10           | COPERNICUS/ S2_SR_HARMONIZED | -->
+
+<!-- : Satellite images datasets {#tbl-satellite_images_datasets} -->
 
 The data processing involved three main steps: filtering high-quality pixels,
 scaling band values, and calculating vegetation indices. High-quality pixels
@@ -350,7 +376,7 @@ In the study, three datasets were prepared for each site: a daily dataset, a
 weekly dataset, and a monthly dataset. These datasets were generated from the
 satellite imagery data with the selected high quality pixels and the
 ONEFluxprocess data in order to capture variations in vegetation indices (VI),
-band values, and Gross Primary Production (GPP) over different time scales.
+band values, and GPP over different time scales.
 
 The daily dataset included the VI values, band values only from the high quality
 pixels, and GPP measurements derived from the ONEFlux process collected on a
@@ -375,7 +401,7 @@ and patterns of the variables, enabling a more thorough understanding of the
 ecological processes and relationships under investigation.
 
 For each site and across all time scales (daily, weekly, and monthly), a
-filtering step was implemented to remove GPP (Gross Primary Production) values
+filtering step was implemented to remove GPP values
 that were less than 1 gC m^-2^ d^-1^ . By filtering out GPP values less than 1,
 the study aimed to exclude values that were potentially unreliable or
 insignificant in terms of representing meaningful vegetation productivity. GPP
@@ -443,8 +469,8 @@ daily_plot_500 %>%
 
 ### Data Analysis
 
-Various methodologies were employed to estimate Gross Primary Production (GPP)
-by utilizing Vegetation Indices (VIs) and spectral bands derived from satellite
+Various methodologies were employed to estimate GPP
+by utilizing VIs and spectral bands derived from satellite
 images. The choice of model for GPP estimation varied depending on the specific
 time scale under consideration. This approach aimed to enhance the accuracy of
 GPP estimation by employing models tailored to the characteristics of each time
@@ -463,7 +489,7 @@ the study sites.
 
 Considering the non-normal distribution and variability observed in the data
 values for both daily and weekly datasets, a Generalized Additive Model (GAM)
-was developed to estimate Gross Primary Production (GPP)
+was developed to estimate GPP.
 
 
 ```{r gpp_vi_realtions_all_sites}
@@ -570,8 +596,8 @@ plot_grid(daily_grid,
 
 ### Monthly GPP and VI's relations
 
-The @tbl-lm_model_results provides a summary of linear models used for 
-Gross Primary Production (GPP) estimation at each site, employing the vegetation
+The @tbl provides a summary of linear models used for 
+GPP estimation at each site, employing the vegetation
 indices as predictors. For each site and predictor, the table includes the 
 relevant model summary statistics, such as r-squared, adjusted r-squared, 
 root mean square error (RMSE), p-value, as well as other metrics like the Akaike 
@@ -586,724 +612,327 @@ better results compared to the other sites. These findings suggest that while
 NDVI may not be the optimal vegetation index for GPP estimation at these sites,
 there may still be variations in performance across different locations.
 
+The complete metrics results for each of the monthly lm models are in
+@tbl-complete_lm_monthly_results
+
+\begingroup
+\setlength{\LTleft}{0pt minus 500pt}
+\setlength{\LTright}{0pt minus 500pt}
+\fontsize{5pt}{7pt}\selectfont
+\addtolength{\tabcolsep}{-3pt}
+
 ```{r lm_monthly}
+#| label: tbl-lm_monthly_results
+#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
+#| tbl-colwidths: [50,50]
 #| echo: false
 #| message: false
 #| warning: false
+source("scripts/lm_preparation.R")
 
-# Prepare data with all sites
-ind_bar <- bartlett_monthly_500 %>% 
-  select(gpp_dt_vut_ref, evi_mean, ndvi_mean,
-		 nirv_mean, kndvi_mean, cci_mean) %>% 
-  mutate(site = "Bartlett")
-
-ind_bor <- borden_monthly_500 %>% 
-  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, 
-		 nirv_mean, kndvi_mean, cci_mean) %>% 
-  mutate(site = "Borden")
-
-ind_mich <- michigan_monthly_500 %>% 
-  select(gpp_dt_vut_ref, evi_mean, ndvi_mean, 
-		 nirv_mean, kndvi_mean, cci_mean) %>% 
-  mutate(site = "Michigan")
-
-ind_sites <- bind_rows(ind_bar, ind_bor, ind_mich)
-
-# Linear model for all sites EVI
-evi_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ evi_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  ) 
-
-evi_fit <- evi_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "EVI")
-
-evi_glance <- evi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied, -augmented) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "EVI")
-
-# Linear model for all sites NDVI
-ndvi_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ ndvi_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-
-ndvi_fit <- ndvi_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "NDVI")
-
-ndvi_glance <- ndvi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied, -augmented) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "NDVI")
-
-# Linear model for all sites NIRv
-nirv_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ nirv_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-
-nirv_fit <- nirv_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "NIRv")
-
-nirv_glance <- nirv_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied, -augmented) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "NIRv") 
-
-# Linear model for all sites kNDVI
-kndvi_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ kndvi_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-
-kndvi_fit <- kndvi_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "kNDVI")
-
-kndvi_glance <- kndvi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "kNDVI")
-
-# Linear model for all sites kNDVI
-cci_lm <- ind_sites %>%
-  nest(data = c(-site)) %>%
-  mutate(
-    fit = map(data, ~ lm(gpp_dt_vut_ref ~ cci_mean, data = .x)),
-    tidied = map(fit, tidy),
-    glanced = map(fit, glance),
-    augmented = map(fit, augment)
-  )
-
-cci_fit <- cci_lm %>% 
-  unnest(tidied) %>%
-  select(-data, -fit, -glanced) %>% 
-  mutate(index = "CCI")
-
-cci_glance <- cci_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
-  unnest(glanced) %>%
-  select(-data, -fit, -tidied) %>% 
-  arrange(desc(r.squared)) %>% 
-  mutate(index = "CCI")
-```
-
-
-```{r lm_monthly_table}
-#| label: tbl-lm_model_results
-#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly basis (per site)."
-#| echo: false
-#| message: false
-#| warning: false
-
-
-# Create table
-bind_rows(evi_glance,
-          ndvi_glance,
-          nirv_glance,
-		  kndvi_glance,
-		  cci_glance) %>% 
-  select(site, index, r.squared, adj.r.squared, rmse, 
-         statistic, AIC, BIC,  p.value) %>% 
-  group_by(site) %>% 
-  arrange(desc(adj.r.squared)) %>% 
-  gt(
-    rowname_col = "index",
-    groupname_col = "site"
+# Monthly table
+vis_site_glance_montly %>% 
+  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  bind_rows(all_sites_glance_monthly,
+            all_sites_all_vis_glance_monthly,
+            all_vis_glance_monthly) %>% 
+  pivot_wider(names_from = index, 
+              values_from = c(r.squared, adj.r.squared, rmse)) %>%
+  gt() %>%
+  tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
+  tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
+  tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
+  tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
+  tab_spanner(label = "All", columns = ends_with("All")) %>% 
+  cols_label(
+    .list = list(
+      "site" = "Site",
+      "r.squared_EVI" = "R2",
+      "adj.r.squared_EVI" = "adj R2",
+      "rmse_EVI" = "RMSE",
+      "r.squared_NDVI" = "R2",
+      "adj.r.squared_NDVI" = "adj R2",
+      "rmse_NDVI" = "RMSE",
+      "r.squared_NIRv" = "R2",
+      "adj.r.squared_NIRv" = "adj R2",
+      "rmse_NIRv" = "RMSE",
+      "r.squared_CCI" = "R2",
+      "adj.r.squared_CCI" = "adj R2",
+      "rmse_CCI" = "RMSE",
+      "r.squared_All" = "R2",
+      "adj.r.squared_All" = "adj R2",
+      "rmse_All" = "RMSE"
+    )
   ) %>% 
   fmt_number(
-    columns = 3:8,
-    decimals = 3) %>% 
-  fmt_scientific(
-    columns = 9,
-    decimals = 3
-  ) %>% 
+    columns = 2:16,
+    decimals = 2) %>% 
   tab_options(
     row_group.background.color = "#E9E0E1",
     row_group.font.weight = "bold"
-  ) 
+  ) %>% 
+  cols_width(everything() ~ px(50))
+
+# Weekly table
+vis_site_glance_weekly  %>%
+  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  bind_rows(all_sites_glance_weekly,
+            all_sites_all_vis_glance_weekly,
+            all_vis_glance_weekly) %>% 
+  pivot_wider(names_from = index, 
+              values_from = c(r.squared, adj.r.squared, rmse)) %>%
+  gt() %>%
+  tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
+  tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
+  tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
+  tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
+  tab_spanner(label = "All", columns = ends_with("All")) %>% 
+  cols_label(
+    .list = list(
+      "site" = "Site",
+      "r.squared_EVI" = "R2",
+      "adj.r.squared_EVI" = "adj R2",
+      "rmse_EVI" = "RMSE",
+      "r.squared_NDVI" = "R2",
+      "adj.r.squared_NDVI" = "adj R2",
+      "rmse_NDVI" = "RMSE",
+      "r.squared_NIRv" = "R2",
+      "adj.r.squared_NIRv" = "adj R2",
+      "rmse_NIRv" = "RMSE",
+      "r.squared_CCI" = "R2",
+      "adj.r.squared_CCI" = "adj R2",
+      "rmse_CCI" = "RMSE",
+      "r.squared_All" = "R2",
+      "adj.r.squared_All" = "adj R2",
+      "rmse_All" = "RMSE"
+    )
+  ) %>% 
+  fmt_number(
+    columns = 2:16,
+    decimals = 2) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) %>% 
+  cols_width(everything() ~ px(50))
+
+# Daily table
+vis_site_glance_daily %>%
+  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  bind_rows(all_sites_glance_daily,
+            all_sites_all_vis_glance_daily,
+            all_vis_glance_daily)  %>% 
+  pivot_wider(names_from = index, 
+              values_from = c(r.squared, adj.r.squared, rmse)) %>%
+  gt() %>%
+  tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
+  tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
+  tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
+  tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
+  tab_spanner(label = "All", columns = ends_with("All")) %>% 
+  cols_label(
+    .list = list(
+      "site" = "Site",
+      "r.squared_EVI" = "R2",
+      "adj.r.squared_EVI" = "adj R2",
+      "rmse_EVI" = "RMSE",
+      "r.squared_NDVI" = "R2",
+      "adj.r.squared_NDVI" = "adj R2",
+      "rmse_NDVI" = "RMSE",
+      "r.squared_NIRv" = "R2",
+      "adj.r.squared_NIRv" = "adj R2",
+      "rmse_NIRv" = "RMSE",
+      "r.squared_CCI" = "R2",
+      "adj.r.squared_CCI" = "adj R2",
+      "rmse_CCI" = "RMSE",
+      "r.squared_All" = "R2",
+      "adj.r.squared_All" = "adj R2",
+      "rmse_All" = "RMSE"
+    )
+  ) %>% 
+  fmt_number(
+    columns = 2:16,
+    decimals = 2) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) %>% 
+  cols_width(everything() ~ px(50))
 ```
+
+\endgroup
 
 ### Daily and weekly GPP and VI's relations
 
-**TODO: Single vs Individual GAM model**
+<!-- **TODO: Single vs Individual GAM model** -->
 
-*This is a section under construction. Several models are presented in order
-to discuss which one will be better to describe the patterns found*
+<!-- *This is a section under construction. Several models are presented in order -->
+<!-- to discuss which one will be better to describe the patterns found* -->
 
-Richard's suggestion is to create a single model using all indices as covariates.
-The notes are described also in the issue [Ref #49](https://github.com/ronnyhdez/thesis_msc/issues/49)
+<!-- Richard's suggestion is to create a single model using all indices as covariates. -->
+<!-- The notes are described also in the issue [Ref #49](https://github.com/ronnyhdez/thesis_msc/issues/49) -->
 
-**Single model**
+<!-- **Single model** -->
 
- - Using all the indices that I have as multiple predictors will allow me to 
- explore the relation between GPP and each VI while also considering potential
- interactions. But this will be an examination of the combined effects of the 
- VIs on GPP and determine their relative importance.
+<!--  - Using all the indices that I have as multiple predictors will allow me to  -->
+<!--  explore the relation between GPP and each VI while also considering potential -->
+<!--  interactions. But this will be an examination of the combined effects of the  -->
+<!--  VIs on GPP and determine their relative importance. -->
 
-**Individual model**
+<!-- **Individual model** -->
 
- - A separate GAM model for each VI will allow me to explore the relation 
- between GPP and each VI separately, without the exploration of potential 
- interactions between the VIs. 
- 
- - But, do I want to explore if there are interactions? If there is an 
- interaction, what would be the meaning of an interaction between indices?
+<!--  - A separate GAM model for each VI will allow me to explore the relation  -->
+<!--  between GPP and each VI separately, without the exploration of potential  -->
+<!--  interactions between the VIs.  -->
 
- - With the individual GAM models, I think that I can uncover individual trends, that otherwise would be hidden among all the VIs. [**simpson's paradox**](https://en.wikipedia.org/wiki/Simpson%27s_paradox)
+<!--  - But, do I want to explore if there are interactions? If there is an  -->
+<!--  interaction, what would be the meaning of an interaction between indices? -->
 
-#### Individual Daily GAM models
+<!--  - With the individual GAM models, I think that I can uncover individual trends, that otherwise would be hidden among all the VIs. [**simpson's paradox**](https://en.wikipedia.org/wiki/Simpson%27s_paradox) -->
 
-**The following tables represent the results of each model as gpp~VI and it's not segregated by site.**
-
+\begingroup
+\setlength{\LTleft}{0pt minus 500pt}
+\setlength{\LTright}{0pt minus 500pt}
+\fontsize{5pt}{7pt}\selectfont
+\addtolength{\tabcolsep}{-3pt}
 ```{r}
 #| label: tbl-gam_model_results_pvalue
-#| tbl-cap: "Summary of the individual GAM models for GPP estimation using the VIs" 
+#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs" 
 #| echo: false
 #| message: false
 #| warning: false
+source("scripts/gam_preparation.R")
 
-daily_gam <- daily_plot_500 %>% 
-  pivot_wider(names_from = index, values_from = value) %>% 
-  mutate(site = as.factor(site))
-
-# Daily ndvi 
-model_ndvi_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# Daily evi 
-model_evi_daily <- gam(gpp_dt_vut_ref ~ s(evi_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# Daily nirv 
-model_nirv_daily <- gam(gpp_dt_vut_ref ~ s(nirv_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# Daily kndvi
-model_kndvi_daily <- gam(gpp_dt_vut_ref ~ s(kndvi_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# Daily cci
-model_cci_daily <- gam(gpp_dt_vut_ref ~ s(cci_mean, k = 10), 
-                        data = daily_gam, 
-                        method = 'REML')
-
-# **Daily models outputs**
-summ_ndvi_daily <- summary(model_ndvi_daily)
-summ_evi_daily <- summary(model_evi_daily)
-summ_nirv_daily <- summary(model_nirv_daily)
-summ_kndvi_daily <- summary(model_kndvi_daily)
-summ_cci_daily <- summary(model_cci_daily)
-
-# Tables for comparison (this can be a function)
-s_table_evi_daily <- summ_evi_daily[["s.table"]] %>% as.data.frame()
-s_table_ndvi_daily <- summ_ndvi_daily[["s.table"]] %>% as.data.frame()
-s_table_nirv_daily <- summ_nirv_daily[["s.table"]] %>% as.data.frame()
-s_table_kndvi_daily <- summ_kndvi_daily[["s.table"]] %>% as.data.frame()
-s_table_cci_daily <- summ_cci_daily[["s.table"]] %>% as.data.frame()
-
-bind_rows(s_table_ndvi_daily, s_table_evi_daily, 
-          s_table_nirv_daily, s_table_kndvi_daily,
-          s_table_cci_daily) %>% 
-  tibble::rownames_to_column("Model response variable") %>% 
-  gt() %>% 
-  tab_header(
-    title = "Individual daily GAM models ouput",
-    subtitle = "MODIS derived indices for all sites"
-  )
-```
-
-```{r}
-#| label: tbl-gam_model_results
-#| tbl-cap: "Summary of the individual GAM models for GPP estimation using the VIs" 
-#| echo: false
-#| message: false
-#| warning: false
-
-p_table_evi_daily <- summ_evi_daily[["p.table"]] %>% as.data.frame()
-p_table_ndvi_daily <- summ_ndvi_daily[["p.table"]] %>% as.data.frame()
-p_table_nirv_daily <- summ_nirv_daily[["p.table"]] %>% as.data.frame()
-p_table_kndvi_daily <- summ_kndvi_daily[["p.table"]] %>% as.data.frame()
-p_table_cci_daily <- summ_cci_daily[["p.table"]] %>% as.data.frame()
-
-bind_rows(p_table_evi_daily, p_table_ndvi_daily, 
-          p_table_nirv_daily, p_table_kndvi_daily,
-          p_table_cci_daily) %>% 
-  tibble::rownames_to_column("parameter") %>% 
-  bind_cols(
-    tribble(
-      ~index, ~r_squared,
-      "evi", summ_evi_daily[["r.sq"]],
-      "ndvi", summ_ndvi_daily[["r.sq"]],
-      "nirv", summ_nirv_daily[["r.sq"]],
-      "kndvi", summ_kndvi_daily[["r.sq"]],
-      "cci", summ_cci_daily[["r.sq"]]
-    ) 
+# Daily table
+all_sites_gam_daily %>% 
+  bind_rows(vis_sites_gam_daily,
+            all_sites_all_vis_gam_daily,
+            all_vis_gam_daily,
+            ) %>% 
+  pivot_wider(names_from = index,
+              values_from = c(rsq, mae, rmse)) %>% 
+  gt() %>%
+  tab_spanner(label = md("NDVI"), columns = contains("NDVI")) %>%
+  tab_spanner(label = "EVI", columns = contains("EVI")) %>%
+  tab_spanner(label = "NIRv", columns = contains("NIRv")) %>%
+  tab_spanner(label = "CCI", columns = contains("CCI")) %>% 
+  tab_spanner(label = "All", columns = contains("All")) %>% 
+  cols_label(
+    .list = list(
+      "site" = "Site",
+      "rsq_evi_mean" = "R2",
+      "mae_evi_mean" = "MAE",
+      "rmse_evi_mean" = "RMSE",
+      "rsq_ndvi_mean" = "R2",
+      "mae_ndvi_mean" = "MAE",
+      "rmse_ndvi_mean" = "RMSE",
+      "rsq_nirv_mean" = "R2",
+      "mae_nirv_mean" = "MAE",
+      "rmse_nirv_mean" = "RMSE",
+      "rsq_cci_mean" = "R2",
+      "mae_cci_mean" = "MAE",
+      "rmse_cci_mean" = "RMSE",
+      "rsq_All" = "R2",
+      "mae_All" = "MAE",
+      "rmse_All" = "RMSE"
+    )
   ) %>% 
-  relocate(index) %>% 
-  arrange(desc(r_squared)) %>% 
-  gt() %>% 
-  tab_header(
-    title = "GAM daily models ouput",
-    subtitle = "MODIS derived indices for all sites"
-  )
-```
-
- - Borden have the most complex models given the nature of its data values
- - In that kind of data behaviour, EVI seems to not perform as well 
-
-#### SD GAM model with smooth terms for all covariates
-
-**SD: Single Daily**
-
- - The following results are including ndvi and kndvi with smooth terms, but 
- they don't show a non-linear relation with GPP.
- - I changed the `k` parameter several times, but no improvements arised.
- - The GAM model was specified as follows:
-  - `gpp ~ s(ndvi_mean, k = 10) + s(evi_mean, k = 10) + s(nirv_mean, k = 10) + s(kndvi_mean, k = 10) + s(cci_mean, k = 10)`
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-
-# Model with smooth term for all covariates
-single_vis_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 9) +
-                          s(kndvi_mean, k = 9) +
-                          s(evi_mean, k = 50) +
-                          s(nirv_mean, k = 50) +
-                          s(cci_mean, k = 50),
-                        data = daily_gam, 
-                        method = 'REML')
-
-# **Daily models outputs**
-summ_single_daily <- summary(single_vis_daily)
-summ_single_daily
-
-gam.check(single_vis_daily)
-```
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(single_vis_daily, 
-             scales = "fixed",
-             residuals = TRUE) 
-
-gratia::appraise(single_vis_daily)
-```
-
-#### SD GAM model with smooth terms for all covariates and including site
-
-**SD: Single Daily**
-
- - This model included `site` as covariate (without smooth term)
- - Including the `site` term improves the R2 with respect to the above model
- from `0.652` to `0.727`
- - The following results are including ndvi and kndvi with smooth terms, but 
- they don't show a non-linear relation with GPP.
- - I changed the `k` parameter several times, but no improvements arised.
- - The GAM model was specified as follows:
-  - `gpp ~ s(ndvi_mean, k = 10) + s(evi_mean, k = 10) + s(nirv_mean, k = 10) + s(kndvi_mean, k = 10) + s(cci_mean, k = 10)`
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-single_vis_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 9) +
-                          s(kndvi_mean, k = 9) +
-                          s(evi_mean, k = 50) +
-                          s(nirv_mean, k = 50) +
-                          s(cci_mean, k = 50) +
-                          site,
-                        data = daily_gam, 
-                        method = 'REML')
-
-# **Daily models outputs**
-summ_single_daily <- summary(single_vis_daily)
-summ_single_daily
-```
-
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(single_vis_daily, 
-             scales = "fixed",
-             residuals = TRUE) 
-
-gratia::appraise(single_vis_daily)
-```
-
-#### SD GAM model with smooth terms just for evi, nirv, cci
-
- - On the next model, I remove kndvi and ndvi from the non-linear model
- specification.
- - `site` included as covariate
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-single_vis_daily <- gam(gpp_dt_vut_ref ~ ndvi_mean +
-                          kndvi_mean +
-                          s(evi_mean) +
-                          s(nirv_mean) +
-                          s(cci_mean) +
-                          site,
-                        data = daily_gam, 
-                        method = 'REML')
-
-# **Daily models outputs**
-summ_single_daily <- summary(single_vis_daily)
-summ_single_daily
-
-# check <- residuals(single_vis_daily)
-```
-
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(single_vis_daily, 
-             scales = "fixed",
-             residuals = TRUE) 
-
-gratia::appraise(single_vis_daily)
-
-# **Code to create table if single model is selected**
-# # Tables for comparison (this can be a function)
-# # s_table_evi_daily <- 
-# summ_single_daily[["s.table"]] %>% 
-#   as.data.frame() %>% 
-#   tibble::rownames_to_column("parameter") %>% 
-#   gt() %>% 
-#   tab_header(
-#     title = "GAM daily models ouput",
-#     subtitle = "MODIS derived indices for all sites"
-#   )
-# 
-# summ_single_daily[["p.table"]] %>% 
-#   as.data.frame() %>% 
-#   tibble::rownames_to_column("parameter") %>% 
-#   bind_cols(
-#     tribble(
-#       ~index, ~r_squared,
-#       "single", summ_single_daily[["r.sq"]]
-#     ) 
-#   ) %>% 
-#   relocate(index) %>% 
-#   arrange(desc(r_squared)) %>% 
-#   gt() %>% 
-#   tab_header(
-#     title = "Single daily GAM model ouput",
-#     subtitle = "MODIS derived indices for all sites"
-#   )
-```
-
-#### SD GAM model with smooth terms by site
-
- - On the next model, I included all VIs with a smooth term by site.
- 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-model_vis_daily <- gam(gpp_dt_vut_ref ~ 
-                         s(ndvi_mean, by = site) +
-                         s(kndvi_mean, by = site) +
-                         s(evi_mean, by = site) +
-                         s(nirv_mean, by = site) +
-                         s(cci_mean, by = site),
-                       data = daily_gam, 
-                       method = 'REML')
-
-summary(model_vis_daily)
-```
-
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(model_vis_daily, 
-             # scales = "fixed",
-             residuals = TRUE) +
-  theme_bw(base_size = 10)
-
-gratia::appraise(model_vis_daily)
-```
-
-#### Individual Weekly GAM models
-
-```{r}
-#| label: tbl-weekly_gam_model_results_pvalue
-#| tbl-cap: "Summary of the individual GAM models for GPP estimation using the VIs" 
-#| echo: false
-#| message: false
-#| warning: false
-weekly_gam <- weekly_plot_500 %>% 
-  pivot_wider(names_from = index, values_from = value)
-
-# Weekly evi
-model_evi_weekly <- gam(gpp_dt_vut_ref ~ s(evi_mean), 
-                        data = weekly_gam, 
-                        method = 'REML')
-
-# Weekly ndvi
-model_ndvi_weekly <- gam(gpp_dt_vut_ref ~ s(ndvi_mean), 
-                         data = weekly_gam, 
-                         method = 'REML')
-
-# Weekly nirv
-model_nirv_weekly <- gam(gpp_dt_vut_ref ~ s(nirv_mean), 
-                         data = weekly_gam, 
-                         method = 'REML')
-
-# Weekly kndvi
-model_kndvi_weekly <- gam(gpp_dt_vut_ref ~ s(kndvi_mean), 
-                         data = weekly_gam, 
-                         method = 'REML')
-
-# Weekly cci
-model_cci_weekly <- gam(gpp_dt_vut_ref ~ s(cci_mean), 
-                         data = weekly_gam, 
-                         method = 'REML')
-
-# **Weekly models outputs**
-summ_evi_weekly <- summary(model_evi_weekly)
-summ_ndvi_weekly <- summary(model_ndvi_weekly)
-summ_nirv_weekly <- summary(model_nirv_weekly)
-summ_kndvi_weekly <- summary(model_kndvi_weekly)
-summ_cci_weekly <- summary(model_cci_weekly)
-
-# Tables for comparison (rhis can be a function)
-s_table_evi_weekly <- summ_evi_weekly[["s.table"]] %>% as.data.frame()
-s_table_ndvi_weekly <- summ_ndvi_weekly[["s.table"]] %>% as.data.frame()
-s_table_nirv_weekly <- summ_nirv_weekly[["s.table"]] %>% as.data.frame()
-s_table_kndvi_weekly <- summ_kndvi_weekly[["s.table"]] %>% as.data.frame()
-s_table_cci_weekly <- summ_cci_weekly[["s.table"]] %>% as.data.frame()
-
-bind_rows(s_table_ndvi_weekly, s_table_evi_weekly, 
-          s_table_nirv_weekly, s_table_kndvi_weekly,
-          s_table_cci_weekly) %>% 
-  tibble::rownames_to_column("parameter") %>% 
-  gt() %>% 
-  tab_header(
-    title = "GAM weekly models ouput",
-    subtitle = "MODIS derived indices for all sites"
-  )
-```
-
-```{r}
-#| label: tbl-weekly_gam_model_results
-#| tbl-cap: "Summary of the individual GAM models for GPP estimation using the VIs" 
-#| echo: false
-#| message: false
-#| warning: false
-
-p_table_evi_weekly <- summ_evi_weekly[["p.table"]] %>% as.data.frame()
-p_table_ndvi_weekly <- summ_ndvi_weekly[["p.table"]] %>% as.data.frame()
-p_table_nirv_weekly <- summ_nirv_weekly[["p.table"]] %>% as.data.frame()
-p_table_kndvi_weekly <- summ_kndvi_weekly[["p.table"]] %>% as.data.frame()
-p_table_cci_weekly <- summ_cci_weekly[["p.table"]] %>% as.data.frame()
-
-bind_rows(p_table_evi_weekly, p_table_ndvi_weekly, 
-          p_table_nirv_weekly, p_table_kndvi_weekly,
-          p_table_cci_weekly) %>% 
-  tibble::rownames_to_column("parameter") %>% 
-  bind_cols(
-    tribble(
-      ~index, ~r_squared,
-      "evi", summ_evi_weekly[["r.sq"]],
-      "ndvi", summ_ndvi_weekly[["r.sq"]],
-      "nirv", summ_nirv_weekly[["r.sq"]],
-      "kndvi", summ_kndvi_weekly[["r.sq"]],
-      "cci", summ_cci_weekly[["r.sq"]]
-    ) 
+  fmt_number(
+    columns = 2:16,
+    decimals = 2) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
   ) %>% 
-  relocate(index) %>% 
-  arrange(desc(r_squared)) %>% 
-  gt() %>% 
-  tab_header(
-    title = "GAM weekly models ouput",
-    subtitle = "MODIS derived indices for all sites"
-  )
+  cols_width(everything() ~ px(50))
+
+# Weekly table
+all_sites_gam_weekly %>% 
+  bind_rows(vis_sites_gam_weekly,
+            all_sites_all_vis_gam_weekly,
+            all_vis_gam_weekly,
+            ) %>% 
+  pivot_wider(names_from = index,
+              values_from = c(rsq, mae, rmse)) %>% 
+  gt() %>%
+  tab_spanner(label = md("NDVI"), columns = contains("NDVI")) %>%
+  tab_spanner(label = "EVI", columns = contains("EVI")) %>%
+  tab_spanner(label = "NIRv", columns = contains("NIRv")) %>%
+  tab_spanner(label = "CCI", columns = contains("CCI")) %>% 
+  tab_spanner(label = "All", columns = contains("All")) %>% 
+  cols_label(
+    .list = list(
+      "site" = "Site",
+      "rsq_evi_mean" = "R2",
+      "mae_evi_mean" = "MAE",
+      "rmse_evi_mean" = "RMSE",
+      "rsq_ndvi_mean" = "R2",
+      "mae_ndvi_mean" = "MAE",
+      "rmse_ndvi_mean" = "RMSE",
+      "rsq_nirv_mean" = "R2",
+      "mae_nirv_mean" = "MAE",
+      "rmse_nirv_mean" = "RMSE",
+      "rsq_cci_mean" = "R2",
+      "mae_cci_mean" = "MAE",
+      "rmse_cci_mean" = "RMSE",
+      "rsq_All" = "R2",
+      "mae_All" = "MAE",
+      "rmse_All" = "RMSE"
+    )
+  ) %>% 
+  fmt_number(
+    columns = 2:16,
+    decimals = 2) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) %>% 
+  cols_width(everything() ~ px(50))
+
+# Monthly table
+all_sites_gam_monthly %>% 
+  bind_rows(vis_sites_gam_monthly,
+            all_sites_all_vis_gam_monthly,
+            all_vis_gam_monthly,
+            ) %>% 
+  pivot_wider(names_from = index,
+              values_from = c(rsq, mae, rmse)) %>% 
+  gt() %>%
+  tab_spanner(label = md("NDVI"), columns = contains("NDVI")) %>%
+  tab_spanner(label = "EVI", columns = contains("EVI")) %>%
+  tab_spanner(label = "NIRv", columns = contains("NIRv")) %>%
+  tab_spanner(label = "CCI", columns = contains("CCI")) %>% 
+  tab_spanner(label = "All", columns = contains("All")) %>% 
+  cols_label(
+    .list = list(
+      "site" = "Site",
+      "rsq_evi_mean" = "R2",
+      "mae_evi_mean" = "MAE",
+      "rmse_evi_mean" = "RMSE",
+      "rsq_ndvi_mean" = "R2",
+      "mae_ndvi_mean" = "MAE",
+      "rmse_ndvi_mean" = "RMSE",
+      "rsq_nirv_mean" = "R2",
+      "mae_nirv_mean" = "MAE",
+      "rmse_nirv_mean" = "RMSE",
+      "rsq_cci_mean" = "R2",
+      "mae_cci_mean" = "MAE",
+      "rmse_cci_mean" = "RMSE",
+      "rsq_All" = "R2",
+      "mae_All" = "MAE",
+      "rmse_All" = "RMSE"
+    )
+  ) %>% 
+  fmt_number(
+    columns = 2:16,
+    decimals = 2) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) %>% 
+  cols_width(everything() ~ px(50))
 ```
-
-#### SW GAM model with smooth terms for all covariates
-
-**SW: Single Weekly GAM model**
-
- - The following results are including nirv, ndvi and kndvi, but they don't 
- show a non-linear relation with GPP
- - On the next model, I remove kndvi and ndvi from the non-linear model
- specification.
- - The GAM model was specified as follows:
-  - `gpp ~ s(ndvi_mean) + s(evi_mean) + s(nirv_mean) + s(kndvi_mean) + s(cci_mean)`
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-single_vis_weekly <- gam(gpp_dt_vut_ref ~ s(ndvi_mean) +
-                          s(kndvi_mean) +
-                          s(evi_mean) +
-                          s(nirv_mean) +
-                          s(cci_mean),
-                        data = weekly_gam, 
-                        method = 'REML')
-
-# **Daily models outputs**
-summ_single_weekly <- summary(single_vis_weekly)
-summ_single_weekly
-
-# gam.check(single_vis_weekly)
-```
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(single_vis_weekly, 
-             # scales = "fixed",
-             residuals = TRUE) 
-
-gratia::appraise(single_vis_weekly)
-```
-
-#### SW GAM model with smooth terms for all covariates and including site
-
-**SW: Single Weekly GAM model**
-
- - The following results are including nirv, ndvi and kndvi, but they don't 
- show a non-linear relation with GPP
- - On the next model, I remove kndvi and ndvi from the non-linear model
- specification.
- - The GAM model was specified as follows:
-  - `gpp ~ s(ndvi_mean) + s(evi_mean) + s(nirv_mean) + s(kndvi_mean) + s(cci_mean)`
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-
-weekly_gam <- weekly_gam %>% 
-  mutate(site = as.factor(site))
-
-single_vis_weekly <- gam(gpp_dt_vut_ref ~ s(ndvi_mean) +
-                           s(evi_mean) +
-                           s(nirv_mean)+
-                           s(kndvi_mean) +
-                           s(cci_mean) +
-                           site,
-                         data = weekly_gam, 
-                         method = 'REML')
-
-summary(single_vis_weekly)
-```
-
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-# ggplot(aes(y = gpp_dt_vut_ref, x = ndvi_mean), data = weekly_gam) +
-#   geom_point() +
-#   geom_smooth(method = "gam") +
-#   facet_wrap(~site)
-# 
-# ggplot(aes(y = gpp_dt_vut_ref, kndvi_mean), data = weekly_gam) +
-#   geom_point() +
-#   geom_smooth(method = "gam") +
-#   facet_wrap(~site)
-# 
-# ggplot(aes(y = gpp_dt_vut_ref, evi_mean), data = weekly_gam) +
-#   geom_point() +
-#   geom_smooth(method = "gam") +
-#   facet_wrap(~site)
-
-gratia::draw(single_vis_weekly, 
-             scales = "fixed",
-             residuals = TRUE) 
-
-gratia::appraise(single_vis_weekly)
-```
-
-#### SW GAM model with smooth terms by site
-
- - On the next model, I included all VIs with a smooth term by site.
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-
-weekly_gam <- weekly_gam %>% 
-  mutate(site = as.factor(site))
-
-single_vis_weekly <- gam(gpp_dt_vut_ref ~ 
-                         s(ndvi_mean, by = site) +
-                         s(kndvi_mean, by = site) +
-                         s(evi_mean, by = site) +
-                         s(nirv_mean, by = site) +
-                         s(cci_mean, by = site),
-                         data = weekly_gam, 
-                         method = 'REML')
-
-summary(single_vis_weekly)
-```
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-gratia::draw(single_vis_weekly, 
-             # scales = "fixed",
-             residuals = TRUE) 
-
-gratia::appraise(single_vis_weekly)
-```
-
+\endgroup
 
 \newpage
 
@@ -1324,33 +953,6 @@ Autem non labore numquam. Eveniet facere id qui impedit. Sunt temporibus sit neq
 
 \newpage
 
-
-## Tables
-
-| Site     | Data range available | Dataset name                                                | Reference                  |
-|-------------------|---------------------|---------------------|-------------------|
-| Bartlett | Jan 2015 to Dec 2017 | US-Bar: Barlett Experimental Forest (version: beta-3)       | [@staebler2019ameriflux]   |
-| Borden   | Jan 2015 to Jan 2022 | CA-Cbo: Ontario - Mixed Deciduous, Borden Forest Site       | [@richardson2016ameriflux] |
-| Michigan | Jan 2015 to Jan 2018 | US-UMB: Univ. of Mich. Biological Station (version: beta-4) | [@gough2016ameriflux]      |
-
-: Sites ONEFlux datasets {#tbl-oneflux_datasets}
-
-| **Name**    | **Description** | **Resolution** | **Wavelength** | **Scale** |
-|-------------|-----------------|----------------|----------------|-----------|
-| sur_refl_01 | Red             | 500 meters     | 620-670nm      | 0.0001    |
-| sur_refl_02 | NIR             | 500 meters     | 841-876nm      | 0.0001    |
-| sur_refl_03 | Blue            | 500 meters     | 459-479nm      | 0.0001    |
-| sur_refl_04 | Green           | 500 meters     | 545-565nm      | 0.0001    |
-
-: MOD09GA.061 MODIS Bands {#tbl-MODIS_500_indices_bands}
-
-<!-- | Data                  | Spatial resolution (m) | GEE image collection         | -->
-<!-- |-----------------------|------------------------|------------------------------| -->
-<!-- | MODIS reflectance     | 500                    | MODIS/006/MOD09GA            | -->
-<!-- | MODIS reflectance     | 250                    | MODIS/061/MOD09A1            | -->
-<!-- | Harmonized Sentinel-2 | 20 - 60 - 10           | COPERNICUS/ S2_SR_HARMONIZED | -->
-
-<!-- : Satellite images datasets {#tbl-satellite_images_datasets} -->
 
 ## References
 
