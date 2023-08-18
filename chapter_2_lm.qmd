@@ -623,12 +623,11 @@ plot_grid(daily_grid,
 The @tbl-lm_monthly_results provides a summary of linear models used for GPP 
 estimation at each site, employing the vegetation indices as predictors. For 
 each site and predictor, the table includes the relevant model summary 
-statistics, such as r-squared, adjusted r-squared, and root mean square error 
-(RMSE). More metrics such as the p-value, the Akaike Information Criterion (AIC)
-and Bayesian Information Criterion (BIC) are dispalyed in the
-@tbl-complete_lm_monthly_results
+statistics, such as R2, adjusted r-squared, and RMSE. More metrics such as the 
+p-value, the Akaike Information Criterion (AIC) and Bayesian Information 
+Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
 
-Based on the Root Mean Square Error (RMSE), NDVI performed less favourably  on 
+Based on the RMSE, NDVI performed less favourably  on 
 two out of the three sites compared with the other indices. However, the 
 performance difference among the sites was not substantial, with the Bartlett
 experimental forest exhibiting slightly better results on all of their GPP ~ VIs
