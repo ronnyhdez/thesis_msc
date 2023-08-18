@@ -50,6 +50,7 @@ algorithm based on this radiation conversion efficiency concept, relating the
 absorbed photosynthetically active radiation (APAR) with the LUE term [@heinsch_evaluation_2006] as shown in @eq-gpp .
 
 $$
+\small
 GPP = PAR \times fAPAR \times LUE
 $$ {#eq-gpp}
 
@@ -177,7 +178,7 @@ source("R/plot_exploratory.R")
 
 We used three deciduous broadleaf forest sites located in the northern 
 hemisphere with eddy covariance (EC) data collected by Ameriflux. For each site,
-we used daily, weekly, and monthly GPP (GPP_DT_VUT_REF variable) data estimated
+we used the daily, weekly, and monthly GPP values (GPP_DT_VUT_REF variable) estimated
 using the FLUXNET2015 workflow [@pastorello2020fluxnet2015]. The ONEFlux 
 processing does the estimation of the CO~2~ fluxes into GPP and Ecosystem 
 Respiration (RECO) from Net Ecosystem Exchange (NEE) through two methods known
@@ -187,7 +188,11 @@ light response curve and vapour pressure deficit and a second one using a
 respiration-temperature relationship to estimate RECO which in turn is used to
 obtain the difference with NEE and provide GPP. [@pastorello2020fluxnet2015].
 
-For each site, GPP was used in the analysis with three datasets representing daily, weekly, and monthly time scales. @fig-michigan_gpp_trends displays the GPP trends for the University of Michigan Biological Station, @fig-bartlett_gpp_trends illustrates the GPP trends for the Bartlett experimental forest, and @fig-borden_gpp_trends showcases the GPP trends for the Borden Forest Research Station. Additional details regarding the characteristics of these datasets can be found in Table @tbl-oneflux_datasets.
+For each site, GPP was used in the analysis with three datasets representing 
+daily, weekly, and monthly time scales. @fig-gpp_trends displays the GPP trends 
+for the University of Michigan Biological Station, Bartlett experimental forest,
+and the Borden Forest Research Station. Additional details regarding the 
+characteristics of these datasets can be found in Table @tbl-oneflux_datasets.
 
 | Site     | Data range available | Dataset name                                                | Reference                  |
 |-------------------|---------------------|---------------------|-------------------|
@@ -195,7 +200,7 @@ For each site, GPP was used in the analysis with three datasets representing dai
 | Borden   | Jan 2015 to Jan 2022 | CA-Cbo: Ontario - Mixed Deciduous, Borden Forest Site       | [@richardson2016ameriflux] |
 | Michigan | Jan 2015 to Jan 2018 | US-UMB: Univ. of Mich. Biological Station (version: beta-4) | [@gough2016ameriflux]      |
 
-: Sites ONEFlux datasets {#tbl-oneflux_datasets}
+: ONEFlux sites datasets description {#tbl-oneflux_datasets}
 
 The Bartlett experimental forest is located in New Hampshire, USA (44°06′N,
 71°3′W). This site is characterized by a forest with an average canopy height 
@@ -215,41 +220,51 @@ in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
 different succesional stages and a mean height of 2m. Mean annual temperature is
 around 5.5°C. [@gough_disturbanceaccelerated_2021]
 
-The sites have the following GPP trends for the period available for each one:
-See @fig-michigan_gpp_trends
-
 ```{r}
-#| label: fig-michigan_gpp_trends
-#| fig-cap: "GPP trends for Michigan"
-#| fig-width: 7
-#| fig-height: 9
+#| label: fig-gpp_trends
+#| fig-cap: "GPP trends from the study sites on a daily (a), weekly (b), and monthly (c) basis for the University of Michigan Biological Station, Bartlett experimental forest, and the Borden Forest Research Station"
+#| fig-width: 11
+#| fig-height: 12
 #| echo: false
 #| message: false
 #| warning: false
-michigan_gpp_trends
+gpp_trends
 ```
 
-```{r}
-#| label: fig-borden_gpp_trends
-#| fig-cap: "GPP trends for Borden"
-#| fig-width: 7
-#| fig-height: 9
-#| echo: false
-#| message: false
-#| warning: false
-borden_gpp_trends
-```
 
-```{r}
-#| label: fig-bartlett_gpp_trends
-#| fig-cap: "GPP trends for Bartlett"
-#| fig-width: 7
-#| fig-height: 9
-#| echo: false
-#| message: false
-#| warning: false
-bartlett_gpp_trends
-```
+<!-- ```{r} -->
+<!-- #| label: fig-michigan_gpp_trends -->
+<!-- #| fig-cap: "GPP trends for Michigan" -->
+<!-- #| fig-width: 7 -->
+<!-- #| fig-height: 9 -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- michigan_gpp_trends -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| label: fig-bartlett_gpp_trends -->
+<!-- #| fig-cap: "GPP trends for Bartlett" -->
+<!-- #| fig-width: 7 -->
+<!-- #| fig-height: 9 -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- bartlett_gpp_trends -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- #| label: fig-borden_gpp_trends -->
+<!-- #| fig-cap: "GPP trends for Borden" -->
+<!-- #| fig-width: 7 -->
+<!-- #| fig-height: 9 -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- borden_gpp_trends -->
+<!-- ``` -->
 
 <!-- The GPP for each of the sites can -->
 
@@ -264,11 +279,10 @@ MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding
 the EC tower was defined for each site, and the complete data pixel values 
 within this polygon was extracted for analysis.
 
-The MODIS (MOD09GA Version 6.1 product) contains the surface spectral reflectance
-from bands to 1 through 7 with a spatial resolution of 500m, with corrections 
-for atmospheric conditions such as aerosols, gasses and Rayleigh scattering 
-[@vermote2021modis]. Bands used to derived the vegetation indices are shown in
-@tbl-MODIS_500_indices_bands
+The MODIS contains the surface spectral reflectance from bands to 1 through 7
+with a spatial resolution of 500m, with corrections for atmospheric conditions 
+such as aerosols, gasses and Rayleigh scattering [@vermote2021modis]. Bands used
+to derived the vegetation indices are shown in @tbl-MODIS_500_indices_bands
 
 
 | **Name**    | **Description** | **Resolution** | **Wavelength** | **Scale** |
@@ -278,7 +292,7 @@ for atmospheric conditions such as aerosols, gasses and Rayleigh scattering
 | sur_refl_03 | Blue            | 500 meters     | 459-479nm      | 0.0001    |
 | sur_refl_04 | Green           | 500 meters     | 545-565nm      | 0.0001    |
 
-: MOD09GA.061 MODIS Bands {#tbl-MODIS_500_indices_bands}
+: MODIS (MOD09GA.061 product) bands used to calculate the VIs {#tbl-MODIS_500_indices_bands}
 
 <!-- | Data                  | Spatial resolution (m) | GEE image collection         | -->
 <!-- |-----------------------|------------------------|------------------------------| -->
@@ -313,17 +327,20 @@ subsequently discarded. These values were deemed unreliable or lacking
 meaningful information for the analysis. The complete selected high quality
 pixels for the complete period per each of the sites is shown in @fig-complete_quality_pixels
 
-Once all the band values were scaled within the valid range the vegetation
-indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi),
-`kNDVI` (@eq-kndvi), and `CCI` (@eq-cci) were calculated and then matched with
-the corresponding date in the flux datasets. The resulting values used for the
-analysis are shown in @fig-quality_pixels
+Once all the band values were scaled within the valid range, the vegetation
+indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi), and 
+`CCI` (@eq-cci) were calculated and then matched with the corresponding date in 
+the flux datasets. The resulting values used for the analysis are shown in
+@fig-quality_pixels
 
 <!-- However, since the -->
 <!-- MODIS product with a spatial resolution of 250m (`MODIS/061/MOD09A1`) does not -->
 <!-- include the blue band EVI calculations were not performed for this dataset. -->
 
+\begingroup
+\fontsize{10pt}{10pt}\selectfont
 $$
+\small
 NDVI = \frac{NIR - Red}{NIR + Red}
 $$ {#eq-ndvi}
 
@@ -337,14 +354,14 @@ EVI = 2.5\times\frac{\mathrm{NIR} - \mathrm{Red}}{%
           - 7.5\times \mathrm{Blue} + 1)}\\
 $$ {#eq-evi}
 
-
-$$
-kNDVI = tanh(\mathrm{NDVI}^2)
-$$ {#eq-kndvi}
+<!-- $$ -->
+<!-- kNDVI = tanh(\mathrm{NDVI}^2) -->
+<!-- $$ {#eq-kndvi} -->
 
 $$
 CCI = \frac{Green - Red}{Green + Red}
 $$ {#eq-cci}
+\endgroup
 
 <!-- For Harmonized Sentinel-2 data the data processing consisted on using the -->
 <!-- `msk_cldprb` variable to filter out pixels according to the probabilities of -->
@@ -398,7 +415,7 @@ By creating these three datasets (daily, weekly, and monthly), the study allowed
 for a comprehensive analysis of the VI's, band values, and GPP at different
 temporal resolutions. This approach provided insights into the temporal dynamics
 and patterns of the variables, enabling a more thorough understanding of the
-ecological processes and relationships under investigation.
+processes and relationships under investigation.
 
 For each site and across all time scales (daily, weekly, and monthly), a
 filtering step was implemented to remove GPP values
@@ -469,32 +486,38 @@ daily_plot_500 %>%
 
 ### Data Analysis
 
-Various methodologies were employed to estimate GPP
-by utilizing VIs and spectral bands derived from satellite
-images. The choice of model for GPP estimation varied depending on the specific
-time scale under consideration. This approach aimed to enhance the accuracy of
-GPP estimation by employing models tailored to the characteristics of each time
-scale.
+Various methodologies were employed to estimate GPP by utilizing the calculated
+VIs. Two distinct modelling approaches were adopted to accomplish this task: a 
+linear model and a Generalized Additive Model (GAM). These models were created
+to evaluate the performance of individual indices as well as their collective 
+performance, while simultaneously considering the effects of individual site 
+characteristics and the aggregation of sites across various temporal scales.
 
-#### LM for monthly data
+This facilitated a comparative analysis of how each individual index 
+independently explains the variation in GPP per site. Additionally, with the 
+uniform  nature of the three examined forest sites, an evaluation was performed 
+to explore the GPP relationship without the distinction of the specific sites, 
+considering each vegetation index individually. Another step of the analysis 
+was the examination of the relationship between GPP and all indices functioning
+as covariates, both on an individual site basis and without site distinction.
 
-Considering the reduced variability observed when the data values were 
-aggregated on a monthly time scale, a linear model was was selected to estimate 
-GPP. In total, nine models were constructed to assess the performance of each VI 
-individually at each site. This comprehensive analysis aimed to evaluate and 
-compare the effectiveness of the different VIs in capturing GPP variations within 
-the study sites.
+We applied the same methodology to the GAM models which allows a better fit for
+those cases where the distribution and variability observed in the data is 
+greater, due to the varying temporal scales. We aimed to evaluate if this 
+variance could be better explained by this type of model, that might not be 
+optimal to capture with a linear relationship, potentially leading to 
+greater residuals. 
 
-#### GAM models for daily and weekly data
-
-Considering the non-normal distribution and variability observed in the data
-values for both daily and weekly datasets, a Generalized Additive Model (GAM)
-was developed to estimate GPP.
-
+In total, per each site plus the category of all-sites we created 5 linear 
+models and 5 GAM models for every timescale (daily, weekly, and monthly): one 
+per each index (NDVI, CCI, EVI, NIRv) and one with all the indices as
+covariates (NDVI + CCI + EVI + NIRv), resulting in a total of 120 models. To
+compare the performance of the models we calculated the R squared (R2), the Root 
+Mean Squared Error (RMSE), and the Mean Absolute Error (MAE)
 
 ```{r gpp_vi_realtions_all_sites}
 #| label: fig-gpp_vi_relation
-#| fig-cap: "Relationship between MODIS 500m derived vegetation indices and GPP. Every observation corresponds to the observed GPP from a flux tower site (Borden Forest Research Station, Bartlett Experimental Forest or U. Michigan Biological Station) The summarized vegetation indices NDVI (Normalized difference vegetation index), NIRv (Near Infrared vegetation), CCI (Chlorophyll/Carotenoid Index), kNDVI (Normalized Difference Vegetation Index based on kernel methods), and EVI (Enhanced Vegetation Index) per date (daily, weekly, and monthly). The number of pixels corresponds to the number of observations used to obtain the mean of the vegetation index. The red line indicates the Generalized Additive Model for the daily and weekly relations and the Lineal Model for monthly values"
+#| fig-cap: "Relationship between MODIS 500m derived VIs and GPP. Every observation corresponds to the observed GPP from a flux tower site. The number of pixels corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI) on a daily (a), weekly (b), and monthly (c) basis. The red line indicates the Generalized Additive Model for the daily and weekly relations and the Lineal Model for monthly values"
 #| fig-width: 7
 #| fig-height: 9
 #| echo: false
@@ -515,6 +538,7 @@ etiquetas <- c(
 
 daily_grid <-
   daily_plot_500 %>% 
+  filter(index != "kndvi_mean") %>% 
   # filter(ndvi_mean > 3 & gpp_dt_vut_ref < 20)
   mutate(month = lubridate::month(date, label = TRUE)) %>% 
   ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
@@ -528,8 +552,7 @@ daily_grid <-
   scale_y_continuous(breaks = seq(0, 38, by = 4)) +
   labs(x = "Index value", 
        y = expression(GPP~(gC~m^{"-2"}~d^-1)),
-       color = "Month", 
-       title = "Daily observations with 500m spatial resolution") +
+       color = "Month") +
   theme_classic(base_size = 10) +
   theme(axis.text.x = element_text(angle = 60, h = 1)) +
   guides(size = guide_legend(order = 1, keyheight = 0.1),
@@ -539,6 +562,7 @@ daily_grid <-
 
 weekly_grid <-
   weekly_plot_500 %>% 
+  filter(index != "kndvi_mean") %>% 
   mutate(month = lubridate::month(date_start, label = TRUE)) %>% 
   ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
   geom_point(aes(color = month, size = total_obs), alpha = 0.8) +
@@ -551,8 +575,7 @@ weekly_grid <-
   scale_y_continuous(breaks = seq(0, 38, by = 4)) +
   labs(x = "Index value", 
        y = expression(GPP~(gC~m^{"-2"}~d^-1)),
-       color = "Month", 
-       title = "Weekly observations with 500m spatial resolution") +
+       color = "Month") +
   theme_classic(base_size = 10) +
   theme(axis.text.x = element_text(angle = 60, h = 1)) +
   guides(size = guide_legend(order = 1, keyheight = 0.1),
@@ -562,6 +585,7 @@ weekly_grid <-
 
 monthly_grid <-
   monthly_plot_500 %>% 
+  filter(index != "kndvi_mean") %>% 
   mutate(month = lubridate::month(date, label = TRUE)) %>% 
   ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
   geom_point(aes(color = month, size = total_obs), alpha = 0.8) +
@@ -574,8 +598,7 @@ monthly_grid <-
   scale_y_continuous(breaks = seq(0, 18, by = 4)) +
   labs(x = "Index value", 
        y = expression(GPP~(gC~m^{"-2"}~d^-1)),
-       color = "Month", 
-       title = "Monthly observations with 500m spatial resolution") +
+       color = "Month") +
   theme_classic(base_size = 10) +
   theme(axis.text.x = element_text(angle = 60, h = 1)) +
   guides(size = guide_legend(order = 1, keyheight = 0.1),
@@ -594,25 +617,28 @@ plot_grid(daily_grid,
 
 ## Results
 
-### Monthly GPP and VI's relations
+### Analysis of GPP-Vegetation Index Relationships Using Linear Models
+<!-- ### Monthly GPP and VI's relations -->
 
-The @tbl provides a summary of linear models used for 
-GPP estimation at each site, employing the vegetation
-indices as predictors. For each site and predictor, the table includes the 
-relevant model summary statistics, such as r-squared, adjusted r-squared, 
-root mean square error (RMSE), p-value, as well as other metrics like the Akaike 
-Information Criterion (AIC) and Bayesian Information Criterion (BIC). These 
-statistics serve to assess the performance and accuracy of the linear models in 
-estimating GPP using vegetation indices as predictors.
+The @tbl-lm_monthly_results provides a summary of linear models used for GPP 
+estimation at each site, employing the vegetation indices as predictors. For 
+each site and predictor, the table includes the relevant model summary 
+statistics, such as R2, adjusted r-squared, and RMSE. More metrics such as the 
+p-value, the Akaike Information Criterion (AIC) and Bayesian Information 
+Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
 
-Based on the Root Mean Square Error (RMSE), NDVI performed less favourably  on 
-two out of the three sites. However, the performance difference among the sites 
-was not substantial, with the Bartlett experimental forest exhibiting slightly 
-better results compared to the other sites. These findings suggest that while 
+Based on the RMSE, NDVI performed less favourably  on 
+two out of the three sites compared with the other indices. However, the 
+performance difference among the sites was not substantial, with the Bartlett
+experimental forest exhibiting slightly better results on all of their GPP ~ VIs
+relations compared to the other sites. These findings suggest that while 
 NDVI may not be the optimal vegetation index for GPP estimation at these sites,
 there may still be variations in performance across different locations.
 
-The complete metrics results for each of the monthly lm models are in
+When using all the indices as covariates within the linear model, the model's 
+performance demonstrates better outcomes compared to using any single index alone
+
+The complete metrics results for each of the linear models are in
 @tbl-complete_lm_monthly_results
 
 \begingroup
@@ -664,6 +690,10 @@ vis_site_glance_montly %>%
       "rmse_All" = "RMSE"
     )
   ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
+  ) %>% 
   fmt_number(
     columns = 2:16,
     decimals = 2) %>% 
@@ -706,6 +736,10 @@ vis_site_glance_weekly  %>%
       "adj.r.squared_All" = "adj R2",
       "rmse_All" = "RMSE"
     )
+  ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
   ) %>% 
   fmt_number(
     columns = 2:16,
@@ -750,6 +784,10 @@ vis_site_glance_daily %>%
       "rmse_All" = "RMSE"
     )
   ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
+  ) %>% 
   fmt_number(
     columns = 2:16,
     decimals = 2) %>% 
@@ -762,7 +800,14 @@ vis_site_glance_daily %>%
 
 \endgroup
 
-### Daily and weekly GPP and VI's relations
+### Analysis of GPP-Vegetation Index Relationships Using GAM Models
+
+This variance implied that a linear 
+relationship might not be optimal, potentially leading to substantial residuals.
+In contrast, the GAM model was found to adeptly accommodate such variability and
+provide a more comprehensive  explanation for the relationship. This adaptability was especially significant when addressing GPP's daily, weekly, or monthly variations.
+
+<!-- ### Daily and weekly GPP and VI's relations -->
 
 <!-- **TODO: Single vs Individual GAM model** -->
 
@@ -797,7 +842,7 @@ vis_site_glance_daily %>%
 \addtolength{\tabcolsep}{-3pt}
 ```{r}
 #| label: tbl-gam_model_results_pvalue
-#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs" 
+#| tbl-cap: "Table 2.3: Summary of GAM models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis." 
 #| echo: false
 #| message: false
 #| warning: false
@@ -808,7 +853,7 @@ all_sites_gam_daily %>%
   bind_rows(vis_sites_gam_daily,
             all_sites_all_vis_gam_daily,
             all_vis_gam_daily,
-            ) %>% 
+  ) %>% 
   pivot_wider(names_from = index,
               values_from = c(rsq, mae, rmse)) %>% 
   gt() %>%
@@ -836,6 +881,10 @@ all_sites_gam_daily %>%
       "mae_All" = "MAE",
       "rmse_All" = "RMSE"
     )
+  ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
   ) %>% 
   fmt_number(
     columns = 2:16,
@@ -851,7 +900,7 @@ all_sites_gam_weekly %>%
   bind_rows(vis_sites_gam_weekly,
             all_sites_all_vis_gam_weekly,
             all_vis_gam_weekly,
-            ) %>% 
+  ) %>% 
   pivot_wider(names_from = index,
               values_from = c(rsq, mae, rmse)) %>% 
   gt() %>%
@@ -879,6 +928,10 @@ all_sites_gam_weekly %>%
       "mae_All" = "MAE",
       "rmse_All" = "RMSE"
     )
+  ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
   ) %>% 
   fmt_number(
     columns = 2:16,
@@ -894,7 +947,7 @@ all_sites_gam_monthly %>%
   bind_rows(vis_sites_gam_monthly,
             all_sites_all_vis_gam_monthly,
             all_vis_gam_monthly,
-            ) %>% 
+  ) %>% 
   pivot_wider(names_from = index,
               values_from = c(rsq, mae, rmse)) %>% 
   gt() %>%
@@ -922,6 +975,10 @@ all_sites_gam_monthly %>%
       "mae_All" = "MAE",
       "rmse_All" = "RMSE"
     )
+  ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
   ) %>% 
   fmt_number(
     columns = 2:16,
@@ -939,16 +996,6 @@ all_sites_gam_monthly %>%
 ## Discussion
 
 
-
-Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id. Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi quis ipsa aut. Temporibus ut rerum ea a est voluptate.
-
-Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta doloremque. Et reiciendis et animi ut enim. Fugiat consequatur hic laborum culpa blanditiis explicabo nobis quae. Quae pariatur quo et hic autem.
-
-Sunt velit eos repellat inventore quia sunt. Et optio aut distinctio non expedita nulla sint. Explicabo sint tempore est in sunt dolores et. Modi sint earum veniam perspiciatis. Velit at beatae nam fugiat iusto.
-
-Sed velit ipsum in qui expedita praesentium. Neque vero optio qui cumque sint. Error possimus dolor quisquam vero aut.
-
-Autem non labore numquam. Eveniet facere id qui impedit. Sunt temporibus sit neque fugiat. Consequatur sit maiores dolorum libero provident a laudantium. Ipsum sit fugiat quis consectetur sed a provident veritatis. Consequuntur laudantium aut libero facere animi ipsum et hic.
 
 
 \newpage
