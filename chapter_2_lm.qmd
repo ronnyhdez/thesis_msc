@@ -50,6 +50,7 @@ algorithm based on this radiation conversion efficiency concept, relating the
 absorbed photosynthetically active radiation (APAR) with the LUE term [@heinsch_evaluation_2006] as shown in @eq-gpp .
 
 $$
+\small
 GPP = PAR \times fAPAR \times LUE
 $$ {#eq-gpp}
 
@@ -216,38 +217,50 @@ different succesional stages and a mean height of 2m. Mean annual temperature is
 around 5.5°C. [@gough_disturbanceaccelerated_2021]
 
 ```{r}
-#| label: fig-michigan_gpp_trends
-#| fig-cap: "GPP trends for Michigan"
-#| fig-width: 7
-#| fig-height: 9
+#| label: fig-gpp_trends
+#| fig-cap: "GPP trends from the study sites on a daily (a), weekly (b), and monthly (c) basis"
+#| fig-width: 11
+#| fig-height: 12
 #| echo: false
 #| message: false
 #| warning: false
-michigan_gpp_trends
-```
-
-```{r}
-#| label: fig-bartlett_gpp_trends
-#| fig-cap: "GPP trends for Bartlett"
-#| fig-width: 7
-#| fig-height: 9
-#| echo: false
-#| message: false
-#| warning: false
-bartlett_gpp_trends
+gpp_trends
 ```
 
 
-```{r}
-#| label: fig-borden_gpp_trends
-#| fig-cap: "GPP trends for Borden"
-#| fig-width: 7
-#| fig-height: 9
-#| echo: false
-#| message: false
-#| warning: false
-borden_gpp_trends
-```
+<!-- ```{r} -->
+<!-- #| label: fig-michigan_gpp_trends -->
+<!-- #| fig-cap: "GPP trends for Michigan" -->
+<!-- #| fig-width: 7 -->
+<!-- #| fig-height: 9 -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- michigan_gpp_trends -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| label: fig-bartlett_gpp_trends -->
+<!-- #| fig-cap: "GPP trends for Bartlett" -->
+<!-- #| fig-width: 7 -->
+<!-- #| fig-height: 9 -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- bartlett_gpp_trends -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- #| label: fig-borden_gpp_trends -->
+<!-- #| fig-cap: "GPP trends for Borden" -->
+<!-- #| fig-width: 7 -->
+<!-- #| fig-height: 9 -->
+<!-- #| echo: false -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- borden_gpp_trends -->
+<!-- ``` -->
 
 <!-- The GPP for each of the sites can -->
 
@@ -262,11 +275,10 @@ MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding
 the EC tower was defined for each site, and the complete data pixel values 
 within this polygon was extracted for analysis.
 
-The MODIS (MOD09GA Version 6.1 product) contains the surface spectral reflectance
-from bands to 1 through 7 with a spatial resolution of 500m, with corrections 
-for atmospheric conditions such as aerosols, gasses and Rayleigh scattering 
-[@vermote2021modis]. Bands used to derived the vegetation indices are shown in
-@tbl-MODIS_500_indices_bands
+The MODIS contains the surface spectral reflectance from bands to 1 through 7
+with a spatial resolution of 500m, with corrections for atmospheric conditions 
+such as aerosols, gasses and Rayleigh scattering [@vermote2021modis]. Bands used
+to derived the vegetation indices are shown in @tbl-MODIS_500_indices_bands
 
 
 | **Name**    | **Description** | **Resolution** | **Wavelength** | **Scale** |
@@ -321,7 +333,10 @@ the flux datasets. The resulting values used for the analysis are shown in
 <!-- MODIS product with a spatial resolution of 250m (`MODIS/061/MOD09A1`) does not -->
 <!-- include the blue band EVI calculations were not performed for this dataset. -->
 
+\begingroup
+\fontsize{10pt}{10pt}\selectfont
 $$
+\small
 NDVI = \frac{NIR - Red}{NIR + Red}
 $$ {#eq-ndvi}
 
@@ -335,7 +350,6 @@ EVI = 2.5\times\frac{\mathrm{NIR} - \mathrm{Red}}{%
           - 7.5\times \mathrm{Blue} + 1)}\\
 $$ {#eq-evi}
 
-
 <!-- $$ -->
 <!-- kNDVI = tanh(\mathrm{NDVI}^2) -->
 <!-- $$ {#eq-kndvi} -->
@@ -343,6 +357,7 @@ $$ {#eq-evi}
 $$
 CCI = \frac{Green - Red}{Green + Red}
 $$ {#eq-cci}
+\endgroup
 
 <!-- For Harmonized Sentinel-2 data the data processing consisted on using the -->
 <!-- `msk_cldprb` variable to filter out pixels according to the probabilities of -->
@@ -664,6 +679,10 @@ vis_site_glance_montly %>%
       "rmse_All" = "RMSE"
     )
   ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
+  ) %>% 
   fmt_number(
     columns = 2:16,
     decimals = 2) %>% 
@@ -707,6 +726,10 @@ vis_site_glance_weekly  %>%
       "rmse_All" = "RMSE"
     )
   ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
+  ) %>% 
   fmt_number(
     columns = 2:16,
     decimals = 2) %>% 
@@ -749,6 +772,10 @@ vis_site_glance_daily %>%
       "adj.r.squared_All" = "adj R2",
       "rmse_All" = "RMSE"
     )
+  ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
   ) %>% 
   fmt_number(
     columns = 2:16,
@@ -810,7 +837,7 @@ all_sites_gam_daily %>%
   bind_rows(vis_sites_gam_daily,
             all_sites_all_vis_gam_daily,
             all_vis_gam_daily,
-            ) %>% 
+  ) %>% 
   pivot_wider(names_from = index,
               values_from = c(rsq, mae, rmse)) %>% 
   gt() %>%
@@ -838,6 +865,10 @@ all_sites_gam_daily %>%
       "mae_All" = "MAE",
       "rmse_All" = "RMSE"
     )
+  ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
   ) %>% 
   fmt_number(
     columns = 2:16,
@@ -853,7 +884,7 @@ all_sites_gam_weekly %>%
   bind_rows(vis_sites_gam_weekly,
             all_sites_all_vis_gam_weekly,
             all_vis_gam_weekly,
-            ) %>% 
+  ) %>% 
   pivot_wider(names_from = index,
               values_from = c(rsq, mae, rmse)) %>% 
   gt() %>%
@@ -881,6 +912,10 @@ all_sites_gam_weekly %>%
       "mae_All" = "MAE",
       "rmse_All" = "RMSE"
     )
+  ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
   ) %>% 
   fmt_number(
     columns = 2:16,
@@ -896,7 +931,7 @@ all_sites_gam_monthly %>%
   bind_rows(vis_sites_gam_monthly,
             all_sites_all_vis_gam_monthly,
             all_vis_gam_monthly,
-            ) %>% 
+  ) %>% 
   pivot_wider(names_from = index,
               values_from = c(rsq, mae, rmse)) %>% 
   gt() %>%
@@ -924,6 +959,10 @@ all_sites_gam_monthly %>%
       "mae_All" = "MAE",
       "rmse_All" = "RMSE"
     )
+  ) %>% 
+  cols_align(
+    align = "center",
+    columns = 2:16
   ) %>% 
   fmt_number(
     columns = 2:16,
@@ -940,15 +979,7 @@ all_sites_gam_monthly %>%
 
 ## Discussion
 
-Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id. Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi quis ipsa aut. Temporibus ut rerum ea a est voluptate.
 
-Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta doloremque. Et reiciendis et animi ut enim. Fugiat consequatur hic laborum culpa blanditiis explicabo nobis quae. Quae pariatur quo et hic autem.
-
-Sunt velit eos repellat inventore quia sunt. Et optio aut distinctio non expedita nulla sint. Explicabo sint tempore est in sunt dolores et. Modi sint earum veniam perspiciatis. Velit at beatae nam fugiat iusto.
-
-Sed velit ipsum in qui expedita praesentium. Neque vero optio qui cumque sint. Error possimus dolor quisquam vero aut.
-
-Autem non labore numquam. Eveniet facere id qui impedit. Sunt temporibus sit neque fugiat. Consequatur sit maiores dolorum libero provident a laudantium. Ipsum sit fugiat quis consectetur sed a provident veritatis. Consequuntur laudantium aut libero facere animi ipsum et hic.
 
 
 \newpage
