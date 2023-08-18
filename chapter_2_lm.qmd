@@ -188,7 +188,11 @@ light response curve and vapour pressure deficit and a second one using a
 respiration-temperature relationship to estimate RECO which in turn is used to
 obtain the difference with NEE and provide GPP. [@pastorello2020fluxnet2015].
 
-For each site, GPP was used in the analysis with three datasets representing daily, weekly, and monthly time scales. @fig-michigan_gpp_trends displays the GPP trends for the University of Michigan Biological Station, @fig-bartlett_gpp_trends illustrates the GPP trends for the Bartlett experimental forest, and @fig-borden_gpp_trends showcases the GPP trends for the Borden Forest Research Station. Additional details regarding the characteristics of these datasets can be found in Table @tbl-oneflux_datasets.
+For each site, GPP was used in the analysis with three datasets representing 
+daily, weekly, and monthly time scales. @fig-gpp_trends displays the GPP trends 
+for the University of Michigan Biological Station, Bartlett experimental forest,
+and the Borden Forest Research Station. Additional details regarding the 
+characteristics of these datasets can be found in Table @tbl-oneflux_datasets.
 
 | Site     | Data range available | Dataset name                                                | Reference                  |
 |-------------------|---------------------|---------------------|-------------------|
@@ -218,7 +222,7 @@ around 5.5°C. [@gough_disturbanceaccelerated_2021]
 
 ```{r}
 #| label: fig-gpp_trends
-#| fig-cap: "GPP trends from the study sites on a daily (a), weekly (b), and monthly (c) basis"
+#| fig-cap: "GPP trends from the study sites on a daily (a), weekly (b), and monthly (c) basis for the University of Michigan Biological Station, Bartlett experimental forest, and the Borden Forest Research Station"
 #| fig-width: 11
 #| fig-height: 12
 #| echo: false
@@ -288,7 +292,7 @@ to derived the vegetation indices are shown in @tbl-MODIS_500_indices_bands
 | sur_refl_03 | Blue            | 500 meters     | 459-479nm      | 0.0001    |
 | sur_refl_04 | Green           | 500 meters     | 545-565nm      | 0.0001    |
 
-: MOD09GA.061 MODIS Bands used to calculate the VIs {#tbl-MODIS_500_indices_bands}
+: MODIS (MOD09GA.061 product) bands used to calculate the VIs {#tbl-MODIS_500_indices_bands}
 
 <!-- | Data                  | Spatial resolution (m) | GEE image collection         | -->
 <!-- |-----------------------|------------------------|------------------------------| -->
@@ -323,7 +327,7 @@ subsequently discarded. These values were deemed unreliable or lacking
 meaningful information for the analysis. The complete selected high quality
 pixels for the complete period per each of the sites is shown in @fig-complete_quality_pixels
 
-Once all the band values were scaled within the valid range the vegetation
+Once all the band values were scaled within the valid range, the vegetation
 indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi), and 
 `CCI` (@eq-cci) were calculated and then matched with the corresponding date in 
 the flux datasets. The resulting values used for the analysis are shown in
@@ -411,7 +415,7 @@ By creating these three datasets (daily, weekly, and monthly), the study allowed
 for a comprehensive analysis of the VI's, band values, and GPP at different
 temporal resolutions. This approach provided insights into the temporal dynamics
 and patterns of the variables, enabling a more thorough understanding of the
-ecological processes and relationships under investigation.
+processes and relationships under investigation.
 
 For each site and across all time scales (daily, weekly, and monthly), a
 filtering step was implemented to remove GPP values
@@ -482,26 +486,34 @@ daily_plot_500 %>%
 
 ### Data Analysis
 
-Various methodologies were employed to estimate GPP by utilizing VIs and 
-spectral bands derived from satellite images. The choice of model for GPP 
-estimation varied depending on the specific time scale under consideration.
-This approach aimed to enhance the accuracy of GPP estimation by employing 
-models tailored to the characteristics of each time scale.
+Various methodologies were employed to estimate GPP by utilizing the calculated
+VIs. Two distinct modelling approaches were adopted to accomplish this task: a 
+linear model and a Generalized Additive Model (GAM). These models were created
+to evaluate the performance of individual indices as well as their collective 
+performance, while simultaneously considering the effects of individual site 
+characteristics and the aggregation of sites across various temporal scales.
 
-#### LM for monthly data
+This facilitated a comparative analysis of how each individual index 
+independently explains the variation in GPP per site. Additionally, with the 
+uniform  nature of the three examined forest sites, an evaluation was performed 
+to explore the GPP relationship without the distinction of the specific sites, 
+considering each vegetation index individually. Another step of the analysis 
+was the examination of the relationship between GPP and all indices functioning
+as covariates, both on an individual site basis and without site distinction.
 
-Considering the reduced variability observed when the data values were 
-aggregated on a monthly time scale, a linear model was was selected to estimate 
-GPP. In total, nine models were constructed to assess the performance of each VI 
-individually at each site. This comprehensive analysis aimed to evaluate and 
-compare the effectiveness of the different VIs in capturing GPP variations within 
-the study sites.
+We applied the same methodology to the GAM models which allows a better fit for
+those cases where the distribution and variability observed in the data is 
+greater, due to the varying temporal scales. We aimed to evaluate if this 
+variance could be better explained by this type of model, that might not be 
+optimal to capture with a linear relationship, potentially leading to 
+greater residuals. 
 
-#### GAM models for daily and weekly data
-
-Considering the non-normal distribution and variability observed in the data
-values for both daily and weekly datasets, a Generalized Additive Model (GAM)
-was developed to estimate GPP.
+In total, per each site plus the category of all-sites we created 5 linear 
+models and 5 GAM models for every timescale (daily, weekly, and monthly): one 
+per each index (NDVI, CCI, EVI, NIRv) and one with all the indices as
+covariates (NDVI + CCI + EVI + NIRv), resulting in a total of 120 models. To
+compare the performance of the models we calculated the R squared (R2), the Root 
+Mean Squared Error (RMSE), and the Mean Absolute Error (MAE)
 
 ```{r gpp_vi_realtions_all_sites}
 #| label: fig-gpp_vi_relation
@@ -790,6 +802,11 @@ vis_site_glance_daily %>%
 \endgroup
 
 ### Analysis of GPP-Vegetation Index Relationships Using GAM Models
+
+This variance implied that a linear 
+relationship might not be optimal, potentially leading to substantial residuals.
+In contrast, the GAM model was found to adeptly accommodate such variability and
+provide a more comprehensive  explanation for the relationship. This adaptability was especially significant when addressing GPP's daily, weekly, or monthly variations.
 
 <!-- ### Daily and weekly GPP and VI's relations -->
 
