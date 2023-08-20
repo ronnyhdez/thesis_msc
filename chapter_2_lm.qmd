@@ -658,12 +658,12 @@ source("scripts/lm_preparation.R")
 
 # Monthly table
 vis_site_glance_montly %>% 
-  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  select(site, index, r.squared, mae, rmse) %>%
   bind_rows(all_sites_glance_monthly,
             all_sites_all_vis_glance_monthly,
             all_vis_glance_monthly) %>% 
   pivot_wider(names_from = index, 
-              values_from = c(r.squared, adj.r.squared, rmse)) %>%
+              values_from = c(r.squared, mae, rmse)) %>%
   gt() %>%
   tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
   tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
@@ -674,19 +674,19 @@ vis_site_glance_montly %>%
     .list = list(
       "site" = "Site",
       "r.squared_EVI" = "R2",
-      "adj.r.squared_EVI" = "adj R2",
+      "mae_EVI" = "MAE",
       "rmse_EVI" = "RMSE",
       "r.squared_NDVI" = "R2",
-      "adj.r.squared_NDVI" = "adj R2",
+      "mae_NDVI" = "MAE",
       "rmse_NDVI" = "RMSE",
       "r.squared_NIRv" = "R2",
-      "adj.r.squared_NIRv" = "adj R2",
+      "mae_NIRv" = "MAE",
       "rmse_NIRv" = "RMSE",
       "r.squared_CCI" = "R2",
-      "adj.r.squared_CCI" = "adj R2",
+      "mae_CCI" = "MAE",
       "rmse_CCI" = "RMSE",
       "r.squared_All" = "R2",
-      "adj.r.squared_All" = "adj R2",
+      "mae_All" = "MAE",
       "rmse_All" = "RMSE"
     )
   ) %>% 
@@ -705,12 +705,12 @@ vis_site_glance_montly %>%
 
 # Weekly table
 vis_site_glance_weekly  %>%
-  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  select(site, index, r.squared, mae, rmse) %>%
   bind_rows(all_sites_glance_weekly,
             all_sites_all_vis_glance_weekly,
             all_vis_glance_weekly) %>% 
   pivot_wider(names_from = index, 
-              values_from = c(r.squared, adj.r.squared, rmse)) %>%
+              values_from = c(r.squared, mae, rmse)) %>%
   gt() %>%
   tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
   tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
@@ -721,19 +721,19 @@ vis_site_glance_weekly  %>%
     .list = list(
       "site" = "Site",
       "r.squared_EVI" = "R2",
-      "adj.r.squared_EVI" = "adj R2",
+      "mae_EVI" = "MAE",
       "rmse_EVI" = "RMSE",
       "r.squared_NDVI" = "R2",
-      "adj.r.squared_NDVI" = "adj R2",
+      "mae_NDVI" = "MAE",
       "rmse_NDVI" = "RMSE",
       "r.squared_NIRv" = "R2",
-      "adj.r.squared_NIRv" = "adj R2",
+      "mae_NIRv" = "MAE",
       "rmse_NIRv" = "RMSE",
       "r.squared_CCI" = "R2",
-      "adj.r.squared_CCI" = "adj R2",
+      "mae_CCI" = "MAE",
       "rmse_CCI" = "RMSE",
       "r.squared_All" = "R2",
-      "adj.r.squared_All" = "adj R2",
+      "mae_All" = "MAE",
       "rmse_All" = "RMSE"
     )
   ) %>% 
@@ -752,12 +752,12 @@ vis_site_glance_weekly  %>%
 
 # Daily table
 vis_site_glance_daily %>%
-  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  select(site, index, r.squared, mae, rmse) %>%
   bind_rows(all_sites_glance_daily,
             all_sites_all_vis_glance_daily,
             all_vis_glance_daily)  %>% 
   pivot_wider(names_from = index, 
-              values_from = c(r.squared, adj.r.squared, rmse)) %>%
+              values_from = c(r.squared, mae, rmse)) %>%
   gt() %>%
   tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
   tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
@@ -768,19 +768,19 @@ vis_site_glance_daily %>%
     .list = list(
       "site" = "Site",
       "r.squared_EVI" = "R2",
-      "adj.r.squared_EVI" = "adj R2",
+      "mae_EVI" = "MAE",
       "rmse_EVI" = "RMSE",
       "r.squared_NDVI" = "R2",
-      "adj.r.squared_NDVI" = "adj R2",
+      "mae_NDVI" = "MAE",
       "rmse_NDVI" = "RMSE",
       "r.squared_NIRv" = "R2",
-      "adj.r.squared_NIRv" = "adj R2",
+      "mae_NIRv" = "MAE",
       "rmse_NIRv" = "RMSE",
       "r.squared_CCI" = "R2",
-      "adj.r.squared_CCI" = "adj R2",
+      "mae_CCI" = "MAE",
       "rmse_CCI" = "RMSE",
       "r.squared_All" = "R2",
-      "adj.r.squared_All" = "adj R2",
+      "mae_All" = "MAE",
       "rmse_All" = "RMSE"
     )
   ) %>% 
