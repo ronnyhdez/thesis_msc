@@ -1,6 +1,6 @@
 # File to check if we can plot the residuals from each of the models
 
-# Object for residuals distribution:
+# Object for residuals distribution: -------------------------------------------
 all_sites_lm
 
 library(cowplot)
@@ -45,7 +45,7 @@ all_sites_lm  %>%
   scale_color_viridis_d() +
   theme_ridges()
 
-# Barplot monthly
+# Barplot monthly --------------------------------------------------------------
 response_vars <- c("r.squared", "mae", "rmse")
 
 # Create a function to generate the plot
@@ -63,17 +63,59 @@ create_plot <- function(y_var, ylim_range) {
 }
 
 # Map over the response variables and create the plots
-plots <- map2(response_vars, list(c(0.5, 1), c(0.5, 2.5), c(0.8, 3)), create_plot)
-
+plots <- map2(response_vars, 
+              list(c(0.5, 1), c(0.5, 2.5), c(0.8, 3)),
+              create_plot)
 
 # Grid the plots as should go in the chapter
-plot_grid(plots[[1]], plots[[2]], plots[[3]],
+monthly_metrics_plot <- plot_grid(plots[[1]], plots[[2]], plots[[3]],
           nrow = 3)
 
+# Weekly
+create_plot <- function(y_var, ylim_range) {
+  vis_site_glance_weekly %>% 
+    select(site, index, {{ y_var }}) %>%
+    bind_rows(all_sites_glance_weekly,
+              all_sites_all_vis_glance_weekly,
+              all_vis_glance_weekly) %>% 
+    ggplot(aes(x = site, y = .data[[y_var]], fill = index)) +
+    geom_col(position = "dodge") +
+    coord_cartesian(ylim = ylim_range) +
+    scale_fill_viridis_d() +
+    theme_minimal_hgrid()
+}
 
+# Map over the response variables and create the plots
+plots <- map2(response_vars, 
+              list(c(0.3, 0.9), c(0.8, 3.2), c(1.4, 3.6)),
+              create_plot)
 
+# Grid the plots as should go in the chapter
+weekly_metrics_plot <- plot_grid(plots[[1]], plots[[2]], plots[[3]],
+          nrow = 3)
 
+# Weekly
+create_plot <- function(y_var, ylim_range) {
+  vis_site_glance_weekly %>% 
+    select(site, index, {{ y_var }}) %>%
+    bind_rows(all_sites_glance_daily,
+              all_sites_all_vis_glance_daily,
+              all_vis_glance_daily) %>% 
+    ggplot(aes(x = site, y = .data[[y_var]], fill = index)) +
+    geom_col(position = "dodge") +
+    coord_cartesian(ylim = ylim_range) +
+    scale_fill_viridis_d() +
+    theme_minimal_hgrid()
+}
 
+# Map over the response variables and create the plots
+plots <- map2(response_vars, 
+              list(c(0.3, 0.9), c(0.8, 3.2), c(1.4, 3.6)),
+              create_plot)
+
+# Grid the plots as should go in the chapter
+daily_metrics_plot <- plot_grid(plots[[1]], plots[[2]], plots[[3]],
+          nrow = 3)
 
 
 # Si tengo tiempo, revisar este proceso
