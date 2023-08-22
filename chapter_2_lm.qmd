@@ -774,18 +774,19 @@ daily_metrics_plots <- map2(response_vars,
               ~ create_metrics_plot("daily", .x, .y))
 
 # Grid the plots as should go in the chapter
-lm_metrics_plots <- plot_grid(monthly_metrics_plots[[1]] + theme(legend.position = "none"),
-          weekly_metrics_plots[[1]] + theme(legend.position = "none"),
-          daily_metrics_plots[[1]] + theme(legend.position = "none"),
-          monthly_metrics_plots[[2]] + theme(legend.position = "none"),
-          weekly_metrics_plots[[2]] + theme(legend.position = "none"),
-          daily_metrics_plots[[2]] + theme(legend.position = "none"),
-          monthly_metrics_plots[[3]] + theme(legend.position = "none"),
-          weekly_metrics_plots[[3]] + theme(legend.position = "none"),
-          daily_metrics_plots[[3]] + theme(legend.position = "none"),
-          nrow = 3,
-          ncol = 3,
-          labels = c("A", "B", "C"))
+lm_metrics_plots <- plot_grid(
+  monthly_metrics_plots[[1]] + theme(legend.position = "none"),
+  weekly_metrics_plots[[1]] + theme(legend.position = "none"),
+  daily_metrics_plots[[1]] + theme(legend.position = "none"),
+  monthly_metrics_plots[[2]] + theme(legend.position = "none"),
+  weekly_metrics_plots[[2]] + theme(legend.position = "none"),
+  daily_metrics_plots[[2]] + theme(legend.position = "none"),
+  monthly_metrics_plots[[3]] + theme(legend.position = "none"),
+  weekly_metrics_plots[[3]] + theme(legend.position = "none"),
+  daily_metrics_plots[[3]] + theme(legend.position = "none"),
+  nrow = 3,
+  ncol = 3,
+  labels = c("A", "B", "C"))
 
 plot_legend <- get_legend(
   monthly_metrics_plots[[1]] + 
@@ -987,6 +988,74 @@ all_sites_gam_monthly %>%
   cols_width(everything() ~ px(50))
 ```
 \endgroup
+
+```{r lm_barplot_metrics}
+#| label: fig-gam_metrics
+#| fig-cap: "Summary of GAM models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
+#| echo: false
+#| message: false
+#| warning: false
+library(cowplot)
+
+# Create a function to generate the plot
+create_metrics_plot <- function(timescale, y_var, ylim_range) {
+  get(paste0("all_sites_gam_", timescale)) %>% 
+    # select(site, index, {{ y_var }}) %>%
+    bind_rows(get(paste0("vis_sites_gam_", timescale)),
+               get(paste0("all_sites_all_vis_gam_", timescale)),
+              get(paste0("all_vis_gam_", timescale))) %>% 
+    ggplot(aes(x = site, y = .data[[y_var]], fill = index)) +
+    geom_col(position = "dodge") +
+    coord_cartesian(ylim = ylim_range) +
+    scale_fill_viridis_d() +
+    theme_minimal_hgrid()
+}
+
+# Response variables are going to be the same:
+response_vars <- c("rsq", "mae", "rmse")
+
+# Monthly plots
+monthly_metrics_plots <- map2(response_vars, 
+     list(c(0.5, 1), c(0.5, 2.5), c(0.8, 3)), 
+     ~ create_metrics_plot("monthly", .x, .y))
+
+# Weekly plots
+weekly_metrics_plots <- map2(response_vars, 
+              list(c(0.3, 0.9), c(0.8, 3.2), c(1.4, 3.6)),
+              ~ create_metrics_plot("weekly", .x, .y))
+
+# Daily plots
+daily_metrics_plots <- map2(response_vars, 
+              list(c(0.3, 0.9), c(0.8, 3.2), c(1.4, 3.6)),
+              ~ create_metrics_plot("daily", .x, .y))
+
+# Grid the plots as should go in the chapter
+gam_metrics_plots <- plot_grid(
+  monthly_metrics_plots[[1]] + theme(legend.position = "none"),
+  weekly_metrics_plots[[1]] + theme(legend.position = "none"),
+  daily_metrics_plots[[1]] + theme(legend.position = "none"),
+  monthly_metrics_plots[[2]] + theme(legend.position = "none"),
+  weekly_metrics_plots[[2]] + theme(legend.position = "none"),
+  daily_metrics_plots[[2]] + theme(legend.position = "none"),
+  monthly_metrics_plots[[3]] + theme(legend.position = "none"),
+  weekly_metrics_plots[[3]] + theme(legend.position = "none"),
+  daily_metrics_plots[[3]] + theme(legend.position = "none"),
+  nrow = 3,
+  ncol = 3,
+  labels = c("A", "B", "C"))
+
+plot_legend <- get_legend(
+  monthly_metrics_plots[[1]] + 
+    guides(color = guide_legend(nrow = 3)) 
+)
+
+plot_grid(gam_metrics_plots, plot_legend, ncol = 2, rel_widths = c(1, .1))
+rm(plot_legend)
+```
+
+
+
+
 
 \newpage
 
