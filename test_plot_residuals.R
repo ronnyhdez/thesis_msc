@@ -63,13 +63,13 @@ create_plot <- function(y_var, ylim_range) {
 }
 
 # Map over the response variables and create the plots
-plots <- map2(response_vars, 
+monthly_metrics_plots <- map2(response_vars, 
               list(c(0.5, 1), c(0.5, 2.5), c(0.8, 3)),
               create_plot)
 
 # Grid the plots as should go in the chapter
-monthly_metrics_plot <- plot_grid(plots[[1]], plots[[2]], plots[[3]],
-          nrow = 3)
+# monthly_metrics_plot <- plot_grid(plots[[1]], plots[[2]], plots[[3]],
+#           nrow = 3)
 
 # Weekly
 create_plot <- function(y_var, ylim_range) {
@@ -117,6 +117,11 @@ plots <- map2(response_vars,
 daily_metrics_plot <- plot_grid(plots[[1]], plots[[2]], plots[[3]],
           nrow = 3)
 
+plot_grid(monthly_metrics_plot, 
+          weekly_metrics_plot,
+          daily_metrics_plot,
+          nrow = 3,
+          ncol = 3)
 
 # Si tengo tiempo, revisar este proceso
 # library(tidymodels)

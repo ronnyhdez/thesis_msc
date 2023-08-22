@@ -159,7 +159,7 @@ cci_glance_monthly <- cci_lm %>%
   arrange(desc(r.squared)) %>% 
   mutate(index = "CCI")
 
-vis_site_glance_montly <- bind_rows(evi_glance_monthly,
+vis_site_glance_monthly <- bind_rows(evi_glance_monthly,
                                     ndvi_glance_monthly,
                                     nirv_glance_monthly,
                                     cci_glance_monthly) 

@@ -699,7 +699,7 @@ create_metrics_table <- function(data) {
 }
 
 # Monthly table
-vis_site_glance_montly %>% 
+vis_site_glance_monthly %>% 
   select(site, index, r.squared, mae, rmse) %>%
   bind_rows(all_sites_glance_monthly,
             all_sites_all_vis_glance_monthly,
@@ -774,11 +774,26 @@ daily_metrics_plots <- map2(response_vars,
               ~ create_metrics_plot("daily", .x, .y))
 
 # Grid the plots as should go in the chapter
-plot_grid(monthly_metrics_plots[[1]], weekly_metrics_plots[[1]], daily_metrics_plots[[1]],
-          monthly_metrics_plots[[2]], weekly_metrics_plots[[2]], daily_metrics_plots[[2]],
-          monthly_metrics_plots[[3]], weekly_metrics_plots[[3]], daily_metrics_plots[[3]],
+lm_metrics_plots <- plot_grid(monthly_metrics_plots[[1]] + theme(legend.position = "none"),
+          weekly_metrics_plots[[1]] + theme(legend.position = "none"),
+          daily_metrics_plots[[1]] + theme(legend.position = "none"),
+          monthly_metrics_plots[[2]] + theme(legend.position = "none"),
+          weekly_metrics_plots[[2]] + theme(legend.position = "none"),
+          daily_metrics_plots[[2]] + theme(legend.position = "none"),
+          monthly_metrics_plots[[3]] + theme(legend.position = "none"),
+          weekly_metrics_plots[[3]] + theme(legend.position = "none"),
+          daily_metrics_plots[[3]] + theme(legend.position = "none"),
           nrow = 3,
-          ncol = 3)
+          ncol = 3,
+          labels = c("A", "B", "C"))
+
+plot_legend <- get_legend(
+  monthly_metrics_plots[[1]] + 
+    guides(color = guide_legend(nrow = 3)) 
+)
+
+gpp_trends <- plot_grid(lm_metrics_plots, plot_legend, ncol = 2, rel_widths = c(1, .1))
+rm(plot_legend)
 ```
 
 
