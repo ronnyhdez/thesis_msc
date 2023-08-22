@@ -656,6 +656,48 @@ The complete metrics results for each of the linear models are in
 #| warning: false
 source("scripts/lm_preparation.R")
 
+create_metrics_table <- function(data) {
+  data %>% 
+    gt() %>%
+    tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
+    tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
+    tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
+    tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
+    tab_spanner(label = "All", columns = ends_with("All")) %>% 
+    cols_label(
+      .list = list(
+        "site" = "Site",
+        "r.squared_EVI" = "R2",
+        "mae_EVI" = "MAE",
+        "rmse_EVI" = "RMSE",
+        "r.squared_NDVI" = "R2",
+        "mae_NDVI" = "MAE",
+        "rmse_NDVI" = "RMSE",
+        "r.squared_NIRv" = "R2",
+        "mae_NIRv" = "MAE",
+        "rmse_NIRv" = "RMSE",
+        "r.squared_CCI" = "R2",
+        "mae_CCI" = "MAE",
+        "rmse_CCI" = "RMSE",
+        "r.squared_All" = "R2",
+        "mae_All" = "MAE",
+        "rmse_All" = "RMSE"
+      )
+    ) %>% 
+    cols_align(
+      align = "center",
+      columns = 2:16
+    ) %>% 
+    fmt_number(
+      columns = 2:16,
+      decimals = 2) %>% 
+    tab_options(
+      row_group.background.color = "#E9E0E1",
+      row_group.font.weight = "bold"
+    ) %>% 
+    cols_width(everything() ~ px(50))
+}
+
 # Monthly table
 vis_site_glance_montly %>% 
   select(site, index, r.squared, mae, rmse) %>%
@@ -664,44 +706,8 @@ vis_site_glance_montly %>%
             all_vis_glance_monthly) %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, mae, rmse)) %>%
-  gt() %>%
-  tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
-  tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
-  tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
-  tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
-  tab_spanner(label = "All", columns = ends_with("All")) %>% 
-  cols_label(
-    .list = list(
-      "site" = "Site",
-      "r.squared_EVI" = "R2",
-      "mae_EVI" = "MAE",
-      "rmse_EVI" = "RMSE",
-      "r.squared_NDVI" = "R2",
-      "mae_NDVI" = "MAE",
-      "rmse_NDVI" = "RMSE",
-      "r.squared_NIRv" = "R2",
-      "mae_NIRv" = "MAE",
-      "rmse_NIRv" = "RMSE",
-      "r.squared_CCI" = "R2",
-      "mae_CCI" = "MAE",
-      "rmse_CCI" = "RMSE",
-      "r.squared_All" = "R2",
-      "mae_All" = "MAE",
-      "rmse_All" = "RMSE"
-    )
-  ) %>% 
-  cols_align(
-    align = "center",
-    columns = 2:16
-  ) %>% 
-  fmt_number(
-    columns = 2:16,
-    decimals = 2) %>% 
-  tab_options(
-    row_group.background.color = "#E9E0E1",
-    row_group.font.weight = "bold"
-  ) %>% 
-  cols_width(everything() ~ px(50))
+  create_metrics_table()
+
 
 # Weekly table
 vis_site_glance_weekly  %>%
@@ -711,44 +717,7 @@ vis_site_glance_weekly  %>%
             all_vis_glance_weekly) %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, mae, rmse)) %>%
-  gt() %>%
-  tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
-  tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
-  tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
-  tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
-  tab_spanner(label = "All", columns = ends_with("All")) %>% 
-  cols_label(
-    .list = list(
-      "site" = "Site",
-      "r.squared_EVI" = "R2",
-      "mae_EVI" = "MAE",
-      "rmse_EVI" = "RMSE",
-      "r.squared_NDVI" = "R2",
-      "mae_NDVI" = "MAE",
-      "rmse_NDVI" = "RMSE",
-      "r.squared_NIRv" = "R2",
-      "mae_NIRv" = "MAE",
-      "rmse_NIRv" = "RMSE",
-      "r.squared_CCI" = "R2",
-      "mae_CCI" = "MAE",
-      "rmse_CCI" = "RMSE",
-      "r.squared_All" = "R2",
-      "mae_All" = "MAE",
-      "rmse_All" = "RMSE"
-    )
-  ) %>% 
-  cols_align(
-    align = "center",
-    columns = 2:16
-  ) %>% 
-  fmt_number(
-    columns = 2:16,
-    decimals = 2) %>% 
-  tab_options(
-    row_group.background.color = "#E9E0E1",
-    row_group.font.weight = "bold"
-  ) %>% 
-  cols_width(everything() ~ px(50))
+  create_metrics_table()
 
 # Daily table
 vis_site_glance_daily %>%
@@ -758,47 +727,60 @@ vis_site_glance_daily %>%
             all_vis_glance_daily)  %>% 
   pivot_wider(names_from = index, 
               values_from = c(r.squared, mae, rmse)) %>%
-  gt() %>%
-  tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>%
-  tab_spanner(label = "EVI", columns = ends_with("EVI")) %>%
-  tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>%
-  tab_spanner(label = "CCI", columns = ends_with("CCI")) %>% 
-  tab_spanner(label = "All", columns = ends_with("All")) %>% 
-  cols_label(
-    .list = list(
-      "site" = "Site",
-      "r.squared_EVI" = "R2",
-      "mae_EVI" = "MAE",
-      "rmse_EVI" = "RMSE",
-      "r.squared_NDVI" = "R2",
-      "mae_NDVI" = "MAE",
-      "rmse_NDVI" = "RMSE",
-      "r.squared_NIRv" = "R2",
-      "mae_NIRv" = "MAE",
-      "rmse_NIRv" = "RMSE",
-      "r.squared_CCI" = "R2",
-      "mae_CCI" = "MAE",
-      "rmse_CCI" = "RMSE",
-      "r.squared_All" = "R2",
-      "mae_All" = "MAE",
-      "rmse_All" = "RMSE"
-    )
-  ) %>% 
-  cols_align(
-    align = "center",
-    columns = 2:16
-  ) %>% 
-  fmt_number(
-    columns = 2:16,
-    decimals = 2) %>% 
-  tab_options(
-    row_group.background.color = "#E9E0E1",
-    row_group.font.weight = "bold"
-  ) %>% 
-  cols_width(everything() ~ px(50))
+  create_metrics_table()
 ```
 
 \endgroup
+
+
+```{r lm_barplot_metrics}
+#| label: fig-lm_metrics
+#| fig-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
+#| echo: false
+#| message: false
+#| warning: false
+library(cowplot)
+
+# Create a function to generate the plot
+create_metrics_plot <- function(timescale, y_var, ylim_range) {
+  get(paste0("vis_site_glance_", timescale)) %>% 
+    select(site, index, {{ y_var }}) %>%
+    bind_rows(get(paste0("all_sites_glance_", timescale)),
+               get(paste0("all_sites_all_vis_glance_", timescale)),
+              get(paste0("all_vis_glance_", timescale))) %>% 
+    ggplot(aes(x = site, y = .data[[y_var]], fill = index)) +
+    geom_col(position = "dodge") +
+    coord_cartesian(ylim = ylim_range) +
+    scale_fill_viridis_d() +
+    theme_minimal_hgrid()
+}
+
+# Response variables are going to be the same:
+response_vars <- c("r.squared", "mae", "rmse")
+
+# Monthly plots
+monthly_metrics_plots <- map2(response_vars, 
+     list(c(0.5, 1), c(0.5, 2.5), c(0.8, 3)), 
+     ~ create_metrics_plot("monthly", .x, .y))
+
+# Weekly plots
+weekly_metrics_plots <- map2(response_vars, 
+              list(c(0.3, 0.9), c(0.8, 3.2), c(1.4, 3.6)),
+              ~ create_metrics_plot("weekly", .x, .y))
+
+# Daily plots
+daily_metrics_plots <- map2(response_vars, 
+              list(c(0.3, 0.9), c(0.8, 3.2), c(1.4, 3.6)),
+              ~ create_metrics_plot("daily", .x, .y))
+
+# Grid the plots as should go in the chapter
+plot_grid(monthly_metrics_plots[[1]], weekly_metrics_plots[[1]], daily_metrics_plots[[1]],
+          monthly_metrics_plots[[2]], weekly_metrics_plots[[2]], daily_metrics_plots[[2]],
+          monthly_metrics_plots[[3]], weekly_metrics_plots[[3]], daily_metrics_plots[[3]],
+          nrow = 3,
+          ncol = 3)
+```
+
 
 ### Analysis of GPP-Vegetation Index Relationships Using GAM Models
 
