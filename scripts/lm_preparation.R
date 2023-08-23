@@ -10,6 +10,7 @@
 library(dplyr)
 library(broom)
 library(tidymodels)
+library(purrr)
 
 source("scripts/models_data_preparation.R")
 
@@ -50,12 +51,13 @@ all_fit <- all_sites_lm %>%
   mutate(site = "All")
 
 all_sites_glance_monthly <- all_sites_lm  %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
   unnest(glanced) %>% 
   select(-data, -fit, -tidied) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(site = "All") %>% 
-  select(site, index, r.squared, adj.r.squared, rmse) %>% 
+  select(site, index, r.squared, mae, rmse) %>% 
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -81,7 +83,8 @@ evi_fit <- evi_lm %>%
   mutate(index = "EVI")
 
 evi_glance_monthly <- evi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
   unnest(glanced) %>%
   select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
@@ -103,7 +106,8 @@ ndvi_fit <- ndvi_lm %>%
   mutate(index = "NDVI")
 
 ndvi_glance_monthly <- ndvi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>%  
   unnest(glanced) %>%
   select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
@@ -125,7 +129,8 @@ nirv_fit <- nirv_lm %>%
   mutate(index = "NIRv")
 
 nirv_glance_monthly <- nirv_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>%  
   unnest(glanced) %>%
   select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
@@ -147,16 +152,17 @@ cci_fit <- cci_lm %>%
   mutate(index = "CCI")
 
 cci_glance_monthly <- cci_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>%  
   unnest(glanced) %>%
   select(-data, -fit, -tidied) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(index = "CCI")
 
-vis_site_glance_montly <- bind_rows(evi_glance_monthly,
-          ndvi_glance_monthly,
-          nirv_glance_monthly,
-          cci_glance_monthly) 
+vis_site_glance_monthly <- bind_rows(evi_glance_monthly,
+                                    ndvi_glance_monthly,
+                                    nirv_glance_monthly,
+                                    cci_glance_monthly) 
 
 
 # # Linear model for all sites kNDVI
@@ -202,12 +208,13 @@ all_fit <- all_vis_lm %>%
   mutate(site = "All")
 
 all_vis_glance_monthly <- all_vis_lm  %>%
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>%
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
   unnest(glanced) %>%
   select(-data, -fit, -tidied) %>%
   arrange(desc(r.squared)) %>%
   mutate(index = "All") %>%
-  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  select(site, index, r.squared, mae, rmse) %>%
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -224,16 +231,17 @@ all_sites_all_indices <- lm(gpp_dt_vut_ref ~ evi_mean +
 
 # summary(all_sites_all_indices)
 metrics <- augment(all_sites_all_indices) %>% 
-  select(gpp_dt_vut_ref, .resid) %>% 
-  mutate(rmse = (sqrt(mean((.resid)^2))))
+  select(gpp_dt_vut_ref, .resid) 
 
 rmse <- sqrt(mean((metrics$.resid)^2))
+mae <- mean(abs(metrics$.resid))
 
 all_sites_all_vis_glance_monthly <- glance(all_sites_all_indices) %>% 
   mutate(rmse = rmse,
+         mae = mae,
          site = "All",
          index = "All") %>% 
-  select(site, index, r.squared, adj.r.squared, rmse)
+  select(site, index, r.squared, mae, rmse)
 
 # WEEKLY LMS ------------------------------------------------------------------
 # Prepare data with all sites
@@ -273,12 +281,13 @@ all_fit <- all_sites_lm %>%
   mutate(site = "All")
 
 all_sites_glance_weekly <- all_sites_lm  %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
   unnest(glanced) %>% 
   select(-data, -fit, -tidied) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(site = "All") %>% 
-  select(site, index, r.squared, adj.r.squared, rmse) %>% 
+  select(site, index, r.squared, mae, rmse) %>% 
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -304,7 +313,8 @@ evi_fit <- evi_lm %>%
   mutate(index = "EVI")
 
 evi_glance_weekly <- evi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>%  
   unnest(glanced) %>%
   select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
@@ -326,7 +336,8 @@ ndvi_fit <- ndvi_lm %>%
   mutate(index = "NDVI")
 
 ndvi_glance_weekly <- ndvi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
   unnest(glanced) %>%
   select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
@@ -348,7 +359,8 @@ nirv_fit <- nirv_lm %>%
   mutate(index = "NIRv")
 
 nirv_glance_weekly <- nirv_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>%  
   unnest(glanced) %>%
   select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
@@ -370,16 +382,17 @@ cci_fit <- cci_lm %>%
   mutate(index = "CCI")
 
 cci_glance_weekly <- cci_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
   unnest(glanced) %>%
   select(-data, -fit, -tidied) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(index = "CCI")
 
 vis_site_glance_weekly <- bind_rows(evi_glance_weekly,
-          ndvi_glance_weekly,
-          nirv_glance_weekly,
-          cci_glance_weekly) 
+                                    ndvi_glance_weekly,
+                                    nirv_glance_weekly,
+                                    cci_glance_weekly) 
 
 # Linear model for all VI's [C | All VIs]
 all_vis_lm <- ind_sites %>%
@@ -401,12 +414,13 @@ all_fit <- all_vis_lm %>%
   mutate(site = "All")
 
 all_vis_glance_weekly <- all_vis_lm  %>%
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>%
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
   unnest(glanced) %>%
   select(-data, -fit, -tidied) %>%
   arrange(desc(r.squared)) %>%
   mutate(index = "All") %>%
-  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  select(site, index, r.squared, mae, rmse) %>%
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -424,16 +438,17 @@ all_sites_all_indices <- lm(gpp_dt_vut_ref ~ evi_mean +
 # summary(all_sites_all_indices)
 
 metrics <- augment(all_sites_all_indices) %>% 
-  select(gpp_dt_vut_ref, .resid) %>% 
-  mutate(rmse = (sqrt(mean((.resid)^2))))
+  select(gpp_dt_vut_ref, .resid)
 
 rmse <- sqrt(mean((metrics$.resid)^2))
+mae <-  mean(abs(metrics$.resid))
 
 all_sites_all_vis_glance_weekly <- glance(all_sites_all_indices) %>% 
   mutate(rmse = rmse,
+         mae = mae,
          site = "All",
          index = "All") %>% 
-  select(site, index, r.squared, adj.r.squared, rmse)
+  select(site, index, r.squared, mae, rmse)
 
 
 # DAILY LMS ------------------------------------------------------------------
@@ -473,12 +488,13 @@ all_fit <- all_sites_lm %>%
   mutate(site = "All")
 
 all_sites_glance_daily <- all_sites_lm  %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
   unnest(glanced) %>% 
   select(-data, -fit, -tidied) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(site = "All") %>% 
-  select(site, index, r.squared, adj.r.squared, rmse) %>% 
+  select(site, index, r.squared, mae, rmse) %>% 
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -504,7 +520,8 @@ evi_fit <- evi_lm %>%
   mutate(index = "EVI")
 
 evi_glance_daily <- evi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
   unnest(glanced) %>%
   select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
@@ -526,7 +543,8 @@ ndvi_fit <- ndvi_lm %>%
   mutate(index = "NDVI")
 
 ndvi_glance_daily <- ndvi_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
   unnest(glanced) %>%
   select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
@@ -548,7 +566,8 @@ nirv_fit <- nirv_lm %>%
   mutate(index = "NIRv")
 
 nirv_glance_daily <- nirv_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>%  
   unnest(glanced) %>%
   select(-data, -fit, -tidied, -augmented) %>% 
   arrange(desc(r.squared)) %>% 
@@ -570,16 +589,17 @@ cci_fit <- cci_lm %>%
   mutate(index = "CCI")
 
 cci_glance_daily <- cci_lm %>% 
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>% 
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>%  
   unnest(glanced) %>%
   select(-data, -fit, -tidied) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(index = "CCI")
 
 vis_site_glance_daily <- bind_rows(evi_glance_daily,
-          ndvi_glance_daily,
-          nirv_glance_daily,
-          cci_glance_daily) 
+                                   ndvi_glance_daily,
+                                   nirv_glance_daily,
+                                   cci_glance_daily) 
 
 # Linear model for all VI's [C | All VIs]
 all_vis_lm <- ind_sites %>%
@@ -601,12 +621,13 @@ all_fit <- all_vis_lm %>%
   mutate(site = "All")
 
 all_vis_glance_daily <- all_vis_lm  %>%
-  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2)))) %>%
+  mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
+         mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
   unnest(glanced) %>%
   select(-data, -fit, -tidied) %>%
   arrange(desc(r.squared)) %>%
   mutate(index = "All") %>%
-  select(site, index, r.squared, adj.r.squared, rmse) %>%
+  select(site, index, r.squared, mae, rmse) %>%
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -624,14 +645,15 @@ all_sites_all_indices <- lm(gpp_dt_vut_ref ~ evi_mean +
 # summary(all_sites_all_indices)
 
 metrics <- augment(all_sites_all_indices) %>% 
-  select(gpp_dt_vut_ref, .resid) %>% 
-  mutate(rmse = (sqrt(mean((.resid)^2))))
+  select(gpp_dt_vut_ref, .resid)
 
 rmse <- sqrt(mean((metrics$.resid)^2))
+mae <-  mean(abs(metrics$.resid))
 
 all_sites_all_vis_glance_daily <- glance(all_sites_all_indices) %>% 
   mutate(rmse = rmse,
+         mae = mae,
          site = "All",
          index = "All") %>% 
-  select(site, index, r.squared, adj.r.squared, rmse)
+  select(site, index, r.squared, mae, rmse)
 
