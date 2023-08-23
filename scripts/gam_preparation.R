@@ -17,7 +17,6 @@ library(tidymodels)
 library(broom)
 library(usemodels)
 library(vip)
-library(h2o)
 library(mgcv) 
 
 source("scripts/models_data_preparation.R")
@@ -141,7 +140,7 @@ mod_fun <- function(df) {
         s(evi_mean) +
         s(nirv_mean) +
         s(cci_mean),
-      data = daily_gam, 
+      data = df, 
       method = 'REML')
 }
 
@@ -252,7 +251,7 @@ mod_fun <- function(df) {
         s(evi_mean) +
         s(nirv_mean) +
         s(cci_mean),
-      data = weekly_gam, 
+      data = df, 
       method = 'REML')
 }
 
@@ -363,7 +362,7 @@ mod_fun <- function(df) {
         s(evi_mean) +
         s(nirv_mean) +
         s(cci_mean),
-      data = weekly_gam, 
+      data = df, 
       method = 'REML')
 }
 
