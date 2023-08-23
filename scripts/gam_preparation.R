@@ -370,6 +370,8 @@ group_site <- monthly_gam %>%
   nest(data = c(-site)) 
 
 models <- group_site %>% 
+  # Michigan & Bartlett have few data points.
+  filter(site == "Borden") %>% 
   mutate(model = map(data, mod_fun),
          index = "All")
 
@@ -378,7 +380,18 @@ all_vis_gam_monthly <- models %>%
             rsq = map_dbl(model, rsq_fun),
             rmse = map_dbl(model, rmse_fun),
             mae = map_dbl(model, mae_fun)) %>% 
-  arrange(desc(rsq))
+  arrange(desc(rsq)) %>%
+  # Insert NA values for Bartlett & Michigan which does not have
+  # enough obs. for this kind of model
+  bind_rows(
+    tibble(
+      index = rep("All", 2),
+      site = c("Bartlett", "Michigan"),
+      rsq = rep(NA, 2),
+      rmse = rep(NA, 2),
+      mae = rep(NA, 2)
+    )
+  )
 
 # GAM model for all sites and all indices (covariates) [H | All VIs + site]
 single_vis_monthly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
