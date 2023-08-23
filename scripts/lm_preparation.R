@@ -33,6 +33,14 @@ ind_mich <- michigan_monthly_500 %>%
 
 ind_sites <- bind_rows(ind_bar, ind_bor, ind_mich)
 
+# Function to select variables for residuals plots
+select_augmented <- function(data, variable) {
+  data %>% 
+    select(variable, augmented) %>% 
+    unnest(cols = c(augmented)) %>% 
+    select(variable, gpp_dt_vut_ref, .resid)
+}
+
 # Linear model for all sites [A | Diff VIs]
 all_sites_lm <- ind_sites %>% 
   select(-kndvi_mean) %>% 
@@ -44,6 +52,9 @@ all_sites_lm <- ind_sites %>%
     glanced = map(fit, glance),
     augmented = map(fit, augment)
   )
+
+all_sites_augmented_monthly <- select_augmented(all_sites_lm, "index") %>% 
+  mutate(site = "All")
 
 all_fit <- all_sites_lm %>% 
   unnest(tidied) %>%
@@ -77,6 +88,9 @@ evi_lm <- ind_sites %>%
     augmented = map(fit, augment)
   ) 
 
+evi_augmented_monthly <- select_augmented(evi_lm, "site") %>% 
+  mutate(index = "EVI")
+
 evi_fit <- evi_lm %>% 
   unnest(tidied) %>%
   select(-data, -fit, -glanced) %>% 
@@ -99,6 +113,9 @@ ndvi_lm <- ind_sites %>%
     glanced = map(fit, glance),
     augmented = map(fit, augment)
   )
+
+ndvi_augmented_monthly <- select_augmented(ndvi_lm, "site") %>% 
+  mutate(index = "NDVI")
 
 ndvi_fit <- ndvi_lm %>% 
   unnest(tidied) %>%
@@ -123,6 +140,9 @@ nirv_lm <- ind_sites %>%
     augmented = map(fit, augment)
   )
 
+nirv_augmented_monthly <- select_augmented(nirv_lm, "site") %>% 
+  mutate(index = "NIRv")
+
 nirv_fit <- nirv_lm %>% 
   unnest(tidied) %>%
   select(-data, -fit, -glanced) %>% 
@@ -146,6 +166,9 @@ cci_lm <- ind_sites %>%
     augmented = map(fit, augment)
   )
 
+cci_augmented_monthly <- select_augmented(cci_lm, "site") %>% 
+  mutate(index = "CCI")
+
 cci_fit <- cci_lm %>% 
   unnest(tidied) %>%
   select(-data, -fit, -glanced) %>% 
@@ -164,6 +187,10 @@ vis_site_glance_monthly <- bind_rows(evi_glance_monthly,
                                     nirv_glance_monthly,
                                     cci_glance_monthly) 
 
+vis_site_augmented_monthly <- bind_rows(evi_augmented_monthly,
+                                        ndvi_augmented_monthly,
+                                        nirv_augmented_monthly,
+                                        cci_augmented_monthly) 
 
 # # Linear model for all sites kNDVI
 # kndvi_lm <- ind_sites %>%
@@ -202,6 +229,9 @@ all_vis_lm <- ind_sites %>%
     augmented = map(fit, augment)
   )
 
+all_vis_augmented_monthly <- select_augmented(all_vis_lm, "site") %>% 
+  mutate(index = "All")
+
 all_fit <- all_vis_lm %>%
   unnest(tidied) %>%
   select(-data, -fit, -glanced) %>%
@@ -232,6 +262,9 @@ all_sites_all_indices <- lm(gpp_dt_vut_ref ~ evi_mean +
 # summary(all_sites_all_indices)
 metrics <- augment(all_sites_all_indices) %>% 
   select(gpp_dt_vut_ref, .resid) 
+
+all_sites_all_vis_augmented_monthly <- metrics %>% 
+  mutate(index = "All", site = "All")
 
 rmse <- sqrt(mean((metrics$.resid)^2))
 mae <- mean(abs(metrics$.resid))
