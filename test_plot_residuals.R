@@ -57,28 +57,28 @@ evi_lm %>%
 
 # ------------------------------------------------------------------------------
 # Probando la union de todos los datos:
-vis_site_augmented_monthly %>% 
-  bind_rows(all_sites_augmented_monthly,
-            all_sites_all_vis_augmented_monthly,
-            all_vis_augmented_monthly) %>% 
-  mutate(index = case_when(
-    index == "evi_mean" ~ "EVI",
-    index == "ndvi_mean" ~ "NDVI",
-    index == "nirv_mean" ~ "NIRv",
-    index == "cci_mean" ~ "CCI",
-    .default = index
-  )) %>% 
-  rename("residuals" = ".resid") %>% 
-  group_by(site, index) %>% 
-  nest() %>% 
-  arrange(site)
+# vis_site_augmented_monthly %>% 
+#   bind_rows(all_sites_augmented_monthly,
+#             all_sites_all_vis_augmented_monthly,
+#             all_vis_augmented_monthly) %>% 
+#   mutate(index = case_when(
+#     index == "evi_mean" ~ "EVI",
+#     index == "ndvi_mean" ~ "NDVI",
+#     index == "nirv_mean" ~ "NIRv",
+#     index == "cci_mean" ~ "CCI",
+#     .default = index
+#   )) %>% 
+#   rename("residuals" = ".resid") %>% 
+#   group_by(site, index) %>% 
+#   nest() %>% 
+#   arrange(site)
 
 
 
   
   
 
-residuals_data <- vis_site_augmented_monthly %>% 
+monthly_residuals_data <- vis_site_augmented_monthly %>% 
   bind_rows(all_sites_augmented_monthly,
             all_sites_all_vis_augmented_monthly,
             all_vis_augmented_monthly) %>% 
@@ -93,21 +93,33 @@ residuals_data <- vis_site_augmented_monthly %>%
   
 create_residuals_plot <- function(data, site) {
   data %>% 
-    filter(site == site) %>% 
+    filter(site == {{site}}) %>% 
     ggplot(aes(x = residuals, y = index, fill = index)) +
     geom_density_ridges() +
     geom_vline(xintercept = 0, colour = "#FF5500", 
                linewidth = 0.7, linetype = "dashed") +
     scale_fill_viridis_d() +
+    scale_x_continuous(n.breaks = 10) +
     theme_ridges() + 
     theme(legend.position = "none")
 }
 
-# Borden
-residuals_data %>% 
-  create_residuals_plot("Borden")
+monthly_residuals_data %>% 
+  create_residuals_plot("All")
 
-# Bartlett
+# Loop over all the sites
+sites <- c("Bartlett", "Borden", "Michigan", "All")
+
+residuals_plots <- map(sites, ~ create_residuals_plot(residuals_data, .x))
+
+
+plot_grid(residuals_plots[[1]],
+          residuals_plots[[2]],
+          residuals_plots[[3]],
+          residuals_plots[[4]],
+          nrow = 1)
+
+
 
 
 
