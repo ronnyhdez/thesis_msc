@@ -76,8 +76,24 @@ evi_lm %>%
 
 
   
-  
+# Function to create residuals plot
+create_residuals_plot <- function(data, site) {
+  data %>% 
+    filter(site == {{site}}) %>% 
+    ggplot(aes(x = residuals, y = index, fill = index)) +
+    geom_density_ridges() +
+    geom_vline(xintercept = 0, colour = "#FF5500", 
+               linewidth = 0.7, linetype = "dashed") +
+    scale_fill_viridis_d() +
+    # scale_x_continuous(limits = c(-30, 20), n.breaks = 10) +
+    theme_ridges() + 
+    theme(legend.position = "none")
+}
 
+# Vector with sites for looping in the plots
+sites <- c("Bartlett", "Borden", "Michigan", "All")
+
+# Monthly
 monthly_residuals_data <- vis_site_augmented_monthly %>% 
   bind_rows(all_sites_augmented_monthly,
             all_sites_all_vis_augmented_monthly,
@@ -91,33 +107,60 @@ monthly_residuals_data <- vis_site_augmented_monthly %>%
   )) %>% 
   rename("residuals" = ".resid") 
   
-create_residuals_plot <- function(data, site) {
-  data %>% 
-    filter(site == {{site}}) %>% 
-    ggplot(aes(x = residuals, y = index, fill = index)) +
-    geom_density_ridges() +
-    geom_vline(xintercept = 0, colour = "#FF5500", 
-               linewidth = 0.7, linetype = "dashed") +
-    scale_fill_viridis_d() +
-    scale_x_continuous(n.breaks = 10) +
-    theme_ridges() + 
-    theme(legend.position = "none")
-}
+# Loop over all the sites
+monthly_residuals_plots <- 
+  map(sites, ~ create_residuals_plot(monthly_residuals_data, .x))
 
-monthly_residuals_data %>% 
-  create_residuals_plot("All")
+# Weekly
+weekly_residuals_data <- vis_site_augmented_weekly %>% 
+  bind_rows(all_sites_augmented_weekly,
+            all_sites_all_vis_augmented_weekly,
+            all_vis_augmented_weekly) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "EVI",
+    index == "ndvi_mean" ~ "NDVI",
+    index == "nirv_mean" ~ "NIRv",
+    index == "cci_mean" ~ "CCI",
+    .default = index
+  )) %>% 
+  rename("residuals" = ".resid") 
 
 # Loop over all the sites
-sites <- c("Bartlett", "Borden", "Michigan", "All")
+weekly_residuals_plots <- 
+  map(sites, ~ create_residuals_plot(weekly_residuals_data, .x))
 
-residuals_plots <- map(sites, ~ create_residuals_plot(residuals_data, .x))
+# Daily
+daily_residuals_data <- vis_site_augmented_daily %>% 
+  bind_rows(all_sites_augmented_daily,
+            all_sites_all_vis_augmented_daily,
+            all_vis_augmented_daily) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "EVI",
+    index == "ndvi_mean" ~ "NDVI",
+    index == "nirv_mean" ~ "NIRv",
+    index == "cci_mean" ~ "CCI",
+    .default = index
+  )) %>% 
+  rename("residuals" = ".resid") 
 
+# Loop over all the sites
+daily_residuals_plots <- 
+  map(sites, ~ create_residuals_plot(daily_residuals_data, .x))
 
-plot_grid(residuals_plots[[1]],
-          residuals_plots[[2]],
-          residuals_plots[[3]],
-          residuals_plots[[4]],
-          nrow = 1)
+plot_grid(monthly_residuals_plots[[1]] + labs(title = "monthly 1"),
+          monthly_residuals_plots[[2]],
+          monthly_residuals_plots[[3]],
+          monthly_residuals_plots[[4]] + labs(title = "monthly 4"),
+          weekly_residuals_plots[[1]],
+          weekly_residuals_plots[[2]],
+          weekly_residuals_plots[[3]],
+          weekly_residuals_plots[[4]],
+          daily_residuals_plots[[1]],
+          daily_residuals_plots[[2]],
+          daily_residuals_plots[[3]],
+          daily_residuals_plots[[4]],
+          nrow = 3, 
+          ncol = 4)
 
 
 

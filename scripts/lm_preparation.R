@@ -308,6 +308,9 @@ all_sites_lm <- ind_sites %>%
     augmented = map(fit, augment)
   )
 
+all_sites_augmented_weekly <- select_augmented(all_sites_lm, "index") %>% 
+  mutate(site = "All")
+
 all_fit <- all_sites_lm %>% 
   unnest(tidied) %>%
   select(-data, -fit, -glanced) %>% 
@@ -340,6 +343,9 @@ evi_lm <- ind_sites %>%
     augmented = map(fit, augment)
   ) 
 
+evi_augmented_weekly <- select_augmented(evi_lm, "site") %>% 
+  mutate(index = "EVI")
+
 evi_fit <- evi_lm %>% 
   unnest(tidied) %>%
   select(-data, -fit, -glanced) %>% 
@@ -362,6 +368,9 @@ ndvi_lm <- ind_sites %>%
     glanced = map(fit, glance),
     augmented = map(fit, augment)
   )
+
+ndvi_augmented_weekly <- select_augmented(ndvi_lm, "site") %>% 
+  mutate(index = "NDVI")
 
 ndvi_fit <- ndvi_lm %>% 
   unnest(tidied) %>%
@@ -386,6 +395,9 @@ nirv_lm <- ind_sites %>%
     augmented = map(fit, augment)
   )
 
+nirv_augmented_weekly <- select_augmented(nirv_lm, "site") %>% 
+  mutate(index = "NIRv")
+
 nirv_fit <- nirv_lm %>% 
   unnest(tidied) %>%
   select(-data, -fit, -glanced) %>% 
@@ -409,6 +421,9 @@ cci_lm <- ind_sites %>%
     augmented = map(fit, augment)
   )
 
+cci_augmented_weekly <- select_augmented(cci_lm, "site") %>% 
+  mutate(index = "CCI")
+
 cci_fit <- cci_lm %>% 
   unnest(tidied) %>%
   select(-data, -fit, -glanced) %>% 
@@ -427,6 +442,11 @@ vis_site_glance_weekly <- bind_rows(evi_glance_weekly,
                                     nirv_glance_weekly,
                                     cci_glance_weekly) 
 
+vis_site_augmented_weekly <- bind_rows(evi_augmented_weekly,
+                                        ndvi_augmented_weekly,
+                                        nirv_augmented_weekly,
+                                        cci_augmented_weekly) 
+
 # Linear model for all VI's [C | All VIs]
 all_vis_lm <- ind_sites %>%
   select(-kndvi_mean) %>%
@@ -440,6 +460,9 @@ all_vis_lm <- ind_sites %>%
     glanced = map(fit, glance),
     augmented = map(fit, augment)
   )
+
+all_vis_augmented_weekly <- select_augmented(all_vis_lm, "site") %>% 
+  mutate(index = "All")
 
 all_fit <- all_vis_lm %>%
   unnest(tidied) %>%
@@ -469,9 +492,11 @@ all_sites_all_indices <- lm(gpp_dt_vut_ref ~ evi_mean +
                               cci_mean, data = ind_sites)
 
 # summary(all_sites_all_indices)
-
 metrics <- augment(all_sites_all_indices) %>% 
   select(gpp_dt_vut_ref, .resid)
+
+all_sites_all_vis_augmented_weekly <- metrics %>% 
+  mutate(index = "All", site = "All")
 
 rmse <- sqrt(mean((metrics$.resid)^2))
 mae <-  mean(abs(metrics$.resid))
@@ -520,6 +545,9 @@ all_fit <- all_sites_lm %>%
   select(-data, -fit, -glanced) %>% 
   mutate(site = "All")
 
+all_sites_augmented_daily <- select_augmented(all_sites_lm, "index") %>% 
+  mutate(site = "All")
+
 all_sites_glance_daily <- all_sites_lm  %>% 
   mutate(rmse = map_dbl(augmented, ~sqrt(mean((.x$.resid)^2))),
          mae = map_dbl(augmented, ~mean(abs(.x$.resid)))) %>% 
@@ -547,6 +575,9 @@ evi_lm <- ind_sites %>%
     augmented = map(fit, augment)
   ) 
 
+evi_augmented_daily <- select_augmented(evi_lm, "site") %>% 
+  mutate(index = "EVI")
+
 evi_fit <- evi_lm %>% 
   unnest(tidied) %>%
   select(-data, -fit, -glanced) %>% 
@@ -569,6 +600,9 @@ ndvi_lm <- ind_sites %>%
     glanced = map(fit, glance),
     augmented = map(fit, augment)
   )
+
+ndvi_augmented_daily <- select_augmented(ndvi_lm, "site") %>% 
+  mutate(index = "NDVI")
 
 ndvi_fit <- ndvi_lm %>% 
   unnest(tidied) %>%
@@ -593,6 +627,9 @@ nirv_lm <- ind_sites %>%
     augmented = map(fit, augment)
   )
 
+nirv_augmented_daily <- select_augmented(nirv_lm, "site") %>% 
+  mutate(index = "NIRv")
+
 nirv_fit <- nirv_lm %>% 
   unnest(tidied) %>%
   select(-data, -fit, -glanced) %>% 
@@ -616,6 +653,9 @@ cci_lm <- ind_sites %>%
     augmented = map(fit, augment)
   )
 
+cci_augmented_daily <- select_augmented(cci_lm, "site") %>% 
+  mutate(index = "CCI")
+
 cci_fit <- cci_lm %>% 
   unnest(tidied) %>%
   select(-data, -fit, -glanced) %>% 
@@ -634,6 +674,11 @@ vis_site_glance_daily <- bind_rows(evi_glance_daily,
                                    nirv_glance_daily,
                                    cci_glance_daily) 
 
+vis_site_augmented_daily <- bind_rows(evi_augmented_daily,
+                                        ndvi_augmented_daily,
+                                        nirv_augmented_daily,
+                                        cci_augmented_daily) 
+
 # Linear model for all VI's [C | All VIs]
 all_vis_lm <- ind_sites %>%
   select(-kndvi_mean) %>%
@@ -647,6 +692,9 @@ all_vis_lm <- ind_sites %>%
     glanced = map(fit, glance),
     augmented = map(fit, augment)
   )
+
+all_vis_augmented_daily <- select_augmented(all_vis_lm, "site") %>% 
+  mutate(index = "All")
 
 all_fit <- all_vis_lm %>%
   unnest(tidied) %>%
@@ -676,9 +724,11 @@ all_sites_all_indices <- lm(gpp_dt_vut_ref ~ evi_mean +
                               cci_mean, data = ind_sites)
 
 # summary(all_sites_all_indices)
-
 metrics <- augment(all_sites_all_indices) %>% 
   select(gpp_dt_vut_ref, .resid)
+
+all_sites_all_vis_augmented_daily <- metrics %>% 
+  mutate(index = "All", site = "All")
 
 rmse <- sqrt(mean((metrics$.resid)^2))
 mae <-  mean(abs(metrics$.resid))
