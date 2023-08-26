@@ -7,7 +7,7 @@ editor_options:
 
 ## Introduction
 
-Gross Primary Production (GPP) is the total amount of carbon fixation by plants
+Vegetation Gross Primary Production (GPP) is the total amount of carbon fixation by plants
 through photosynthesis [@badgley_terrestrial_2019]. Quantifying GPP is essential
 for understanding land-atmosphere carbon exchange [@kohler_global_2018],
 ecosystem function, and ecosystem responses to climate change
