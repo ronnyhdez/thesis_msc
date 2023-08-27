@@ -11,13 +11,10 @@ Vegetation Gross Primary Production (GPP) is the total amount of carbon fixation
 through photosynthesis [@badgley_terrestrial_2019]. Quantifying GPP is essential
 for understanding land-atmosphere carbon exchange [@kohler_global_2018],
 ecosystem function, and ecosystem responses to climate change
-[@guan_comparison_2022; @brown_fiducial_2021; @myneni_relationship_1994]. With
-recent advances in technology for remote sensing and more computational power
-available with lower costs [@gorelick_google_2017], global mapping of
-photosynthesis is being done by more scientists [@ryu_what_2019]. Given that GPP
+[@guan_comparison_2022; @brown_fiducial_2021; @myneni_relationship_1994]. Given that GPP
 cannot be directly estimated from satellite remote sensing techniques, the use
 of vegetation indices has been a widely used method to approximate and quantify
-GPP [@ryu_what_2019]. However, estimates remain with high uncertainties and
+GPP [@ryu_what_2019]. However, GPP estimation using spectral vegetation indices remain with high uncertainties and
 validation efforts are required to characterize these and improve accuracy.
 [@anav_spatiotemporal_2015; @brown_fiducial_2021]
 

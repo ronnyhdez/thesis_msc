@@ -1,5 +1,11 @@
 # Introduction
 
+With
+recent advances in technology for remote sensing and more computational power
+available with lower costs [@gorelick_google_2017], global mapping of
+photosynthesis is being done by more scientists [@ryu_what_2019].            
+
+
 This is a book created from markdown and executable code.
 
 See @knuth84 for additional discussion of literate programming.
