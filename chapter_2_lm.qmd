@@ -16,7 +16,7 @@ terrestrial GPP cannot be directly estimated due to the contribution of
 respiration to land carbon fluxes [@anav_spatiotemporal_2015]. Instead, GPP is
 only inferred by the net carbon exchange measurements at the ecosystem level,
 or at broarder scales using models that incorporate variour assumptions and
-limitations [@reichstein_separation_2005, @jung_towards_2009]. One widely used
+limitations [@reichstein_separation_2005; @jung_towards_2009]. One widely used
 approach to approximate and quantify GPP is the data driven models of spectral
 vegetation indices [@ryu_what_2019] However, GPP estimation using spectral
 vegetation indices remain with high uncertainties and validation efforts are 
