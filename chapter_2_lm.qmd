@@ -186,7 +186,7 @@ source("R/plot_exploratory.R")
 We used three deciduous broadleaf forest sites located in the northern 
 hemisphere with eddy covariance (EC) data collected by Ameriflux. For each site,
 we used the daily, weekly, and monthly GPP values (GPP_DT_VUT_REF variable) estimated
-using the FLUXNET2015 workflow [@pastorello2020fluxnet2015]. The ONEFlux 
+using the ONEFlux workflow [@pastorello2020fluxnet2015]. The ONEFlux 
 processing does the estimation of the CO~2~ fluxes into GPP and Ecosystem 
 Respiration (RECO) from Net Ecosystem Exchange (NEE) through two methods known
 as daytime and nighttime. Here we selected the daytime method (DT) which uses
@@ -195,11 +195,10 @@ light response curve and vapour pressure deficit and a second one using a
 respiration-temperature relationship to estimate RECO which in turn is used to
 obtain the difference with NEE and provide GPP. [@pastorello2020fluxnet2015].
 
-For each site, GPP was used in the analysis with three datasets representing 
-daily, weekly, and monthly time scales. @fig-gpp_trends displays the GPP trends 
-for the University of Michigan Biological Station, Bartlett experimental forest,
-and the Borden Forest Research Station. Additional details regarding the 
-characteristics of these datasets can be found in Table @tbl-oneflux_datasets.
+@fig-gpp_trends displays the GPP trends for the University of Michigan 
+Biological Station, Bartlett experimental forest, and the Borden Forest 
+Research Station. Additional details regarding the characteristics of these 
+datasets can be found in Table @tbl-oneflux_datasets.
 
 | Site     | Data range available | Dataset name                                                | Reference                  |
 |-------------------|---------------------|---------------------|-------------------|
@@ -292,12 +291,12 @@ such as aerosols, gasses and Rayleigh scattering [@vermote2021modis]. Bands used
 to derived the vegetation indices are shown in @tbl-MODIS_500_indices_bands
 
 
-| **Name**    | **Description** | **Resolution** | **Wavelength** | **Scale** |
-|-------------|-----------------|----------------|----------------|-----------|
-| sur_refl_01 | Red             | 500 meters     | 620-670nm      | 0.0001    |
-| sur_refl_02 | NIR             | 500 meters     | 841-876nm      | 0.0001    |
-| sur_refl_03 | Blue            | 500 meters     | 459-479nm      | 0.0001    |
-| sur_refl_04 | Green           | 500 meters     | 545-565nm      | 0.0001    |
+| **Name**    | **Description** | **Resolution** | **Wavelength** |
+|-------------|-----------------|----------------|----------------|
+| sur_refl_01 | Red             | 500 meters     | 620-670nm      |
+| sur_refl_02 | NIR             | 500 meters     | 841-876nm      |
+| sur_refl_03 | Blue            | 500 meters     | 459-479nm      |
+| sur_refl_04 | Green           | 500 meters     | 545-565nm      |
 
 : MODIS (MOD09GA.061 product) bands used to calculate the VIs {#tbl-MODIS_500_indices_bands}
 
@@ -309,20 +308,17 @@ to derived the vegetation indices are shown in @tbl-MODIS_500_indices_bands
 
 <!-- : Satellite images datasets {#tbl-satellite_images_datasets} -->
 
-The data processing involved three main steps: filtering high-quality pixels,
-scaling band values, and calculating vegetation indices. High-quality pixels
-were filtered using four bit-encoded variables: `state_1km`, `qc_500m`,
-`q_scan`, and `g_flags` along with each of the bands bits quality indicators.
-These variables provided information about the observation quality. The
+The data processing involved three main steps: selecting high-quality pixels,
+scaling band values, and calculating vegetation indices. MODIS product data
+have 4 bit-encoded variables which provided information about the observation 
+quality. From those variables, only the `state_1km` and `qc_500m` variables were
+used along with each of the bands bits quality indicators, as `q_scan` was not
+informative and `g_flags` had the same value for all observations. The
 bit-encoded variables were transformed into categorical strings, and only the
-categories indicating the best quality were selected to filter the pixels (@fig-quality_pixels).
+categories indicating the best quality were selected to filter the pixels (@fig-quality_pixels). The specific bit strings selected for `state_1km` are
+shown in @tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
 
-For filtering, the `state_1km` and `qc_500m` variables were used, as `q_scan` 
-was not informative and `g_flags` had the same value for all observations. The
-specific bit strings selected for `state_1km` are shown in
-@tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
-
-In the second stage of the data processing, after filtering for the highest
+In the second stage of the data processing, after selecting the highest
 quality pixels, all the bands values were scaled. For each observation,
 regardless of the specific band, a scaling factor of `0.0001` was applied. This
 scaling factor was used to adjust the magnitude of the values and ensure
@@ -394,6 +390,26 @@ $$ {#eq-cci}
 <!--           - 7.5\times \mathrm{b2} + 1)}\\ -->
 <!-- $$ {#eq-evis} -->
 
+```{r}
+#| label: fig-complete_quality_pixels
+#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis)"
+#| echo: false
+#| message: false
+#| warning: false
+source("scripts/quality_observations.R")
+
+all %>%
+  filter(quality == "high") %>%
+  mutate(year_mon = zoo::as.yearmon(date)) %>%
+  ggplot(aes(x = year_mon, fill = site)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d(begin = 0.2, end = 0.8) +
+  labs(x = "Date",
+       y = "Total observations (pixels)",
+       fill = "Site") +
+  theme_bw(base_size = 12)
+```
+
 ### Data Preparation
 
 In the study, three datasets were prepared for each site: a daily dataset, a
@@ -424,13 +440,14 @@ temporal resolutions. This approach provided insights into the temporal dynamics
 and patterns of the variables, enabling a more thorough understanding of the
 processes and relationships under investigation.
 
-For each site and across all time scales (daily, weekly, and monthly), a
-filtering step was implemented to remove GPP values
-that were less than 1 gC m^-2^ d^-1^ . By filtering out GPP values less than 1,
-the study aimed to exclude values that were potentially unreliable or
-insignificant in terms of representing meaningful vegetation productivity. GPP
-values below this threshold were considered to be either below the detection
-limit or not enough to contribute significantly to the overall analysis.
+For each site and across all time scales (daily, weekly, and monthly), we remove
+GPP values that were less than 1 gC m^-2^ d^-1^ . By doing this, the study aimed
+to exclude values that were potentially unreliable or insignificant in terms of
+representing meaningful vegetation productivity. GPP values below this threshold
+were considered to be either below the detection limit or not enough to 
+contribute significantly to the overall analysis. Additionally, the removal of 
+numerous zero GPP values was carried out to prevent undue exaggeration of 
+regression goodness-of-fit metrics.
 
 ```{r}
 #| label: fig-quality_pixels
