@@ -119,21 +119,23 @@ linearly related to fAPAR. There are two explanations: i. Many of the reported
 comparative studies use fAPAR based on VIs and not APAR. We hypothesize that the
 NIR indices are simply better estimators of APAR than these VI approximations
 due to lower measurement error for the NIR indices or a stronger physical
-relationship between them and APAR versus the historical VIs. The strength of
+relationship between them and APAR versus the historical VIs. ii. The strength of
 correlation between APAR and GPP depends on LUE having a linear relationship to
 observed APAR. While this may hold in some circumstances (e.g. early seasonal
 measurements for vegetation such as crops where leaf chlorophyll concentration
 increases during the growth phase) it is not the case in general and definitely
 during stress conditions [@monteith_solar_1972].
 
-Despite these efforts, relying solely on these remote satellite indices is a
-problem. Efforts to validate and quantify their accuracy are needed
-[@brown_fiducial_2021]. In-situ eddy-covariance flux measurements represent a
-solution given that they represent site-level observations. With the calculation
-of the flux footprint, the area from the flux tower can serve as a reference
-point in which satellite images can be linked to a specific set of pixels and
-calculate the accuracy of the estimations provided by the indices.
-[@chu_representativeness_2021].
+Despite these efforts, relying solely on these remote satellite VI's presents 
+a challenge. The assumptions  accompanying VI models suggest the importance of
+systematically quantify their predictive capacity for GPP across various 
+growing seasons and locations. Therefore, there is a demand to make efforts to 
+validate and quantify their accuracy [@brown_fiducial_2021]. In-situ 
+eddy-covariance flux measurements represent a solution given that they represent
+site-level observations. With the calculation of the flux footprint, the area 
+from the flux tower can serve as a reference point in which satellite images 
+can be linked to a specific set of pixels and calculate the accuracy of the 
+estimations provided by the indices [@chu_representativeness_2021].
 
 As such, the main objective of my M.Sc. thesis is the analysis of uncertainty
 associated with the VI/LUE models since they offer the potential for GPP
