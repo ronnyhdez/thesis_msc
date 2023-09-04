@@ -61,18 +61,21 @@ assess the primary productivity of canopies [GCOS, 2011;
 @running_continuous_2004]. LUE is the radiation use conversion efficiency term
 of the vegetation [@heinsch_evaluation_2006]
 
-VI's are a summary of satellite obtained spectral data
-[@myneni_relationship_1994] derived from optical sensors that are combined with
+VI's are a summary of non-linear functions of surface bi-directional reflectance
+spectra [@myneni_relationship_1994] derived from optical sensors that are combined with
 climate variables to calculate GPP [@wu_predicting_2011]. This is usually done
 with some form of regression and physical methods that associate interactions
 between vegetation and incoming radiation [@fernandez-martinez_monitoring_2019]
 
-Well known VI's used to estimate GPP are normalized difference vegetation index
-(NDVI), enhanced vegetation index (EVI), leaf area index (LAI), and fraction of
-photosynthetically active radiation (fPAR) among others
+Well known VI’s used to estimate GPP are normalized difference vegetation index
+(NDVI), enhanced vegetation index (EVI), Near-Infrared Reflectance Index (NIRv)
+and Chlorophyll/Carotenoid Index (CCI) among others.
 [@balzarolo_influence_2019; @rahman_potential_2005; @rahman_potential_2005;
 @xie_assessments_2020; @badgley_terrestrial_2019; @zhang_potential_2020;
-@sellers_global_1994]
+@sellers_global_1994] These VI's are based on a spectral reflectance ratio 
+between the red and near-infrared regions of the electromagnetic spectrum 
+[@glenn_relationship_2008] which tracks an integrated impact of fraction of 
+photosynthetically active radiation (fAPAR) and LUE on productivity.[@myneni_relationship_1994]
 
 Nonetheless, even when estimating GPP from satellite remote sensing methods is
 promising to overcome limitations as temporal and spatial scale, there are some
@@ -82,7 +85,8 @@ fraction of the vegetated surface and its attributable signal
 [@badgley_canopy_2017]. A second challenge is that photosynthesis regulation can
 occur with no major changes in canopy structure or leaf pigments that can
 undergo without being detected with reflectance data
-[@pabon-moreno_potential_2022; @pierrat_diurnal_2022]
+[@pabon-moreno_potential_2022; @pierrat_diurnal_2022], and this could imply
+that temporal aggregation may be critical for VI models.
 
 The accuracy of GPP estimation through the use of VI's can be affected due to
 their limitation to predict spatial, temporal, interannual variability and
