@@ -61,7 +61,7 @@ assess the primary productivity of canopies [GCOS, 2011;
 @running_continuous_2004]. LUE is the radiation use conversion efficiency term
 of the vegetation [@heinsch_evaluation_2006]
 
-VI's are a summary of non-linear functions of surface bi-directional reflectance
+VIs are a summary of non-linear functions of surface bi-directional reflectance
 spectra [@myneni_relationship_1994] derived from optical sensors that are combined with
 climate variables to calculate GPP [@wu_predicting_2011]. This is usually done
 with some form of regression and physical methods that associate interactions
@@ -72,7 +72,7 @@ Well known VI’s used to estimate GPP are normalized difference vegetation inde
 and Chlorophyll/Carotenoid Index (CCI) among others.
 [@balzarolo_influence_2019; @rahman_potential_2005; @rahman_potential_2005;
 @xie_assessments_2020; @badgley_terrestrial_2019; @zhang_potential_2020;
-@sellers_global_1994] These VI's are based on a spectral reflectance ratio 
+@sellers_global_1994] These VIs are based on a spectral reflectance ratio 
 between the red and near-infrared regions of the electromagnetic spectrum 
 [@glenn_relationship_2008] which tracks an integrated impact of fraction of 
 photosynthetically active radiation (fAPAR) and LUE on productivity.[@myneni_relationship_1994]
@@ -88,7 +88,7 @@ undergo without being detected with reflectance data
 [@pabon-moreno_potential_2022; @pierrat_diurnal_2022], and this could imply
 that temporal aggregation may be critical for VI models.
 
-The accuracy of GPP estimation through the use of VI's can be affected due to
+The accuracy of GPP estimation through the use of VIs can be affected due to
 their limitation to predict spatial, temporal, interannual variability and
 trends. [@fernandez-martinez_monitoring_2019]. An index such as NDVI is good for
 detecting changes in seasonal variability, but it becomes saturated with high
@@ -126,7 +126,7 @@ measurements for vegetation such as crops where leaf chlorophyll concentration
 increases during the growth phase) it is not the case in general and definitely
 during stress conditions [@monteith_solar_1972].
 
-Despite these efforts, relying solely on these remote satellite VI's presents 
+Despite these efforts, relying solely on these remote satellite VIs presents 
 a challenge. The assumptions  accompanying VI models suggest the importance of
 systematically quantify their predictive capacity for GPP across various 
 growing seasons and locations. Therefore, there is a demand to make efforts to 
@@ -186,7 +186,7 @@ source("R/plot_exploratory.R")
 We used three deciduous broadleaf forest sites located in the northern 
 hemisphere with eddy covariance (EC) data collected by Ameriflux. For each site,
 we used the daily, weekly, and monthly GPP values (GPP_DT_VUT_REF variable) estimated
-using the FLUXNET2015 workflow [@pastorello2020fluxnet2015]. The ONEFlux 
+using the ONEFlux workflow [@pastorello2020fluxnet2015]. The ONEFlux 
 processing does the estimation of the CO~2~ fluxes into GPP and Ecosystem 
 Respiration (RECO) from Net Ecosystem Exchange (NEE) through two methods known
 as daytime and nighttime. Here we selected the daytime method (DT) which uses
@@ -195,11 +195,10 @@ light response curve and vapour pressure deficit and a second one using a
 respiration-temperature relationship to estimate RECO which in turn is used to
 obtain the difference with NEE and provide GPP. [@pastorello2020fluxnet2015].
 
-For each site, GPP was used in the analysis with three datasets representing 
-daily, weekly, and monthly time scales. @fig-gpp_trends displays the GPP trends 
-for the University of Michigan Biological Station, Bartlett experimental forest,
-and the Borden Forest Research Station. Additional details regarding the 
-characteristics of these datasets can be found in Table @tbl-oneflux_datasets.
+@fig-gpp_trends displays the GPP trends for the University of Michigan 
+Biological Station, Bartlett experimental forest, and the Borden Forest 
+Research Station. Additional details regarding the characteristics of these 
+datasets can be found in Table @tbl-oneflux_datasets.
 
 | Site     | Data range available | Dataset name                                                | Reference                  |
 |-------------------|---------------------|---------------------|-------------------|
@@ -292,12 +291,12 @@ such as aerosols, gasses and Rayleigh scattering [@vermote2021modis]. Bands used
 to derived the vegetation indices are shown in @tbl-MODIS_500_indices_bands
 
 
-| **Name**    | **Description** | **Resolution** | **Wavelength** | **Scale** |
-|-------------|-----------------|----------------|----------------|-----------|
-| sur_refl_01 | Red             | 500 meters     | 620-670nm      | 0.0001    |
-| sur_refl_02 | NIR             | 500 meters     | 841-876nm      | 0.0001    |
-| sur_refl_03 | Blue            | 500 meters     | 459-479nm      | 0.0001    |
-| sur_refl_04 | Green           | 500 meters     | 545-565nm      | 0.0001    |
+| **Name**    | **Description** | **Resolution** | **Wavelength** |
+|-------------|-----------------|----------------|----------------|
+| sur_refl_01 | Red             | 500 meters     | 620-670nm      |
+| sur_refl_02 | NIR             | 500 meters     | 841-876nm      |
+| sur_refl_03 | Blue            | 500 meters     | 459-479nm      |
+| sur_refl_04 | Green           | 500 meters     | 545-565nm      |
 
 : MODIS (MOD09GA.061 product) bands used to calculate the VIs {#tbl-MODIS_500_indices_bands}
 
@@ -309,20 +308,17 @@ to derived the vegetation indices are shown in @tbl-MODIS_500_indices_bands
 
 <!-- : Satellite images datasets {#tbl-satellite_images_datasets} -->
 
-The data processing involved three main steps: filtering high-quality pixels,
-scaling band values, and calculating vegetation indices. High-quality pixels
-were filtered using four bit-encoded variables: `state_1km`, `qc_500m`,
-`q_scan`, and `g_flags` along with each of the bands bits quality indicators.
-These variables provided information about the observation quality. The
+The data processing involved three main steps: selecting high-quality pixels,
+scaling band values, and calculating vegetation indices. MODIS product data
+have 4 bit-encoded variables which provided information about the observation 
+quality. From those variables, only the `state_1km` and `qc_500m` variables were
+used along with each of the bands bits quality indicators, as `q_scan` was not
+informative and `g_flags` had the same value for all observations. The
 bit-encoded variables were transformed into categorical strings, and only the
-categories indicating the best quality were selected to filter the pixels (@fig-quality_pixels).
+categories indicating the best quality were selected to filter the pixels (@fig-quality_pixels). The specific bit strings selected for `state_1km` are
+shown in @tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
 
-For filtering, the `state_1km` and `qc_500m` variables were used, as `q_scan` 
-was not informative and `g_flags` had the same value for all observations. The
-specific bit strings selected for `state_1km` are shown in
-@tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
-
-In the second stage of the data processing, after filtering for the highest
+In the second stage of the data processing, after selecting the highest
 quality pixels, all the bands values were scaled. For each observation,
 regardless of the specific band, a scaling factor of `0.0001` was applied. This
 scaling factor was used to adjust the magnitude of the values and ensure
@@ -394,6 +390,26 @@ $$ {#eq-cci}
 <!--           - 7.5\times \mathrm{b2} + 1)}\\ -->
 <!-- $$ {#eq-evis} -->
 
+```{r}
+#| label: fig-complete_quality_pixels
+#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis)"
+#| echo: false
+#| message: false
+#| warning: false
+source("scripts/quality_observations.R")
+
+all %>%
+  filter(quality == "high") %>%
+  mutate(year_mon = zoo::as.yearmon(date)) %>%
+  ggplot(aes(x = year_mon, fill = site)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d(begin = 0.2, end = 0.8) +
+  labs(x = "Date",
+       y = "Total observations (pixels)",
+       fill = "Site") +
+  theme_bw(base_size = 12)
+```
+
 ### Data Preparation
 
 In the study, three datasets were prepared for each site: a daily dataset, a
@@ -408,9 +424,9 @@ daily basis. This dataset provided a high-resolution representation of the
 variables, allowing for a detailed analysis of their daily fluctuations.
 
 The weekly and monthly datasets were derived from the corresponding daily
-dataset. These datasets contained summarized values of the VI's and band values,
+dataset. These datasets contained summarized values of the VIs and band values,
 aggregated over the weekly and monthly time frames, respectively. The
-aggregation process involved calculating an average for the VI's and band values
+aggregation process involved calculating an average for the VIs and band values
 within each week or month.
 
 For the GPP values in the weekly and monthly datasets, rather than summarizing
@@ -419,18 +435,22 @@ frames were obtained directly from the ONEFlux process, which provided a
 reliable estimation of GPP for these longer time intervals.
 
 By creating these three datasets (daily, weekly, and monthly), the study allowed
-for a comprehensive analysis of the VI's, band values, and GPP at different
+for a comprehensive analysis of the VIs, band values, and GPP at different
 temporal resolutions. This approach provided insights into the temporal dynamics
 and patterns of the variables, enabling a more thorough understanding of the
 processes and relationships under investigation.
 
-For each site and across all time scales (daily, weekly, and monthly), a
-filtering step was implemented to remove GPP values
-that were less than 1 gC m^-2^ d^-1^ . By filtering out GPP values less than 1,
-the study aimed to exclude values that were potentially unreliable or
-insignificant in terms of representing meaningful vegetation productivity. GPP
-values below this threshold were considered to be either below the detection
-limit or not enough to contribute significantly to the overall analysis.
+For each site and across all time scales (daily, weekly, and monthly), we remove
+GPP values that were less than 1 gC m^-2^ d^-1^ . By doing this, the study aimed
+to exclude values that were potentially unreliable or insignificant in terms of
+representing meaningful vegetation productivity. GPP values below this threshold
+were considered to be either below the detection limit or not enough to 
+contribute significantly to the overall analysis. Additionally, the removal of 
+numerous zero GPP values was carried out to prevent undue exaggeration of 
+regression goodness-of-fit metrics.
+
+The final number of observations per site after selecting the high quality pixels
+and GPP observations are shown in @fig-obs_used_analysis
 
 ```{r}
 #| label: fig-quality_pixels
@@ -493,12 +513,12 @@ daily_plot_500 %>%
 
 ### Data Analysis
 
-Various methodologies were employed to estimate GPP by utilizing the calculated
-VIs. Two distinct modelling approaches were adopted to accomplish this task: a 
-linear model and a Generalized Additive Model (GAM). These models were created
-to evaluate the performance of individual indices as well as their collective 
-performance, while simultaneously considering the effects of individual site 
-characteristics and the aggregation of sites across various temporal scales.
+Two distinct modelling approaches were employed to estimate GPP by utilizing 
+the calculated VIs: a linear model and a Generalized Additive Model (GAM). These
+models were created to evaluate the performance of individual indices as well as
+their collective performance, while simultaneously considering the effects of 
+individual site characteristics and the aggregation of sites across various
+temporal scales.
 
 This facilitated a comparative analysis of how each individual index 
 independently explains the variation in GPP per site. Additionally, with the 
@@ -523,10 +543,10 @@ compare the performance of the models we calculated the R squared (R2), the Root
 Mean Squared Error (RMSE), and the Mean Absolute Error (MAE)
 
 ```{r gpp_vi_realtions_all_sites}
-#| label: fig-gpp_vi_relation
-#| fig-cap: "Relationship between MODIS 500m derived VIs and GPP. Every observation corresponds to the observed GPP from a flux tower site. The number of pixels corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI) on a daily (a), weekly (b), and monthly (c) basis. The red line indicates the Generalized Additive Model for the daily and weekly relations and the Lineal Model for monthly values"
+#| label: fig-gpp_vi_relation_daily
+#| fig-cap: "Scatterplot of MODIS 500m derived VIs and GPP with daily values. Every observation corresponds to the observed GPP from a flux tower site. Total observations corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI). The red line indicates the GAM fit."
 #| fig-width: 7
-#| fig-height: 9
+#| fig-height: 5
 #| echo: false
 #| message: false
 #| warning: false
@@ -543,7 +563,7 @@ etiquetas <- c(
   "Bartlett" = "Bartlett"
 )
 
-daily_grid <-
+# daily_grid <-
   daily_plot_500 %>% 
   filter(index != "kndvi_mean") %>% 
   # filter(ndvi_mean > 3 & gpp_dt_vut_ref < 20)
@@ -554,7 +574,7 @@ daily_grid <-
   scale_color_viridis_d() + 
   scale_fill_viridis_d(aes(month)) +
   facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
-  scale_size(range = c(.1, 5), name = "Number of pixels") +
+  scale_size(range = c(.1, 5), name = "Total observations") +
   scale_x_continuous(breaks = seq(-1, 1, by = .1)) +
   scale_y_continuous(breaks = seq(0, 38, by = 4)) +
   labs(x = "Index value", 
@@ -566,8 +586,18 @@ daily_grid <-
          col = guide_legend(order = 2, keyheight = 0.1)) +
   theme(strip.text = element_text(size = 10, color = "black"),
         strip.background = element_blank())
+```
 
-weekly_grid <-
+
+```{r gpp_vi_realtions_all_sites}
+#| label: fig-gpp_vi_relation_weekly
+#| fig-cap: "Scatterplot of MODIS 500m derived VIs and GPP with weekly values. Every observation corresponds to the observed GPP from a flux tower site. Total observations corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI). The red line indicates the GAM fit."
+#| fig-width: 7
+#| fig-height: 5
+#| echo: false
+#| message: false
+#| warning: false
+# weekly_grid <-
   weekly_plot_500 %>% 
   filter(index != "kndvi_mean") %>% 
   mutate(month = lubridate::month(date_start, label = TRUE)) %>% 
@@ -577,7 +607,7 @@ weekly_grid <-
   scale_color_viridis_d() + 
   scale_fill_viridis_d(aes(month)) +
   facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
-  scale_size(range = c(.1, 5), name = "Number of pixels") +
+  scale_size(range = c(.1, 5), name = "Total observations") +
   scale_x_continuous(breaks = seq(-1, 1, by = .1)) +
   scale_y_continuous(breaks = seq(0, 38, by = 4)) +
   labs(x = "Index value", 
@@ -589,8 +619,19 @@ weekly_grid <-
          col = guide_legend(order = 2, keyheight = 0.1)) +
   theme(strip.text = element_text(size = 10, color = "black"),
         strip.background = element_blank())
+```
 
-monthly_grid <-
+
+```{r gpp_vi_realtions_all_sites}
+#| label: fig-gpp_vi_relation_monthly
+#| fig-cap: "Scatterplot of MODIS 500m derived VIs and GPP with monthly values. Every observation corresponds to the observed GPP from a flux tower site. Total observations corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI). The red line indicates the GAM fit."
+#| fig-width: 7
+#| fig-height: 5
+#| echo: false
+#| message: false
+#| warning: false
+
+# monthly_grid <-
   monthly_plot_500 %>% 
   filter(index != "kndvi_mean") %>% 
   mutate(month = lubridate::month(date, label = TRUE)) %>% 
@@ -600,7 +641,7 @@ monthly_grid <-
   scale_color_viridis_d() + 
   scale_fill_viridis_d(aes(month)) +
   facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
-  scale_size(range = c(.1, 5), name = "Number of pixels") +
+  scale_size(range = c(.1, 5), name = "Total observations") +
   scale_x_continuous(breaks = seq(-1, 1, by = .1)) +
   scale_y_continuous(breaks = seq(0, 18, by = 4)) +
   labs(x = "Index value", 
@@ -613,11 +654,11 @@ monthly_grid <-
   theme(strip.text = element_text(size = 10, color = "black"),
         strip.background = element_blank())
 
-plot_grid(daily_grid,
-          weekly_grid,
-          monthly_grid,
-          nrow = 3,
-          labels = c('A', 'B', 'C'))
+# plot_grid(daily_grid,
+#           weekly_grid,
+#           monthly_grid,
+#           nrow = 3,
+#           labels = c('A', 'B', 'C'))
 ```
 
 \newpage
@@ -625,7 +666,7 @@ plot_grid(daily_grid,
 ## Results
 
 ### Analysis of GPP-Vegetation Index Relationships Using Linear Models
-<!-- ### Monthly GPP and VI's relations -->
+<!-- ### Monthly GPP and VIs relations -->
 
 The @tbl-lm_monthly_results provides a summary of linear models used for GPP 
 estimation at each site, employing the vegetation indices as predictors. For 
@@ -816,7 +857,7 @@ relationship might not be optimal, potentially leading to substantial residuals.
 In contrast, the GAM model was found to adeptly accommodate such variability and
 provide a more comprehensive  explanation for the relationship. This adaptability was especially significant when addressing GPP's daily, weekly, or monthly variations.
 
-<!-- ### Daily and weekly GPP and VI's relations -->
+<!-- ### Daily and weekly GPP and VIs relations -->
 
 <!-- **TODO: Single vs Individual GAM model** -->
 
