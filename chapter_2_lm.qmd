@@ -668,12 +668,41 @@ etiquetas <- c(
 ### Analysis of GPP-Vegetation Index Relationships Using Linear Models
 <!-- ### Monthly GPP and VIs relations -->
 
+
+Monthly:
+
+ - When using all indices as covariates, for the three sites and including the
+ 3 sites without distinction, the model predicts better.
+ - When comparing individual indices, CCI is a better predictor compared to the 
+ other indices, although in the case of Bartlett and Michigan, the performance
+ is not that substantial when compared with NIRv and EVI. In the case Borden and
+ all sites, it does a better job.
+ - NDVI performs less favourably in Bartlett by 9% and Michigan by 15% when 
+ compared with CCI.
+ - For Borden and all sites together EVI performed less favourably than the
+ other indices, although in the case of Borden, the performance is not that
+ different from the other indices.
+ - Bartlett have the best performant results, while all sites together the
+ worst. 
+ 
+Weekly:
+
+ - Using all indices as covariates
+ 
+Daily:
+
+ -
+ 
+General:
+
+ - 
+
 The @tbl-lm_monthly_results provides a summary of linear models used for GPP 
 estimation at each site, employing the vegetation indices as predictors. For 
 each site and predictor, the table includes the relevant model summary 
-statistics, such as R2, adjusted r-squared, and RMSE. More metrics such as the 
-p-value, the Akaike Information Criterion (AIC) and Bayesian Information 
-Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
+statistics, such as R2, MAE, and RMSE. More metrics such as the 
+p-value, adjusted r-squared, the Akaike Information Criterion (AIC), and 
+Bayesian Information Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
 
 Based on the RMSE, NDVI performed less favourably  on 
 two out of the three sites compared with the other indices. However, the 
