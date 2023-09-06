@@ -933,7 +933,23 @@ Weekly:
  
 Daily:
 
- - 
+ - Indices as covariates had a better performance than any other index used
+ as a explanatory variable alone.
+ - In the case of all sites, indices as covariates explained 4% more than CCI
+ which was the index with better explanation power. In the case of Barlett that
+ increase was of 4% compared with EVI. Michigan was 5% better at predicting GPP
+ than EVI. In the case of Borden it was 9% compared with NIRv.
+ - In the 4 cases, NDVI performed worst among all the individual indices.
+ - As an individual index EVI performed better in just all the sites, and EVI
+ in two cases (Bartlett and Michigan). NIRv was better in Borden as an individual
+ index for Borden, nonetheles, the variance explained in this site was just of
+ 46%.
+ - From the 3 individual sites Bartlett had the best results in terms of
+ models explaingin variance and lower residuals, followed by Michigan. In the
+ case of Borden, when using the individual indices, they could achieve a
+ variance explanation less than 50%.
+ 
+ 
 
 
 
