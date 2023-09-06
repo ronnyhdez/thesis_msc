@@ -687,15 +687,37 @@ Monthly:
  
 Weekly:
 
- - Using all indices as covariates
+ - Using all indices as covariates, for every site individually and considering
+ all the sites without distinction, the model predicts better.
+ - NDVI performed worst in the 3 sites individually, and EVI the worst for 
+ all  the sites as just one.
+ - EVI performed lesss favourably in all sites without distinction, although
+ the differences with the performance with individual indices such as NDVI and
+ NIRv are not big.
+ - EVI was better predicting GPP for Bartlett without almost no difference in
+ the performance with CCI (RMSE was the only metric with a difference of 0.02)
+ - Borden was the site with the worst performing models as individual site, but
+ when all site combined, models performed worst.
+ - Bartlett and Michigan as individual sites, had the best performing models.
  
 Daily:
 
- -
+ - CCI performed better in 3 cases: for Bartlett, Borden and all sites, although
+ Borden was better by 1%.
+ - EVI performed better as an individual index, for Michigan with a differences
+ of 3% compared with the next best performant individual index.
+ - In all cases, using all indices as covariates helped with the model performance
+ - Bartlett and Michigan had in general the best performant models.
+ - Borden had the worst performant models in all cases. 
  
 General:
 
- - 
+ - In just one case, NIRv was the best predictor for GPP when using individual
+ indices. (weekly and it was just because the RMSE of 0.02 diff)
+ - CCI in general for all timeframes was the best predictor for GPP when
+ using individual indices.
+ - In the case of linear models, when using all indices as covariates, the 
+ model performs better as opose when using just the individual indices.
 
 The @tbl-lm_monthly_results provides a summary of linear models used for GPP 
 estimation at each site, employing the vegetation indices as predictors. For 
