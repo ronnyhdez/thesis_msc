@@ -903,6 +903,41 @@ rm(plot_legend)
 
 ### Analysis of GPP-Vegetation Index Relationships Using GAM Models
 
+Monthly
+
+ - There is no unique index that performs better than the other ones. In the
+ monthly case, CCI performed better for all sites without distinction, EVI
+ performed better for Michigan, and all the indices as covariates for Borden.
+ - Although for Borden, the performance of all indices as covariates was better
+ than CCI alone by just 0.06 on the RMSE and 0.08 in MAE.
+ - In the case of Michigan EVI and NIRv were able to explain 96% of the 
+ variation, nonetheless EVI had slightly lower values of MAE and RMSE
+ (0.01 and 0.02 respectively)
+ - For Michigan and Borden, a GAM model with all the indices as covariates was
+ not possible given the quantity of observations was low for the parameters
+ included in the model, which could lead to overfitting.
+ - NDVI alone performed worst in two sites, while EVI in just one.
+
+Weekly:
+
+ - Models that included all indices as covariates performed better that any
+ of the indices alone in every individual site as well when using no site
+ distinction.
+ - In the case of all sites without distinction, all indices as covariates
+ can explain 7% more thant CCI which is the best index alone. For Michigan, this
+ increase was of 2% in comparison with EVI, Bartlett 1% in comparison with EVI,
+ and 2% in Borden when contrasted with EVI.
+ - NDVI as an index alone, performed less favourably when compared to the other
+ indices alone. For all sites performed 7% less than CCI, in the case of 
+ Michigan it was 17% less (EVI), Bartlett 18% less, and Borden 9%
+ 
+Daily:
+
+ - 
+
+
+
+
 This variance implied that a linear 
 relationship might not be optimal, potentially leading to substantial residuals.
 In contrast, the GAM model was found to adeptly accommodate such variability and
