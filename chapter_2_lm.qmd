@@ -668,15 +668,13 @@ etiquetas <- c(
 ### Analysis of GPP-Vegetation Index Relationships Using Linear Models
 <!-- ### Monthly GPP and VIs relations -->
 
-When considering the incorporation of all VIs as covariates, our models 
-demonstrates enhanced predictive capabilities for the individual sites as well 
-as when aggregating data from all three sites without differentiation. This
-holds true for the 3 timeframes evaluated: monthly, weekly, and daily. In the
-assessment of individual VI performance on a monthly basis, CCI tend to perform
-better than EVI, NDVI, and NIRv. However it is important to note that for the 
-Bartlett and Michigan sites, while CCI shows favourable predictive accuracy, its
-advantage over the NIRv and EVI is slightly better and mostly due to the MAE
-and RMSE results.
+When using all VIs as covariates, we obtained better results than any other 
+model with an individual VI, for every site category and timeframe evaluated.
+In the assessment of individual VI performance on a monthly basis, CCI tend to 
+perform better than EVI, NDVI, and NIRv. However it is important to note that 
+for the Bartlett and Michigan sites, while CCI shows favourable predictive
+accuracy, its advantage over the NIRv and EVI is slightly better and mostly due
+to the MAE and RMSE results.
 
 The NDVI displays relatively diminished performance, indicating a 9% and 15% 
 reduction in predictive accuracy compared to CCI in the Bartlett and Michigan 
@@ -686,6 +684,32 @@ in the specific context of the Borden site, its performance aligns closely with
 NDVI and NIRv. Among the individual sites, Bartlett stands out with the most 
 favourable predictive outcomes, while the aggregated sites dataset yield the 
 least favourable predictive results.
+
+In the case of the weekly models, NDVI yielded the least favourable results when
+assessed at the three individual sites, while EVI demonstrated its weakest 
+predictive capabilities when all sites were treated as a single entity. However,
+for this case, EVI shows marginal differences with respect to individual indices
+such as NDVI and NIRv (1% variance explained and no more than 0.02 in RMSE). The
+best performant individual indices were CCI for Borden and the aggregated sites,
+NIRv for  Michigan and EVI for Bartlett. Nonetheless, those best performances 
+are subtle when compared with the other individual indices. At a weekly basis, 
+differences between the best model and the less performant model can go from 11%
+up to 20% in the variability explanation.
+
+
+
+Intriguingly, in the case of the Bartlett site, EVI exhibited superior GPP prediction, with minimal variance from the Chlorophyll/Carotenoid Index (CCI) except for a slight discrepancy in the Root Mean Square Error (RMSE). Conversely, the Borden site exhibited the poorest individual model performance, and when the data from all sites were combined, the models fared even less favorably. In contrast, both the Bartlett and Michigan sites independently yielded the most accurate predictive models.
+
+
+
+
+
+
+
+
+
+
+In our analysis, the Chlorophyll/Carotenoid Index (CCI) emerged as the top-performing index in three instances, specifically for the Bartlett, Borden, and the combined dataset of all sites, with Borden slightly outperforming the others by a margin of 1%. As an individual index, the Enhanced Vegetation Index (EVI) excelled, particularly in the case of the Michigan site, where it outperformed the next best-performing individual index by a notable 3%. Across all scenarios, the incorporation of all vegetation indices as covariates consistently contributed to enhanced model performance. Generally, the Bartlett and Michigan sites consistently yielded the most accurate predictive models across various configurations. Conversely, the Borden site consistently exhibited the poorest model performance across all scenarios.
 
 Monthly:
 
