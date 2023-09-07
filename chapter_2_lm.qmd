@@ -668,13 +668,20 @@ etiquetas <- c(
 ### Analysis of GPP-Vegetation Index Relationships Using Linear Models
 <!-- ### Monthly GPP and VIs relations -->
 
-When using all VIs as covariates, we obtained better results than any other 
-model with an individual VI, for every site category and timeframe evaluated.
-In the assessment of individual VI performance on a monthly basis, CCI tend to 
-perform better than EVI, NDVI, and NIRv. However it is important to note that 
-for the Bartlett and Michigan sites, while CCI shows favourable predictive
-accuracy, its advantage over the NIRv and EVI is slightly better and mostly due
-to the MAE and RMSE results.
+The @tbl-lm_monthly_results provides a summary of linear models used for GPP 
+estimation at each site, employing the vegetation indices as predictors. For 
+each site and predictor, the table includes the relevant model summary 
+statistics, such as R2, MAE, and RMSE. More metrics such as the 
+p-value, adjusted r-squared, the Akaike Information Criterion (AIC), and 
+Bayesian Information Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
+
+When using all the indices as covariates within the linear model, the model's 
+performance demonstrates better outcomes compared to using any single index 
+alone across all scenarios. In the assessment of individual VI performance on a
+monthly basis, CCI tend to perform better than EVI, NDVI, and NIRv. However it 
+is important to note that for the Bartlett and Michigan sites, while CCI shows
+favourable predictive accuracy, its advantage over the NIRv and EVI is slightly
+better and mostly due to the MAE and RMSE results.
 
 The NDVI displays relatively diminished performance, indicating a 9% and 15% 
 reduction in predictive accuracy compared to CCI in the Bartlett and Michigan 
@@ -694,93 +701,25 @@ best performant individual indices were CCI for Borden and the aggregated sites,
 NIRv for  Michigan and EVI for Bartlett. Nonetheless, those best performances 
 are subtle when compared with the other individual indices. At a weekly basis, 
 differences between the best model and the less performant model can go from 11%
-up to 20% in the variability explanation.
+up to 20% in the variability explanation.Bartlett and Michigan sites 
+independently yielded the most accurate predictive models.
 
+On a daily basis, CCI specifically for the Bartlett, Borden, and the combined 
+sites dataset, with Borden slightly outperforming the others by a margin of 1% 
+in variance explanation. In the case of Michigan, the best individual index 
+was EVI which outperformed the next best-performing individual index NIRv by 3%.
+Across all scenarios, the incorporation of all vegetation indices as covariates 
+consistently contributed to enhanced model performance. Generally, the Bartlett 
+and Michigan sites consistently yielded the most accurate predictive models 
+across various configurations. Conversely, the Borden site consistently 
+exhibited the poorest model performance across all scenarios.
 
-
-Intriguingly, in the case of the Bartlett site, EVI exhibited superior GPP prediction, with minimal variance from the Chlorophyll/Carotenoid Index (CCI) except for a slight discrepancy in the Root Mean Square Error (RMSE). Conversely, the Borden site exhibited the poorest individual model performance, and when the data from all sites were combined, the models fared even less favorably. In contrast, both the Bartlett and Michigan sites independently yielded the most accurate predictive models.
-
-
-
-
-
-
-
-
-
-
-In our analysis, the Chlorophyll/Carotenoid Index (CCI) emerged as the top-performing index in three instances, specifically for the Bartlett, Borden, and the combined dataset of all sites, with Borden slightly outperforming the others by a margin of 1%. As an individual index, the Enhanced Vegetation Index (EVI) excelled, particularly in the case of the Michigan site, where it outperformed the next best-performing individual index by a notable 3%. Across all scenarios, the incorporation of all vegetation indices as covariates consistently contributed to enhanced model performance. Generally, the Bartlett and Michigan sites consistently yielded the most accurate predictive models across various configurations. Conversely, the Borden site consistently exhibited the poorest model performance across all scenarios.
-
-Monthly:
-
- - When using all indices as covariates, for the three sites and including the
- 3 sites without distinction, the model predicts better.
- - When comparing individual indices, CCI is a better predictor compared to the 
- other indices, although in the case of Bartlett and Michigan, the performance
- is not that substantial when compared with NIRv and EVI. In the case Borden and
- all sites, it does a better job.
- - NDVI performs less favourably in Bartlett by 9% and Michigan by 15% when 
- compared with CCI.
- - For Borden and all sites together EVI performed less favourably than the
- other indices, although in the case of Borden, the performance is not that
- different from the other indices.
- - Bartlett have the best performant results, while all sites together the
- worst. 
- 
-Weekly:
-
- - Using all indices as covariates, for every site individually and considering
- all the sites without distinction, the model predicts better.
- - NDVI performed worst in the 3 sites individually, and EVI the worst for 
- all  the sites as just one.
- - EVI performed lesss favourably in all sites without distinction, although
- the differences with the performance with individual indices such as NDVI and
- NIRv are not big.
- - EVI was better predicting GPP for Bartlett without almost no difference in
- the performance with CCI (RMSE was the only metric with a difference of 0.02)
- - Borden was the site with the worst performing models as individual site, but
- when all site combined, models performed worst.
- - Bartlett and Michigan as individual sites, had the best performing models.
- 
-Daily:
-
- - CCI performed better in 3 cases: for Bartlett, Borden and all sites, although
- Borden was better by 1%.
- - EVI performed better as an individual index, for Michigan with a differences
- of 3% compared with the next best performant individual index.
- - In all cases, using all indices as covariates helped with the model performance
- - Bartlett and Michigan had in general the best performant models.
- - Borden had the worst performant models in all cases. 
- 
-General:
-
- - In just one case, NIRv was the best predictor for GPP when using individual
- indices. (weekly and it was just because the RMSE of 0.02 diff)
- - CCI in general for all timeframes was the best predictor for GPP when
- using individual indices.
- - In the case of linear models, when using all indices as covariates, the 
- model performs better as opose when using just the individual indices.
-
-The @tbl-lm_monthly_results provides a summary of linear models used for GPP 
-estimation at each site, employing the vegetation indices as predictors. For 
-each site and predictor, the table includes the relevant model summary 
-statistics, such as R2, MAE, and RMSE. More metrics such as the 
-p-value, adjusted r-squared, the Akaike Information Criterion (AIC), and 
-Bayesian Information Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
-
-Based on the RMSE, NDVI performed less favourably  on 
-two out of the three sites compared with the other indices. However, the 
-performance difference among the sites was not substantial, with the Bartlett
-experimental forest exhibiting slightly better results on all of their GPP ~ VIs
-relations compared to the other sites. These findings suggest that while 
-NDVI may not be the optimal vegetation index for GPP estimation at these sites,
-there may still be variations in performance across different locations.
-
-When using all the indices as covariates within the linear model, the model's 
-performance demonstrates better outcomes compared to using any single index alone
-
-The complete metrics results for each of the linear models are in
-@tbl-complete_lm_monthly_results
+In general terms, across the timeframes, CCI consistently performed better than
+any other individual index in terms of variance explanability and errors, but
+the differences were not that big compared with EVI and NIRv. On the other
+hand, NDVI performed worst across all timeframes in most cases. When using the 
+monthly values models had a better performance outcome than a weekly or daily
+basis.
 
 \begingroup
 \setlength{\LTleft}{0pt minus 500pt}
@@ -1187,7 +1126,13 @@ rm(plot_legend)
 
 ## Discussion
 
-
+Based on the RMSE, NDVI performed less favourably  on 
+two out of the three sites compared with the other indices. However, the 
+performance difference among the sites was not substantial, with the Bartlett
+experimental forest exhibiting slightly better results on all of their GPP ~ VIs
+relations compared to the other sites. These findings suggest that while 
+NDVI may not be the optimal vegetation index for GPP estimation at these sites,
+there may still be variations in performance across different locations.
 
 
 \newpage
