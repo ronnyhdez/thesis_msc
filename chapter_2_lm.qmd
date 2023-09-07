@@ -675,8 +675,7 @@ statistics, such as R2, MAE, and RMSE. More metrics such as the
 p-value, adjusted r-squared, the Akaike Information Criterion (AIC), and 
 Bayesian Information Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
 
-When using all the indices as covariates within the linear model, the model's 
-performance demonstrates better outcomes compared to using any single index 
+Our findings shows that when using all the indices as covariates within the linear model, the model's performance demonstrates better outcomes compared to using any single index 
 alone across all scenarios. In the assessment of individual VI performance on a
 monthly basis, CCI tend to perform better than EVI, NDVI, and NIRv. However it 
 is important to note that for the Bartlett and Michigan sites, while CCI shows
@@ -685,41 +684,43 @@ better and mostly due to the MAE and RMSE results.
 
 The NDVI displays relatively diminished performance, indicating a 9% and 15% 
 reduction in predictive accuracy compared to CCI in the Bartlett and Michigan 
-sites, respectively. On the other hand, the EVI exhibits less favourable 
+sites, respectively. In contrast, EVI exhibits less favourable 
 predictive results for the Borden site and the aggregated sites dataset, although
 in the specific context of the Borden site, its performance aligns closely with
 NDVI and NIRv. Among the individual sites, Bartlett stands out with the most 
 favourable predictive outcomes, while the aggregated sites dataset yield the 
 least favourable predictive results.
 
-In the case of the weekly models, NDVI yielded the least favourable results when
+In the case of the weekly models, NDVI records the least favourable results when
 assessed at the three individual sites, while EVI demonstrated its weakest 
 predictive capabilities when all sites were treated as a single entity. However,
 for this case, EVI shows marginal differences with respect to individual indices
 such as NDVI and NIRv (1% variance explained and no more than 0.02 in RMSE). The
 best performant individual indices were CCI for Borden and the aggregated sites,
-NIRv for  Michigan and EVI for Bartlett. Nonetheless, those best performances 
-are subtle when compared with the other individual indices. At a weekly basis, 
-differences between the best model and the less performant model can go from 11%
-up to 20% in the variability explanation.Bartlett and Michigan sites 
-independently yielded the most accurate predictive models.
+NIRv for  Michigan and EVI for Bartlett. Nonetheless, those superior performances 
+are subtle when compared with the other individual indices. On a weekly basis, 
+differences in variability explained between the best and least performing 
+models range from 11% to 20%. Bartlett and Michigan sites consistently yield the
+most accurate predictive models.
 
-On a daily basis, CCI specifically for the Bartlett, Borden, and the combined 
-sites dataset, with Borden slightly outperforming the others by a margin of 1% 
-in variance explanation. In the case of Michigan, the best individual index 
-was EVI which outperformed the next best-performing individual index NIRv by 3%.
-Across all scenarios, the incorporation of all vegetation indices as covariates 
-consistently contributed to enhanced model performance. Generally, the Bartlett 
-and Michigan sites consistently yielded the most accurate predictive models 
-across various configurations. Conversely, the Borden site consistently 
-exhibited the poorest model performance across all scenarios.
+On a daily basis, CCI outperforms the rest of the individual indices in 3 cases:
+for Bartlett by 2% in variance explanation compared with EVI, for Borden by 1%
+compared with EVI, and for the combined sites dataset by 10%. Nonetheless is
+worth to mention that the variance explained in any of the models by individual
+indices in Borden or the combined site is less than 50% in most of the cases
+and the error scores being the highest. In the case of Michigan, the best 
+performing individual index was EVI which outperformed the next best-performing 
+individual index NIRv by 3%. Generally, the Bartlett and Michigan sites
+consistently yielded the most accurate predictive models across various
+configurations. Conversely, the Borden site consistently exhibited the poorest 
+model performance across all scenarios.
 
-In general terms, across the timeframes, CCI consistently performed better than
-any other individual index in terms of variance explanability and errors, but
-the differences were not that big compared with EVI and NIRv. On the other
-hand, NDVI performed worst across all timeframes in most cases. When using the 
-monthly values models had a better performance outcome than a weekly or daily
-basis.
+Overall, when comparing individual indices, CCI consistently performed better 
+across different timeframes in terms of variance explainability and error 
+metrics. Nonetheless, those differences are subtle compared to EVI and NIRv. In
+contrast, NDVI consistently performs less favorably across all evaluated 
+timeframes. Notably, models based on monthly values consistently exhibit better 
+performance than those based on weekly or daily values.
 
 \begingroup
 \setlength{\LTleft}{0pt minus 500pt}
