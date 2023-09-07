@@ -668,6 +668,24 @@ etiquetas <- c(
 ### Analysis of GPP-Vegetation Index Relationships Using Linear Models
 <!-- ### Monthly GPP and VIs relations -->
 
+When considering the incorporation of all VIs as covariates, our models 
+demonstrates enhanced predictive capabilities for the individual sites as well 
+as when aggregating data from all three sites without differentiation. This
+holds true for the 3 timeframes evaluated: monthly, weekly, and daily. In the
+assessment of individual VI performance on a monthly basis, CCI tend to perform
+better than EVI, NDVI, and NIRv. However it is important to note that for the 
+Bartlett and Michigan sites, while CCI shows favourable predictive accuracy, its
+advantage over the NIRv and EVI is slightly better and mostly due to the MAE
+and RMSE results.
+
+The NDVI displays relatively diminished performance, indicating a 9% and 15% 
+reduction in predictive accuracy compared to CCI in the Bartlett and Michigan 
+sites, respectively. On the other hand, the EVI exhibits less favourable 
+predictive results for the Borden site and the aggregated sites dataset, although
+in the specific context of the Borden site, its performance aligns closely with
+NDVI and NIRv. Among the individual sites, Bartlett stands out with the most 
+favourable predictive outcomes, while the aggregated sites dataset yield the 
+least favourable predictive results.
 
 Monthly:
 
