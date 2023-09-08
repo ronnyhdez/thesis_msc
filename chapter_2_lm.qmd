@@ -882,8 +882,27 @@ plot_grid(lm_metrics_plots, plot_legend, ncol = 2, rel_widths = c(1, .1))
 rm(plot_legend)
 ```
 
-
 ### Analysis of GPP-Vegetation Index Relationships Using GAM Models
+
+
+When using GAM models at a monthly basis, no single VI demonstrates consistent
+superiority over the others. For the all sites category, CCI have a 3% better
+variance explanation than NDVI, which is the second best model with a 75%. In 
+the case of Michigan EVI and NIRv were the best individual indices with a 96%
+of the variance in GPP, but EVI had slightly lower error metrics values in MAE 
+(0.01) and RMSE (0.02). Bartlett had a better model performance when using CCI 
+with a 91% of variance explained with the lowest error metrics among all the GAM
+monthly models. It's important to highlight that for Michigan and Bartlett, 
+implementing a GAM model using all the VIs as covariates posed challenges due to
+limited observations for the model parameters, raising concerns of potential 
+overfitting. 
+ 
+
+
+
+
+Finally, it's noteworthy that the Normalized Difference Vegetation Index (NDVI) displayed suboptimal performance in two of the sites, while EVI exhibited less favorable results in just one.
+
 
 Monthly
 
@@ -1120,7 +1139,11 @@ rm(plot_legend)
 ```
 
 
+LM vs GAM
 
+ - Monthly GAM Michigan had better results with EVI and NIRv than LM with all
+ indices as covariates.
+ - 
 
 
 \newpage
