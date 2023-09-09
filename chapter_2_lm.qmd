@@ -895,10 +895,12 @@ with a 91% of variance explained with the lowest error metrics among all the GAM
 monthly models. It's important to highlight that for Michigan and Bartlett, 
 implementing a GAM model using all the VIs as covariates posed challenges due to
 limited observations for the model parameters, raising concerns of potential 
-overfitting. Finally, it's noteworthy that NDVI displayed suboptimal performance
-in two of the sites (Michigan and Bartlett) with a difference of 10% and 13%
-with the best performing models respectively, while EVI exhibited less favorable
-results in just the Borden site.
+overfitting. 
+
+Finally, it's noteworthy that NDVI on a monthly basis displayed suboptimal 
+performance in two of the sites (Michigan and Bartlett) with a difference of 10%
+and 13% with the best performing models respectively, while EVI exhibited less 
+favourable results in just the Borden site.
 
 On a weekly basis, models incorporating all VIs as covariates consistently
 obtained better performance compared to any individual VI, irrespective of the
@@ -915,38 +917,23 @@ performance lagged by 17% compared to EVI, Bartlett an 18% reduction relative to
 EVI, and Borden exhibited a 9% deficit when contrasted with EVI.
 
 
+On a daily basis, when considering the all sites category, the model with all
+the VIs as covariates explained 4% more variance in GPP when compared with the
+best performing individual VI CCI. In the case of Bartlett, the increased was 
+also 4% but in this case the best individual performing VI was EVI. For Michigan,
+the model using all VIs as covariates outperformed EVI by 5% in GPP prediction, 
+and for Borden it was a 9% improvement when compared with NIRv.
 
+Among the individual VIs, NDVI consistently demonstrated the poorest performance
+across al four cases. As an individual VI, EVI performed better in Bartlett,
+Michigan, and Borden. However is worth noting that for Borden the variance 
+explained was limited to 50%.
 
-
-
- 
-Daily:
-
- - Indices as covariates had a better performance than any other index used
- as a explanatory variable alone.
- - In the case of all sites, indices as covariates explained 4% more than CCI
- which was the index with better explanation power. In the case of Barlett that
- increase was of 4% compared with EVI. Michigan was 5% better at predicting GPP
- than EVI. In the case of Borden it was 9% compared with NIRv.
- - In the 4 cases, NDVI performed worst among all the individual indices.
- - As an individual index EVI performed better in just all the sites, and EVI
- in two cases (Bartlett and Michigan). NIRv was better in Borden as an individual
- index for Borden, nonetheles, the variance explained in this site was just of
- 46%.
- - From the 3 individual sites Bartlett had the best results in terms of
- models explaingin variance and lower residuals, followed by Michigan. In the
- case of Borden, when using the individual indices, they could achieve a
- variance explanation less than 50%.
- 
- 
-
-
-
-
-This variance implied that a linear 
-relationship might not be optimal, potentially leading to substantial residuals.
-In contrast, the GAM model was found to adeptly accommodate such variability and
-provide a more comprehensive  explanation for the relationship. This adaptability was especially significant when addressing GPP's daily, weekly, or monthly variations.
+In summary, among the three individual sites, Bartlett consistently produced the
+most favorable results in terms of models explaining variance and yielding lower
+residuals, followed by Michigan. In the case of Borden, when employing 
+individual indices, the models struggled to achieve a variance explanation 
+exceeding 50%.
 
 <!-- ### Daily and weekly GPP and VIs relations -->
 
@@ -1134,6 +1121,11 @@ LM vs GAM
  - Weekly GAM models with all VIs as covariates got a better performance than
  the LM for all sites except for Borden that had the same R2 but nonetheless,
  lower error metrics.
+ - This variance implied that a linear relationship might not be optimal, 
+ potentially leading to substantial residuals. In contrast, the GAM model was
+ found to adeptly accommodate such variability and provide a more comprehensive
+ explanation for the relationship. This adaptability was especially significant
+ when addressing GPP's daily, weekly, or monthly variations.
 
 
 \newpage
