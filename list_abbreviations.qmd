@@ -39,8 +39,7 @@ tribble(
   "AIC", "Akaike Information Criterion", 
   "BIC", "Bayesian Information Criterion", 
   "NIR", "Near Infrared",
-  "CCI", "Chlorophyll/Carotenoid Index",
-  "kNDVI", "Normalized Difference Vegetation Index based on kernel methods"
+  "CCI", "Chlorophyll/Carotenoid Index"
 ) %>% 
   arrange(Abbreviation) %>% 
   gt() %>% 
