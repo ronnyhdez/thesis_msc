@@ -539,127 +539,9 @@ In total, per each site plus the category of all-sites we created 5 linear
 models and 5 GAM models for every timescale (daily, weekly, and monthly): one 
 per each index (NDVI, CCI, EVI, NIRv) and one with all the indices as
 covariates (NDVI + CCI + EVI + NIRv), resulting in a total of 120 models. To
-compare the performance of the models we calculated the R squared (R2), the Root 
-Mean Squared Error (RMSE), and the Mean Absolute Error (MAE)
-
-```{r gpp_vi_realtions_all_sites}
-#| label: fig-gpp_vi_relation_daily
-#| fig-cap: "Scatterplot of MODIS 500m derived VIs and GPP with daily values. Every observation corresponds to the observed GPP from a flux tower site. Total observations corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI). The red line indicates the GAM fit."
-#| fig-width: 7
-#| fig-height: 5
-#| echo: false
-#| message: false
-#| warning: false
-
-## Make sure the source of file "scripts/trend_plots.R" was successful
-etiquetas <- c(
-  "evi_mean" = "EVI",
-  "ndvi_mean" = "NDVI",
-  "nirv_mean" = "NIRv",
-  "kndvi_mean" = "kNDVI",
-  "cci_mean" = "CCI",
-  "Borden" = "Borden",
-  "Michigan" = "Michigan",
-  "Bartlett" = "Bartlett"
-)
-
-# daily_grid <-
-  daily_plot_500 %>% 
-  filter(index != "kndvi_mean") %>% 
-  # filter(ndvi_mean > 3 & gpp_dt_vut_ref < 20)
-  mutate(month = lubridate::month(date, label = TRUE)) %>% 
-  ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
-  geom_point(aes(color = month, size = total_obs), alpha = 0.8) +
-  geom_smooth(method = "gam", se = FALSE, color = "#E20D6A") +
-  scale_color_viridis_d() + 
-  scale_fill_viridis_d(aes(month)) +
-  facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
-  scale_size(range = c(.1, 5), name = "Total observations") +
-  scale_x_continuous(breaks = seq(-1, 1, by = .1)) +
-  scale_y_continuous(breaks = seq(0, 38, by = 4)) +
-  labs(x = "Index value", 
-       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
-       color = "Month") +
-  theme_classic(base_size = 10) +
-  theme(axis.text.x = element_text(angle = 60, h = 1)) +
-  guides(size = guide_legend(order = 1, keyheight = 0.1),
-         col = guide_legend(order = 2, keyheight = 0.1)) +
-  theme(strip.text = element_text(size = 10, color = "black"),
-        strip.background = element_blank())
-```
-
-
-```{r gpp_vi_realtions_all_sites}
-#| label: fig-gpp_vi_relation_weekly
-#| fig-cap: "Scatterplot of MODIS 500m derived VIs and GPP with weekly values. Every observation corresponds to the observed GPP from a flux tower site. Total observations corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI). The red line indicates the GAM fit."
-#| fig-width: 7
-#| fig-height: 5
-#| echo: false
-#| message: false
-#| warning: false
-# weekly_grid <-
-  weekly_plot_500 %>% 
-  filter(index != "kndvi_mean") %>% 
-  mutate(month = lubridate::month(date_start, label = TRUE)) %>% 
-  ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
-  geom_point(aes(color = month, size = total_obs), alpha = 0.8) +
-  geom_smooth(method = "gam", se = FALSE, color = "#E20D6A") +
-  scale_color_viridis_d() + 
-  scale_fill_viridis_d(aes(month)) +
-  facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
-  scale_size(range = c(.1, 5), name = "Total observations") +
-  scale_x_continuous(breaks = seq(-1, 1, by = .1)) +
-  scale_y_continuous(breaks = seq(0, 38, by = 4)) +
-  labs(x = "Index value", 
-       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
-       color = "Month") +
-  theme_classic(base_size = 10) +
-  theme(axis.text.x = element_text(angle = 60, h = 1)) +
-  guides(size = guide_legend(order = 1, keyheight = 0.1),
-         col = guide_legend(order = 2, keyheight = 0.1)) +
-  theme(strip.text = element_text(size = 10, color = "black"),
-        strip.background = element_blank())
-```
-
-
-```{r gpp_vi_realtions_all_sites}
-#| label: fig-gpp_vi_relation_monthly
-#| fig-cap: "Scatterplot of MODIS 500m derived VIs and GPP with monthly values. Every observation corresponds to the observed GPP from a flux tower site. Total observations corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI). The red line indicates the GAM fit."
-#| fig-width: 7
-#| fig-height: 5
-#| echo: false
-#| message: false
-#| warning: false
-
-# monthly_grid <-
-  monthly_plot_500 %>% 
-  filter(index != "kndvi_mean") %>% 
-  mutate(month = lubridate::month(date, label = TRUE)) %>% 
-  ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
-  geom_point(aes(color = month, size = total_obs), alpha = 0.8) +
-  geom_smooth(method = "lm", se = FALSE, color = "#E20D6A") +
-  scale_color_viridis_d() + 
-  scale_fill_viridis_d(aes(month)) +
-  facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
-  scale_size(range = c(.1, 5), name = "Total observations") +
-  scale_x_continuous(breaks = seq(-1, 1, by = .1)) +
-  scale_y_continuous(breaks = seq(0, 18, by = 4)) +
-  labs(x = "Index value", 
-       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
-       color = "Month") +
-  theme_classic(base_size = 10) +
-  theme(axis.text.x = element_text(angle = 60, h = 1)) +
-  guides(size = guide_legend(order = 1, keyheight = 0.1),
-         col = guide_legend(order = 2, keyheight = 0.1)) +
-  theme(strip.text = element_text(size = 10, color = "black"),
-        strip.background = element_blank())
-
-# plot_grid(daily_grid,
-#           weekly_grid,
-#           monthly_grid,
-#           nrow = 3,
-#           labels = c('A', 'B', 'C'))
-```
+compare the performance of the models we calculated the coefficient of 
+determination (R2), the Root Mean Squared Error (RMSE), and the Mean Absolute 
+Error (MAE)
 
 \newpage
 
@@ -673,22 +555,24 @@ estimation at each site, employing the vegetation indices as predictors. For
 each site and predictor, the table includes the relevant model summary 
 statistics, such as R2, MAE, and RMSE. More metrics such as the 
 p-value, adjusted r-squared, the Akaike Information Criterion (AIC), and 
-Bayesian Information Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
+Bayesian Information Criterion (BIC) are displayed in the @tbl-complete_lm_monthly_results
 
-Our findings shows that when using all the indices as covariates within the linear model, the model's performance demonstrates better outcomes compared to using any single index 
-alone across all scenarios. In the assessment of individual VI performance on a
-monthly basis, CCI tend to perform better than EVI, NDVI, and NIRv. However it 
-is important to note that for the Bartlett and Michigan sites, while CCI shows
-favourable predictive accuracy, its advantage over the NIRv and EVI is slightly
-better and mostly due to the MAE and RMSE results.
+Our findings shows that when using all the indices as covariates within the
+linear model, the model's performance demonstrates better outcomes compared to 
+using any single index alone across all scenarios. In the assessment of 
+individual VI performance on a monthly basis, CCI tend to perform better than 
+EVI, NDVI, and NIRv. However it is important to note that for the Bartlett and 
+Michigan sites, while CCI shows favourable predictive accuracy, its advantage
+over the NIRv and EVI is slightly better and mostly due to the MAE and RMSE
+results.
 
 The NDVI displays relatively diminished performance, indicating a 9% and 15% 
 reduction in predictive accuracy compared to CCI in the Bartlett and Michigan 
 sites, respectively. In contrast, EVI exhibits less favourable 
-predictive results for the Borden site and the aggregated sites dataset, although
+predictive results for the Borden site and the aggregated sites category, although
 in the specific context of the Borden site, its performance aligns closely with
 NDVI and NIRv. Among the individual sites, Bartlett stands out with the most 
-favourable predictive outcomes, while the aggregated sites dataset yield the 
+favourable predictive outcomes, while the aggregated sites category yield the 
 least favourable predictive results.
 
 In the case of the weekly models, NDVI records the least favourable results when
@@ -720,7 +604,7 @@ across different timeframes in terms of variance explainability and error
 metrics. Nonetheless, those differences are subtle compared to EVI and NIRv. In
 contrast, NDVI consistently performs less favorably across all evaluated 
 timeframes. Notably, models based on monthly values consistently exhibit better 
-performance than those based on weekly or daily values.
+performance than those based on weekly or daily values as ilustrated in @fig-lm_metrics.
 
 \begingroup
 \setlength{\LTleft}{0pt minus 500pt}
@@ -885,6 +769,16 @@ rm(plot_legend)
 ### Analysis of GPP-Vegetation Index Relationships Using GAM Models
 
 
+The @tbl-gam_model_results provides the results summary of the GAM models used 
+for GPP estimation at each site, employing the vegetation indices as predictors.
+To compare between the models, we include in the table relevant model summary 
+statistics, such as R2, MAE, and RMSE. More metrics such as the p-value,
+adjusted r-squared, the Akaike Information Criterion (AIC), and Bayesian
+Information Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
+
+
+
+<!-- explains more x% variance than -->
 When using GAM models at a monthly basis, no single VI demonstrates consistent
 superiority over the others. For the all sites category, CCI have a 3% better
 variance explanation than NDVI, which is the second best model with a 75%. In 
@@ -916,7 +810,6 @@ yielded 7% less variance explanation than CCI. Notably, for Michigan, NDVI's
 performance lagged by 17% compared to EVI, Bartlett an 18% reduction relative to
 EVI, and Borden exhibited a 9% deficit when contrasted with EVI.
 
-
 On a daily basis, when considering the all sites category, the model with all
 the VIs as covariates explained 4% more variance in GPP when compared with the
 best performing individual VI CCI. In the case of Bartlett, the increased was 
@@ -930,7 +823,7 @@ Michigan, and Borden. However is worth noting that for Borden the variance
 explained was limited to 50%.
 
 In summary, among the three individual sites, Bartlett consistently produced the
-most favorable results in terms of models explaining variance and yielding lower
+most favourable results in terms of models explaining variance and yielding lower
 residuals, followed by Michigan. In the case of Borden, when employing 
 individual indices, the models struggled to achieve a variance explanation 
 exceeding 50%.
@@ -969,8 +862,8 @@ exceeding 50%.
 \fontsize{5pt}{7pt}\selectfont
 \addtolength{\tabcolsep}{-3pt}
 ```{r}
-#| label: tbl-gam_model_results_pvalue
-#| tbl-cap: "Table 2.3: Summary of GAM models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis." 
+#| label: tbl-gam_model_results
+#| tbl-cap: "Summary of GAM models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis." 
 #| echo: false
 #| message: false
 #| warning: false
@@ -1126,6 +1019,128 @@ LM vs GAM
  found to adeptly accommodate such variability and provide a more comprehensive
  explanation for the relationship. This adaptability was especially significant
  when addressing GPP's daily, weekly, or monthly variations.
+
+
+```{r gpp_vi_realtions_all_sites}
+#| label: fig-gpp_vi_relation_daily
+#| fig-cap: "Scatterplot of MODIS 500m derived VIs and GPP with daily values. Every observation corresponds to the observed GPP from a flux tower site. Total observations corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI). The red line indicates the GAM fit."
+#| fig-width: 7
+#| fig-height: 5
+#| echo: false
+#| message: false
+#| warning: false
+
+## Make sure the source of file "scripts/trend_plots.R" was successful
+etiquetas <- c(
+  "evi_mean" = "EVI",
+  "ndvi_mean" = "NDVI",
+  "nirv_mean" = "NIRv",
+  "kndvi_mean" = "kNDVI",
+  "cci_mean" = "CCI",
+  "Borden" = "Borden",
+  "Michigan" = "Michigan",
+  "Bartlett" = "Bartlett"
+)
+
+# daily_grid <-
+  daily_plot_500 %>% 
+  filter(index != "kndvi_mean") %>% 
+  # filter(ndvi_mean > 3 & gpp_dt_vut_ref < 20)
+  mutate(month = lubridate::month(date, label = TRUE)) %>% 
+  ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
+  geom_point(aes(color = month, size = total_obs), alpha = 0.8) +
+  geom_smooth(method = "gam", se = FALSE, color = "#E20D6A") +
+  scale_color_viridis_d() + 
+  scale_fill_viridis_d(aes(month)) +
+  facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
+  scale_size(range = c(.1, 5), name = "Total observations") +
+  scale_x_continuous(breaks = seq(-1, 1, by = .1)) +
+  scale_y_continuous(breaks = seq(0, 38, by = 4)) +
+  labs(x = "Index value", 
+       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
+       color = "Month") +
+  theme_classic(base_size = 10) +
+  theme(axis.text.x = element_text(angle = 60, h = 1)) +
+  guides(size = guide_legend(order = 1, keyheight = 0.1),
+         col = guide_legend(order = 2, keyheight = 0.1)) +
+  theme(strip.text = element_text(size = 10, color = "black"),
+        strip.background = element_blank())
+```
+
+
+```{r gpp_vi_realtions_all_sites}
+#| label: fig-gpp_vi_relation_weekly
+#| fig-cap: "Scatterplot of MODIS 500m derived VIs and GPP with weekly values. Every observation corresponds to the observed GPP from a flux tower site. Total observations corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI). The red line indicates the GAM fit."
+#| fig-width: 7
+#| fig-height: 5
+#| echo: false
+#| message: false
+#| warning: false
+# weekly_grid <-
+  weekly_plot_500 %>% 
+  filter(index != "kndvi_mean") %>% 
+  mutate(month = lubridate::month(date_start, label = TRUE)) %>% 
+  ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
+  geom_point(aes(color = month, size = total_obs), alpha = 0.8) +
+  geom_smooth(method = "gam", se = FALSE, color = "#E20D6A") +
+  scale_color_viridis_d() + 
+  scale_fill_viridis_d(aes(month)) +
+  facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
+  scale_size(range = c(.1, 5), name = "Total observations") +
+  scale_x_continuous(breaks = seq(-1, 1, by = .1)) +
+  scale_y_continuous(breaks = seq(0, 38, by = 4)) +
+  labs(x = "Index value", 
+       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
+       color = "Month") +
+  theme_classic(base_size = 10) +
+  theme(axis.text.x = element_text(angle = 60, h = 1)) +
+  guides(size = guide_legend(order = 1, keyheight = 0.1),
+         col = guide_legend(order = 2, keyheight = 0.1)) +
+  theme(strip.text = element_text(size = 10, color = "black"),
+        strip.background = element_blank())
+```
+
+
+```{r gpp_vi_realtions_all_sites}
+#| label: fig-gpp_vi_relation_monthly
+#| fig-cap: "Scatterplot of MODIS 500m derived VIs and GPP with monthly values. Every observation corresponds to the observed GPP from a flux tower site. Total observations corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI). The red line indicates the GAM fit."
+#| fig-width: 7
+#| fig-height: 5
+#| echo: false
+#| message: false
+#| warning: false
+
+# monthly_grid <-
+  monthly_plot_500 %>% 
+  filter(index != "kndvi_mean") %>% 
+  mutate(month = lubridate::month(date, label = TRUE)) %>% 
+  ggplot(aes(x = value, y = gpp_dt_vut_ref)) +
+  geom_point(aes(color = month, size = total_obs), alpha = 0.8) +
+  geom_smooth(method = "lm", se = FALSE, color = "#E20D6A") +
+  scale_color_viridis_d() + 
+  scale_fill_viridis_d(aes(month)) +
+  facet_grid(site~index, scales = "free", labeller = as_labeller(etiquetas)) +
+  scale_size(range = c(.1, 5), name = "Total observations") +
+  scale_x_continuous(breaks = seq(-1, 1, by = .1)) +
+  scale_y_continuous(breaks = seq(0, 18, by = 4)) +
+  labs(x = "Index value", 
+       y = expression(GPP~(gC~m^{"-2"}~d^-1)),
+       color = "Month") +
+  theme_classic(base_size = 10) +
+  theme(axis.text.x = element_text(angle = 60, h = 1)) +
+  guides(size = guide_legend(order = 1, keyheight = 0.1),
+         col = guide_legend(order = 2, keyheight = 0.1)) +
+  theme(strip.text = element_text(size = 10, color = "black"),
+        strip.background = element_blank())
+
+# plot_grid(daily_grid,
+#           weekly_grid,
+#           monthly_grid,
+#           nrow = 3,
+#           labels = c('A', 'B', 'C'))
+```
+
+
 
 
 \newpage
