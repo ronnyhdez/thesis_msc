@@ -65,50 +65,34 @@ all_sites_gam_daily <- models %>%
   mutate(site = "All") %>% 
   select(site, index, rsq, mae, rmse)
 
-#  # Daily ndvi 
-# model_ndvi_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 10), 
-#                         data = daily_gam, 
-#                         method = 'REML')
-# 
-# # Daily evi 
-# model_evi_daily <- gam(gpp_dt_vut_ref ~ s(evi_mean, k = 10), 
-#                        data = daily_gam, 
-#                        method = 'REML')
-# 
-# # Daily nirv 
-# model_nirv_daily <- gam(gpp_dt_vut_ref ~ s(nirv_mean, k = 10), 
-#                         data = daily_gam, 
-#                         method = 'REML')
-# 
-# # # Daily kndvi
-# # model_kndvi_daily <- gam(gpp_dt_vut_ref ~ s(kndvi_mean, k = 10), 
-# #                          data = daily_gam, 
-# #                          method = 'REML')
-# 
-# # Daily cci
-# model_cci_daily <- gam(gpp_dt_vut_ref ~ s(cci_mean, k = 10), 
-#                        data = daily_gam, 
-#                        method = 'REML')
-# 
-# # **Daily models outputs**
-# summ_ndvi_daily <- summary(model_ndvi_daily)
-# summ_evi_daily <- summary(model_evi_daily)
-# summ_nirv_daily <- summary(model_nirv_daily)
-# # summ_kndvi_daily <- summary(model_kndvi_daily)
-# summ_cci_daily <- summary(model_cci_daily)
-# 
-# # Tables for comparison (this can be a function)
-# s_table_evi_daily <- summ_evi_daily[["s.table"]] %>% as.data.frame()
-# s_table_ndvi_daily <- summ_ndvi_daily[["s.table"]] %>% as.data.frame()
-# s_table_nirv_daily <- summ_nirv_daily[["s.table"]] %>% as.data.frame()
-# # s_table_kndvi_daily <- summ_kndvi_daily[["s.table"]] %>% as.data.frame()
-# s_table_cci_daily <- summ_cci_daily[["s.table"]] %>% as.data.frame()
-# 
-# p_table_evi_daily <- summ_evi_daily[["p.table"]] %>% as.data.frame()
-# p_table_ndvi_daily <- summ_ndvi_daily[["p.table"]] %>% as.data.frame()
-# p_table_nirv_daily <- summ_nirv_daily[["p.table"]] %>% as.data.frame()
-# # p_table_kndvi_daily <- summ_kndvi_daily[["p.table"]] %>% as.data.frame()
-# p_table_cci_daily <- summ_cci_daily[["p.table"]] %>% as.data.frame()
+# Test metricas completas
+# With map:
+test <- map_dfr(1:nrow(models), function(i) {
+  print(i)
+  result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  return(result_p_table)
+})
+
+test2 <- map_dfr(1:nrow(models), function(i) {
+  print(i)
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  return(result_s_table)
+})
+
+test %>% 
+  left_join(test2, by = "index")
 
 
 # GAM model for all sites diff VIs [F | Diff VIS + site]
