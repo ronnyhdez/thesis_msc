@@ -188,7 +188,7 @@ bind_rows(evi_glance_monthly,
           nirv_glance_monthly,
 		  # kndvi_glance,
 		  cci_glance_monthly) %>% 
-  select(site, index, r.squared, adj.r.squared, rmse, 
+  select(site, index, adj.r.squared, 
          statistic, AIC, BIC,  p.value) %>% 
   group_by(site) %>% 
   arrange(desc(adj.r.squared)) %>% 

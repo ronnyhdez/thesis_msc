@@ -65,9 +65,8 @@ all_sites_gam_daily <- models %>%
   mutate(site = "All") %>% 
   select(site, index, rsq, mae, rmse)
 
-# Test metricas completas
-# With map:
-test <- map_dfr(1:nrow(models), function(i) {
+# Tabla metricas completas
+all_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
   print(i)
   result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
     as.data.frame() %>%
@@ -76,11 +75,6 @@ test <- map_dfr(1:nrow(models), function(i) {
     janitor::clean_names() %>%
     select(-intercept)  
   
-  return(result_p_table)
-})
-
-test2 <- map_dfr(1:nrow(models), function(i) {
-  print(i)
   result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
     as.data.frame() %>%
     mutate(index = models$index[i]) %>%
@@ -88,11 +82,12 @@ test2 <- map_dfr(1:nrow(models), function(i) {
     janitor::clean_names() %>%
     select(-intercept)  
   
-  return(result_s_table)
+  result <-  result_p_table %>% 
+    left_join(result_s_table, by = "index")
+  
+  return(result)
 })
 
-test %>% 
-  left_join(test2, by = "index")
 
 
 # GAM model for all sites diff VIs [F | Diff VIS + site]
@@ -116,6 +111,31 @@ vis_sites_gam_daily <- models %>%
             rmse = map_dbl(model, rmse_fun),
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
+
+# Tabla metricas completas
+vis_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
+  print(i)
+  result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  result_s_table <- summary(models[[4]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  result <-  result_p_table %>% 
+    left_join(result_s_table, by = c("index", "site"))
+  
+  return(result)
+})
 
 # GAM model for all VI's [G | All VIs]
 mod_fun <- function(df) {
@@ -141,6 +161,32 @@ all_vis_gam_daily <- models %>%
             rmse = map_dbl(model, rmse_fun),
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
+
+# Tabla metricas completas
+all_vis_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
+  print(i)
+  result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)
+  
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    # select(-intercept)  
+  
+  result <-  result_p_table %>% 
+    left_join(result_s_table, by = "site")
+  
+  return(result)
+})
+
 
 # GAM model for all sites and all indices (covariates) [H | All VIs + site]
 single_vis_daily <- gam(gpp_dt_vut_ref ~ ndvi_mean +
