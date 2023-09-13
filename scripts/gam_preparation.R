@@ -42,7 +42,7 @@ mae_fun <- function(mod) {
   mean(abs(mod[["residuals"]]))
 }
 
-# GAM model for all sites [E | Diff VIs]
+# GAM model for all sites [E | Diff VIs] ----
 group_site <- daily_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -88,9 +88,7 @@ all_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
   return(result)
 })
 
-
-
-# GAM model for all sites diff VIs [F | Diff VIS + site]
+# GAM model for all sites diff VIs [F | Diff VIS + site] ---- 
 group_site <- daily_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -137,7 +135,7 @@ vis_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
   return(result)
 })
 
-# GAM model for all VI's [G | All VIs]
+# GAM model for all VI's [G | All VIs] ---- 
 mod_fun <- function(df) {
   gam(gpp_dt_vut_ref ~ ndvi_mean +
         # kndvi_mean +
@@ -179,7 +177,7 @@ all_vis_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
            site = models$site[i]) %>%
     rownames_to_column("intercept") %>%
     janitor::clean_names() %>%
-    # select(-intercept)  
+    select(-intercept)
   
   result <-  result_p_table %>% 
     left_join(result_s_table, by = "site")
@@ -188,7 +186,7 @@ all_vis_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
 })
 
 
-# GAM model for all sites and all indices (covariates) [H | All VIs + site]
+# GAM model for all sites and all indices (covariates) [H | All VIs + site] ----
 single_vis_daily <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                           # kndvi_mean +
                           s(evi_mean) +
@@ -207,6 +205,25 @@ all_sites_all_vis_gam_daily <- tribble(
   mutate(site = "All") %>% 
   select(index, site, rsq, rmse, mae)
 
+# Tabla metricas completas
+result_p_table <- summary(single_vis_daily)[["p.table"]] %>%
+  as.data.frame() %>%
+  # mutate(index = models$index[i],
+  #        site = models$site[i]) %>%
+  rownames_to_column("intercept") %>%
+  janitor::clean_names() #%>%
+  # select(-intercept)
+
+result_s_table <- summary(single_vis_daily)[["s.table"]] %>%
+  as.data.frame() %>%
+  # mutate(index = models$index[i],
+  #        site = models$site[i]) %>%
+  rownames_to_column("intercept") %>%
+  janitor::clean_names() #%>%
+  # select(-intercept)  
+  
+  # result <-  result_p_table %>% 
+  # left_join(result_s_table, by = "site")
 
 # WEEKLY GAMS ------------------------------------------------------------------
 # Prepare data with all sites
@@ -229,7 +246,7 @@ mae_fun <- function(mod) {
   mean(abs(mod[["residuals"]]))
 }
 
-# GAM model for all sites [E | Diff VIs]
+# GAM model for all sites [E | Diff VIs] ----
 group_site <- weekly_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -252,7 +269,31 @@ all_sites_gam_weekly <- models %>%
   mutate(site = "All") %>% 
   select(site, index, rsq, mae, rmse)
 
-# GAM model for all sites diff VIs [F | Diff VIS + site]
+# Tabla metricas completas
+all_sites_gam_weekly_complete <- map_dfr(1:nrow(models), function(i) {
+  print(i)
+  result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  result <-  result_p_table %>% 
+    left_join(result_s_table, by = "index")
+  
+  return(result)
+})
+
+
+# GAM model for all sites diff VIs [F | Diff VIS + site] ----
 group_site <- weekly_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -274,7 +315,32 @@ vis_sites_gam_weekly <- models %>%
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
 
-# GAM model for all VI's [G | All VIs]
+# Tabla metricas completas
+vis_sites_gam_weekly_complete <- map_dfr(1:nrow(models), function(i) {
+  print(i)
+  result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  result_s_table <- summary(models[[4]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  result <-  result_p_table %>% 
+    left_join(result_s_table, by = c("index", "site"))
+  
+  return(result)
+})
+
+# GAM model for all VI's [G | All VIs] ----
 mod_fun <- function(df) {
   gam(gpp_dt_vut_ref ~ ndvi_mean +
         # kndvi_mean +
@@ -299,7 +365,32 @@ all_vis_gam_weekly <- models %>%
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
 
-# GAM model for all sites and all indices (covariates) [H | All VIs + site]
+# Tabla metricas completas
+all_vis_gam_weekly_complete <- map_dfr(1:nrow(models), function(i) {
+  print(i)
+  result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)
+  
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)
+    
+    result <-  result_p_table %>% 
+    left_join(result_s_table, by = "site")
+  
+  return(result)
+})
+
+# GAM model for all sites and all indices (covariates) [H | All VIs + site] ----
 single_vis_weekly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                           # kndvi_mean +
                           s(evi_mean) +
@@ -318,6 +409,25 @@ all_sites_all_vis_gam_weekly <- tribble(
   mutate(site = "All") %>% 
   select(index, site, rsq, rmse, mae)
 
+# Tabla metricas completas
+result_p_table <- summary(single_vis_weekly)[["p.table"]] %>%
+  as.data.frame() %>%
+  # mutate(index = models$index[i],
+  #        site = models$site[i]) %>%
+  rownames_to_column("intercept") %>%
+  janitor::clean_names() #%>%
+# select(-intercept)
+
+result_s_table <- summary(single_vis_weekly)[["s.table"]] %>%
+  as.data.frame() %>%
+  # mutate(index = models$index[i],
+  #        site = models$site[i]) %>%
+  rownames_to_column("intercept") %>%
+  janitor::clean_names() #%>%
+# select(-intercept)  
+
+# result <-  result_p_table %>% 
+# left_join(result_s_table, by = "site")
 
 # MONTHLY GAMS ------------------------------------------------------------------
 # Prepare data with all sites
@@ -340,7 +450,7 @@ mae_fun <- function(mod) {
   mean(abs(mod[["residuals"]]))
 }
 
-# GAM model for all sites [E | Diff VIs]
+# GAM model for all sites [E | Diff VIs] ---- 
 group_site <- monthly_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -363,7 +473,7 @@ all_sites_gam_monthly <- models %>%
   mutate(site = "All") %>% 
   select(site, index, rsq, mae, rmse)
 
-# GAM model for all sites diff VIs [F | Diff VIS + site]
+# GAM model for all sites diff VIs [F | Diff VIS + site] ---- 
 group_site <- monthly_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -385,7 +495,7 @@ vis_sites_gam_monthly <- models %>%
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
 
-# GAM model for all VI's [G | All VIs]
+# GAM model for all VI's [G | All VIs] ----
 mod_fun <- function(df) {
   gam(gpp_dt_vut_ref ~ ndvi_mean +
         # kndvi_mean +
@@ -423,7 +533,7 @@ all_vis_gam_monthly <- models %>%
     )
   )
 
-# GAM model for all sites and all indices (covariates) [H | All VIs + site]
+# GAM model for all sites and all indices (covariates) [H | All VIs + site] ----
 single_vis_monthly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                            # kndvi_mean +
                            s(evi_mean) +
