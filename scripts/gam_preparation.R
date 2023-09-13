@@ -473,6 +473,29 @@ all_sites_gam_monthly <- models %>%
   mutate(site = "All") %>% 
   select(site, index, rsq, mae, rmse)
 
+# Tabla metricas completas
+all_sites_gam_monthly_complete <- map_dfr(1:nrow(models), function(i) {
+  print(i)
+  result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  result <-  result_p_table %>% 
+    left_join(result_s_table, by = "index")
+  
+  return(result)
+})
+
 # GAM model for all sites diff VIs [F | Diff VIS + site] ---- 
 group_site <- monthly_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
@@ -494,6 +517,31 @@ vis_sites_gam_monthly <- models %>%
             rmse = map_dbl(model, rmse_fun),
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
+
+# Tabla metricas completas
+vis_sites_gam_monthly_complete <- map_dfr(1:nrow(models), function(i) {
+  print(i)
+  result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  result_s_table <- summary(models[[4]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  result <-  result_p_table %>% 
+    left_join(result_s_table, by = c("index", "site"))
+  
+  return(result)
+})
 
 # GAM model for all VI's [G | All VIs] ----
 mod_fun <- function(df) {
@@ -533,6 +581,31 @@ all_vis_gam_monthly <- models %>%
     )
   )
 
+# Tabla metricas completas
+all_vis_gam_monthly_complete <- map_dfr(1:nrow(models), function(i) {
+  print(i)
+  result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)
+  
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)
+  
+  result <-  result_p_table %>% 
+    left_join(result_s_table, by = "site")
+  
+  return(result)
+})
+
 # GAM model for all sites and all indices (covariates) [H | All VIs + site] ----
 single_vis_monthly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                            # kndvi_mean +
@@ -542,7 +615,7 @@ single_vis_monthly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                          data = weekly_gam, 
                          method = 'REML')
 
-# **Daily models outputs**
+# **Monthly models outputs**
 all_sites_all_vis_gam_monthly <- tribble(
   ~index, ~rsq, ~rmse, ~mae,
   "All", summary(single_vis_daily)[["r.sq"]],
@@ -552,7 +625,25 @@ all_sites_all_vis_gam_monthly <- tribble(
   mutate(site = "All") %>% 
   select(index, site, rsq, rmse, mae)
 
+# Tabla metricas completas
+result_p_table <- summary(single_vis_monthly)[["p.table"]] %>%
+  as.data.frame() %>%
+  # mutate(index = models$index[i],
+  #        site = models$site[i]) %>%
+  rownames_to_column("intercept") %>%
+  janitor::clean_names() #%>%
+# select(-intercept)
 
+result_s_table <- summary(single_vis_monthly)[["s.table"]] %>%
+  as.data.frame() %>%
+  # mutate(index = models$index[i],
+  #        site = models$site[i]) %>%
+  rownames_to_column("intercept") %>%
+  janitor::clean_names() #%>%
+# select(-intercept)  
+
+# result <-  result_p_table %>% 
+# left_join(result_s_table, by = "site")
 
 
 
