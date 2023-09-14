@@ -68,12 +68,12 @@ all_sites_gam_daily <- models %>%
 # Tabla metricas completas
 all_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
   print(i)
-  result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
-    as.data.frame() %>%
-    mutate(index = models$index[i]) %>%
-    rownames_to_column("intercept") %>%
-    janitor::clean_names() %>%
-    select(-intercept)  
+  # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+  #   as.data.frame() %>%
+  #   mutate(index = models$index[i]) %>%
+  #   rownames_to_column("intercept") %>%
+  #   janitor::clean_names() %>%
+  #   select(-intercept)  
   
   result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
     as.data.frame() %>%
@@ -82,8 +82,15 @@ all_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
     janitor::clean_names() %>%
     select(-intercept)  
   
-  result <-  result_p_table %>% 
-    left_join(result_s_table, by = "index")
+  aic_table <- models[[3]][[i]][["aic"]] %>% 
+    as.data.frame(nm = "AIC") %>% 
+    mutate(index = models$index[i])
+  
+  result <-  result_s_table %>% 
+    left_join(aic_table, by = "index") %>% 
+    mutate(site = "All") %>% 
+    select(site, index, edf, f, p_value, AIC) %>% 
+    arrange(desc("AIC"))
   
   return(result)
 })
@@ -113,13 +120,13 @@ vis_sites_gam_daily <- models %>%
 # Tabla metricas completas
 vis_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
   print(i)
-  result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
-    as.data.frame() %>%
-    mutate(index = models$index[i],
-           site = models$site[i]) %>%
-    rownames_to_column("intercept") %>%
-    janitor::clean_names() %>%
-    select(-intercept)  
+  # result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
+  #   as.data.frame() %>%
+  #   mutate(index = models$index[i],
+  #          site = models$site[i]) %>%
+  #   rownames_to_column("intercept") %>%
+  #   janitor::clean_names() %>%
+  #   select(-intercept)  
   
   result_s_table <- summary(models[[4]][[i]])[["s.table"]] %>%
     as.data.frame() %>%
@@ -129,8 +136,15 @@ vis_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
     janitor::clean_names() %>%
     select(-intercept)  
   
-  result <-  result_p_table %>% 
-    left_join(result_s_table, by = c("index", "site"))
+  aic_table <- models[[4]][[i]][["aic"]] %>% 
+    as.data.frame(nm = "AIC") %>% 
+    mutate(index = models$index[i],
+           site = models$site[i])
+  
+  result <-  result_s_table %>% 
+    left_join(aic_table, by = c("index", "site")) %>% 
+    select(site, index, edf, f, p_value, AIC) %>% 
+    arrange(desc("AIC"))
   
   return(result)
 })
