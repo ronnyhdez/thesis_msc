@@ -226,24 +226,18 @@ all_sites_all_vis_gam_daily <- tribble(
   select(index, site, rsq, rmse, mae)
 
 # Tabla metricas completas
-result_p_table <- summary(single_vis_daily)[["p.table"]] %>%
+all_sites_all_vis_gam_daily_complete <- 
+  summary(single_vis_daily)[["s.table"]] %>%
   as.data.frame() %>%
-  # mutate(index = models$index[i],
-  #        site = models$site[i]) %>%
-  rownames_to_column("intercept") %>%
-  janitor::clean_names() #%>%
-  # select(-intercept)
-
-result_s_table <- summary(single_vis_daily)[["s.table"]] %>%
-  as.data.frame() %>%
-  # mutate(index = models$index[i],
-  #        site = models$site[i]) %>%
-  rownames_to_column("intercept") %>%
-  janitor::clean_names() #%>%
-  # select(-intercept)  
+  janitor::clean_names()  %>% 
+  mutate(index = "All",
+         site = "All",
+         AIC = single_vis_daily[["aic"]]) %>%
+  rownames_to_column("term") %>%
+  select(site, index, term, edf, f, p_value, AIC) %>% 
+  arrange(desc("AIC"))
   
-  # result <-  result_p_table %>% 
-  # left_join(result_s_table, by = "site")
+
 
 # WEEKLY GAMS ------------------------------------------------------------------
 # Prepare data with all sites

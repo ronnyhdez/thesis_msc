@@ -239,7 +239,15 @@ vis_sites_gam_daily_complete %>%
 ```
 
 ```{r}
+all_vis_gam_daily_complete %>% 
+  arrange(AIC) %>% 
+  gt()
+```
 
+```{r}
+all_sites_all_vis_gam_daily_complete %>% 
+  arrange(desc(f)) %>% 
+  gt()
 ```
 
 
