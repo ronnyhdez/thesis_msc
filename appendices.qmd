@@ -221,7 +221,7 @@ source("scripts/gam_preparation.R")
 ### Daily GAM metrics
 
 ```{r}
-#| label: tbl-gam_daily_model_results_complete
+#| label: tbl-gam_daily_model_results_complete_a
 #| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
 #| echo: false
 #| message: false
@@ -234,6 +234,11 @@ all_sites_gam_daily_complete %>%
 
 
 ```{r}
+#| label: tbl-gam_daily_model_results_complete_b
+#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
+#| echo: false
+#| message: false
+#| warning: false
 all_vis_gam_daily_complete %>% 
   bind_rows(all_sites_all_vis_gam_daily_complete) %>% 
   arrange(AIC) %>% 
@@ -243,12 +248,11 @@ all_vis_gam_daily_complete %>%
 ### Weekly GAM metrics
 
 ```{r}
-#| label: tbl-gam_model_results_pvalue
+#| label: tbl-gam_weekly_model_results_complete_a 
 #| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
 #| echo: false
 #| message: false
 #| warning: false
-
 all_sites_gam_weekly_complete %>% 
   bind_rows(vis_sites_gam_weekly_complete) %>% 
   arrange(AIC) %>% 
@@ -256,6 +260,11 @@ all_sites_gam_weekly_complete %>%
 ```
 
 ```{r}
+#| label: tbl-gam_daily_model_results_complete
+#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
+#| echo: false
+#| message: false
+#| warning: false
 all_vis_gam_weekly_complete %>% 
   bind_rows(all_sites_all_vis_gam_weekly_complete) %>% 
   arrange(AIC) %>% 
@@ -265,12 +274,11 @@ all_vis_gam_weekly_complete %>%
 ### Monthly GAM metrics
 
 ```{r}
-#| label: tbl-gam_model_results_pvalue
+#| label: tbl-gam_monthly_model_results_complete_a
 #| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
 #| echo: false
 #| message: false
 #| warning: false
-
 all_sites_gam_monthly_complete %>% 
   bind_rows(vis_sites_gam_monthly_complete) %>% 
   arrange(AIC) %>% 
@@ -279,6 +287,11 @@ all_sites_gam_monthly_complete %>%
 
 
 ```{r}
+#| label: tbl-gam_monthly_model_results_complete_b
+#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
+#| echo: false
+#| message: false
+#| warning: false
 all_vis_gam_monthly_complete %>% 
   bind_rows(all_sites_all_vis_gam_monthly_complete) %>% 
   arrange(AIC) %>% 
