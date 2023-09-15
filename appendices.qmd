@@ -197,10 +197,10 @@ bind_rows(evi_glance_monthly,
     groupname_col = "site"
   ) %>% 
   fmt_number(
-    columns = 3:8,
+    columns = 3:7,
     decimals = 3) %>% 
   fmt_scientific(
-    columns = 9,
+    columns = 7,
     decimals = 3
   ) %>% 
   tab_options(
