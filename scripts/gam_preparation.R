@@ -67,7 +67,7 @@ all_sites_gam_daily <- models %>%
 
 # Tabla metricas completas
 all_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
-  print(i)
+  # #print(i)
   # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
   #   as.data.frame() %>%
   #   mutate(index = models$index[i]) %>%
@@ -119,7 +119,7 @@ vis_sites_gam_daily <- models %>%
 
 # Tabla metricas completas
 vis_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
-  print(i)
+  #print(i)
   # result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
   #   as.data.frame() %>%
   #   mutate(index = models$index[i],
@@ -176,7 +176,7 @@ all_vis_gam_daily <- models %>%
 
 # Tabla metricas completas
 all_vis_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
-  print(i)
+  #print(i)
   # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
   #   as.data.frame() %>%
   #   mutate(index = models$index[i],
@@ -285,7 +285,7 @@ all_sites_gam_weekly <- models %>%
 
 # Tabla metricas completas
 all_sites_gam_weekly_complete <- map_dfr(1:nrow(models), function(i) {
-  print(i)
+  #print(i)
   # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
   #   as.data.frame() %>%
   #   mutate(index = models$index[i]) %>%
@@ -337,7 +337,7 @@ vis_sites_gam_weekly <- models %>%
 
 # Tabla metricas completas
 vis_sites_gam_weekly_complete <- map_dfr(1:nrow(models), function(i) {
-  print(i)
+  #print(i)
   # result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
   #   as.data.frame() %>%
   #   mutate(index = models$index[i],
@@ -394,7 +394,7 @@ all_vis_gam_weekly <- models %>%
 
 # Tabla metricas completas
 all_vis_gam_weekly_complete <- map_dfr(1:nrow(models), function(i) {
-  print(i)
+  #print(i)
   # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
   #   as.data.frame() %>%
   #   mutate(index = models$index[i],
@@ -500,7 +500,7 @@ all_sites_gam_monthly <- models %>%
 
 # Tabla metricas completas
 all_sites_gam_monthly_complete <- map_dfr(1:nrow(models), function(i) {
-  print(i)
+  #print(i)
   # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
   #   as.data.frame() %>%
   #   mutate(index = models$index[i]) %>%
@@ -552,7 +552,7 @@ vis_sites_gam_monthly <- models %>%
 
 # Tabla metricas completas
 vis_sites_gam_monthly_complete <- map_dfr(1:nrow(models), function(i) {
-  print(i)
+  #print(i)
   # result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
   #   as.data.frame() %>%
   #   mutate(index = models$index[i],
@@ -622,7 +622,7 @@ all_vis_gam_monthly <- models %>%
 
 # Tabla metricas completas
 all_vis_gam_monthly_complete <- map_dfr(1:nrow(models), function(i) {
-  print(i)
+  #print(i)
   # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
   #   as.data.frame() %>%
   #   mutate(index = models$index[i],
