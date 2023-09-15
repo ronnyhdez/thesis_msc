@@ -218,8 +218,30 @@ bind_rows(evi_glance_monthly,
 source("scripts/gam_preparation.R")
 ```
 
+### Daily GAM metrics
 
-### Monthly GAM metrics
+```{r}
+#| label: tbl-gam_daily_model_results_complete
+#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
+#| echo: false
+#| message: false
+#| warning: false
+all_sites_gam_daily_complete %>% 
+  bind_rows(vis_sites_gam_daily_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
+
+```{r}
+all_vis_gam_daily_complete %>% 
+  bind_rows(all_sites_all_vis_gam_daily_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
+### Weekly GAM metrics
+
 ```{r}
 #| label: tbl-gam_model_results_pvalue
 #| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
@@ -227,36 +249,47 @@ source("scripts/gam_preparation.R")
 #| message: false
 #| warning: false
 
-all_sites_gam_daily_complete %>% 
+all_sites_gam_weekly_complete %>% 
+  bind_rows(vis_sites_gam_weekly_complete) %>% 
   arrange(AIC) %>% 
   gt()
 ```
 
 ```{r}
-vis_sites_gam_daily_complete %>% 
+all_vis_gam_weekly_complete %>% 
+  bind_rows(all_sites_all_vis_gam_weekly_complete) %>% 
   arrange(AIC) %>% 
   gt()
 ```
 
+### Monthly GAM metrics
+
 ```{r}
-all_vis_gam_daily_complete %>% 
+#| label: tbl-gam_model_results_pvalue
+#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
+#| echo: false
+#| message: false
+#| warning: false
+
+all_sites_gam_monthly_complete %>% 
+  bind_rows(vis_sites_gam_monthly_complete) %>% 
   arrange(AIC) %>% 
   gt()
 ```
 
+
 ```{r}
-all_sites_all_vis_gam_daily_complete %>% 
-  arrange(desc(f)) %>% 
+all_vis_gam_monthly_complete %>% 
+  bind_rows(all_sites_all_vis_gam_monthly_complete) %>% 
+  arrange(AIC) %>% 
   gt()
 ```
+
 
 
 <!-- #### Individual Daily GAM models -->
 
 <!-- **The following tables represent the results of each model as gpp~VI and it's not segregated by site.** -->
-
-
-
 
 <!-- ```{r} -->
 <!-- #| label: tbl-gam_model_results_pvalue -->

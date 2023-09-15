@@ -551,7 +551,7 @@ vis_sites_gam_monthly <- models %>%
   arrange(desc(rsq))
 
 # Tabla metricas completas
-vis_sites_gam_wmonthly_complete <- map_dfr(1:nrow(models), function(i) {
+vis_sites_gam_monthly_complete <- map_dfr(1:nrow(models), function(i) {
   print(i)
   # result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
   #   as.data.frame() %>%
