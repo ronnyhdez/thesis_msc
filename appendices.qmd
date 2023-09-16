@@ -209,6 +209,61 @@ bind_rows(evi_glance_monthly,
   ) 
 ```
 
+```{r}
+# Create table with complete models metrics
+bind_rows(evi_glance_weekly,
+          ndvi_glance_weekly,
+          nirv_glance_weekly,
+		  # kndvi_glance,
+		  cci_glance_weekly) %>% 
+  select(site, index, adj.r.squared, 
+         statistic, AIC, BIC,  p.value) %>% 
+  group_by(site) %>% 
+  arrange(desc(adj.r.squared)) %>% 
+  gt(
+    rowname_col = "index",
+    groupname_col = "site"
+  ) %>% 
+  fmt_number(
+    columns = 3:7,
+    decimals = 3) %>% 
+  fmt_scientific(
+    columns = 7,
+    decimals = 3
+  ) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) 
+```
+
+```{r}
+# Create table with complete models metrics
+bind_rows(evi_glance_daily,
+          ndvi_glance_daily,
+          nirv_glance_daily,
+		  # kndvi_glance,
+		  cci_glance_daily) %>% 
+  select(site, index, adj.r.squared, 
+         statistic, AIC, BIC,  p.value) %>% 
+  group_by(site) %>% 
+  arrange(desc(adj.r.squared)) %>% 
+  gt(
+    rowname_col = "index",
+    groupname_col = "site"
+  ) %>% 
+  fmt_number(
+    columns = 3:7,
+    decimals = 3) %>% 
+  fmt_scientific(
+    columns = 7,
+    decimals = 3
+  ) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) 
+```
 ## Complete GAM metrics
 
 ```{r}
