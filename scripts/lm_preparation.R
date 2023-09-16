@@ -68,7 +68,7 @@ all_sites_glance_monthly <- all_sites_lm  %>%
   select(-data, -fit, -tidied) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(site = "All") %>% 
-  select(site, index, r.squared, mae, rmse) %>% 
+  # select(site, index, r.squared, mae, rmse) %>% 
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -244,7 +244,7 @@ all_vis_glance_monthly <- all_vis_lm  %>%
   select(-data, -fit, -tidied) %>%
   arrange(desc(r.squared)) %>%
   mutate(index = "All") %>%
-  select(site, index, r.squared, mae, rmse) %>%
+  # select(site, index, r.squared, mae, rmse) %>%
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -273,8 +273,8 @@ all_sites_all_vis_glance_monthly <- glance(all_sites_all_indices) %>%
   mutate(rmse = rmse,
          mae = mae,
          site = "All",
-         index = "All") %>% 
-  select(site, index, r.squared, mae, rmse)
+         index = "All") #%>% 
+  # select(site, index, r.squared, mae, rmse)
 
 # WEEKLY LMS ------------------------------------------------------------------
 # Prepare data with all sites
@@ -323,7 +323,7 @@ all_sites_glance_weekly <- all_sites_lm  %>%
   select(-data, -fit, -tidied) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(site = "All") %>% 
-  select(site, index, r.squared, mae, rmse) %>% 
+  # select(site, index, r.squared, mae, rmse) %>% 
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -476,7 +476,7 @@ all_vis_glance_weekly <- all_vis_lm  %>%
   select(-data, -fit, -tidied) %>%
   arrange(desc(r.squared)) %>%
   mutate(index = "All") %>%
-  select(site, index, r.squared, mae, rmse) %>%
+  # select(site, index, r.squared, mae, rmse) %>%
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -505,8 +505,8 @@ all_sites_all_vis_glance_weekly <- glance(all_sites_all_indices) %>%
   mutate(rmse = rmse,
          mae = mae,
          site = "All",
-         index = "All") %>% 
-  select(site, index, r.squared, mae, rmse)
+         index = "All") #%>% 
+  # select(site, index, r.squared, mae, rmse)
 
 
 # DAILY LMS ------------------------------------------------------------------
@@ -555,7 +555,7 @@ all_sites_glance_daily <- all_sites_lm  %>%
   select(-data, -fit, -tidied) %>% 
   arrange(desc(r.squared)) %>% 
   mutate(site = "All") %>% 
-  select(site, index, r.squared, mae, rmse) %>% 
+  # select(site, index, r.squared, mae, rmse) %>% 
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -708,7 +708,7 @@ all_vis_glance_daily <- all_vis_lm  %>%
   select(-data, -fit, -tidied) %>%
   arrange(desc(r.squared)) %>%
   mutate(index = "All") %>%
-  select(site, index, r.squared, mae, rmse) %>%
+  # select(site, index, r.squared, mae, rmse) %>%
   mutate(index = case_when(
     index == "evi_mean" ~ "EVI",
     index == "ndvi_mean" ~ "NDVI",
@@ -737,6 +737,6 @@ all_sites_all_vis_glance_daily <- glance(all_sites_all_indices) %>%
   mutate(rmse = rmse,
          mae = mae,
          site = "All",
-         index = "All") %>% 
-  select(site, index, r.squared, mae, rmse)
+         index = "All") #%>% 
+  # select(site, index, r.squared, mae, rmse)
 
