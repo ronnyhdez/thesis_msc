@@ -665,10 +665,10 @@ create_metrics_table <- function(data) {
 
 # Monthly table
 vis_site_glance_monthly %>% 
-  select(site, index, r.squared, mae, rmse) %>%
   bind_rows(all_sites_glance_monthly,
             all_sites_all_vis_glance_monthly,
             all_vis_glance_monthly) %>% 
+  select(site, index, r.squared, mae, rmse) %>%
   pivot_wider(names_from = index, 
               values_from = c(r.squared, mae, rmse)) %>%
   create_metrics_table()
@@ -676,20 +676,20 @@ vis_site_glance_monthly %>%
 
 # Weekly table
 vis_site_glance_weekly  %>%
-  select(site, index, r.squared, mae, rmse) %>%
   bind_rows(all_sites_glance_weekly,
             all_sites_all_vis_glance_weekly,
             all_vis_glance_weekly) %>% 
+  select(site, index, r.squared, mae, rmse) %>%
   pivot_wider(names_from = index, 
               values_from = c(r.squared, mae, rmse)) %>%
   create_metrics_table()
 
 # Daily table
 vis_site_glance_daily %>%
-  select(site, index, r.squared, mae, rmse) %>%
   bind_rows(all_sites_glance_daily,
             all_sites_all_vis_glance_daily,
             all_vis_glance_daily)  %>% 
+  select(site, index, r.squared, mae, rmse) %>%
   pivot_wider(names_from = index, 
               values_from = c(r.squared, mae, rmse)) %>%
   create_metrics_table()
@@ -775,8 +775,6 @@ To compare between the models, we include in the table relevant model summary
 statistics, such as R2, MAE, and RMSE. More metrics such as the p-value,
 adjusted r-squared, the Akaike Information Criterion (AIC), and Bayesian
 Information Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
-
-
 
 <!-- explains more x% variance than -->
 When using GAM models at a monthly basis, no single VI demonstrates consistent

@@ -311,7 +311,7 @@ vis_site_glance_weekly %>%
   ) 
 ```
 
-### Dailyly LM metrics
+### Daily LM metrics
 
 ```{r}
 # Create table with complete models metrics
