@@ -1010,20 +1010,20 @@ plot_grid(gam_metrics_plots, plot_legend, ncol = 2, rel_widths = c(1, .1))
 rm(plot_legend)
 ```
 
+### LM vs GAM
 
-LM vs GAM
-
- - Monthly GAM Michigan had better results with EVI and NIRv than LM with all
- indices as covariates.
- - Weekly GAM models with all VIs as covariates got a better performance than
- the LM for all sites except for Borden that had the same R2 but nonetheless,
- lower error metrics.
- - This variance implied that a linear relationship might not be optimal, 
- potentially leading to substantial residuals. In contrast, the GAM model was
- found to adeptly accommodate such variability and provide a more comprehensive
- explanation for the relationship. This adaptability was especially significant
- when addressing GPP's daily, weekly, or monthly variations.
-
+Monthly GAM applied in the context of Michigan exhibited a better performance
+when employing EVI and NIRv in comparison to LMs with all vegetation indices as
+covariates. Regarding weekly GAM models, they demonstrated improved performance
+compared to LM across all sites, except for Borden, where both models yielded 
+equivalent R² values. Notably, despite similar R² values, the GAM model 
+consistently displayed lower error metrics, suggesting its capacity to better 
+accommodate potential nonlinear relationships and produce more accurate 
+predictions. This adaptability was particularly evident when addressing the 
+daily, weekly, or monthly variations in GPP. Furthermore, it is crucial to
+highlight that monthly models, both in LM and GAM frameworks, consistently 
+exhibited superior metrics compared to their weekly and daily counterparts, as
+illustrated in @fig-gam_metrics and @fig-lm_metrics.
 
 ```{r gpp_vi_realtions_all_sites}
 #| label: fig-gpp_vi_relation_daily
