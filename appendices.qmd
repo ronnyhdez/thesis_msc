@@ -365,7 +365,7 @@ source("scripts/gam_preparation.R")
 
 ```{r}
 #| label: tbl-gam_daily_model_results_complete_a
-#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
+#| tbl-cap: "Summary of the GAM models output for daily GPP estimation using the every VI as an individual non-linear term"
 #| echo: false
 #| message: false
 #| warning: false
@@ -443,7 +443,7 @@ all_sites_gam_daily_complete %>%
 
 ```{r}
 #| label: tbl-gam_daily_model_results_complete_b
-#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
+#| tbl-cap: "Summary of the GAM models output for daily GPP estimation using the all VIs per site category as non-linear terms covariates"
 #| echo: false
 #| message: false
 #| warning: false
@@ -457,7 +457,7 @@ all_vis_gam_daily_complete %>%
 
 ```{r}
 #| label: tbl-gam_weekly_model_results_complete_a 
-#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
+#| tbl-cap: "Summary of the GAM models output for weekly GPP estimation using the every VI as an individual non-linear term"
 #| echo: false
 #| message: false
 #| warning: false
@@ -468,8 +468,8 @@ all_sites_gam_weekly_complete %>%
 ```
 
 ```{r}
-#| label: tbl-gam_daily_model_results_complete
-#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
+#| label: tbl-gam_weekly_model_results_complete_b
+#| tbl-cap: "Summary of the GAM models output for weekly GPP estimation using the all VIs per site category as non-linear terms covariates"
 #| echo: false
 #| message: false
 #| warning: false
@@ -483,7 +483,7 @@ all_vis_gam_weekly_complete %>%
 
 ```{r}
 #| label: tbl-gam_monthly_model_results_complete_a
-#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
+#| tbl-cap: "Summary of the GAM models output for monthly GPP estimation using the every VI as an individual non-linear term"
 #| echo: false
 #| message: false
 #| warning: false
@@ -496,7 +496,7 @@ all_sites_gam_monthly_complete %>%
 
 ```{r}
 #| label: tbl-gam_monthly_model_results_complete_b
-#| tbl-cap: "Summary of the individual GAM models for daily GPP estimation using the VIs"
+#| tbl-cap: "Summary of the GAM models output for monthly GPP estimation using the all VIs per site category as non-linear terms covariates"
 #| echo: false
 #| message: false
 #| warning: false
