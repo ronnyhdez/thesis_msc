@@ -42,7 +42,7 @@ mae_fun <- function(mod) {
   mean(abs(mod[["residuals"]]))
 }
 
-# GAM model for all sites [E | Diff VIs]
+# GAM model for all sites [E | Diff VIs] ----
 group_site <- daily_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -65,53 +65,37 @@ all_sites_gam_daily <- models %>%
   mutate(site = "All") %>% 
   select(site, index, rsq, mae, rmse)
 
-#  # Daily ndvi 
-# model_ndvi_daily <- gam(gpp_dt_vut_ref ~ s(ndvi_mean, k = 10), 
-#                         data = daily_gam, 
-#                         method = 'REML')
-# 
-# # Daily evi 
-# model_evi_daily <- gam(gpp_dt_vut_ref ~ s(evi_mean, k = 10), 
-#                        data = daily_gam, 
-#                        method = 'REML')
-# 
-# # Daily nirv 
-# model_nirv_daily <- gam(gpp_dt_vut_ref ~ s(nirv_mean, k = 10), 
-#                         data = daily_gam, 
-#                         method = 'REML')
-# 
-# # # Daily kndvi
-# # model_kndvi_daily <- gam(gpp_dt_vut_ref ~ s(kndvi_mean, k = 10), 
-# #                          data = daily_gam, 
-# #                          method = 'REML')
-# 
-# # Daily cci
-# model_cci_daily <- gam(gpp_dt_vut_ref ~ s(cci_mean, k = 10), 
-#                        data = daily_gam, 
-#                        method = 'REML')
-# 
-# # **Daily models outputs**
-# summ_ndvi_daily <- summary(model_ndvi_daily)
-# summ_evi_daily <- summary(model_evi_daily)
-# summ_nirv_daily <- summary(model_nirv_daily)
-# # summ_kndvi_daily <- summary(model_kndvi_daily)
-# summ_cci_daily <- summary(model_cci_daily)
-# 
-# # Tables for comparison (this can be a function)
-# s_table_evi_daily <- summ_evi_daily[["s.table"]] %>% as.data.frame()
-# s_table_ndvi_daily <- summ_ndvi_daily[["s.table"]] %>% as.data.frame()
-# s_table_nirv_daily <- summ_nirv_daily[["s.table"]] %>% as.data.frame()
-# # s_table_kndvi_daily <- summ_kndvi_daily[["s.table"]] %>% as.data.frame()
-# s_table_cci_daily <- summ_cci_daily[["s.table"]] %>% as.data.frame()
-# 
-# p_table_evi_daily <- summ_evi_daily[["p.table"]] %>% as.data.frame()
-# p_table_ndvi_daily <- summ_ndvi_daily[["p.table"]] %>% as.data.frame()
-# p_table_nirv_daily <- summ_nirv_daily[["p.table"]] %>% as.data.frame()
-# # p_table_kndvi_daily <- summ_kndvi_daily[["p.table"]] %>% as.data.frame()
-# p_table_cci_daily <- summ_cci_daily[["p.table"]] %>% as.data.frame()
+# Tabla metricas completas
+all_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
+  # #print(i)
+  # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+  #   as.data.frame() %>%
+  #   mutate(index = models$index[i]) %>%
+  #   rownames_to_column("intercept") %>%
+  #   janitor::clean_names() %>%
+  #   select(-intercept)  
+  
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  aic_table <- models[[3]][[i]][["aic"]] %>% 
+    as.data.frame(nm = "AIC") %>% 
+    mutate(index = models$index[i])
+  
+  result <-  result_s_table %>% 
+    left_join(aic_table, by = "index") %>% 
+    mutate(site = "All") %>% 
+    select(site, index, edf, f, p_value, AIC) %>% 
+    arrange(desc("AIC"))
+  
+  return(result)
+})
 
-
-# GAM model for all sites diff VIs [F | Diff VIS + site]
+# GAM model for all sites diff VIs [F | Diff VIS + site] ---- 
 group_site <- daily_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -133,7 +117,39 @@ vis_sites_gam_daily <- models %>%
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
 
-# GAM model for all VI's [G | All VIs]
+# Tabla metricas completas
+vis_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
+  #print(i)
+  # result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
+  #   as.data.frame() %>%
+  #   mutate(index = models$index[i],
+  #          site = models$site[i]) %>%
+  #   rownames_to_column("intercept") %>%
+  #   janitor::clean_names() %>%
+  #   select(-intercept)  
+  
+  result_s_table <- summary(models[[4]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  aic_table <- models[[4]][[i]][["aic"]] %>% 
+    as.data.frame(nm = "AIC") %>% 
+    mutate(index = models$index[i],
+           site = models$site[i])
+  
+  result <-  result_s_table %>% 
+    left_join(aic_table, by = c("index", "site")) %>% 
+    select(site, index, edf, f, p_value, AIC) %>% 
+    arrange(desc("AIC"))
+  
+  return(result)
+})
+
+# GAM model for all VI's [G | All VIs] ---- 
 mod_fun <- function(df) {
   gam(gpp_dt_vut_ref ~ ndvi_mean +
         # kndvi_mean +
@@ -158,7 +174,39 @@ all_vis_gam_daily <- models %>%
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
 
-# GAM model for all sites and all indices (covariates) [H | All VIs + site]
+# Tabla metricas completas
+all_vis_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
+  #print(i)
+  # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+  #   as.data.frame() %>%
+  #   mutate(index = models$index[i],
+  #          site = models$site[i]) %>%
+  #   rownames_to_column("intercept") %>%
+  #   janitor::clean_names() %>%
+  #   select(-intercept)
+  
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("term") %>%
+    janitor::clean_names() 
+  
+  aic_table <- models[[3]][[i]][["aic"]] %>% 
+    as.data.frame(nm = "AIC") %>% 
+    mutate(index = models$index[i],
+           site = models$site[i])
+  
+  result <-  result_s_table %>% 
+    left_join(aic_table, by = c("index", "site")) %>% 
+    select(site, index, term, edf, f, p_value, AIC) %>% 
+    arrange(desc("AIC"))
+  
+  return(result)
+})
+
+
+# GAM model for all sites and all indices (covariates) [H | All VIs + site] ----
 single_vis_daily <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                           # kndvi_mean +
                           s(evi_mean) +
@@ -176,6 +224,19 @@ all_sites_all_vis_gam_daily <- tribble(
 ) %>% 
   mutate(site = "All") %>% 
   select(index, site, rsq, rmse, mae)
+
+# Tabla metricas completas
+all_sites_all_vis_gam_daily_complete <- 
+  summary(single_vis_daily)[["s.table"]] %>%
+  as.data.frame() %>%
+  janitor::clean_names()  %>% 
+  mutate(index = "All",
+         site = "All",
+         AIC = single_vis_daily[["aic"]]) %>%
+  rownames_to_column("term") %>%
+  select(site, index, term, edf, f, p_value, AIC) %>% 
+  arrange(desc("AIC"))
+  
 
 
 # WEEKLY GAMS ------------------------------------------------------------------
@@ -199,7 +260,7 @@ mae_fun <- function(mod) {
   mean(abs(mod[["residuals"]]))
 }
 
-# GAM model for all sites [E | Diff VIs]
+# GAM model for all sites [E | Diff VIs] ----
 group_site <- weekly_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -222,7 +283,37 @@ all_sites_gam_weekly <- models %>%
   mutate(site = "All") %>% 
   select(site, index, rsq, mae, rmse)
 
-# GAM model for all sites diff VIs [F | Diff VIS + site]
+# Tabla metricas completas
+all_sites_gam_weekly_complete <- map_dfr(1:nrow(models), function(i) {
+  #print(i)
+  # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+  #   as.data.frame() %>%
+  #   mutate(index = models$index[i]) %>%
+  #   rownames_to_column("intercept") %>%
+  #   janitor::clean_names() %>%
+  #   select(-intercept)  
+  
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  aic_table <- models[[3]][[i]][["aic"]] %>% 
+    as.data.frame(nm = "AIC") %>% 
+    mutate(index = models$index[i])
+  
+  result <-  result_s_table %>% 
+    left_join(aic_table, by = "index") %>% 
+    mutate(site = "All") %>% 
+    select(site, index, edf, f, p_value, AIC) %>% 
+    arrange(desc("AIC"))
+  
+  return(result)
+})
+
+# GAM model for all sites diff VIs [F | Diff VIS + site] ----
 group_site <- weekly_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -244,7 +335,39 @@ vis_sites_gam_weekly <- models %>%
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
 
-# GAM model for all VI's [G | All VIs]
+# Tabla metricas completas
+vis_sites_gam_weekly_complete <- map_dfr(1:nrow(models), function(i) {
+  #print(i)
+  # result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
+  #   as.data.frame() %>%
+  #   mutate(index = models$index[i],
+  #          site = models$site[i]) %>%
+  #   rownames_to_column("intercept") %>%
+  #   janitor::clean_names() %>%
+  #   select(-intercept)  
+  
+  result_s_table <- summary(models[[4]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  aic_table <- models[[4]][[i]][["aic"]] %>% 
+    as.data.frame(nm = "AIC") %>% 
+    mutate(index = models$index[i],
+           site = models$site[i])
+  
+  result <-  result_s_table %>% 
+    left_join(aic_table, by = c("index", "site")) %>% 
+    select(site, index, edf, f, p_value, AIC) %>% 
+    arrange(desc("AIC"))
+  
+  return(result)
+})
+
+# GAM model for all VI's [G | All VIs] ----
 mod_fun <- function(df) {
   gam(gpp_dt_vut_ref ~ ndvi_mean +
         # kndvi_mean +
@@ -269,7 +392,38 @@ all_vis_gam_weekly <- models %>%
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
 
-# GAM model for all sites and all indices (covariates) [H | All VIs + site]
+# Tabla metricas completas
+all_vis_gam_weekly_complete <- map_dfr(1:nrow(models), function(i) {
+  #print(i)
+  # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+  #   as.data.frame() %>%
+  #   mutate(index = models$index[i],
+  #          site = models$site[i]) %>%
+  #   rownames_to_column("intercept") %>%
+  #   janitor::clean_names() %>%
+  #   select(-intercept)
+  
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("term") %>%
+    janitor::clean_names() 
+  
+  aic_table <- models[[3]][[i]][["aic"]] %>% 
+    as.data.frame(nm = "AIC") %>% 
+    mutate(index = models$index[i],
+           site = models$site[i])
+  
+  result <-  result_s_table %>% 
+    left_join(aic_table, by = c("index", "site")) %>% 
+    select(site, index, term, edf, f, p_value, AIC) %>% 
+    arrange(desc("AIC"))
+  
+  return(result)
+})
+
+# GAM model for all sites and all indices (covariates) [H | All VIs + site] ----
 single_vis_weekly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                           # kndvi_mean +
                           s(evi_mean) +
@@ -288,6 +442,17 @@ all_sites_all_vis_gam_weekly <- tribble(
   mutate(site = "All") %>% 
   select(index, site, rsq, rmse, mae)
 
+# Tabla metricas completas
+all_sites_all_vis_gam_weekly_complete <- 
+  summary(single_vis_daily)[["s.table"]] %>%
+  as.data.frame() %>%
+  janitor::clean_names()  %>% 
+  mutate(index = "All",
+         site = "All",
+         AIC = single_vis_daily[["aic"]]) %>%
+  rownames_to_column("term") %>%
+  select(site, index, term, edf, f, p_value, AIC) %>% 
+  arrange(desc("AIC"))
 
 # MONTHLY GAMS ------------------------------------------------------------------
 # Prepare data with all sites
@@ -310,7 +475,7 @@ mae_fun <- function(mod) {
   mean(abs(mod[["residuals"]]))
 }
 
-# GAM model for all sites [E | Diff VIs]
+# GAM model for all sites [E | Diff VIs] ---- 
 group_site <- monthly_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -333,7 +498,37 @@ all_sites_gam_monthly <- models %>%
   mutate(site = "All") %>% 
   select(site, index, rsq, mae, rmse)
 
-# GAM model for all sites diff VIs [F | Diff VIS + site]
+# Tabla metricas completas
+all_sites_gam_monthly_complete <- map_dfr(1:nrow(models), function(i) {
+  #print(i)
+  # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+  #   as.data.frame() %>%
+  #   mutate(index = models$index[i]) %>%
+  #   rownames_to_column("intercept") %>%
+  #   janitor::clean_names() %>%
+  #   select(-intercept)  
+  
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  aic_table <- models[[3]][[i]][["aic"]] %>% 
+    as.data.frame(nm = "AIC") %>% 
+    mutate(index = models$index[i])
+  
+  result <-  result_s_table %>% 
+    left_join(aic_table, by = "index") %>% 
+    mutate(site = "All") %>% 
+    select(site, index, edf, f, p_value, AIC) %>% 
+    arrange(desc("AIC"))
+  
+  return(result)
+})
+
+# GAM model for all sites diff VIs [F | Diff VIS + site] ---- 
 group_site <- monthly_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
                values_to = "value") %>% 
@@ -355,7 +550,39 @@ vis_sites_gam_monthly <- models %>%
             mae = map_dbl(model, mae_fun)) %>% 
   arrange(desc(rsq))
 
-# GAM model for all VI's [G | All VIs]
+# Tabla metricas completas
+vis_sites_gam_monthly_complete <- map_dfr(1:nrow(models), function(i) {
+  #print(i)
+  # result_p_table <- summary(models[[4]][[i]])[["p.table"]] %>%
+  #   as.data.frame() %>%
+  #   mutate(index = models$index[i],
+  #          site = models$site[i]) %>%
+  #   rownames_to_column("intercept") %>%
+  #   janitor::clean_names() %>%
+  #   select(-intercept)  
+  
+  result_s_table <- summary(models[[4]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("intercept") %>%
+    janitor::clean_names() %>%
+    select(-intercept)  
+  
+  aic_table <- models[[4]][[i]][["aic"]] %>% 
+    as.data.frame(nm = "AIC") %>% 
+    mutate(index = models$index[i],
+           site = models$site[i])
+  
+  result <-  result_s_table %>% 
+    left_join(aic_table, by = c("index", "site")) %>% 
+    select(site, index, edf, f, p_value, AIC) %>% 
+    arrange(desc("AIC"))
+  
+  return(result)
+})
+
+# GAM model for all VI's [G | All VIs] ----
 mod_fun <- function(df) {
   gam(gpp_dt_vut_ref ~ ndvi_mean +
         # kndvi_mean +
@@ -393,7 +620,38 @@ all_vis_gam_monthly <- models %>%
     )
   )
 
-# GAM model for all sites and all indices (covariates) [H | All VIs + site]
+# Tabla metricas completas
+all_vis_gam_monthly_complete <- map_dfr(1:nrow(models), function(i) {
+  #print(i)
+  # result_p_table <- summary(models[[3]][[i]])[["p.table"]] %>%
+  #   as.data.frame() %>%
+  #   mutate(index = models$index[i],
+  #          site = models$site[i]) %>%
+  #   rownames_to_column("intercept") %>%
+  #   janitor::clean_names() %>%
+  #   select(-intercept)
+  
+  result_s_table <- summary(models[[3]][[i]])[["s.table"]] %>%
+    as.data.frame() %>%
+    mutate(index = models$index[i],
+           site = models$site[i]) %>%
+    rownames_to_column("term") %>%
+    janitor::clean_names() 
+  
+  aic_table <- models[[3]][[i]][["aic"]] %>% 
+    as.data.frame(nm = "AIC") %>% 
+    mutate(index = models$index[i],
+           site = models$site[i])
+  
+  result <-  result_s_table %>% 
+    left_join(aic_table, by = c("index", "site")) %>% 
+    select(site, index, term, edf, f, p_value, AIC) %>% 
+    arrange(desc("AIC"))
+  
+  return(result)
+})
+
+# GAM model for all sites and all indices (covariates) [H | All VIs + site] ----
 single_vis_monthly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                            # kndvi_mean +
                            s(evi_mean) +
@@ -402,7 +660,7 @@ single_vis_monthly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                          data = weekly_gam, 
                          method = 'REML')
 
-# **Daily models outputs**
+# **Monthly models outputs**
 all_sites_all_vis_gam_monthly <- tribble(
   ~index, ~rsq, ~rmse, ~mae,
   "All", summary(single_vis_daily)[["r.sq"]],
@@ -412,7 +670,17 @@ all_sites_all_vis_gam_monthly <- tribble(
   mutate(site = "All") %>% 
   select(index, site, rsq, rmse, mae)
 
-
+# Tabla metricas completas
+all_sites_all_vis_gam_monthly_complete <- 
+  summary(single_vis_daily)[["s.table"]] %>%
+  as.data.frame() %>%
+  janitor::clean_names()  %>% 
+  mutate(index = "All",
+         site = "All",
+         AIC = single_vis_daily[["aic"]]) %>%
+  rownames_to_column("term") %>%
+  select(site, index, term, edf, f, p_value, AIC) %>% 
+  arrange(desc("AIC"))
 
 
 

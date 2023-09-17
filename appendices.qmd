@@ -172,6 +172,80 @@ tribble(
 
 ## Complete LM metrics
 
+### Monthly LM metrics
+
+<!-- ```{r} -->
+<!-- # Table as in chapter 2 for complete metrics -->
+<!-- # It's to wide to use it. -->
+<!-- # create_metrics_table <- function(data) { -->
+<!-- #   data %>%  -->
+<!-- #     gt() %>% -->
+<!-- #     tab_spanner(label = md("NDVI"), columns = ends_with("NDVI")) %>% -->
+<!-- #     tab_spanner(label = "EVI", columns = ends_with("EVI")) %>% -->
+<!-- #     tab_spanner(label = "NIRv", columns = ends_with("NIRv")) %>% -->
+<!-- #     tab_spanner(label = "CCI", columns = ends_with("CCI")) %>%  -->
+<!-- #     tab_spanner(label = "All", columns = ends_with("All")) %>%  -->
+<!-- #     cols_label( -->
+<!-- #       .list = list( -->
+<!-- #         "site" = "Site", -->
+<!-- #         "adj.r.squared_EVI" = "Adj. R2", -->
+<!-- #         "statistic_EVI" = "Statistic", -->
+<!-- #         "AIC_EVI" = "AIC", -->
+<!-- #         "BIC_EVI" = "BIC", -->
+<!-- #         "p.value_EVI" = "P value", -->
+<!-- #         "adj.r.squared_NDVI" = "Adj. R2", -->
+<!-- #         "statistic_NDVI" = "Statistic", -->
+<!-- #         "AIC_NDVI" = "AIC", -->
+<!-- #         "BIC_NDVI" = "BIC", -->
+<!-- #         "p.value_NDVI" = "P value", -->
+<!-- #         "adj.r.squared_NIRv" = "Adj. R2", -->
+<!-- #         "statistic_NIRv" = "Statistic", -->
+<!-- #         "AIC_NIRv" = "AIC", -->
+<!-- #         "BIC_NIRv" = "BIC", -->
+<!-- #         "p.value_NIRv" = "P value", -->
+<!-- #         "adj.r.squared_CCI" = "Adj. R2", -->
+<!-- #         "statistic_CCI" = "Statistic", -->
+<!-- #         "AIC_CCI" = "AIC", -->
+<!-- #         "BIC_CCI" = "BIC", -->
+<!-- #         "p.value_CCI" = "P value", -->
+<!-- #         "adj.r.squared_All" = "Adj. R2", -->
+<!-- #         "statistic_All" = "Statistic", -->
+<!-- #         "AIC_All" = "AIC", -->
+<!-- #         "BIC_All" = "BIC", -->
+<!-- #         "p.value_All" = "P value" -->
+<!-- #       ) -->
+<!-- #     ) %>%  -->
+<!-- #     cols_align( -->
+<!-- #       align = "center", -->
+<!-- #       columns = 2:26 -->
+<!-- #     ) %>%  -->
+<!-- #     fmt_number( -->
+<!-- #       columns = 2:26, -->
+<!-- #       decimals = 2) %>%  -->
+<!-- #     fmt_scientific( -->
+<!-- #       columns = 22:26, -->
+<!-- #       decimals = 2 -->
+<!-- #     ) %>%  -->
+<!-- #     tab_options( -->
+<!-- #       row_group.background.color = "#E9E0E1", -->
+<!-- #       row_group.font.weight = "bold" -->
+<!-- #     ) %>%  -->
+<!-- #     cols_width(everything() ~ px(80)) -->
+<!-- # } -->
+<!-- #  -->
+<!-- # # Monthly table -->
+<!-- # vis_site_glance_monthly %>%  -->
+<!-- #   bind_rows(all_sites_glance_monthly, -->
+<!-- #             all_vis_glance_monthly, -->
+<!-- #             all_sites_all_vis_glance_monthly) %>%  -->
+<!-- #   select(site, index, adj.r.squared,  -->
+<!-- #          statistic, AIC, BIC,  p.value) %>%  -->
+<!-- #   pivot_wider(names_from = index,  -->
+<!-- #               values_from = c(adj.r.squared,  -->
+<!-- #                               statistic, AIC, BIC,  p.value)) %>% -->
+<!-- #   create_metrics_table() -->
+<!-- ``` -->
+
 ```{r lm_monthly_table}
 #| label: tbl-complete_lm_monthly_results
 #| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly basis (per site)."
@@ -183,12 +257,11 @@ tribble(
 source("scripts/lm_preparation.R")
 
 # Create table with complete models metrics
-bind_rows(evi_glance_monthly,
-          ndvi_glance_monthly,
-          nirv_glance_monthly,
-		  # kndvi_glance,
-		  cci_glance_monthly) %>% 
-  select(site, index, r.squared, adj.r.squared, rmse, 
+vis_site_glance_monthly %>% 
+  bind_rows(all_sites_glance_monthly,
+            all_vis_glance_monthly,
+            all_sites_all_vis_glance_monthly) %>% 
+  select(site, index, adj.r.squared, 
          statistic, AIC, BIC,  p.value) %>% 
   group_by(site) %>% 
   arrange(desc(adj.r.squared)) %>% 
@@ -197,10 +270,10 @@ bind_rows(evi_glance_monthly,
     groupname_col = "site"
   ) %>% 
   fmt_number(
-    columns = 3:8,
+    columns = 3:7,
     decimals = 3) %>% 
   fmt_scientific(
-    columns = 9,
+    columns = 7,
     decimals = 3
   ) %>% 
   tab_options(
@@ -209,19 +282,236 @@ bind_rows(evi_glance_monthly,
   ) 
 ```
 
-<!-- ## Complete GAM metrics -->
+### Weekly LM metrics
+
+```{r}
+#| label: tbl-complete_lm_weekly_results
+#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a weekly basis (per site)."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Create table with complete models metrics
+vis_site_glance_weekly %>% 
+  bind_rows(all_sites_glance_weekly,
+            all_vis_glance_weekly,
+            all_sites_all_vis_glance_weekly) %>% 
+  select(site, index, adj.r.squared, 
+         statistic, AIC, BIC,  p.value) %>% 
+  group_by(site) %>% 
+  arrange(desc(adj.r.squared)) %>% 
+  gt(
+    rowname_col = "index",
+    groupname_col = "site"
+  ) %>% 
+  fmt_number(
+    columns = 3:7,
+    decimals = 3) %>% 
+  fmt_scientific(
+    columns = 7,
+    decimals = 3
+  ) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) 
+```
+
+### Daily LM metrics
+
+```{r}
+#| label: tbl-complete_lm_daily_results
+#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a daily basis (per site)."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Create table with complete models metrics
+vis_site_glance_daily %>% 
+  bind_rows(all_sites_glance_daily,
+            all_vis_glance_daily,
+            all_sites_all_vis_glance_daily) %>% 
+  select(site, index, adj.r.squared, 
+         statistic, AIC, BIC,  p.value) %>% 
+  group_by(site) %>% 
+  arrange(desc(adj.r.squared)) %>% 
+  gt(
+    rowname_col = "index",
+    groupname_col = "site"
+  ) %>% 
+  fmt_number(
+    columns = 3:7,
+    decimals = 3) %>% 
+  fmt_scientific(
+    columns = 7,
+    decimals = 3
+  ) %>% 
+  tab_options(
+    row_group.background.color = "#E9E0E1",
+    row_group.font.weight = "bold"
+  ) 
+```
+
+## Complete GAM metrics
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+source("scripts/gam_preparation.R")
+```
+
+### Monthly GAM metrics
+
+```{r}
+#| label: tbl-gam_monthly_model_results_complete_a
+#| tbl-cap: "Summary of the GAM models output for monthly GPP estimation using the every VI as an individual non-linear term"
+#| echo: false
+#| message: false
+#| warning: false
+all_sites_gam_monthly_complete %>% 
+  bind_rows(vis_sites_gam_monthly_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
+
+```{r}
+#| label: tbl-gam_monthly_model_results_complete_b
+#| tbl-cap: "Summary of the GAM models output for monthly GPP estimation using the all VIs per site category as non-linear terms covariates"
+#| echo: false
+#| message: false
+#| warning: false
+all_vis_gam_monthly_complete %>% 
+  bind_rows(all_sites_all_vis_gam_monthly_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
+
+### Weekly GAM metrics
+
+```{r}
+#| label: tbl-gam_weekly_model_results_complete_a 
+#| tbl-cap: "Summary of the GAM models output for weekly GPP estimation using the every VI as an individual non-linear term"
+#| echo: false
+#| message: false
+#| warning: false
+all_sites_gam_weekly_complete %>% 
+  bind_rows(vis_sites_gam_weekly_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
+```{r}
+#| label: tbl-gam_weekly_model_results_complete_b
+#| tbl-cap: "Summary of the GAM models output for weekly GPP estimation using the all VIs per site category as non-linear terms covariates"
+#| echo: false
+#| message: false
+#| warning: false
+all_vis_gam_weekly_complete %>% 
+  bind_rows(all_sites_all_vis_gam_weekly_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
+### Daily GAM metrics
+
+```{r}
+#| label: tbl-gam_daily_model_results_complete_a
+#| tbl-cap: "Summary of the GAM models output for daily GPP estimation using the every VI as an individual non-linear term"
+#| echo: false
+#| message: false
+#| warning: false
+all_sites_gam_daily_complete %>% 
+  bind_rows(vis_sites_gam_daily_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
+
+<!-- ```{r} -->
+<!-- all_vis_gam_daily_complete %>%  -->
+<!--   bind_rows(all_sites_all_vis_gam_daily_complete) %>%  -->
+<!--   arrange(AIC) %>%  -->
+<!--   gt() -->
+
+<!-- all_sites_gam_daily_complete %>%  -->
+<!--   bind_rows(vis_sites_gam_daily_complete) %>%  -->
+<!--   arrange(AIC) %>%  -->
+<!--   gt() -->
+
+<!-- # Monthly table -->
+<!-- all_sites_gam_monthly_complete %>%  -->
+<!--   bind_rows(vis_sites_gam_monthly_complete, -->
+<!--             all_sites_all_vis_gam_monthly_complete, -->
+<!--             all_vis_gam_monthly_complete, -->
+<!--   ) %>%  -->
+<!--   create_metrics_table() -->
+
+<!-- create_metrics_table <- function(data) { -->
+<!--   data %>%  -->
+<!--     pivot_wider(names_from = index, -->
+<!--                 values_from = c(rsq, mae, rmse)) %>%  -->
+<!--     gt() %>% -->
+<!--     tab_spanner(label = md("NDVI"), columns = contains("NDVI")) %>% -->
+<!--     tab_spanner(label = "EVI", columns = contains("EVI")) %>% -->
+<!--     tab_spanner(label = "NIRv", columns = contains("NIRv")) %>% -->
+<!--     tab_spanner(label = "CCI", columns = contains("CCI")) %>%  -->
+<!--     tab_spanner(label = "All", columns = contains("All")) %>%  -->
+<!--     cols_label( -->
+<!--       .list = list( -->
+<!--         "site" = "Site", -->
+<!--         "rsq_evi_mean" = "R2", -->
+<!--         "mae_evi_mean" = "MAE", -->
+<!--         "rmse_evi_mean" = "RMSE", -->
+<!--         "rsq_ndvi_mean" = "R2", -->
+<!--         "mae_ndvi_mean" = "MAE", -->
+<!--         "rmse_ndvi_mean" = "RMSE", -->
+<!--         "rsq_nirv_mean" = "R2", -->
+<!--         "mae_nirv_mean" = "MAE", -->
+<!--         "rmse_nirv_mean" = "RMSE", -->
+<!--         "rsq_cci_mean" = "R2", -->
+<!--         "mae_cci_mean" = "MAE", -->
+<!--         "rmse_cci_mean" = "RMSE", -->
+<!--         "rsq_All" = "R2", -->
+<!--         "mae_All" = "MAE", -->
+<!--         "rmse_All" = "RMSE" -->
+<!--       ) -->
+<!--     ) %>%  -->
+<!--     cols_align( -->
+<!--       align = "center", -->
+<!--       columns = 2:16 -->
+<!--     ) %>%  -->
+<!--     fmt_number( -->
+<!--       columns = 2:16, -->
+<!--       decimals = 2) %>%  -->
+<!--     tab_options( -->
+<!--       row_group.background.color = "#E9E0E1", -->
+<!--       row_group.font.weight = "bold" -->
+<!--     ) %>%  -->
+<!--     cols_width(everything() ~ px(50))  -->
+<!-- } -->
+<!-- ``` -->
+
+
+```{r}
+#| label: tbl-gam_daily_model_results_complete_b
+#| tbl-cap: "Summary of the GAM models output for daily GPP estimation using the all VIs per site category as non-linear terms covariates"
+#| echo: false
+#| message: false
+#| warning: false
+all_vis_gam_daily_complete %>% 
+  bind_rows(all_sites_all_vis_gam_daily_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
+
 
 <!-- #### Individual Daily GAM models -->
 
 <!-- **The following tables represent the results of each model as gpp~VI and it's not segregated by site.** -->
-
-<!-- ```{r} -->
-<!-- #| echo: false -->
-<!-- #| message: false -->
-<!-- #| warning: false -->
-<!-- source("scripts/gam_preparation.R") -->
-<!-- ``` -->
-
 
 <!-- ```{r} -->
 <!-- #| label: tbl-gam_model_results_pvalue -->
