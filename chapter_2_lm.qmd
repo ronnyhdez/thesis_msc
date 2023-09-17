@@ -768,13 +768,17 @@ rm(plot_legend)
 
 ### Analysis of GPP-Vegetation Index Relationships Using GAM Models
 
-
-The @tbl-gam_model_results provides the results summary of the GAM models used 
-for GPP estimation at each site, employing the vegetation indices as predictors.
-To compare between the models, we include in the table relevant model summary 
-statistics, such as R2, MAE, and RMSE. More metrics such as the p-value,
-adjusted r-squared, the Akaike Information Criterion (AIC), and Bayesian
-Information Criterion (BIC) are dispalyed in the @tbl-complete_lm_monthly_results
+In @tbl-gam_model_results, we present a summary of the results obtained from the
+GAM models used for GPP estimation at each site, employing the vegetation 
+indices as predictors. To compare between the models, we include in the table
+relevant model summary statistics, such as R2, MAE, and RMSE. Furthermore, 
+additional metrics such as the p-value, the F statistic (f), effective degrees
+of freedom (edf), and the Akaike Information Criterion (AIC), are displayed in
+the @tbl-gam_daily_model_results_complete_a, and @tbl-gam_daily_model_results_complete_b 
+for daily models, @tbl-gam_weekly_model_results_complete_a, and 
+@tbl-gam_weekly_model_results_complete_b for weekly outputs, and for monthly 
+results the @tbl-gam_monthly_model_results_complete_a, and 
+@tbl-gam_monthly_model_results_complete_b
 
 <!-- explains more x% variance than -->
 When using GAM models at a monthly basis, no single VI demonstrates consistent
