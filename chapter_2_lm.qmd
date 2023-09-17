@@ -556,6 +556,8 @@ each site and predictor, the table includes the relevant model summary
 statistics, such as R2, MAE, and RMSE. More metrics such as the 
 p-value, adjusted r-squared, the Akaike Information Criterion (AIC), and 
 Bayesian Information Criterion (BIC) are displayed in the @tbl-complete_lm_monthly_results
+for monthly results, @tbl-complete_lm_weekly_results for weekly results, and the
+@tbl-complete_lm_daily_results for daily outputs.
 
 Our findings shows that when using all the indices as covariates within the
 linear model, the model's performance demonstrates better outcomes compared to 

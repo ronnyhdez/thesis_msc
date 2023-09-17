@@ -361,6 +361,60 @@ vis_site_glance_daily %>%
 source("scripts/gam_preparation.R")
 ```
 
+### Monthly GAM metrics
+
+```{r}
+#| label: tbl-gam_monthly_model_results_complete_a
+#| tbl-cap: "Summary of the GAM models output for monthly GPP estimation using the every VI as an individual non-linear term"
+#| echo: false
+#| message: false
+#| warning: false
+all_sites_gam_monthly_complete %>% 
+  bind_rows(vis_sites_gam_monthly_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
+
+```{r}
+#| label: tbl-gam_monthly_model_results_complete_b
+#| tbl-cap: "Summary of the GAM models output for monthly GPP estimation using the all VIs per site category as non-linear terms covariates"
+#| echo: false
+#| message: false
+#| warning: false
+all_vis_gam_monthly_complete %>% 
+  bind_rows(all_sites_all_vis_gam_monthly_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
+
+### Weekly GAM metrics
+
+```{r}
+#| label: tbl-gam_weekly_model_results_complete_a 
+#| tbl-cap: "Summary of the GAM models output for weekly GPP estimation using the every VI as an individual non-linear term"
+#| echo: false
+#| message: false
+#| warning: false
+all_sites_gam_weekly_complete %>% 
+  bind_rows(vis_sites_gam_weekly_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
+```{r}
+#| label: tbl-gam_weekly_model_results_complete_b
+#| tbl-cap: "Summary of the GAM models output for weekly GPP estimation using the all VIs per site category as non-linear terms covariates"
+#| echo: false
+#| message: false
+#| warning: false
+all_vis_gam_weekly_complete %>% 
+  bind_rows(all_sites_all_vis_gam_weekly_complete) %>% 
+  arrange(AIC) %>% 
+  gt()
+```
+
 ### Daily GAM metrics
 
 ```{r}
@@ -449,59 +503,6 @@ all_sites_gam_daily_complete %>%
 #| warning: false
 all_vis_gam_daily_complete %>% 
   bind_rows(all_sites_all_vis_gam_daily_complete) %>% 
-  arrange(AIC) %>% 
-  gt()
-```
-
-### Weekly GAM metrics
-
-```{r}
-#| label: tbl-gam_weekly_model_results_complete_a 
-#| tbl-cap: "Summary of the GAM models output for weekly GPP estimation using the every VI as an individual non-linear term"
-#| echo: false
-#| message: false
-#| warning: false
-all_sites_gam_weekly_complete %>% 
-  bind_rows(vis_sites_gam_weekly_complete) %>% 
-  arrange(AIC) %>% 
-  gt()
-```
-
-```{r}
-#| label: tbl-gam_weekly_model_results_complete_b
-#| tbl-cap: "Summary of the GAM models output for weekly GPP estimation using the all VIs per site category as non-linear terms covariates"
-#| echo: false
-#| message: false
-#| warning: false
-all_vis_gam_weekly_complete %>% 
-  bind_rows(all_sites_all_vis_gam_weekly_complete) %>% 
-  arrange(AIC) %>% 
-  gt()
-```
-
-### Monthly GAM metrics
-
-```{r}
-#| label: tbl-gam_monthly_model_results_complete_a
-#| tbl-cap: "Summary of the GAM models output for monthly GPP estimation using the every VI as an individual non-linear term"
-#| echo: false
-#| message: false
-#| warning: false
-all_sites_gam_monthly_complete %>% 
-  bind_rows(vis_sites_gam_monthly_complete) %>% 
-  arrange(AIC) %>% 
-  gt()
-```
-
-
-```{r}
-#| label: tbl-gam_monthly_model_results_complete_b
-#| tbl-cap: "Summary of the GAM models output for monthly GPP estimation using the all VIs per site category as non-linear terms covariates"
-#| echo: false
-#| message: false
-#| warning: false
-all_vis_gam_monthly_complete %>% 
-  bind_rows(all_sites_all_vis_gam_monthly_complete) %>% 
   arrange(AIC) %>% 
   gt()
 ```
