@@ -557,7 +557,8 @@ statistics, such as R2, MAE, and RMSE. More metrics such as the
 p-value, adjusted r-squared, the Akaike Information Criterion (AIC), and 
 Bayesian Information Criterion (BIC) are displayed in the @tbl-complete_lm_monthly_results
 for monthly results, @tbl-complete_lm_weekly_results for weekly results, and the
-@tbl-complete_lm_daily_results for daily outputs.
+@tbl-complete_lm_daily_results for daily outputs. A residuals distribution 
+for each of the models is in @fig-lm_residuals
 
 Our findings shows that when using all the indices as covariates within the
 linear model, the model's performance demonstrates better outcomes compared to 
@@ -780,7 +781,8 @@ the @tbl-gam_daily_model_results_complete_a, and @tbl-gam_daily_model_results_co
 for daily models, @tbl-gam_weekly_model_results_complete_a, and 
 @tbl-gam_weekly_model_results_complete_b for weekly outputs, and for monthly 
 results the @tbl-gam_monthly_model_results_complete_a, and 
-@tbl-gam_monthly_model_results_complete_b
+@tbl-gam_monthly_model_results_complete_b. A residuals distribution 
+for each of the models is in @fig-gam_residuals
 
 <!-- explains more x% variance than -->
 When using GAM models at a monthly basis, no single VI demonstrates consistent
