@@ -752,7 +752,7 @@ gam_monthly_residuals_data <- all_sites_gam_monthly_residuals %>%
   ))
 
 # loop over all the sites
-monthly_residuals_plots <- 
+gam_monthly_residuals_plots <- 
   map(sites, ~ create_residuals_plot(gam_monthly_residuals_data, .x))
 
 # Weekly
@@ -770,7 +770,7 @@ gam_weekly_residuals_data <- all_sites_gam_weekly_residuals %>%
   ))
 
 # loop over all the sites
-weekly_residuals_plots <- 
+gam_weekly_residuals_plots <- 
   map(sites, ~ create_residuals_plot(gam_weekly_residuals_data, .x))
 
 
@@ -789,11 +789,29 @@ gam_daily_residuals_data <- all_sites_gam_daily_residuals %>%
   ))
 
 # loop over all the sites
-daily_residuals_plots <- 
+gam_daily_residuals_plots <- 
   map(sites, ~ create_residuals_plot(gam_daily_residuals_data, .x))
 
-
-
+plot_grid(gam_monthly_residuals_plots[[1]] ,
+          gam_monthly_residuals_plots[[2]] ,
+          gam_monthly_residuals_plots[[3]] ,
+          gam_monthly_residuals_plots[[4]] ,
+          gam_weekly_residuals_plots[[1]]  ,
+          gam_weekly_residuals_plots[[2]]  ,
+          gam_weekly_residuals_plots[[3]]  ,
+          gam_weekly_residuals_plots[[4]]  ,
+          gam_daily_residuals_plots[[1]]   ,
+          gam_daily_residuals_plots[[2]]   ,
+          gam_daily_residuals_plots[[3]]   ,
+          gam_daily_residuals_plots[[4]]   ,
+          nrow = 3,
+          labels = c("A", "", "", "", 
+                     "B", "", "", "", 
+                     "C"),
+          # align = "v",
+          hjust = -2,
+          vjust = 1.5
+  )
 ```
 
 <!-- #### SD GAM model with smooth terms for all covariates -->
