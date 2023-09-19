@@ -737,6 +737,43 @@ create_residuals_plot <- function(data, site) {
 # Vector with sites for looping in the plots
 sites <- c("Bartlett", "Borden", "Michigan", "All")
 
+# Monthly
+gam_monthly_residuals_data <- all_sites_gam_monthly_residuals %>% 
+  bind_rows(
+    vis_sites_gam_monthly_residuals,
+    all_vis_gam_monthly_residuals,
+    all_sites_all_vis_gam_monthly_residuals) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "evi",
+    index == "ndvi_mean" ~ "ndvi",
+    index == "nirv_mean" ~ "nirv",
+    index == "cci_mean" ~ "cci",
+    .default = index
+  ))
+
+# loop over all the sites
+monthly_residuals_plots <- 
+  map(sites, ~ create_residuals_plot(gam_monthly_residuals_data, .x))
+
+# Weekly
+gam_weekly_residuals_data <- all_sites_gam_weekly_residuals %>% 
+  bind_rows(
+    vis_sites_gam_weekly_residuals,
+    all_vis_gam_weekly_residuals,
+    all_sites_all_vis_gam_weekly_residuals) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "evi",
+    index == "ndvi_mean" ~ "ndvi",
+    index == "nirv_mean" ~ "nirv",
+    index == "cci_mean" ~ "cci",
+    .default = index
+  ))
+
+# loop over all the sites
+weekly_residuals_plots <- 
+  map(sites, ~ create_residuals_plot(gam_weekly_residuals_data, .x))
+
+
 # Daily
 gam_daily_residuals_data <- all_sites_gam_daily_residuals %>% 
   bind_rows(
