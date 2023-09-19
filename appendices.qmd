@@ -716,7 +716,48 @@ plot_grid(monthly_residuals_plots[[1]] ,
   )
 ```
 
+### GAM residuals
 
+```{r}
+# function to create residuals plot
+create_residuals_plot <- function(data, site) {
+  data %>% 
+    filter(site == {{site}}) %>% 
+    ggplot(aes(x = residuals, y = index, fill = index)) +
+    geom_density_ridges() +
+    geom_vline(xintercept = 0, colour = "#FF5500", 
+               linewidth = 0.7, linetype = "dashed") +
+    scale_fill_viridis_d() +
+    # scale_x_continuous(limits = c(-30, 20), n.breaks = 10) +
+    labs(title = {{site}}) +
+    theme_ridges() + 
+    theme(legend.position = "none")
+}
+
+# Vector with sites for looping in the plots
+sites <- c("Bartlett", "Borden", "Michigan", "All")
+
+# Daily
+gam_daily_residuals_data <- all_sites_gam_daily_residuals %>% 
+  bind_rows(
+    vis_sites_gam_daily_residuals,
+    all_vis_gam_daily_residuals,
+    all_sites_all_vis_gam_daily_residuals) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "evi",
+    index == "ndvi_mean" ~ "ndvi",
+    index == "nirv_mean" ~ "nirv",
+    index == "cci_mean" ~ "cci",
+    .default = index
+  ))
+
+# loop over all the sites
+daily_residuals_plots <- 
+  map(sites, ~ create_residuals_plot(gam_daily_residuals_data, .x))
+
+
+
+```
 
 <!-- #### SD GAM model with smooth terms for all covariates -->
 

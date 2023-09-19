@@ -95,6 +95,14 @@ all_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
   return(result)
 })
 
+all_sites_gam_daily_residuals <- map_dfr(1:nrow(models), function(i) {
+  models[[3]][[i]][["residuals"]] %>% 
+    as.data.frame(nm = "residuals") %>%
+    mutate(index = models$index[i],
+           site = "All")
+})
+
+
 # GAM model for all sites diff VIs [F | Diff VIS + site] ---- 
 group_site <- daily_gam %>% 
   pivot_longer(cols = c(ends_with("mean")), names_to = "index",
@@ -147,6 +155,13 @@ vis_sites_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
     arrange(desc("AIC"))
   
   return(result)
+})
+
+vis_sites_gam_daily_residuals <- map_dfr(1:nrow(models), function(i) {
+  models[[4]][[i]][["residuals"]] %>% 
+    as.data.frame(nm = "residuals") %>%
+    mutate(index = models$index[i],
+           site = models$site[i])
 })
 
 # GAM model for all VI's [G | All VIs] ---- 
@@ -205,6 +220,13 @@ all_vis_gam_daily_complete <- map_dfr(1:nrow(models), function(i) {
   return(result)
 })
 
+all_vis_gam_daily_residuals <- map_dfr(1:nrow(models), function(i) {
+  models[[3]][[i]][["residuals"]] %>% 
+    as.data.frame(nm = "residuals") %>%
+    mutate(index = models$index[i],
+           site = models$site[i])
+})
+
 
 # GAM model for all sites and all indices (covariates) [H | All VIs + site] ----
 single_vis_daily <- gam(gpp_dt_vut_ref ~ ndvi_mean +
@@ -236,7 +258,12 @@ all_sites_all_vis_gam_daily_complete <-
   rownames_to_column("term") %>%
   select(site, index, term, edf, f, p_value, AIC) %>% 
   arrange(desc("AIC"))
-  
+
+all_sites_all_vis_gam_daily_residuals <- 
+  single_vis_daily[["residuals"]] %>% 
+  as.data.frame(nm = "residuals") %>%
+  mutate(index = "All",
+         site = "All")
 
 
 # WEEKLY GAMS ------------------------------------------------------------------

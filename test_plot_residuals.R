@@ -110,3 +110,30 @@ evi_lm %>%
 # lm_models
 # 
 
+## Residuals GAM
+models[[3]][[1]][["residuals"]] %>% 
+  as.data.frame(nm = "residual") %>% glimpse()
+
+all_sites_gam_daily_residuals <- map_dfr(1:nrow(models), function(i) {
+  models[[3]][[i]][["residuals"]] %>% 
+    as.data.frame(nm = "residuals") %>%
+    mutate(index = models$index[i],
+           site = "All")
+})
+
+all_sites_gam_daily_residuals %>% 
+  # filter(site == {{site}}) %>% 
+  ggplot(aes(x = residuals, y = index, fill = index)) +
+  geom_density_ridges() +
+  geom_vline(xintercept = 0, colour = "#FF5500", 
+             linewidth = 0.7, linetype = "dashed") +
+  scale_fill_viridis_d() +
+  # scale_x_continuous(limits = c(-30, 20), n.breaks = 10) +
+  # labs(title = {{site}}) +
+  theme_ridges() + 
+  theme(legend.position = "none")
+
+
+
+
+
