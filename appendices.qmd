@@ -621,21 +621,7 @@ all_vis_gam_daily_complete %>%
 #| warning: false
 library(cowplot)
 library(ggridges)
-
-# function to create residuals plot
-create_residuals_plot <- function(data, site) {
-  data %>% 
-    filter(site == {{site}}) %>% 
-    ggplot(aes(x = residuals, y = index, fill = index)) +
-    geom_density_ridges() +
-    geom_vline(xintercept = 0, colour = "#FF5500", 
-               linewidth = 0.7, linetype = "dashed") +
-    scale_fill_viridis_d() +
-    # scale_x_continuous(limits = c(-30, 20), n.breaks = 10) +
-    labs(title = {{site}}) +
-    theme_ridges() + 
-    theme(legend.position = "none")
-}
+source("R/plot_exploratory.R")
 
 # Vector with sites for looping in the plots
 sites <- c("Bartlett", "Borden", "Michigan", "All")
@@ -656,7 +642,7 @@ monthly_residuals_data <- vis_site_augmented_monthly %>%
 
 # Loop over all the sites
 monthly_residuals_plots <- 
-  map(sites, ~ create_residuals_plot(monthly_residuals_data, .x))
+  map(sites, ~ create_residuals_distribution_plot(monthly_residuals_data, .x))
 
 # weekly
 weekly_residuals_data <- vis_site_augmented_weekly %>% 
@@ -674,7 +660,7 @@ weekly_residuals_data <- vis_site_augmented_weekly %>%
 
 # loop over all the sites
 weekly_residuals_plots <- 
-  map(sites, ~ create_residuals_plot(weekly_residuals_data, .x))
+  map(sites, ~ create_residuals_distribution_plot(weekly_residuals_data, .x))
 
 # daily
 daily_residuals_data <- vis_site_augmented_daily %>% 
@@ -692,7 +678,7 @@ daily_residuals_data <- vis_site_augmented_daily %>%
 
 # loop over all the sites
 daily_residuals_plots <- 
-  map(sites, ~ create_residuals_plot(daily_residuals_data, .x))
+  map(sites, ~ create_residuals_distribution_plot(daily_residuals_data, .x))
 
 plot_grid(monthly_residuals_plots[[1]] ,
           monthly_residuals_plots[[2]] ,
@@ -726,21 +712,6 @@ plot_grid(monthly_residuals_plots[[1]] ,
 #| echo: false
 #| message: false
 #| warning: false
-# function to create residuals plot
-create_residuals_plot <- function(data, site) {
-  data %>% 
-    filter(site == {{site}}) %>% 
-    ggplot(aes(x = residuals, y = index, fill = index)) +
-    geom_density_ridges() +
-    geom_vline(xintercept = 0, colour = "#FF5500", 
-               linewidth = 0.7, linetype = "dashed") +
-    scale_fill_viridis_d() +
-    # scale_x_continuous(limits = c(-30, 20), n.breaks = 10) +
-    labs(title = {{site}}) +
-    theme_ridges() + 
-    theme(legend.position = "none")
-}
-
 # Vector with sites for looping in the plots
 sites <- c("Bartlett", "Borden", "Michigan", "All")
 
@@ -760,7 +731,7 @@ gam_monthly_residuals_data <- all_sites_gam_monthly_residuals %>%
 
 # loop over all the sites
 gam_monthly_residuals_plots <- 
-  map(sites, ~ create_residuals_plot(gam_monthly_residuals_data, .x))
+  map(sites, ~ create_residuals_distribution_plot(gam_monthly_residuals_data, .x))
 
 # Weekly
 gam_weekly_residuals_data <- all_sites_gam_weekly_residuals %>% 
@@ -778,7 +749,7 @@ gam_weekly_residuals_data <- all_sites_gam_weekly_residuals %>%
 
 # loop over all the sites
 gam_weekly_residuals_plots <- 
-  map(sites, ~ create_residuals_plot(gam_weekly_residuals_data, .x))
+  map(sites, ~ create_residuals_distribution_plot(gam_weekly_residuals_data, .x))
 
 
 # Daily
@@ -797,7 +768,7 @@ gam_daily_residuals_data <- all_sites_gam_daily_residuals %>%
 
 # loop over all the sites
 gam_daily_residuals_plots <- 
-  map(sites, ~ create_residuals_plot(gam_daily_residuals_data, .x))
+  map(sites, ~ create_residuals_distribution_plot(gam_daily_residuals_data, .x))
 
 plot_grid(gam_monthly_residuals_plots[[1]] ,
           gam_monthly_residuals_plots[[2]] ,
