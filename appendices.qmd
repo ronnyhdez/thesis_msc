@@ -13,6 +13,10 @@ editor_options:
 
 <!-- : Harmonized Sentinel-2 Bands {#tbl-harmonized_s2_indices_bands} -->
 
+## Bitstrings tables
+
+### MODIS State 1km
+
 ```{r}
 #| label: tbl-state_1km_bitstrings
 #| tbl-cap: "state_1km bit strings"
@@ -109,6 +113,8 @@ tribble(
   ) %>% 
   cols_align(align = "center", columns = everything())
 ```
+
+### MODIS QC Scan 
 
 ```{r}
 #| label: tbl-qc_scan_bit_strings
@@ -607,7 +613,7 @@ all_vis_gam_daily_complete %>%
 
 ```{r}
 #| label: fig-lm_residuals
-#| fig-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
+#| fig-cap: "Residuals distributions for each of the LMs for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
 #| fig-width: 11
 #| fig-height: 12
 #| echo: false
