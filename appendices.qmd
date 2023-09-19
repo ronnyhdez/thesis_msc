@@ -423,7 +423,7 @@ all_vis_gam_weekly_complete %>%
 
 ### Daily GAM metrics
 
-```{r}
+```{r complete_lm_table}
 #| label: tbl-gam_daily_model_results_complete_a
 #| tbl-cap: "Summary of the GAM models output for daily GPP estimation using the every VI as an individual non-linear term"
 #| echo: false
@@ -501,7 +501,7 @@ all_sites_gam_daily_complete %>%
 <!-- ``` -->
 
 
-```{r}
+```{r complete_gam_table}
 #| label: tbl-gam_daily_model_results_complete_b
 #| tbl-cap: "Summary of the GAM models output for daily GPP estimation using the all VIs per site category as non-linear terms covariates"
 #| echo: false
@@ -611,7 +611,7 @@ all_vis_gam_daily_complete %>%
 
 ### LM residuals
 
-```{r}
+```{r lm_residuals_plots}
 #| label: fig-lm_residuals
 #| fig-cap: "Residuals distributions for each of the LMs for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
 #| fig-width: 11
@@ -718,7 +718,14 @@ plot_grid(monthly_residuals_plots[[1]] ,
 
 ### GAM residuals
 
-```{r}
+```{r gam_residuals_plots}
+#| label: fig-gam_residuals
+#| fig-cap: "Residuals distributions for each of the GAMs for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
+#| fig-width: 11
+#| fig-height: 12
+#| echo: false
+#| message: false
+#| warning: false
 # function to create residuals plot
 create_residuals_plot <- function(data, site) {
   data %>% 
