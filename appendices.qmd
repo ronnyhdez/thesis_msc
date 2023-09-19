@@ -13,6 +13,10 @@ editor_options:
 
 <!-- : Harmonized Sentinel-2 Bands {#tbl-harmonized_s2_indices_bands} -->
 
+## Bitstrings tables
+
+### MODIS State 1km
+
 ```{r}
 #| label: tbl-state_1km_bitstrings
 #| tbl-cap: "state_1km bit strings"
@@ -109,6 +113,8 @@ tribble(
   ) %>% 
   cols_align(align = "center", columns = everything())
 ```
+
+### MODIS QC Scan 
 
 ```{r}
 #| label: tbl-qc_scan_bit_strings
@@ -417,7 +423,7 @@ all_vis_gam_weekly_complete %>%
 
 ### Daily GAM metrics
 
-```{r}
+```{r complete_lm_table}
 #| label: tbl-gam_daily_model_results_complete_a
 #| tbl-cap: "Summary of the GAM models output for daily GPP estimation using the every VI as an individual non-linear term"
 #| echo: false
@@ -495,7 +501,7 @@ all_sites_gam_daily_complete %>%
 <!-- ``` -->
 
 
-```{r}
+```{r complete_gam_table}
 #| label: tbl-gam_daily_model_results_complete_b
 #| tbl-cap: "Summary of the GAM models output for daily GPP estimation using the all VIs per site category as non-linear terms covariates"
 #| echo: false
@@ -601,22 +607,190 @@ all_vis_gam_daily_complete %>%
 <!-- gratia::appraise(single_vis_daily) -->
 <!-- ``` -->
 
+## Residuals distributions
+
+### LM residuals
+
+```{r lm_residuals_plots}
+#| label: fig-lm_residuals
+#| fig-cap: "Residuals distributions for each of the LMs for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
+#| fig-width: 11
+#| fig-height: 12
+#| echo: false
+#| message: false
+#| warning: false
+library(cowplot)
+library(ggridges)
+source("R/plot_exploratory.R")
+
+# Vector with sites for looping in the plots
+sites <- c("Bartlett", "Borden", "Michigan", "All")
+
+# Monthly
+monthly_residuals_data <- vis_site_augmented_monthly %>% 
+  bind_rows(all_sites_augmented_monthly,
+            all_sites_all_vis_augmented_monthly,
+            all_vis_augmented_monthly) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "EVI",
+    index == "ndvi_mean" ~ "NDVI",
+    index == "nirv_mean" ~ "NIRv",
+    index == "cci_mean" ~ "CCI",
+    .default = index
+  )) %>% 
+  rename("residuals" = ".resid") 
+
+# Loop over all the sites
+monthly_residuals_plots <- 
+  map(sites, ~ create_residuals_distribution_plot(monthly_residuals_data, .x))
+
+# weekly
+weekly_residuals_data <- vis_site_augmented_weekly %>% 
+  bind_rows(all_sites_augmented_weekly,
+            all_sites_all_vis_augmented_weekly,
+            all_vis_augmented_weekly) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "evi",
+    index == "ndvi_mean" ~ "ndvi",
+    index == "nirv_mean" ~ "nirv",
+    index == "cci_mean" ~ "cci",
+    .default = index
+  )) %>% 
+  rename("residuals" = ".resid") 
+
+# loop over all the sites
+weekly_residuals_plots <- 
+  map(sites, ~ create_residuals_distribution_plot(weekly_residuals_data, .x))
+
+# daily
+daily_residuals_data <- vis_site_augmented_daily %>% 
+  bind_rows(all_sites_augmented_daily,
+            all_sites_all_vis_augmented_daily,
+            all_vis_augmented_daily) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "evi",
+    index == "ndvi_mean" ~ "ndvi",
+    index == "nirv_mean" ~ "nirv",
+    index == "cci_mean" ~ "cci",
+    .default = index
+  )) %>% 
+  rename("residuals" = ".resid") 
+
+# loop over all the sites
+daily_residuals_plots <- 
+  map(sites, ~ create_residuals_distribution_plot(daily_residuals_data, .x))
+
+plot_grid(monthly_residuals_plots[[1]] ,
+          monthly_residuals_plots[[2]] ,
+          monthly_residuals_plots[[3]] ,
+          monthly_residuals_plots[[4]] ,
+          weekly_residuals_plots[[1]]  ,
+          weekly_residuals_plots[[2]]  ,
+          weekly_residuals_plots[[3]]  ,
+          weekly_residuals_plots[[4]]  ,
+          daily_residuals_plots[[1]]   ,
+          daily_residuals_plots[[2]]   ,
+          daily_residuals_plots[[3]]   ,
+          daily_residuals_plots[[4]]   ,
+          nrow = 3,
+          labels = c("A", "", "", "", 
+                     "B", "", "", "", 
+                     "C"),
+          # align = "v",
+          hjust = -2,
+          vjust = 1.5
+  )
+```
+
+### GAM residuals
+
+```{r gam_residuals_plots}
+#| label: fig-gam_residuals
+#| fig-cap: "Residuals distributions for each of the GAMs for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
+#| fig-width: 11
+#| fig-height: 12
+#| echo: false
+#| message: false
+#| warning: false
+# Vector with sites for looping in the plots
+sites <- c("Bartlett", "Borden", "Michigan", "All")
+
+# Monthly
+gam_monthly_residuals_data <- all_sites_gam_monthly_residuals %>% 
+  bind_rows(
+    vis_sites_gam_monthly_residuals,
+    all_vis_gam_monthly_residuals,
+    all_sites_all_vis_gam_monthly_residuals) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "evi",
+    index == "ndvi_mean" ~ "ndvi",
+    index == "nirv_mean" ~ "nirv",
+    index == "cci_mean" ~ "cci",
+    .default = index
+  ))
+
+# loop over all the sites
+gam_monthly_residuals_plots <- 
+  map(sites, ~ create_residuals_distribution_plot(gam_monthly_residuals_data, .x))
+
+# Weekly
+gam_weekly_residuals_data <- all_sites_gam_weekly_residuals %>% 
+  bind_rows(
+    vis_sites_gam_weekly_residuals,
+    all_vis_gam_weekly_residuals,
+    all_sites_all_vis_gam_weekly_residuals) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "evi",
+    index == "ndvi_mean" ~ "ndvi",
+    index == "nirv_mean" ~ "nirv",
+    index == "cci_mean" ~ "cci",
+    .default = index
+  ))
+
+# loop over all the sites
+gam_weekly_residuals_plots <- 
+  map(sites, ~ create_residuals_distribution_plot(gam_weekly_residuals_data, .x))
 
 
+# Daily
+gam_daily_residuals_data <- all_sites_gam_daily_residuals %>% 
+  bind_rows(
+    vis_sites_gam_daily_residuals,
+    all_vis_gam_daily_residuals,
+    all_sites_all_vis_gam_daily_residuals) %>% 
+  mutate(index = case_when(
+    index == "evi_mean" ~ "evi",
+    index == "ndvi_mean" ~ "ndvi",
+    index == "nirv_mean" ~ "nirv",
+    index == "cci_mean" ~ "cci",
+    .default = index
+  ))
 
+# loop over all the sites
+gam_daily_residuals_plots <- 
+  map(sites, ~ create_residuals_distribution_plot(gam_daily_residuals_data, .x))
 
-
-
-
-
-
-
-
-
-
-
-
-
+plot_grid(gam_monthly_residuals_plots[[1]] ,
+          gam_monthly_residuals_plots[[2]] ,
+          gam_monthly_residuals_plots[[3]] ,
+          gam_monthly_residuals_plots[[4]] ,
+          gam_weekly_residuals_plots[[1]]  ,
+          gam_weekly_residuals_plots[[2]]  ,
+          gam_weekly_residuals_plots[[3]]  ,
+          gam_weekly_residuals_plots[[4]]  ,
+          gam_daily_residuals_plots[[1]]   ,
+          gam_daily_residuals_plots[[2]]   ,
+          gam_daily_residuals_plots[[3]]   ,
+          gam_daily_residuals_plots[[4]]   ,
+          nrow = 3,
+          labels = c("A", "", "", "", 
+                     "B", "", "", "", 
+                     "C"),
+          # align = "v",
+          hjust = -2,
+          vjust = 1.5
+  )
+```
 
 <!-- #### SD GAM model with smooth terms for all covariates -->
 
