@@ -2,6 +2,11 @@
 
 ## Introduction
 
+
+
+
+\newpage
+
 ## Methods
 
 ```{r libraries and sources}
@@ -55,6 +60,7 @@ Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis
 
 Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta doloremque. Et reiciendis et animi ut enim. Fugiat consequatur hic laborum culpa blanditiis explicabo nobis quae. Quae pariatur quo et hic autem.
 
+\newpage
 
 ## Results
 
@@ -82,7 +88,8 @@ mich <- michigan_daily_500 %>%
          gpp_dt_vut_ref, total_obs) %>% 
   mutate(site = "michigan")
 
-daily_500_rf <- bind_rows(bor, bar, mich)
+daily_500_rf <- bind_rows(bor, bar, mich) %>% 
+  select(-kndvi_mean)
 
 # Dataset to use: weekly_500 for all sites
 bor <- borden_weekly_500 %>% 
@@ -100,7 +107,27 @@ mich <- michigan_weekly_500 %>%
   mutate(site = "michigan") %>% 
   select(all_of(variables))
 
-weekly_500_rf <- bind_rows(bor, bar, mich)
+weekly_500_rf <- bind_rows(bor, bar, mich) %>% 
+  select(-kndvi_mean)
+
+## Dataset to use: monthly_500 for all sites
+bor <- borden_monthly_500 %>% 
+  select(ends_with(c("_mean")),
+         gpp_dt_vut_ref, total_obs) %>% 
+  mutate(site = "borden")
+
+variables <- names(bor)
+
+bar <- bartlett_monthly_500 %>% 
+  mutate(site = "bartlett") %>% 
+  select(all_of(variables))
+
+mich <- michigan_monthly_500 %>% 
+  mutate(site = "michigan") %>% 
+  select(all_of(variables))
+
+monthly_500_rf <- bind_rows(bor, bar, mich) %>% 
+  select(-kndvi_mean)
 ```
 
 #### Daily 500
@@ -271,7 +298,7 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
 metrics <- collect_metrics(weekly_500_fit) 
 
 ## Collect predictions
-plot_predictions_rf(weekly_500_fit, metrics, 4, 4, 16, 17)
+plot_predictions_rf(weekly_500_fit, metrics, 4, 4, 23, 25)
 ```
 
 
@@ -296,6 +323,102 @@ workflow() %>%
   theme_classic(base_size = 12)
 ```
 
+#### Monthly
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+set.seed(973)
+
+monthly_500_split <- initial_split(monthly_500_rf, strata = site)
+monthly_500_train <- training(monthly_500_split)
+monthly_500_test <- testing(monthly_500_split)
+
+set.seed(365)
+# weekly_500_folds 
+monthly_500_folds <- bootstraps(monthly_500_train,
+                                times = 100,
+                                strata = gpp_dt_vut_ref)
+
+ranger_recipe <- 
+  recipe(formula = gpp_dt_vut_ref ~ ., data = monthly_500_train) %>% 
+  step_select(-site, -total_obs)
+
+ranger_spec <- 
+  rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
+  set_mode("regression") %>% 
+  set_engine("ranger") 
+
+ranger_workflow <- 
+  workflow() %>% 
+  add_recipe(ranger_recipe) %>% 
+  add_model(ranger_spec) 
+
+# Conditional to re-run model if no artifac was saved before.
+if (fs::file_exists("models/monthly_500_fit_site.rds")) {
+  monthly_500_fit <- readRDS("models/monthly_500_fit_site.rds")
+  ranger_tune <- readRDS("models/monthly_500_site_ranger_tune.rds")
+} else {
+  set.seed(3159)
+  
+  doParallel::registerDoParallel()
+  ranger_tune <-
+    tune_grid(ranger_workflow, 
+              resamples = monthly_500_folds, 
+              grid = 12)
+  
+  # Final fit
+  final_rf <- ranger_workflow %>% 
+    finalize_workflow(select_best(ranger_tune))
+  
+  monthly_500_fit <- last_fit(final_rf, monthly_500_split)
+  
+  ## last_fit is saved if no model has been trained and saved.
+  saveRDS(ranger_tune, "models/monthly_500_site_ranger_tune.rds")
+  saveRDS(monthly_500_fit, "models/monthly_500_fit_site.rds")
+}
+```
+
+
+```{r}
+#| label: fig-monthly_500_rf
+#| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a monthly basis. The red line represents a 1:1 relation."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Explore RF results
+## Check the metrics
+metrics <- collect_metrics(monthly_500_fit) 
+
+## Collect predictions
+plot_predictions_rf(monthly_500_fit, metrics, 5, 5, 16, 18)
+```
+
+
+```{r}
+#| label: fig-vip_monthly_500_rf
+#| fig-cap: "Variable of importance derived from the Random forest model for the monthly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+## Feature importance
+imp_spec <- ranger_spec %>%
+  finalize_model(select_best(ranger_tune)) %>%
+  set_engine("ranger", importance = "permutation")
+
+workflow() %>%
+  add_recipe(ranger_recipe) %>%
+  add_model(imp_spec) %>%
+  fit(monthly_500_train) %>%
+  extract_fit_parsnip() %>%
+  vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
+  theme_light(base_size = 12)
+```
+
+\newpage
 
 ### The potential of AutoML approaches for GPP predictions
 
@@ -314,7 +437,7 @@ perf <- readRDS("models/performance_automl.rds")
 rsq <- h2o.r2(perf)
 rmse <- h2o.rmse(perf)
 
-plot_predictions_automl(predictions_automl, rmse, rsq, 3, 3, 15, 16)
+plot_predictions_automl(predictions_automl, rmse, rsq, 3, 3, 18, 20)
 ```
 
 
@@ -350,7 +473,7 @@ perf <- readRDS("models/performance_automl_weekly.rds")
 rsq <- h2o.r2(perf)
 rmse <- h2o.rmse(perf)
 
-plot_predictions_automl(predictions_automl, rmse, rsq, 4, 4, 15, 16)
+plot_predictions_automl(predictions_automl, rmse, rsq, 4, 4, 18, 20)
 ```
 
 
@@ -364,6 +487,38 @@ plot_predictions_automl(predictions_automl, rmse, rsq, 4, 4, 15, 16)
 #| warning: false
 
 readRDS("models/automl_va_plot_weekly.rds") +
+  theme_classic(base_size = 12) +
+  scale_fill_viridis_c(direction = -1) +
+  labs(title = NULL, x = "Model ID") +
+  theme(axis.text.x = element_text(angle = 55, h = 1))
+```
+
+#### Monthly autoML
+
+```{r}
+#| label: fig-predictions_automl_monthly_500
+#| fig-cap: "Variable of importance derived from the autoML model for the monthly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+predictions_automl <- readRDS("models/predictions_automl_monthly.rds")
+perf <- readRDS("models/performance_automl_monthly.rds")
+
+rsq <- h2o.r2(perf)
+rmse <- h2o.rmse(perf)
+
+plot_predictions_automl(predictions_automl, rmse, rsq, 5, 5, 12, 13)
+```
+
+```{r automl_importance_variable_monthly}
+#| label: fig-vip_monthly_500_automl_monthly
+#| fig-cap: "Variable of importance derived from the autoML model for the monthly values at 500 m spatial resolution model."
+#| fig-width: 7
+#| fig-height: 8
+#| echo: false
+#| message: false
+#| warning: false
+readRDS("models/automl_va_plot_monthly.rds") +
   theme_classic(base_size = 12) +
   scale_fill_viridis_c(direction = -1) +
   labs(title = NULL, x = "Model ID") +
