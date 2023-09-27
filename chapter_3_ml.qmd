@@ -19,7 +19,7 @@ To get the most of the Earth system data there are two major challenges. The fir
 
 Predicting dynamics in the biosphere is challenging given the biologically mediated processes [@reichstein_deep_2019]. "Prediction" term should not be confused with forecasting, given that most of the models are not aiming at predicting into the future, instead the focus is to predict in the past or the present times [@meyer_improving_2018]
 
-These predictions can include many forms of uncertainty [@reichstein_deep_2019]. One is that individual ML methods can have different responses, specially when these models are applied beyond the conditions presented in the training dataset. Jung et al 2009, Papale et al 2015. A second one is that the explanatory variables used in ML methods derived from satellite remote sensing, are partial on the about the vegetation state [@tramontana_predicting_2016], and also lacks all the information to explain the complete variability in fluxes Tramontana et al 2015
+These predictions can include many forms of uncertainty [@reichstein_deep_2019]. One is that individual ML methods can have different responses, specially when these models are applied beyond the conditions presented in the training dataset. [@jung_towards_2009, @papale_effect_2015]. A second one is that the explanatory variables used in ML methods derived from satellite remote sensing, are partial on the about the vegetation state [@tramontana_predicting_2016], and also lacks all the information to explain the complete variability in fluxes [@tramontana_uncertainty_2015]
 
 \newpage
 
