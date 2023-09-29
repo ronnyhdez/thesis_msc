@@ -55,32 +55,52 @@ source("scripts/models_data_preparation.R")
 source("R/plot_exploratory.R")
 ```
 
-### Data Analysis
+### Data Preparation
 
- - Sites
- - ONEFlux for GPP
- - Satellite imagery
- - indices calculation
- - Here I'm using all the bands available
- - Cleaning satellite data
- - Filter
- - scaling
- - join
+For this study, three deciduous broadleaf forest forests sites were selected:
+University of Michigan Biological Station, Bartlett experimental forest, and the
+Borden Forest Research Station. All of them in the northern hemisphere. In-situ
+data such as GPP was obtained from the ONEFlux processing by Ameriflux. The
+selected GPP was calculated by the daytime processing and collected on a daily,
+weekly, and monthly basis.
 
+We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate 
+Resolution Imaging Spectroradiometer (MODIS), specifically the collection 
+MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding 
+the EC tower was defined for each site, and the complete data pixel values 
+within this polygon was extracted for analysis.
 
+We selected the highest quality pixels according to the `state_1km` and `qc_500m`
+bit string variables. Once we had just the highest quality pixels, all the band
+values were scaled by a factor of 0.0001. If any value fell outside the range
+of 0 to 1 after the scaling, it was discarded.
+
+Once all the band values were scaled, we calculate 4 Vegetation Indices: NDVI,
+NIRv, EVI, and CCI. Then all the MODIS bands values and VIs were summarized in
+a daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux.
+
+<!--  - Sites -->
+<!--  - ONEFlux for GPP -->
+<!--  - Satellite imagery -->
+<!--  - indices calculation -->
+<!--  - Here I'm using all the bands available -->
+<!--  - Cleaning satellite data -->
+<!--  - Filter -->
+<!--  - scaling -->
+<!--  - join -->
 
 #### Random Forests
 
-Regression Random forests were used as an approach to predict GPP by incorporating all available bands values from the MODIS dataset and the VIs. The primary 
-objective was to assess the relative importance of these variables in predicting
-GPP. The RF models were created using both daily and weekly datasets allowing 
-for an analysis of GPP prediction across different time scales.
+Regression Random forests were used as an approach to predict GPP by 
+incorporating all available bands values from the MODIS dataset and the VIs. 
+The primary objective was to assess the relative importance of these variables
+in predicting GPP. The RF models were created using both daily and weekly 
+datasets allowing for an analysis of GPP prediction across different time scales.
 
 To implement the RF models, the `ranger` package [@wright_ranger_2017] was 
 employed, utilizing 1000 trees within the forest ensemble. The models were 
 trained using bootstrap resampling with 100 folds, which helps to improve the
 robustness and accuracy of the predictions. 
-
 
 #### AutoML
 
