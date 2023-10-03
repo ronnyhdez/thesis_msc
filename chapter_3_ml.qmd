@@ -1,4 +1,4 @@
-# Use of machine learning methods to predict GPP from VI's on a daily and weekly basis
+# A data driven approach to predict GPP from VIs through machine learning methods
 
 ## Introduction
 
@@ -55,14 +55,52 @@ source("scripts/models_data_preparation.R")
 source("R/plot_exploratory.R")
 ```
 
-### Data Preparation
+<!--  - Sites -->
+<!--  - ONEFlux for GPP -->
+<!--  - Satellite imagery -->
+<!--  - indices calculation -->
+<!--  - Here I'm using all the bands available -->
+<!--  - Cleaning satellite data -->
+<!--  - Filter -->
+<!--  - scaling -->
+<!--  - join -->
 
-For this study, three deciduous broadleaf forest forests sites were selected:
-University of Michigan Biological Station, Bartlett experimental forest, and the
-Borden Forest Research Station. All of them in the northern hemisphere. In-situ
-data such as GPP was obtained from the ONEFlux processing by Ameriflux. The
-selected GPP was calculated by the daytime processing and collected on a daily,
-weekly, and monthly basis.
+### Eddy Covariance sites
+
+For this study, we selected three deciduous broadleaf forest forests sites:
+University of Michigan Biological Station located in northern Michigan, USA
+(45°350 N 84°430 W), Bartlett experimental forest in New Hampshire, USA 
+(44°06 N, 71°3 W), and the Borden Forest Research Station (44°19 N, 79°56 W) in
+Ontario, Canada. 
+
+In-situ data such as GPP was obtained utilizing the ONEFlux estimation 
+processing by Ameriflux. Here, we selected GPP estimation done by the daytime
+method [@pastorello2020fluxnet2015] on a daily, weekly, and monthly basis.
+
+These sites were selected to ensure they represented a single ecosystem type,
+characterized by shared environmental features. This approach allowed us to
+treat the dataset as a representation of a specific vegetation type terrestrial ecosystem.
+
+To capture seasonal variations and long-term trends, GPP data was collected over
+a minimum of 2 years. Specifically, University of Michigan Biological Station 
+collected data spanned from January 2015 to January 2018, Bartlett experimental
+forest data ranges from January 2015 to December 2018, and Borden Forest 
+Research Station from January 2015 to January 2022.
+
+<!-- From ameriflux: -->
+<!--  https://ameriflux.lbl.gov/sites/siteinfo/US-Bar -->
+<!--  https://ameriflux.lbl.gov/sites/siteinfo/CA-Cbo -->
+<!--  https://ameriflux.lbl.gov/sites/siteinfo/US-UMB -->
+
+<!-- All sites are Dfb -->
+
+<!-- The code "Dfb" in the Köppen system refers to a specific climate type, which can be described as follows: -->
+
+<!-- "D" stands for the warm-summer continental or hemiboreal climate. -->
+<!-- "f" indicates that this climate has significant precipitation in all seasons. -->
+<!-- "b" indicates that the warmest month has an average temperature between 22°C and 28°C. -->
+
+### Data Preparation
 
 We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate 
 Resolution Imaging Spectroradiometer (MODIS), specifically the collection 
@@ -79,16 +117,6 @@ Once all the band values were scaled, we calculate 4 Vegetation Indices: NDVI,
 NIRv, EVI, and CCI. Then all the MODIS bands values and VIs were summarized in
 a daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux.
 
-<!--  - Sites -->
-<!--  - ONEFlux for GPP -->
-<!--  - Satellite imagery -->
-<!--  - indices calculation -->
-<!--  - Here I'm using all the bands available -->
-<!--  - Cleaning satellite data -->
-<!--  - Filter -->
-<!--  - scaling -->
-<!--  - join -->
-
 #### Random Forests
 
 Regression Random forests were used as an approach to predict GPP by 
@@ -101,6 +129,8 @@ To implement the RF models, the `ranger` package [@wright_ranger_2017] was
 employed, utilizing 1000 trees within the forest ensemble. The models were 
 trained using bootstrap resampling with 100 folds, which helps to improve the
 robustness and accuracy of the predictions. 
+
+We evaluate which variables were the most important to predict GPP...
 
 #### AutoML
 
