@@ -100,27 +100,44 @@ Research Station from January 2015 to January 2022.
 <!-- "f" indicates that this climate has significant precipitation in all seasons. -->
 <!-- "b" indicates that the warmest month has an average temperature between 22°C and 28°C. -->
 
-### Data Preparation
+### Satellite imagery 
 
 We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate 
 Resolution Imaging Spectroradiometer (MODIS), specifically the collection 
 MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding 
-the EC tower was defined for each site, and the complete data pixel values 
-within this polygon was extracted for analysis.
+the EC tower was defined for each of the study sites, and the complete data 
+pixel values within this polygon was extracted for analysis.
 
-We selected the highest quality pixels according to the `state_1km` and `qc_500m`
-bit string variables. Once we had just the highest quality pixels, all the band
+The MODIS collected data contains the surface spectral reflectance from bands 
+to 1 through 7 with a spatial resolution of 500m, with corrections for 
+atmospheric conditions such as aerosols, gasses and Rayleigh scattering [@vermote2021modis].
+
+We selected the highest quality pixels according to the `state_1km` 
+(@tbl-state_1km_bitstrings) and `qc_500m` (@tbl-qc_scan_bit_strings) bit 
+string variables. Once we had just the highest quality pixels, all the band
 values were scaled by a factor of 0.0001. If any value fell outside the range
 of 0 to 1 after the scaling, it was discarded.
 
-Once all the band values were scaled, we calculate 4 Vegetation Indices: NDVI,
+Once all the band values were scaled, we calculated 4 Vegetation Indices: NDVI,
 NIRv, EVI, and CCI. Then all the MODIS bands values and VIs were summarized in
 a daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux.
 
 #### Random Forests
 
 Regression Random forests were used as an approach to predict GPP by 
-incorporating all available bands values from the MODIS dataset and the VIs. 
+incorporating all available bands values (from B01 to B07) from the MODIS
+dataset and the calculated VIs. The models created are a daily, weekly, and a
+monthly one to evaluate the predicting performance across different time scales. 
+
+
+
+ - How many models? dauly weekly and monthly
+ - variables
+ - set up (folds, trees, resampling method stratification)
+ - data preparation (dealing with NAs)
+ - validation techniques
+
+
 The primary objective was to assess the relative importance of these variables
 in predicting GPP. The RF models were created using both daily and weekly 
 datasets allowing for an analysis of GPP prediction across different time scales.
@@ -456,6 +473,12 @@ if (fs::file_exists("models/monthly_500_fit_site.rds")) {
   saveRDS(ranger_tune, "models/monthly_500_site_ranger_tune.rds")
   saveRDS(monthly_500_fit, "models/monthly_500_fit_site.rds")
 }
+
+#xgboost
+
+
+
+
 ```
 
 
