@@ -149,6 +149,14 @@ robustness and accuracy of the predictions.
 
 We evaluate which variables were the most important to predict GPP...
 
+To understand which features were the most important to predict GPP and how
+the predictions values could change under different predictor values, we
+obtained the shapley values for each of the models.
+
+VIP is the model based method
+DALEX is model agnostic
+
+
 #### AutoML
 
 Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id. Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi quis ipsa aut. Temporibus ut rerum ea a est voluptate.
@@ -226,6 +234,66 @@ monthly_500_rf <- bind_rows(bor, bar, mich) %>%
 ```
 
 #### Daily 500
+
+```{r xgboost_daily}
+#| echo: false
+#| message: false
+#| warning: false
+# set.seed(123)
+# daily_500_split <- initial_split(daily_500_rf, strata = site)
+# daily_500_train <- training(daily_500_split)
+# daily_500_test <- testing(daily_500_split)
+# 
+# set.seed(234)
+# # daily_500_folds 
+# daily_500_folds <- bootstraps(daily_500_train,
+#                               times = 100,
+#                               strata = gpp_dt_vut_ref)
+# 
+# bb_recipe <- 
+#   recipe(formula = gpp_dt_vut_ref ~ ., data = daily_500_train) %>% 
+#   step_select(-site, -total_obs)
+# 
+# xgb_spec <-
+#   boost_tree(
+#     trees = tune(),
+#     min_n = tune(),
+#     mtry = tune(),
+#     learn_rate = 0.01
+#   ) %>%
+#   set_engine("xgboost") %>%
+#   set_mode("regression")
+# 
+# xgb_wf <- workflow(bb_recipe, xgb_spec)
+# 
+# set.seed(3156)
+# 
+# library(finetune)
+# doParallel::registerDoParallel()
+# 
+# set.seed(345)
+# xgb_rs <- tune_race_anova(
+#   xgb_wf,
+#   resamples = daily_500_folds,
+#   grid = 15,
+#   # metrics = metric_set(mn_log_loss),
+#   control = control_race(verbose_elim = TRUE)
+# )
+# 
+# plot_race(xgb_rs)
+# 
+# show_best(xgb_rs)
+# 
+# xgb_last <- xgb_wf %>%
+#   finalize_workflow(select_best(xgb_rs)) %>%
+#   last_fit(daily_500_split)
+# 
+# xgb_last
+# metrics <- collect_metrics(xgb_last)
+# 
+# plot_predictions_rf(xgb_last, metrics, 4, 4, 23.5, 22) 
+```
+
 
 ```{r daily_500_rf}
 #| echo: false
