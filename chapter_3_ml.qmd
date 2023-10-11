@@ -126,26 +126,22 @@ a daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux.
 
 Regression Random forests were used as an approach to predict GPP by 
 incorporating all available bands values (from B01 to B07) from the MODIS
-dataset and the calculated VIs. The models created are a daily, weekly, and a
-monthly one to evaluate the predicting performance across different time scales. 
+dataset and the calculated VIs. Three distinct models were developed, each one
+tailored for a specific time scale (daily, weekly, and monthly). This approach
+allowed us to assess the prediction performance of GPP at different time scales. 
 
+To build and evaluate the model, we performed a random data splitting procedure, dividing the data into training set with 70% of the observations and a test set
+with the remaining 30%. We employed a stratified data split to ensure a 
+proportional representation of each site category in both sets. To ensure 
+reproducibility, we use a random number generator state throughout the process.
 
-
- - How many models? dauly weekly and monthly
- - variables
- - set up (folds, trees, resampling method stratification)
- - data preparation (dealing with NAs)
- - validation techniques
-
-
-The primary objective was to assess the relative importance of these variables
-in predicting GPP. The RF models were created using both daily and weekly 
-datasets allowing for an analysis of GPP prediction across different time scales.
-
-To implement the RF models, the `ranger` package [@wright_ranger_2017] was 
-employed, utilizing 1000 trees within the forest ensemble. The models were 
-trained using bootstrap resampling with 100 folds, which helps to improve the
+To implement the RF models, we use the `ranger` package in R [@wright_ranger_2017],
+utilizing 1000 trees within the forest ensemble. The models were trained using
+the bootstrap resampling technique with 100 folds, which helps to improve the
 robustness and accuracy of the predictions. 
+
+
+
 
 We evaluate which variables were the most important to predict GPP...
 
