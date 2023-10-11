@@ -122,7 +122,7 @@ Once all the band values were scaled, we calculated 4 Vegetation Indices: NDVI,
 NIRv, EVI, and CCI. Then all the MODIS bands values and VIs were summarized in
 a daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux.
 
-#### Random Forests
+### Random Forests
 
 Regression Random forests were used as an approach to predict GPP by 
 incorporating all available bands values (from B01 to B07) from the MODIS
@@ -153,7 +153,7 @@ VIP is the model based method
 DALEX is model agnostic
 
 
-#### AutoML
+### AutoML
 
 Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id. Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi quis ipsa aut. Temporibus ut rerum ea a est voluptate.
 
