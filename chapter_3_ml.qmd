@@ -140,14 +140,14 @@ utilizing 1000 trees within the forest ensemble. The models were trained using
 the bootstrap resampling technique with 100 folds, which helps to improve the
 robustness and accuracy of the predictions. 
 
-To understand which bands or VI's are the most important driving the predictions,
-the global feature importance or variable importance was calculated (tidymodels). 
-This process quantifies the influence of each feature on the model's predictive
-performance, which helps to identify those critical variables for better 
-predictions. To determine the scores, permutation technique was employed,
-fitting the model with and quantifyng how the predictive performance of the
-model deteriorates when a particular variables is permuted while keeping others
-constant.
+We calculated the variable of importance to understand which MODIS bands or
+VIs are driving the predictions in each of the regression random forest models.
+To measure the influence of each feature on the model's predictive
+performance, we quantify how this performance deteriorates when a particular 
+variable is permuted while keeping others constant. 
+
+
+
 
 
 
