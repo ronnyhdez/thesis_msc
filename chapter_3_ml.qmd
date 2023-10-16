@@ -442,7 +442,6 @@ rf_breakdown %>%
   labs(y = NULL)
 ```
 
-
 #### Weekly 500
 
 ```{r weekly_500_rf}
@@ -497,7 +496,6 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
 }
 ```
 
-
 ```{r predictions_plot_weekly_500_rf}
 #| label: fig-weekly_500_rf
 #| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a weekly basis. The red line represents a 1:1 relation."
@@ -535,7 +533,7 @@ workflow() %>%
   theme_classic(base_size = 12)
 ```
 
-```{r shapley_values}
+```{r shapley_values_weekly}
 #| label: fig-shap_weekly_500_rf
 #| fig-cap: "Shapley values derived from the Random forest model for the weekly values at 500 m spatial resolution model."
 #| echo: false
@@ -604,11 +602,9 @@ plot_grid(low_value,
           labels = c('A', 'B'))
 ```
 
-
-
 #### Monthly
 
-```{r}
+```{r monthly_500_rf}
 #| echo: false
 #| message: false
 #| warning: false
@@ -618,15 +614,15 @@ monthly_500_split <- initial_split(monthly_500_rf, strata = site)
 monthly_500_train <- training(monthly_500_split)
 monthly_500_test <- testing(monthly_500_split)
 
+# monthly_500_folds 
 set.seed(365)
-# weekly_500_folds 
 monthly_500_folds <- bootstraps(monthly_500_train,
                                 times = 100,
                                 strata = gpp_dt_vut_ref)
 
 ranger_recipe <- 
   recipe(formula = gpp_dt_vut_ref ~ ., data = monthly_500_train) %>% 
-  step_select(-site, -total_obs)
+  step_select(-site, -total_obs, skip = TRUE)
 
 ranger_spec <- 
   rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
@@ -661,16 +657,9 @@ if (fs::file_exists("models/monthly_500_fit_site.rds")) {
   saveRDS(ranger_tune, "models/monthly_500_site_ranger_tune.rds")
   saveRDS(monthly_500_fit, "models/monthly_500_fit_site.rds")
 }
-
-#xgboost
-
-
-
-
 ```
 
-
-```{r}
+```{r predictions_plot_monthly_500_rf}
 #| label: fig-monthly_500_rf
 #| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a monthly basis. The red line represents a 1:1 relation."
 #| echo: false
@@ -686,7 +675,7 @@ plot_predictions_rf(monthly_500_fit, metrics, 5, 5, 16, 18)
 ```
 
 
-```{r}
+```{r vip_plot_monthly_500_rf}
 #| label: fig-vip_monthly_500_rf
 #| fig-cap: "Variable of importance derived from the Random forest model for the monthly values at 500 m spatial resolution model."
 #| echo: false
@@ -706,6 +695,81 @@ workflow() %>%
   vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
   theme_light(base_size = 12)
 ```
+
+```{r shapley_values_monthly}
+#| label: fig-shap_monthly_500_rf
+#| fig-cap: "Shapley values derived from the Random forest model for the monthly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Extract workflow to obtain shapley values (or run predict)
+monthly_gpp_model <- extract_workflow(monthly_500_fit)
+
+# Create an explainer for a regression model
+explainer_rf <- explain_tidymodels(
+  monthly_gpp_model,
+  data = monthly_500_train,
+  y = monthly_500_train$gpp_dt_vut_ref,
+  label = "rf",
+  verbose = FALSE
+)
+
+# Take a low gpp value
+low_gpp <- monthly_500_train[45, ] 
+
+rf_breakdown <- predict_parts(explainer = explainer_rf, 
+                              new_observation = low_gpp,
+                              type = "shap")
+# rf_breakdown
+low_value <- rf_breakdown %>%
+  group_by(variable) %>%
+  mutate(mean_val = mean(contribution)) %>%
+  ungroup() %>%
+  mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
+  ggplot(aes(contribution, variable, fill = mean_val > 0)) +
+  geom_col(data = ~distinct(., variable, mean_val), 
+           aes(mean_val, variable), 
+           alpha = 0.5) +
+  geom_boxplot(width = 0.5) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(y = NULL)
+
+# Take a high gpp value
+high_gpp <- monthly_500_train[6, ] 
+
+rf_breakdown <- predict_parts(explainer = explainer_rf, 
+                              new_observation = high_gpp,
+                              type = "shap")
+# rf_breakdown
+high_value <- rf_breakdown %>%
+  group_by(variable) %>%
+  mutate(mean_val = mean(contribution)) %>%
+  ungroup() %>%
+  mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
+  ggplot(aes(contribution, variable, fill = mean_val > 0)) +
+  geom_col(data = ~distinct(., variable, mean_val), 
+           aes(mean_val, variable), 
+           alpha = 0.5) +
+  geom_boxplot(width = 0.5) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(y = NULL)
+
+plot_grid(low_value,
+          high_value,
+          nrow = 1,
+          labels = c('A', 'B'))
+```
+
+
+
+
+
+
 
 \newpage
 
