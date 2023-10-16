@@ -42,6 +42,10 @@ library(broom)
 library(usemodels)
 library(vip)
 library(h2o)
+library(stringr)
+library(DALEX)
+library(DALEXtra)
+library(forcats)
 
 # Source files
 # Source the objects created for the complete GPP trends.
@@ -402,11 +406,6 @@ workflow() %>%
 #| message: false
 #| warning: false
 
-# ## Local explanations: SHAPLEY values ----
-library(DALEX)
-library(DALEXtra)
-library(forcats)
-
 # Extract workflow to obtain shapley values (or run predict)
 daily_gpp_model <- extract_workflow(daily_500_fit)
 
@@ -430,6 +429,10 @@ rf_breakdown %>%
   group_by(variable) %>%
   mutate(mean_val = mean(contribution)) %>%
   ungroup() %>%
+  mutate(variable = case_when(
+    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    .default = variable
+  )) %>% 
   mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
   ggplot(aes(contribution, variable, fill = mean_val > 0)) +
   geom_col(data = ~distinct(., variable, mean_val), 
@@ -562,6 +565,10 @@ low_value <- rf_breakdown %>%
   group_by(variable) %>%
   mutate(mean_val = mean(contribution)) %>%
   ungroup() %>%
+  mutate(variable = case_when(
+    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    .default = variable
+  )) %>% 
   mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
   ggplot(aes(contribution, variable, fill = mean_val > 0)) +
   geom_col(data = ~distinct(., variable, mean_val), 
@@ -584,6 +591,10 @@ high_value <- rf_breakdown %>%
   group_by(variable) %>%
   mutate(mean_val = mean(contribution)) %>%
   ungroup() %>%
+  mutate(variable = case_when(
+    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    .default = variable
+  )) %>% 
   mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
   ggplot(aes(contribution, variable, fill = mean_val > 0)) +
   geom_col(data = ~distinct(., variable, mean_val), 
@@ -724,6 +735,10 @@ low_value <- rf_breakdown %>%
   group_by(variable) %>%
   mutate(mean_val = mean(contribution)) %>%
   ungroup() %>%
+  mutate(variable = case_when(
+    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    .default = variable
+  )) %>% 
   mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
   ggplot(aes(contribution, variable, fill = mean_val > 0)) +
   geom_col(data = ~distinct(., variable, mean_val), 
@@ -746,6 +761,10 @@ high_value <- rf_breakdown %>%
   group_by(variable) %>%
   mutate(mean_val = mean(contribution)) %>%
   ungroup() %>%
+  mutate(variable = case_when(
+    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    .default = variable
+  )) %>% 
   mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
   ggplot(aes(contribution, variable, fill = mean_val > 0)) +
   geom_col(data = ~distinct(., variable, mean_val), 
