@@ -401,7 +401,7 @@ workflow() %>%
 
 ```{r}
 #| label: fig-shap_daily_500_rf
-#| fig-cap: "VShapley values derived from the Random forest model for the daily values at 500 m spatial resolution model."
+#| fig-cap: "Shapley values derived from the Random forest model for the daily values at 500 m spatial resolution model."
 #| echo: false
 #| message: false
 #| warning: false
