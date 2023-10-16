@@ -396,6 +396,12 @@ workflow() %>%
 ```
 
 ```{r}
+#| label: fig-shap_daily_500_rf
+#| fig-cap: "VShapley values derived from the Random forest model for the daily values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
 # ## Local explanations: SHAPLEY values ----
 library(DALEX)
 library(DALEXtra)
@@ -443,19 +449,19 @@ rf_breakdown %>%
 #| echo: false
 #| message: false
 #| warning: false
-set.seed(123)
+set.seed(125)
 
 weekly_500_split <- initial_split(weekly_500_rf, strata = site)
 weekly_500_train <- training(weekly_500_split)
 weekly_500_test <- testing(weekly_500_split)
 
-set.seed(234)
+set.seed(2389)
 weekly_500_folds <- bootstraps(weekly_500_train,
                               times = 100,
                               strata = gpp_dt_vut_ref)
 ranger_recipe <- 
   recipe(formula = gpp_dt_vut_ref ~ ., data = weekly_500_train) %>% 
-  step_select(-site, -total_obs)
+  step_select(-site, -total_obs, skip = TRUE)
 
 ranger_spec <- 
   rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
@@ -472,9 +478,8 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
   weekly_500_fit <- readRDS("models/weekly_500_fit_site.rds")
   ranger_tune <- readRDS("models/weekly_500_site_ranger_tune.rds")
 } else {
-  set.seed(3156)
-  
   doParallel::registerDoParallel()
+  set.seed(1297)
   ranger_tune <-
     tune_grid(ranger_workflow, 
               resamples = weekly_500_folds, 
@@ -529,6 +534,77 @@ workflow() %>%
   vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
   theme_classic(base_size = 12)
 ```
+
+```{r shapley_values}
+#| label: fig-shap_weekly_500_rf
+#| fig-cap: "Shapley values derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Extract workflow to obtain shapley values (or run predict)
+weekly_gpp_model <- extract_workflow(weekly_500_fit)
+
+# Create an explainer for a regression model
+explainer_rf <- explain_tidymodels(
+  weekly_gpp_model,
+  data = weekly_500_train,
+  y = weekly_500_train$gpp_dt_vut_ref,
+  label = "rf",
+  verbose = FALSE
+)
+
+# Take a low gpp value
+low_gpp <- weekly_500_train[16, ] 
+
+rf_breakdown <- predict_parts(explainer = explainer_rf, 
+                              new_observation = low_gpp,
+                              type = "shap")
+# rf_breakdown
+low_value <- rf_breakdown %>%
+  group_by(variable) %>%
+  mutate(mean_val = mean(contribution)) %>%
+  ungroup() %>%
+  mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
+  ggplot(aes(contribution, variable, fill = mean_val > 0)) +
+  geom_col(data = ~distinct(., variable, mean_val), 
+           aes(mean_val, variable), 
+           alpha = 0.5) +
+  geom_boxplot(width = 0.5) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(y = NULL)
+
+# Take a high gpp value
+high_gpp <- weekly_500_train[167, ] 
+
+rf_breakdown <- predict_parts(explainer = explainer_rf, 
+                              new_observation = high_gpp,
+                              type = "shap")
+# rf_breakdown
+high_value <- rf_breakdown %>%
+  group_by(variable) %>%
+  mutate(mean_val = mean(contribution)) %>%
+  ungroup() %>%
+  mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
+  ggplot(aes(contribution, variable, fill = mean_val > 0)) +
+  geom_col(data = ~distinct(., variable, mean_val), 
+           aes(mean_val, variable), 
+           alpha = 0.5) +
+  geom_boxplot(width = 0.5) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(y = NULL)
+
+plot_grid(low_value,
+          high_value,
+          nrow = 1,
+          labels = c('A', 'B'))
+```
+
+
 
 #### Monthly
 
