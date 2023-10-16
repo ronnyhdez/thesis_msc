@@ -419,13 +419,13 @@ explainer_rf <- explain_tidymodels(
 )
 
 # Take a low gpp value
-high_gpp <- daily_500_train[16, ] 
+low_gpp <- daily_500_train[71, ] 
 
 rf_breakdown <- predict_parts(explainer = explainer_rf, 
-                              new_observation = high_gpp,
+                              new_observation = low_gpp,
                               type = "shap")
 # rf_breakdown
-rf_breakdown %>%
+low_value <- rf_breakdown %>%
   group_by(variable) %>%
   mutate(mean_val = mean(contribution)) %>%
   ungroup() %>%
@@ -443,6 +443,37 @@ rf_breakdown %>%
   theme(legend.position = "none") +
   scale_fill_viridis_d() +
   labs(y = NULL)
+
+# Take a high gpp value
+high_gpp <- daily_500_train[578, ] 
+
+rf_breakdown <- predict_parts(explainer = explainer_rf, 
+                              new_observation = high_gpp,
+                              type = "shap")
+# rf_breakdown
+high_value <- rf_breakdown %>%
+  group_by(variable) %>%
+  mutate(mean_val = mean(contribution)) %>%
+  ungroup() %>%
+  mutate(variable = case_when(
+    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    .default = variable
+  )) %>% 
+  mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
+  ggplot(aes(contribution, variable, fill = mean_val > 0)) +
+  geom_col(data = ~distinct(., variable, mean_val), 
+           aes(mean_val, variable), 
+           alpha = 0.5) +
+  geom_boxplot(width = 0.5) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(y = NULL)
+
+plot_grid(low_value,
+          high_value,
+          nrow = 1,
+          labels = c('A', 'B'))
 ```
 
 #### Weekly 500
