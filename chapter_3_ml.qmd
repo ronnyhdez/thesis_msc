@@ -511,7 +511,6 @@ metrics <- collect_metrics(weekly_500_fit)
 plot_predictions_rf(weekly_500_fit, metrics, 4, 4, 23, 25)
 ```
 
-
 ```{r vip_plot_weekly_500_rf}
 #| label: fig-vip_weekly_500_rf
 #| fig-cap: "Variable of importance derived from the Random forest model for the weekly values at 500 m spatial resolution model."
@@ -673,7 +672,6 @@ metrics <- collect_metrics(monthly_500_fit)
 ## Collect predictions
 plot_predictions_rf(monthly_500_fit, metrics, 5, 5, 16, 18)
 ```
-
 
 ```{r vip_plot_monthly_500_rf}
 #| label: fig-vip_monthly_500_rf
