@@ -134,7 +134,8 @@ dataset and the calculated VIs. Three distinct models were developed, each one
 tailored for a specific time scale (daily, weekly, and monthly). This approach
 allowed us to assess the prediction performance of GPP at different time scales. 
 
-To build and evaluate the model, we performed a random data splitting procedure, dividing the data into training set with 70% of the observations and a test set
+To build and evaluate the model, we performed a random data splitting procedure,
+dividing the data into training set with 70% of the observations and a test set
 with the remaining 30%. We employed a stratified data split to ensure a 
 proportional representation of each site category in both sets. To ensure 
 reproducibility, we use a random number generator state throughout the process.
@@ -174,7 +175,7 @@ Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta dolor
 
 ## Results
 
-### Random Forest as a better prediction model
+### Data-Driven GPP Prediction: A Regression Random Forest Approach 
 
 ```{r data_preparation_rf}
 #| echo: false
@@ -394,9 +395,20 @@ workflow() %>%
   add_recipe(ranger_recipe) %>%
   add_model(imp_spec) %>%
   fit(daily_500_train) %>%
-  extract_fit_parsnip() %>%
+  extract_fit_parsnip() %>% 
   vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
-  theme_light(base_size = 12)
+  theme_light(base_size = 12) +
+  scale_x_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
 ```
 
 ```{r}
