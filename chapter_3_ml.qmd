@@ -440,11 +440,24 @@ rf_breakdown <- predict_parts(explainer = explainer_rf,
 low_value <- rf_breakdown %>%
   group_by(variable) %>%
   mutate(mean_val = mean(contribution)) %>%
-  ungroup() %>%
+  ungroup() %>% 
   mutate(variable = case_when(
-    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
     .default = variable
-  )) %>% 
+  )) %>%
   mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
   ggplot(aes(contribution, variable, fill = mean_val > 0)) +
   geom_col(data = ~distinct(., variable, mean_val), 
@@ -468,9 +481,22 @@ high_value <- rf_breakdown %>%
   mutate(mean_val = mean(contribution)) %>%
   ungroup() %>%
   mutate(variable = case_when(
-    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
     .default = variable
-  )) %>% 
+  )) %>%
   mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
   ggplot(aes(contribution, variable, fill = mean_val > 0)) +
   geom_col(data = ~distinct(., variable, mean_val), 
@@ -575,7 +601,18 @@ workflow() %>%
   fit(weekly_500_train) %>%
   extract_fit_parsnip() %>%
   vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
-  theme_classic(base_size = 12)
+  theme_classic(base_size = 12) +
+  scale_x_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
 ```
 
 ```{r shapley_values_weekly}
@@ -609,9 +646,22 @@ low_value <- rf_breakdown %>%
   mutate(mean_val = mean(contribution)) %>%
   ungroup() %>%
   mutate(variable = case_when(
-    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
     .default = variable
-  )) %>% 
+  )) %>%
   mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
   ggplot(aes(contribution, variable, fill = mean_val > 0)) +
   geom_col(data = ~distinct(., variable, mean_val), 
@@ -635,9 +685,22 @@ high_value <- rf_breakdown %>%
   mutate(mean_val = mean(contribution)) %>%
   ungroup() %>%
   mutate(variable = case_when(
-    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
     .default = variable
-  )) %>% 
+  )) %>%
   mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
   ggplot(aes(contribution, variable, fill = mean_val > 0)) +
   geom_col(data = ~distinct(., variable, mean_val), 
@@ -745,7 +808,18 @@ workflow() %>%
   fit(monthly_500_train) %>%
   extract_fit_parsnip() %>%
   vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
-  theme_light(base_size = 12)
+  theme_light(base_size = 12) +
+  scale_x_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
 ```
 
 ```{r shapley_values_monthly}
@@ -779,9 +853,22 @@ low_value <- rf_breakdown %>%
   mutate(mean_val = mean(contribution)) %>%
   ungroup() %>%
   mutate(variable = case_when(
-    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
     .default = variable
-  )) %>% 
+  )) %>%
   mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
   ggplot(aes(contribution, variable, fill = mean_val > 0)) +
   geom_col(data = ~distinct(., variable, mean_val), 
@@ -805,9 +892,22 @@ high_value <- rf_breakdown %>%
   mutate(mean_val = mean(contribution)) %>%
   ungroup() %>%
   mutate(variable = case_when(
-    str_detect(variable, "_mean") ~ str_remove(variable, "_mean"),
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
     .default = variable
-  )) %>% 
+  )) %>%
   mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
   ggplot(aes(contribution, variable, fill = mean_val > 0)) +
   geom_col(data = ~distinct(., variable, mean_val), 
