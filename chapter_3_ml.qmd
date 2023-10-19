@@ -145,24 +145,17 @@ utilizing 1000 trees within the forest ensemble. The models were trained using
 the bootstrap resampling technique with 100 folds, which helps to improve the
 robustness and accuracy of the predictions. 
 
-We calculated the variable of importance to understand which MODIS bands or
+We calculated the variable of importance (VIP) to understand which MODIS bands or
 VIs are driving the predictions in each of the regression random forest models.
-To measure the influence of each feature on the model's predictive
+To measure the influence of each feature on the overall model's predictive
 performance, we quantify how this performance deteriorates when a particular 
 variable is permuted while keeping others constant. 
 
-
-
-
-
-
-
-To understand which features were the most important to predict GPP and how
-the predictions values could change under different predictor values, we
-obtained the shapley values for each of the models.
-
-VIP is the model based method
-DALEX is model agnostic
+To understand which features were the most important to predict GPP from an 
+individual observation and how the predictions values could change under 
+different predictor values, we calculated the Shapley values [@lundberg_unified_nodate].
+These values were computed for both low GPP and high GPP scenarios within each
+of the temporally aggregated models. 
 
 
 ### AutoML
@@ -958,7 +951,7 @@ plot_predictions_automl(predictions_automl, rmse, rsq, 3, 3, 18, 20)
 #| label: fig-vip_daily_500_automl
 #| fig-cap: "Variable of importance derived from the autoML model for the daily values at 500 m spatial resolution model."
 #| fig-width: 7
-#| fig-height: 8
+#| fig-height: 5
 #| echo: false
 #| message: false
 #| warning: false
@@ -967,11 +960,21 @@ readRDS("models/automl_va_plot.rds") +
   theme_classic(base_size = 12) +
   scale_fill_viridis_c(direction = -1) +
   labs(title = NULL, x = "Model ID") +
-  theme(axis.text.x = element_text(angle = 55, h = 1))
+  theme(axis.text.x = element_text(angle = 55, h = 1)) +
+  scale_y_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
 ```
 
 #### Weekly autoML
-
 
 ```{r}
 #| label: fig-predictions_automl_weekly_500
@@ -994,7 +997,7 @@ plot_predictions_automl(predictions_automl, rmse, rsq, 4, 4, 18, 20)
 #| label: fig-vip_daily_500_automl_weekly
 #| fig-cap: "Variable of importance derived from the autoML model for the weekly values at 500 m spatial resolution model."
 #| fig-width: 7
-#| fig-height: 8
+#| fig-height: 5
 #| echo: false
 #| message: false
 #| warning: false
@@ -1003,7 +1006,18 @@ readRDS("models/automl_va_plot_weekly.rds") +
   theme_classic(base_size = 12) +
   scale_fill_viridis_c(direction = -1) +
   labs(title = NULL, x = "Model ID") +
-  theme(axis.text.x = element_text(angle = 55, h = 1))
+  theme(axis.text.x = element_text(angle = 55, h = 1)) +
+  scale_y_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
 ```
 
 #### Monthly autoML
@@ -1027,7 +1041,7 @@ plot_predictions_automl(predictions_automl, rmse, rsq, 5, 5, 12, 13)
 #| label: fig-vip_monthly_500_automl_monthly
 #| fig-cap: "Variable of importance derived from the autoML model for the monthly values at 500 m spatial resolution model."
 #| fig-width: 7
-#| fig-height: 8
+#| fig-height: 5
 #| echo: false
 #| message: false
 #| warning: false
@@ -1035,7 +1049,18 @@ readRDS("models/automl_va_plot_monthly.rds") +
   theme_classic(base_size = 12) +
   scale_fill_viridis_c(direction = -1) +
   labs(title = NULL, x = "Model ID") +
-  theme(axis.text.x = element_text(angle = 55, h = 1))
+  theme(axis.text.x = element_text(angle = 55, h = 1)) +
+  scale_y_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
 ```
 
 
