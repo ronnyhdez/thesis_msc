@@ -34,12 +34,17 @@ ranger_tune <-
 final_rf <- ranger_workflow %>% 
   finalize_workflow(select_best(ranger_tune))
 
-daily_500_fit <- fit(final_rf, daily_500_train)
+# daily_500_fit <- fit(final_rf, daily_500_train)
 
-# daily_500_fit <- last_fit(final_rf, daily_500_split)
-# daily_gpp_model <- extract_workflow(daily_500_fit)
+daily_500_fit <- last_fit(final_rf, daily_500_split)
+daily_gpp_model <- extract_workflow(daily_500_fit)
 
-predict(daily_500_fit, new_data = daily_500_test)
+# test <- extract_workflow(daily_500_fit)
+# daily_500_last_fit <- daily_500_fit
+
+# predict(test, new_data = daily_500_test)
+
+predict(daily_gpp_model, new_data = daily_500_test)
 
 
 # SHA values ----
@@ -48,8 +53,8 @@ library(DALEXtra)
 
 # Create an explainer for a regression model
 explainer_rf <- explain_tidymodels(
-  # daily_gpp_model,
-  daily_500_fit,
+  daily_gpp_model,
+  # daily_500_fit,
   data = daily_500_train,
   y = daily_500_train$gpp_dt_vut_ref,
   label = "rf",

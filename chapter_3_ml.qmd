@@ -42,6 +42,10 @@ library(broom)
 library(usemodels)
 library(vip)
 library(h2o)
+library(stringr)
+library(DALEX)
+library(DALEXtra)
+library(forcats)
 
 # Source files
 # Source the objects created for the complete GPP trends.
@@ -130,7 +134,8 @@ dataset and the calculated VIs. Three distinct models were developed, each one
 tailored for a specific time scale (daily, weekly, and monthly). This approach
 allowed us to assess the prediction performance of GPP at different time scales. 
 
-To build and evaluate the model, we performed a random data splitting procedure, dividing the data into training set with 70% of the observations and a test set
+To build and evaluate the model, we performed a random data splitting procedure,
+dividing the data into training set with 70% of the observations and a test set
 with the remaining 30%. We employed a stratified data split to ensure a 
 proportional representation of each site category in both sets. To ensure 
 reproducibility, we use a random number generator state throughout the process.
@@ -140,18 +145,17 @@ utilizing 1000 trees within the forest ensemble. The models were trained using
 the bootstrap resampling technique with 100 folds, which helps to improve the
 robustness and accuracy of the predictions. 
 
+We calculated the variable of importance (VIP) to understand which MODIS bands or
+VIs are driving the predictions in each of the regression random forest models.
+To measure the influence of each feature on the overall model's predictive
+performance, we quantify how this performance deteriorates when a particular 
+variable is permuted while keeping others constant. 
 
-
-
-We evaluate which variables were the most important to predict GPP...
-
-To understand which features were the most important to predict GPP and how
-the predictions values could change under different predictor values, we
-obtained the shapley values for each of the models.
-
-VIP is the model based method
-DALEX is model agnostic
-
+To understand which features contributed the most in average to a particular 
+GPP prediction in different coalitions [@molnar2020interpretable], we calculated
+the Shapley values [@lundberg_unified_nodate]. These values were computed with
+the DALEX package in R [@biecek2018dalex] for both low GPP and high GPP scenarios
+within each of the temporally aggregated models. 
 
 ### AutoML
 
@@ -163,7 +167,7 @@ Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta dolor
 
 ## Results
 
-### Random Forest as a better prediction model
+### Data-Driven GPP Prediction: A Regression Random Forest Approach 
 
 ```{r data_preparation_rf}
 #| echo: false
@@ -298,7 +302,7 @@ monthly_500_rf <- bind_rows(bor, bar, mich) %>%
 
 ## Make sure that the source of the file "R/plot_exploratory.R" was succesful
 
-set.seed(123)
+set.seed(752)
 daily_500_split <- initial_split(daily_500_rf, strata = site)
 daily_500_train <- training(daily_500_split)
 daily_500_test <- testing(daily_500_split)
@@ -311,7 +315,7 @@ daily_500_folds <- bootstraps(daily_500_train,
 
 ranger_recipe <- 
   recipe(formula = gpp_dt_vut_ref ~ ., data = daily_500_train) %>% 
-  step_select(-site, -total_obs)
+  step_select(-site, -total_obs, skip = TRUE)
 
 ranger_spec <- 
   rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
@@ -323,8 +327,6 @@ ranger_workflow <-
   add_recipe(ranger_recipe) %>% 
   add_model(ranger_spec) 
 
-set.seed(3156)
-
 # Conditional to re-run model if no artifac was saved before.
 if (fs::file_exists("models/daily_500_fit_site.rds") & 
     fs::file_exists("models/daily_500_site_ranger_tune.rds")) {
@@ -334,6 +336,7 @@ if (fs::file_exists("models/daily_500_fit_site.rds") &
   
 } else {  
   doParallel::registerDoParallel()
+  set.seed(6578)
   ranger_tune <-
     tune_grid(ranger_workflow, 
               resamples = daily_500_folds, 
@@ -384,9 +387,123 @@ workflow() %>%
   add_recipe(ranger_recipe) %>%
   add_model(imp_spec) %>%
   fit(daily_500_train) %>%
-  extract_fit_parsnip() %>%
+  extract_fit_parsnip() %>% 
   vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
-  theme_light(base_size = 12)
+  theme_light(base_size = 12) +
+  scale_x_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
+```
+
+```{r}
+#| label: fig-shap_daily_500_rf
+#| fig-cap: "Shapley values derived from the Random forest model for the daily values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Extract workflow to obtain shapley values (or run predict)
+daily_gpp_model <- extract_workflow(daily_500_fit)
+
+# Create an explainer for a regression model
+explainer_rf <- explain_tidymodels(
+  daily_gpp_model,
+  data = daily_500_train,
+  y = daily_500_train$gpp_dt_vut_ref,
+  label = "rf",
+  verbose = FALSE
+)
+
+# Take a low gpp value
+low_gpp <- daily_500_train[71, ] 
+
+rf_breakdown <- predict_parts(explainer = explainer_rf, 
+                              new_observation = low_gpp,
+                              type = "shap")
+# rf_breakdown
+low_value <- rf_breakdown %>%
+  group_by(variable) %>%
+  mutate(mean_val = mean(contribution)) %>%
+  ungroup() %>% 
+  mutate(variable = case_when(
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
+    .default = variable
+  )) %>%
+  mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
+  ggplot(aes(contribution, variable, fill = mean_val > 0)) +
+  geom_col(data = ~distinct(., variable, mean_val), 
+           aes(mean_val, variable), 
+           alpha = 0.5) +
+  geom_boxplot(width = 0.5) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(y = NULL)
+
+# Take a high gpp value
+high_gpp <- daily_500_train[578, ] 
+
+rf_breakdown <- predict_parts(explainer = explainer_rf, 
+                              new_observation = high_gpp,
+                              type = "shap")
+# rf_breakdown
+high_value <- rf_breakdown %>%
+  group_by(variable) %>%
+  mutate(mean_val = mean(contribution)) %>%
+  ungroup() %>%
+  mutate(variable = case_when(
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
+    .default = variable
+  )) %>%
+  mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
+  ggplot(aes(contribution, variable, fill = mean_val > 0)) +
+  geom_col(data = ~distinct(., variable, mean_val), 
+           aes(mean_val, variable), 
+           alpha = 0.5) +
+  geom_boxplot(width = 0.5) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(y = NULL)
+
+plot_grid(low_value,
+          high_value,
+          nrow = 1,
+          labels = c('A', 'B'))
 ```
 
 #### Weekly 500
@@ -395,19 +512,19 @@ workflow() %>%
 #| echo: false
 #| message: false
 #| warning: false
-set.seed(123)
+set.seed(125)
 
 weekly_500_split <- initial_split(weekly_500_rf, strata = site)
 weekly_500_train <- training(weekly_500_split)
 weekly_500_test <- testing(weekly_500_split)
 
-set.seed(234)
+set.seed(2389)
 weekly_500_folds <- bootstraps(weekly_500_train,
                               times = 100,
                               strata = gpp_dt_vut_ref)
 ranger_recipe <- 
   recipe(formula = gpp_dt_vut_ref ~ ., data = weekly_500_train) %>% 
-  step_select(-site, -total_obs)
+  step_select(-site, -total_obs, skip = TRUE)
 
 ranger_spec <- 
   rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
@@ -424,9 +541,8 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
   weekly_500_fit <- readRDS("models/weekly_500_fit_site.rds")
   ranger_tune <- readRDS("models/weekly_500_site_ranger_tune.rds")
 } else {
-  set.seed(3156)
-  
   doParallel::registerDoParallel()
+  set.seed(1297)
   ranger_tune <-
     tune_grid(ranger_workflow, 
               resamples = weekly_500_folds, 
@@ -444,7 +560,6 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
 }
 ```
 
-
 ```{r predictions_plot_weekly_500_rf}
 #| label: fig-weekly_500_rf
 #| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a weekly basis. The red line represents a 1:1 relation."
@@ -459,7 +574,6 @@ metrics <- collect_metrics(weekly_500_fit)
 ## Collect predictions
 plot_predictions_rf(weekly_500_fit, metrics, 4, 4, 23, 25)
 ```
-
 
 ```{r vip_plot_weekly_500_rf}
 #| label: fig-vip_weekly_500_rf
@@ -479,12 +593,126 @@ workflow() %>%
   fit(weekly_500_train) %>%
   extract_fit_parsnip() %>%
   vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
-  theme_classic(base_size = 12)
+  theme_classic(base_size = 12) +
+  scale_x_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
+```
+
+```{r shapley_values_weekly}
+#| label: fig-shap_weekly_500_rf
+#| fig-cap: "Shapley values derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Extract workflow to obtain shapley values (or run predict)
+weekly_gpp_model <- extract_workflow(weekly_500_fit)
+
+# Create an explainer for a regression model
+explainer_rf <- explain_tidymodels(
+  weekly_gpp_model,
+  data = weekly_500_train,
+  y = weekly_500_train$gpp_dt_vut_ref,
+  label = "rf",
+  verbose = FALSE
+)
+
+# Take a low gpp value
+low_gpp <- weekly_500_train[16, ] 
+
+rf_breakdown <- predict_parts(explainer = explainer_rf, 
+                              new_observation = low_gpp,
+                              type = "shap")
+# rf_breakdown
+low_value <- rf_breakdown %>%
+  group_by(variable) %>%
+  mutate(mean_val = mean(contribution)) %>%
+  ungroup() %>%
+  mutate(variable = case_when(
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
+    .default = variable
+  )) %>%
+  mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
+  ggplot(aes(contribution, variable, fill = mean_val > 0)) +
+  geom_col(data = ~distinct(., variable, mean_val), 
+           aes(mean_val, variable), 
+           alpha = 0.5) +
+  geom_boxplot(width = 0.5) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(y = NULL)
+
+# Take a high gpp value
+high_gpp <- weekly_500_train[167, ] 
+
+rf_breakdown <- predict_parts(explainer = explainer_rf, 
+                              new_observation = high_gpp,
+                              type = "shap")
+# rf_breakdown
+high_value <- rf_breakdown %>%
+  group_by(variable) %>%
+  mutate(mean_val = mean(contribution)) %>%
+  ungroup() %>%
+  mutate(variable = case_when(
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
+    .default = variable
+  )) %>%
+  mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
+  ggplot(aes(contribution, variable, fill = mean_val > 0)) +
+  geom_col(data = ~distinct(., variable, mean_val), 
+           aes(mean_val, variable), 
+           alpha = 0.5) +
+  geom_boxplot(width = 0.5) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(y = NULL)
+
+plot_grid(low_value,
+          high_value,
+          nrow = 1,
+          labels = c('A', 'B'))
 ```
 
 #### Monthly
 
-```{r}
+```{r monthly_500_rf}
 #| echo: false
 #| message: false
 #| warning: false
@@ -494,15 +722,15 @@ monthly_500_split <- initial_split(monthly_500_rf, strata = site)
 monthly_500_train <- training(monthly_500_split)
 monthly_500_test <- testing(monthly_500_split)
 
+# monthly_500_folds 
 set.seed(365)
-# weekly_500_folds 
 monthly_500_folds <- bootstraps(monthly_500_train,
                                 times = 100,
                                 strata = gpp_dt_vut_ref)
 
 ranger_recipe <- 
   recipe(formula = gpp_dt_vut_ref ~ ., data = monthly_500_train) %>% 
-  step_select(-site, -total_obs)
+  step_select(-site, -total_obs, skip = TRUE)
 
 ranger_spec <- 
   rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
@@ -537,16 +765,9 @@ if (fs::file_exists("models/monthly_500_fit_site.rds")) {
   saveRDS(ranger_tune, "models/monthly_500_site_ranger_tune.rds")
   saveRDS(monthly_500_fit, "models/monthly_500_fit_site.rds")
 }
-
-#xgboost
-
-
-
-
 ```
 
-
-```{r}
+```{r predictions_plot_monthly_500_rf}
 #| label: fig-monthly_500_rf
 #| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a monthly basis. The red line represents a 1:1 relation."
 #| echo: false
@@ -561,8 +782,7 @@ metrics <- collect_metrics(monthly_500_fit)
 plot_predictions_rf(monthly_500_fit, metrics, 5, 5, 16, 18)
 ```
 
-
-```{r}
+```{r vip_plot_monthly_500_rf}
 #| label: fig-vip_monthly_500_rf
 #| fig-cap: "Variable of importance derived from the Random forest model for the monthly values at 500 m spatial resolution model."
 #| echo: false
@@ -580,8 +800,128 @@ workflow() %>%
   fit(monthly_500_train) %>%
   extract_fit_parsnip() %>%
   vip(aesthetics = list(alpha = 0.8, fill = "midnightblue")) +
-  theme_light(base_size = 12)
+  theme_light(base_size = 12) +
+  scale_x_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
 ```
+
+```{r shapley_values_monthly}
+#| label: fig-shap_monthly_500_rf
+#| fig-cap: "Shapley values derived from the Random forest model for the monthly values at 500 m spatial resolution model."
+#| echo: false
+#| message: false
+#| warning: false
+
+# Extract workflow to obtain shapley values (or run predict)
+monthly_gpp_model <- extract_workflow(monthly_500_fit)
+
+# Create an explainer for a regression model
+explainer_rf <- explain_tidymodels(
+  monthly_gpp_model,
+  data = monthly_500_train,
+  y = monthly_500_train$gpp_dt_vut_ref,
+  label = "rf",
+  verbose = FALSE
+)
+
+# Take a low gpp value
+low_gpp <- monthly_500_train[45, ] 
+
+rf_breakdown <- predict_parts(explainer = explainer_rf, 
+                              new_observation = low_gpp,
+                              type = "shap")
+# rf_breakdown
+low_value <- rf_breakdown %>%
+  group_by(variable) %>%
+  mutate(mean_val = mean(contribution)) %>%
+  ungroup() %>%
+  mutate(variable = case_when(
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
+    .default = variable
+  )) %>%
+  mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
+  ggplot(aes(contribution, variable, fill = mean_val > 0)) +
+  geom_col(data = ~distinct(., variable, mean_val), 
+           aes(mean_val, variable), 
+           alpha = 0.5) +
+  geom_boxplot(width = 0.5) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(y = NULL)
+
+# Take a high gpp value
+high_gpp <- monthly_500_train[6, ] 
+
+rf_breakdown <- predict_parts(explainer = explainer_rf, 
+                              new_observation = high_gpp,
+                              type = "shap")
+# rf_breakdown
+high_value <- rf_breakdown %>%
+  group_by(variable) %>%
+  mutate(mean_val = mean(contribution)) %>%
+  ungroup() %>%
+  mutate(variable = case_when(
+    str_detect(variable, "ndvi_mean") ~ str_replace(variable, "ndvi_mean", "NDVI"),
+    str_detect(variable, "nirv_mean") ~ str_replace(variable, "nirv_mean", "NIRv"),
+    str_detect(variable, "evi_mean" ) ~ str_replace(variable, "evi_mean", "EVI" ),
+    str_detect(variable, "cci_mean" ) ~ str_replace(variable, "cci_mean", "CCI" ),
+    str_detect(variable, "sur_refl_b01_mean") ~ str_replace(variable, "sur_refl_b01_mean", "B01"),
+    str_detect(variable, "sur_refl_b02_mean") ~ str_replace(variable, "sur_refl_b02_mean", "B02"),
+    str_detect(variable, "sur_refl_b03_mean") ~ str_replace(variable, "sur_refl_b03_mean", "B03"),
+    str_detect(variable, "sur_refl_b04_mean") ~ str_replace(variable, "sur_refl_b04_mean", "B04"),
+    str_detect(variable, "sur_refl_b05_mean") ~ str_replace(variable, "sur_refl_b05_mean", "B05"),
+    str_detect(variable, "sur_refl_b06_mean") ~ str_replace(variable, "sur_refl_b06_mean", "B06"),
+    str_detect(variable, "sur_refl_b07_mean") ~ str_replace(variable, "sur_refl_b07_mean", "B07"),
+    str_detect(variable, "total_obs") ~ str_replace(variable, "total_obs", "Total obs."),
+    str_detect(variable, "site") ~ str_replace(variable, "site", "Site"),
+    str_detect(variable, "gpp_dt_vut_ref") ~ str_replace(variable, "gpp_dt_vut_ref", "GPP"),
+    .default = variable
+  )) %>%
+  mutate(variable = fct_reorder(variable, abs(mean_val))) %>%
+  ggplot(aes(contribution, variable, fill = mean_val > 0)) +
+  geom_col(data = ~distinct(., variable, mean_val), 
+           aes(mean_val, variable), 
+           alpha = 0.5) +
+  geom_boxplot(width = 0.5) +
+  theme_light() +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d() +
+  labs(y = NULL)
+
+plot_grid(low_value,
+          high_value,
+          nrow = 1,
+          labels = c('A', 'B'))
+```
+
+
+
+
+
+
 
 \newpage
 
@@ -610,7 +950,7 @@ plot_predictions_automl(predictions_automl, rmse, rsq, 3, 3, 18, 20)
 #| label: fig-vip_daily_500_automl
 #| fig-cap: "Variable of importance derived from the autoML model for the daily values at 500 m spatial resolution model."
 #| fig-width: 7
-#| fig-height: 8
+#| fig-height: 5
 #| echo: false
 #| message: false
 #| warning: false
@@ -619,11 +959,21 @@ readRDS("models/automl_va_plot.rds") +
   theme_classic(base_size = 12) +
   scale_fill_viridis_c(direction = -1) +
   labs(title = NULL, x = "Model ID") +
-  theme(axis.text.x = element_text(angle = 55, h = 1))
+  theme(axis.text.x = element_text(angle = 55, h = 1)) +
+  scale_y_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
 ```
 
 #### Weekly autoML
-
 
 ```{r}
 #| label: fig-predictions_automl_weekly_500
@@ -646,7 +996,7 @@ plot_predictions_automl(predictions_automl, rmse, rsq, 4, 4, 18, 20)
 #| label: fig-vip_daily_500_automl_weekly
 #| fig-cap: "Variable of importance derived from the autoML model for the weekly values at 500 m spatial resolution model."
 #| fig-width: 7
-#| fig-height: 8
+#| fig-height: 5
 #| echo: false
 #| message: false
 #| warning: false
@@ -655,7 +1005,18 @@ readRDS("models/automl_va_plot_weekly.rds") +
   theme_classic(base_size = 12) +
   scale_fill_viridis_c(direction = -1) +
   labs(title = NULL, x = "Model ID") +
-  theme(axis.text.x = element_text(angle = 55, h = 1))
+  theme(axis.text.x = element_text(angle = 55, h = 1)) +
+  scale_y_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
 ```
 
 #### Monthly autoML
@@ -679,7 +1040,7 @@ plot_predictions_automl(predictions_automl, rmse, rsq, 5, 5, 12, 13)
 #| label: fig-vip_monthly_500_automl_monthly
 #| fig-cap: "Variable of importance derived from the autoML model for the monthly values at 500 m spatial resolution model."
 #| fig-width: 7
-#| fig-height: 8
+#| fig-height: 5
 #| echo: false
 #| message: false
 #| warning: false
@@ -687,7 +1048,18 @@ readRDS("models/automl_va_plot_monthly.rds") +
   theme_classic(base_size = 12) +
   scale_fill_viridis_c(direction = -1) +
   labs(title = NULL, x = "Model ID") +
-  theme(axis.text.x = element_text(angle = 55, h = 1))
+  theme(axis.text.x = element_text(angle = 55, h = 1)) +
+  scale_y_discrete(labels = c("ndvi_mean" = "NDVI",
+                              "nirv_mean" = "NIRv",
+                              "evi_mean" = "EVI",
+                              "cci_mean" = "CCI",
+                              "sur_refl_b01_mean" = "B01",
+                              "sur_refl_b02_mean" = "B02",
+                              "sur_refl_b03_mean" = "B03",
+                              "sur_refl_b04_mean" = "B04",
+                              "sur_refl_b05_mean" = "B05",
+                              "sur_refl_b06_mean" = "B06",
+                              "sur_refl_b07_mean" = "B07"))
 ```
 
 
