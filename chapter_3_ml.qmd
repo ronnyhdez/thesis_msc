@@ -358,6 +358,8 @@ if (fs::file_exists("models/daily_500_fit_site.rds") &
 ```{r predictions_plot_daily_500_rf}
 #| label: fig-daily_500_rf
 #| fig-cap: GPP observed and predicted values from the Random Forest model for all the sites at a daily basis. The red line represents a 1:1 relation.
+#| fig-width: 6
+#| fig-height: 4
 #| echo: false
 #| message: false
 #| warning: false
@@ -563,6 +565,8 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
 ```{r predictions_plot_weekly_500_rf}
 #| label: fig-weekly_500_rf
 #| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a weekly basis. The red line represents a 1:1 relation."
+#| fig-width: 6
+#| fig-height: 4
 #| echo: false
 #| message: false
 #| warning: false
@@ -572,7 +576,7 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
 metrics <- collect_metrics(weekly_500_fit) 
 
 ## Collect predictions
-plot_predictions_rf(weekly_500_fit, metrics, 4, 4, 23, 25)
+plot_predictions_rf(weekly_500_fit, metrics, 5, 5, 18, 19)
 ```
 
 ```{r vip_plot_weekly_500_rf}
@@ -770,6 +774,8 @@ if (fs::file_exists("models/monthly_500_fit_site.rds")) {
 ```{r predictions_plot_monthly_500_rf}
 #| label: fig-monthly_500_rf
 #| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a monthly basis. The red line represents a 1:1 relation."
+#| fig-width: 6
+#| fig-height: 4
 #| echo: false
 #| message: false
 #| warning: false
@@ -779,7 +785,7 @@ if (fs::file_exists("models/monthly_500_fit_site.rds")) {
 metrics <- collect_metrics(monthly_500_fit) 
 
 ## Collect predictions
-plot_predictions_rf(monthly_500_fit, metrics, 5, 5, 16, 18)
+plot_predictions_rf(monthly_500_fit, metrics, 5, 5, 13, 14)
 ```
 
 ```{r vip_plot_monthly_500_rf}
@@ -916,11 +922,6 @@ plot_grid(low_value,
           nrow = 1,
           labels = c('A', 'B'))
 ```
-
-
-
-
-
 
 
 \newpage
