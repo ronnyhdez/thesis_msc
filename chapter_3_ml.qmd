@@ -151,12 +151,11 @@ To measure the influence of each feature on the overall model's predictive
 performance, we quantify how this performance deteriorates when a particular 
 variable is permuted while keeping others constant. 
 
-To understand which features were the most important to predict GPP from an 
-individual observation and how the predictions values could change under 
-different predictor values, we calculated the Shapley values [@lundberg_unified_nodate].
-These values were computed for both low GPP and high GPP scenarios within each
-of the temporally aggregated models. 
-
+To understand which features contributed the most in average to a particular 
+GPP prediction in different coalitions [@molnar2020interpretable], we calculated
+the Shapley values [@lundberg_unified_nodate]. These values were computed with
+the DALEX package in R [@biecek2018dalex] for both low GPP and high GPP scenarios
+within each of the temporally aggregated models. 
 
 ### AutoML
 
