@@ -159,9 +159,26 @@ within each of the temporally aggregated models.
 
 ### AutoML
 
-Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id. Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi quis ipsa aut. Temporibus ut rerum ea a est voluptate.
+To create an stacked ensemble of models and evaluate the performance, we use the
+H2O AutoML framework [xxx].
 
-Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta doloremque. Et reiciendis et animi ut enim. Fugiat consequatur hic laborum culpa blanditiis explicabo nobis quae. Quae pariatur quo et hic autem.
+For the data training and evaluation, we splitted randomly the dataset into a
+training and a test set with 80% and 20% of the observations respectively. The
+variable `total observations` and `site` were excluded from both datasets, while
+the rest of the features (bands and VIs) were considered predictors and GPP as 
+the response variable. The data was transformed into a H20 frame for 
+compatibility with the AutoML process.
+
+After the generation of machine learning models and hyperparameter configurations,
+were constrained to run for a maximum of 2 minutes, and the resulting best
+performing models were use as an ensemble. This trained model was used to generate
+the predictions with the test set. Model performance was evaluated by assesing
+metrics such as the coefficient of determination and the RMSE.
+
+To asses the variable importance, we determined the influence of each predictor
+variable on the model's predictions. The result of this was plotted as a heatmap
+for each of the models in the ensemble.
+
 
 \newpage
 
