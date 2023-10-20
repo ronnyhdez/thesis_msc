@@ -2,25 +2,30 @@
 output: html_document
 editor_options: 
   chunk_output_type: console
+editor: 
+  markdown: 
+    wrap: 80
 ---
+
 # Assesing uncertanties related to satellite remote sensing indices to estimate Gross Primary Production
 
 ## Introduction
 
-Vegetation Gross Primary Production (GPP) is the total amount of carbon fixation by plants
-through photosynthesis [@badgley_terrestrial_2019]. Quantifying GPP is essential
-for understanding land-atmosphere carbon exchange [@kohler_global_2018],
-ecosystem function, and ecosystem responses to climate change
-[@guan_comparison_2022; @brown_fiducial_2021; @myneni_relationship_1994]. However,
-terrestrial GPP cannot be directly estimated due to the contribution of 
+Vegetation Gross Primary Production (GPP) is the total amount of carbon fixation
+by plants through photosynthesis [@badgley_terrestrial_2019]. Quantifying GPP is
+essential for understanding land-atmosphere carbon exchange
+[@kohler_global_2018], ecosystem function, and ecosystem responses to climate
+change [@guan_comparison_2022; @brown_fiducial_2021; @myneni_relationship_1994].
+However, terrestrial GPP cannot be directly estimated due to the contribution of
 respiration to land carbon fluxes [@anav_spatiotemporal_2015]. Instead, GPP is
-only inferred by the net carbon exchange measurements at the ecosystem level,
-or at broarder scales using models that incorporate variour assumptions and
+only inferred by the net carbon exchange measurements at the ecosystem level, or
+at broarder scales using models that incorporate variour assumptions and
 limitations [@reichstein_separation_2005; @jung_towards_2009]. One widely used
 approach to approximate and quantify GPP is the data driven models of spectral
 vegetation indices [@ryu_what_2019] However, GPP estimation using spectral
-vegetation indices remain with high uncertainties and validation efforts are 
-required to characterize these and improve accuracy. [@anav_spatiotemporal_2015; @brown_fiducial_2021]
+vegetation indices remain with high uncertainties and validation efforts are
+required to characterize these and improve accuracy. [@anav_spatiotemporal_2015;
+@brown_fiducial_2021]
 
 There are several methods to calculate GPP that can be grouped into two broad
 categories: eddy covariance techniques, and satellite data-driven
@@ -28,8 +33,8 @@ categories: eddy covariance techniques, and satellite data-driven
 are methods that allowed scientists to directly measure the carbon, water, and
 energy fluxes between vegetation canopies and the atmosphere since the 1990s
 [@baldocchi_how_2020; @ryu_what_2019]. This method to measure terrestrial
-fluxes, is the principal in-situ approach for quantifying the exchange of CO2 between
-the land and atmosphere using advanced field instrumentation
+fluxes, is the principal in-situ approach for quantifying the exchange of CO2
+between the land and atmosphere using advanced field instrumentation
 [@badgley_terrestrial_2019; @tramontana_predicting_2016]. Measurements provided
 using EC have a limited spatial resolution of less than \< 1km2 , which bring
 spatial constraints to estimations of ecosystem carbon and water fluxes at
@@ -46,9 +51,10 @@ LUE models are based on the concept of radiation conversion efficiency, and take
 into consideration ecological processes [@liu1997process]. The radiation
 conversion efficiency represents the amount of carbon that a specific type of
 vegetation can fix per unit of solar radiation [@monteith_solar_1972]. The
-Moderate Resolution Imaging Spectroradiometer (MODIS) GPP product uses an 
+Moderate Resolution Imaging Spectroradiometer (MODIS) GPP product uses an
 algorithm based on this radiation conversion efficiency concept, relating the
-absorbed photosynthetically active radiation (APAR) with the LUE term [@heinsch_evaluation_2006] as shown in @eq-gpp .
+absorbed photosynthetically active radiation (APAR) with the LUE term
+[@heinsch_evaluation_2006] as shown in @eq-gpp .
 
 $$
 \small
@@ -62,20 +68,21 @@ assess the primary productivity of canopies [GCOS, 2011;
 of the vegetation [@heinsch_evaluation_2006]
 
 VIs are a summary of non-linear functions of surface bi-directional reflectance
-spectra [@myneni_relationship_1994] derived from optical sensors that are combined with
-climate variables to calculate GPP [@wu_predicting_2011]. This is usually done
-with some form of regression and physical methods that associate interactions
-between vegetation and incoming radiation [@fernandez-martinez_monitoring_2019]
+spectra [@myneni_relationship_1994] derived from optical sensors that are
+combined with climate variables to calculate GPP [@wu_predicting_2011]. This is
+usually done with some form of regression and physical methods that associate
+interactions between vegetation and incoming radiation
+[@fernandez-martinez_monitoring_2019]
 
-Well known VI’s used to estimate GPP are normalized difference vegetation index
+Well known VI's used to estimate GPP are normalized difference vegetation index
 (NDVI), enhanced vegetation index (EVI), Near-Infrared Reflectance Index (NIRv)
-and Chlorophyll/Carotenoid Index (CCI) among others.
-[@balzarolo_influence_2019; @rahman_potential_2005; @rahman_potential_2005;
-@xie_assessments_2020; @badgley_terrestrial_2019; @zhang_potential_2020;
-@sellers_global_1994] These VIs are based on a spectral reflectance ratio 
-between the red and near-infrared regions of the electromagnetic spectrum 
-[@glenn_relationship_2008] which tracks an integrated impact of fraction of 
-photosynthetically active radiation (fAPAR) and LUE on productivity.[@myneni_relationship_1994]
+and Chlorophyll/Carotenoid Index (CCI) among others. [@balzarolo_influence_2019;
+@rahman_potential_2005; @rahman_potential_2005; @xie_assessments_2020;
+@badgley_terrestrial_2019; @zhang_potential_2020; @sellers_global_1994] These
+VIs are based on a spectral reflectance ratio between the red and near-infrared
+regions of the electromagnetic spectrum [@glenn_relationship_2008] which tracks
+an integrated impact of fraction of photosynthetically active radiation (fAPAR)
+and LUE on productivity.[@myneni_relationship_1994]
 
 Nonetheless, even when estimating GPP from satellite remote sensing methods is
 promising to overcome limitations as temporal and spatial scale, there are some
@@ -85,8 +92,8 @@ fraction of the vegetated surface and its attributable signal
 [@badgley_canopy_2017]. A second challenge is that photosynthesis regulation can
 occur with no major changes in canopy structure or leaf pigments that can
 undergo without being detected with reflectance data
-[@pabon-moreno_potential_2022; @pierrat_diurnal_2022], and this could imply
-that temporal aggregation may be critical for VI models.
+[@pabon-moreno_potential_2022; @pierrat_diurnal_2022], and this could imply that
+temporal aggregation may be critical for VI models.
 
 The accuracy of GPP estimation through the use of VIs can be affected due to
 their limitation to predict spatial, temporal, interannual variability and
@@ -106,12 +113,12 @@ replacement for fPAR in LUE models in that the NIR and PAR reflectance of
 vegetation are correlated and the scaling by NDVI corrects for soil
 contributions in the signal [@badgley_terrestrial_2019] NIRv has been shown to
 have a stronger correlation to GPP at flux towers and on a regional basis than
-fAPAR notwithstanding the fact that GPP is directly related to fAPAR. NIRv has been extended
-to include a weighting with PAR [@dechant_nirvp_2022] and replacing the NIR
-reflectance with NIRv radiance [@wu_radiance-based_2020]. Both of these
-approaches have been shown to have even stronger correlations with GPP than NIRv
-as could be expected since they either directly or indirectly weight the NIRv
-with PAR.
+fAPAR notwithstanding the fact that GPP is directly related to fAPAR. NIRv has
+been extended to include a weighting with PAR [@dechant_nirvp_2022] and
+replacing the NIR reflectance with NIRv radiance [@wu_radiance-based_2020]. Both
+of these approaches have been shown to have even stronger correlations with GPP
+than NIRv as could be expected since they either directly or indirectly weight
+the NIRv with PAR.
 
 The stronger correlation between the NIR indices to GPP versus indices based on
 fAPAR seemingly contradicts the hypotheses in the LUE model that GPP should be
@@ -119,23 +126,23 @@ linearly related to fAPAR. There are two explanations: i. Many of the reported
 comparative studies use fAPAR based on VIs and not APAR. We hypothesize that the
 NIR indices are simply better estimators of APAR than these VI approximations
 due to lower measurement error for the NIR indices or a stronger physical
-relationship between them and APAR versus the historical VIs. ii. The strength of
-correlation between APAR and GPP depends on LUE having a linear relationship to
-observed APAR. While this may hold in some circumstances (e.g. early seasonal
+relationship between them and APAR versus the historical VIs. ii. The strength
+of correlation between APAR and GPP depends on LUE having a linear relationship
+to observed APAR. While this may hold in some circumstances (e.g. early seasonal
 measurements for vegetation such as crops where leaf chlorophyll concentration
 increases during the growth phase) it is not the case in general and definitely
 during stress conditions [@monteith_solar_1972].
 
-Despite these efforts, relying solely on these remote satellite VIs presents 
-a challenge. The assumptions  accompanying VI models suggest the importance of
-systematically quantify their predictive capacity for GPP across various 
-growing seasons and locations. Therefore, there is a demand to make efforts to 
-validate and quantify their accuracy [@brown_fiducial_2021]. In-situ 
-eddy-covariance flux measurements represent a solution given that they represent
-site-level observations. With the calculation of the flux footprint, the area 
-from the flux tower can serve as a reference point in which satellite images 
-can be linked to a specific set of pixels and calculate the accuracy of the 
-estimations provided by the indices [@chu_representativeness_2021].
+Despite these efforts, relying solely on these remote satellite VIs presents a
+challenge. The assumptions accompanying VI models suggest the importance of
+systematically quantify their predictive capacity for GPP across various growing
+seasons and locations. Therefore, there is a demand to make efforts to validate
+and quantify their accuracy [@brown_fiducial_2021]. In-situ eddy-covariance flux
+measurements represent a solution given that they represent site-level
+observations. With the calculation of the flux footprint, the area from the flux
+tower can serve as a reference point in which satellite images can be linked to
+a specific set of pixels and calculate the accuracy of the estimations provided
+by the indices [@chu_representativeness_2021].
 
 As such, the main objective of my M.Sc. thesis is the analysis of uncertainty
 associated with the VI/LUE models since they offer the potential for GPP
@@ -183,25 +190,25 @@ source("R/plot_exploratory.R")
 
 ### Eddy Covariance sites
 
-We used three deciduous broadleaf forest sites located in the northern 
+We used three deciduous broadleaf forest sites located in the northern
 hemisphere with eddy covariance (EC) data collected by Ameriflux. For each site,
-we used the daily, weekly, and monthly GPP values (GPP_DT_VUT_REF variable) estimated
-using the ONEFlux workflow [@pastorello2020fluxnet2015]. The ONEFlux 
-processing does the estimation of the CO~2~ fluxes into GPP and Ecosystem 
+we used the daily, weekly, and monthly GPP values (GPP_DT_VUT_REF variable)
+estimated using the ONEFlux workflow [@pastorello2020fluxnet2015]. The ONEFlux
+processing does the estimation of the CO~2~ fluxes into GPP and Ecosystem
 Respiration (RECO) from Net Ecosystem Exchange (NEE) through two methods known
 as daytime and nighttime. Here we selected the daytime method (DT) which uses
-daytime and nighttime to parameterize a model with two components: one based on 
+daytime and nighttime to parameterize a model with two components: one based on
 light response curve and vapour pressure deficit and a second one using a
 respiration-temperature relationship to estimate RECO which in turn is used to
 obtain the difference with NEE and provide GPP. [@pastorello2020fluxnet2015].
 
-@fig-gpp_trends displays the GPP trends for the University of Michigan 
-Biological Station, Bartlett experimental forest, and the Borden Forest 
-Research Station. Additional details regarding the characteristics of these 
-datasets can be found in Table @tbl-oneflux_datasets.
+@fig-gpp_trends displays the GPP trends for the University of Michigan
+Biological Station, Bartlett experimental forest, and the Borden Forest Research
+Station. Additional details regarding the characteristics of these datasets can
+be found in Table @tbl-oneflux_datasets.
 
 | Site     | Data range available | Dataset name                                                | Reference                  |
-|-------------------|---------------------|---------------------|-------------------|
+|--------------------|---------------------|---------------------|--------------------|
 | Bartlett | Jan 2015 to Dec 2017 | US-Bar: Barlett Experimental Forest (version: beta-3)       | [@staebler2019ameriflux]   |
 | Borden   | Jan 2015 to Jan 2022 | CA-Cbo: Ontario - Mixed Deciduous, Borden Forest Site       | [@richardson2016ameriflux] |
 | Michigan | Jan 2015 to Jan 2018 | US-UMB: Univ. of Mich. Biological Station (version: beta-4) | [@gough2016ameriflux]      |
@@ -209,10 +216,10 @@ datasets can be found in Table @tbl-oneflux_datasets.
 : ONEFlux sites datasets description {#tbl-oneflux_datasets}
 
 The Bartlett experimental forest is located in New Hampshire, USA (44°06′N,
-71°3′W). This site is characterized by a forest with an average canopy height 
-ranging from 20 to 22 meters with a mean annual temperature of 6C. 
-Despite events such as a hurricane in 1938 and small scale forest management,
-the forest mean stand age is around 120-125 years. [@ouimette_carbon_2018]
+71°3′W). This site is characterized by a forest with an average canopy height
+ranging from 20 to 22 meters with a mean annual temperature of 6C. Despite
+events such as a hurricane in 1938 and small scale forest management, the forest
+mean stand age is around 120-125 years. [@ouimette_carbon_2018]
 
 The second flux site is Borden Forest Research Station located in Ontario
 (44°19′N, 79°56′W), Canada. This is one of the largest patches of forest in
@@ -237,59 +244,84 @@ around 5.5°C. [@gough_disturbanceaccelerated_2021]
 gpp_trends
 ```
 
-
 <!-- ```{r} -->
+
 <!-- #| label: fig-michigan_gpp_trends -->
+
 <!-- #| fig-cap: "GPP trends for Michigan" -->
+
 <!-- #| fig-width: 7 -->
+
 <!-- #| fig-height: 9 -->
+
 <!-- #| echo: false -->
+
 <!-- #| message: false -->
+
 <!-- #| warning: false -->
+
 <!-- michigan_gpp_trends -->
+
 <!-- ``` -->
 
 <!-- ```{r} -->
+
 <!-- #| label: fig-bartlett_gpp_trends -->
+
 <!-- #| fig-cap: "GPP trends for Bartlett" -->
+
 <!-- #| fig-width: 7 -->
+
 <!-- #| fig-height: 9 -->
+
 <!-- #| echo: false -->
+
 <!-- #| message: false -->
+
 <!-- #| warning: false -->
+
 <!-- bartlett_gpp_trends -->
+
 <!-- ``` -->
 
-
 <!-- ```{r} -->
+
 <!-- #| label: fig-borden_gpp_trends -->
+
 <!-- #| fig-cap: "GPP trends for Borden" -->
+
 <!-- #| fig-width: 7 -->
+
 <!-- #| fig-height: 9 -->
+
 <!-- #| echo: false -->
+
 <!-- #| message: false -->
+
 <!-- #| warning: false -->
+
 <!-- borden_gpp_trends -->
+
 <!-- ``` -->
 
 <!-- The GPP for each of the sites can -->
 
 <!-- -   include description of the ONEFlux processing (gap filling, data quality, -->
+
 <!--     gpp estimation, gpp uncertainty with DT and NT) -->
 
 ### Satellite imagery
 
-We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate 
-Resolution Imaging Spectroradiometer (MODIS), specifically the collection 
-MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding 
-the EC tower was defined for each site, and the complete data pixel values 
+We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate
+Resolution Imaging Spectroradiometer (MODIS), specifically the collection
+MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding
+the EC tower was defined for each site, and the complete data pixel values
 within this polygon was extracted for analysis.
 
 The MODIS contains the surface spectral reflectance from bands to 1 through 7
-with a spatial resolution of 500m, with corrections for atmospheric conditions 
+with a spatial resolution of 500m, with corrections for atmospheric conditions
 such as aerosols, gasses and Rayleigh scattering [@vermote2021modis]. Bands used
 to derived the vegetation indices are shown in @tbl-MODIS_500_indices_bands
-
 
 | **Name**    | **Description** | **Resolution** | **Wavelength** |
 |-------------|-----------------|----------------|----------------|
@@ -298,50 +330,62 @@ to derived the vegetation indices are shown in @tbl-MODIS_500_indices_bands
 | sur_refl_03 | Blue            | 500 meters     | 459-479nm      |
 | sur_refl_04 | Green           | 500 meters     | 545-565nm      |
 
-: MODIS (MOD09GA.061 product) bands used to calculate the VIs {#tbl-MODIS_500_indices_bands}
+: MODIS (MOD09GA.061 product) bands used to calculate the VIs
+{#tbl-MODIS_500_indices_bands}
 
 <!-- | Data                  | Spatial resolution (m) | GEE image collection         | -->
+
 <!-- |-----------------------|------------------------|------------------------------| -->
+
 <!-- | MODIS reflectance     | 500                    | MODIS/006/MOD09GA            | -->
+
 <!-- | MODIS reflectance     | 250                    | MODIS/061/MOD09A1            | -->
+
 <!-- | Harmonized Sentinel-2 | 20 - 60 - 10           | COPERNICUS/ S2_SR_HARMONIZED | -->
 
 <!-- : Satellite images datasets {#tbl-satellite_images_datasets} -->
 
 The data processing involved three main steps: selecting high-quality pixels,
-scaling band values, and calculating vegetation indices. MODIS product data
-have 4 bit-encoded variables which provided information about the observation 
+scaling band values, and calculating vegetation indices. MODIS product data have
+4 bit-encoded variables which provided information about the observation
 quality. From those variables, only the `state_1km` and `qc_500m` variables were
 used along with each of the bands bits quality indicators, as `q_scan` was not
 informative and `g_flags` had the same value for all observations. The
 bit-encoded variables were transformed into categorical strings, and only the
-categories indicating the best quality were selected to filter the pixels (@fig-quality_pixels). The specific bit strings selected for `state_1km` are
-shown in @tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
+categories indicating the best quality were selected to filter the pixels
+(@fig-quality_pixels). The specific bit strings selected for `state_1km` are
+shown in @tbl-state_1km_bitstrings and for `qc_500m` in
+@tbl-qc_scan_bit_strings.
 
-In the second stage of the data processing, after selecting the highest
-quality pixels, all the bands values were scaled. For each observation,
-regardless of the specific band, a scaling factor of `0.0001` was applied. This
-scaling factor was used to adjust the magnitude of the values and ensure
-consistency in the data.
+In the second stage of the data processing, after selecting the highest quality
+pixels, all the bands values were scaled. For each observation, regardless of
+the specific band, a scaling factor of `0.0001` was applied. This scaling factor
+was used to adjust the magnitude of the values and ensure consistency in the
+data.
 
 According to the documentation, any scaled value that fell outside the range of
 `0` to `1` was considered a fill value or uncorrected Level 1B data and was
 subsequently discarded. These values were deemed unreliable or lacking
 meaningful information for the analysis. The complete selected high quality
-pixels for the complete period per each of the sites is shown in @fig-complete_quality_pixels
+pixels for the complete period per each of the sites is shown in
+@fig-complete_quality_pixels
 
 Once all the band values were scaled within the valid range, the vegetation
-indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi), and 
-`CCI` (@eq-cci) were calculated and then matched with the corresponding date in 
-the flux datasets. The resulting values used for the analysis are shown in
+indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi), and `CCI`
+(@eq-cci) were calculated and then matched with the corresponding date in the
+flux datasets. The resulting values used for the analysis are shown in
 @fig-quality_pixels
 
 <!-- However, since the -->
+
 <!-- MODIS product with a spatial resolution of 250m (`MODIS/061/MOD09A1`) does not -->
+
 <!-- include the blue band EVI calculations were not performed for this dataset. -->
 
+```{=tex}
 \begingroup
 \fontsize{10pt}{10pt}\selectfont
+```
 $$
 \small
 NDVI = \frac{NIR - Red}{NIR + Red}
@@ -358,36 +402,53 @@ EVI = 2.5\times\frac{\mathrm{NIR} - \mathrm{Red}}{%
 $$ {#eq-evi}
 
 <!-- $$ -->
+
 <!-- kNDVI = tanh(\mathrm{NDVI}^2) -->
+
 <!-- $$ {#eq-kndvi} -->
 
 $$
 CCI = \frac{Green - Red}{Green + Red}
-$$ {#eq-cci}
-\endgroup
+$$ {#eq-cci} \endgroup
 
 <!-- For Harmonized Sentinel-2 data the data processing consisted on using the -->
+
 <!-- `msk_cldprb` variable to filter out pixels according to the probabilities of -->
+
 <!-- containing a cloud or the `msk_snwprb` variable for presence of snow -->
+
 <!-- probability. Once the pixels without any probability of having clouds or snow -->
+
 <!-- were filtered from the rest, we scaled all the reflectance bands observations by -->
+
 <!-- a factor of `0.0001`. With the values scaled we proceed to calculate the -->
+
 <!-- vegetation indices `NDVI` (@eq-ndvis), `NIRv` (@eq-nirvs), and `EVI` (@eq-evis). -->
+
 <!-- The bands used to calculate these indices are in -->
+
 <!-- @tbl-harmonized_s2_indices_bands -->
 
 <!-- $$ -->
+
 <!-- NDVI = \frac{b8 - b4}{b8 + b4} -->
+
 <!-- $$ {#eq-ndvis} -->
 
 <!-- $$ -->
+
 <!-- NIRv = b8\times\frac{b8 - b4}{b8 + b4} -->
+
 <!-- $$ {#eq-nirvs} -->
 
 <!-- $$ -->
+
 <!-- EVI = 2.5\times\frac{\mathrm{b8} - \mathrm{b4}}{% -->
+
 <!--           (\mathrm{b8} + 6\times \mathrm{b4} -->
+
 <!--           - 7.5\times \mathrm{b2} + 1)}\\ -->
+
 <!-- $$ {#eq-evis} -->
 
 ```{r}
@@ -444,13 +505,13 @@ For each site and across all time scales (daily, weekly, and monthly), we remove
 GPP values that were less than 1 gC m^-2^ d^-1^ . By doing this, the study aimed
 to exclude values that were potentially unreliable or insignificant in terms of
 representing meaningful vegetation productivity. GPP values below this threshold
-were considered to be either below the detection limit or not enough to 
-contribute significantly to the overall analysis. Additionally, the removal of 
-numerous zero GPP values was carried out to prevent undue exaggeration of 
+were considered to be either below the detection limit or not enough to
+contribute significantly to the overall analysis. Additionally, the removal of
+numerous zero GPP values was carried out to prevent undue exaggeration of
 regression goodness-of-fit metrics.
 
-The final number of observations per site after selecting the high quality pixels
-and GPP observations are shown in @fig-obs_used_analysis
+The final number of observations per site after selecting the high quality
+pixels and GPP observations are shown in @fig-obs_used_analysis
 
 ```{r}
 #| label: fig-quality_pixels
@@ -513,80 +574,81 @@ daily_plot_500 %>%
 
 ### Data Analysis
 
-Two distinct modelling approaches were employed to estimate GPP by utilizing 
-the calculated VIs: a linear model and a Generalized Additive Model (GAM). These
+Two distinct modelling approaches were employed to estimate GPP by utilizing the
+calculated VIs: a linear model and a Generalized Additive Model (GAM). These
 models were created to evaluate the performance of individual indices as well as
-their collective performance, while simultaneously considering the effects of 
+their collective performance, while simultaneously considering the effects of
 individual site characteristics and the aggregation of sites across various
 temporal scales.
 
-This facilitated a comparative analysis of how each individual index 
-independently explains the variation in GPP per site. Additionally, with the 
-uniform  nature of the three examined forest sites, an evaluation was performed 
-to explore the GPP relationship without the distinction of the specific sites, 
-considering each vegetation index individually. Another step of the analysis 
-was the examination of the relationship between GPP and all indices functioning
-as covariates, both on an individual site basis and without site distinction.
+This facilitated a comparative analysis of how each individual index
+independently explains the variation in GPP per site. Additionally, with the
+uniform nature of the three examined forest sites, an evaluation was performed
+to explore the GPP relationship without the distinction of the specific sites,
+considering each vegetation index individually. Another step of the analysis was
+the examination of the relationship between GPP and all indices functioning as
+covariates, both on an individual site basis and without site distinction.
 
 We applied the same methodology to the GAM models which allows a better fit for
-those cases where the distribution and variability observed in the data is 
-greater, due to the varying temporal scales. We aimed to evaluate if this 
-variance could be better explained by this type of model, that might not be 
-optimal to capture with a linear relationship, potentially leading to 
-greater residuals. 
+those cases where the distribution and variability observed in the data is
+greater, due to the varying temporal scales. We aimed to evaluate if this
+variance could be better explained by this type of model, that might not be
+optimal to capture with a linear relationship, potentially leading to greater
+residuals.
 
-In total, per each site plus the category of all-sites we created 5 linear 
-models and 5 GAM models for every timescale (daily, weekly, and monthly): one 
-per each index (NDVI, CCI, EVI, NIRv) and one with all the indices as
-covariates (NDVI + CCI + EVI + NIRv), resulting in a total of 120 models. To
-compare the performance of the models we calculated the coefficient of 
-determination (R2), the Root Mean Squared Error (RMSE), and the Mean Absolute 
-Error (MAE)
+In total, per each site plus the category of all-sites we created 5 linear
+models and 5 GAM models for every timescale (daily, weekly, and monthly): one
+per each index (NDVI, CCI, EVI, NIRv) and one with all the indices as covariates
+(NDVI + CCI + EVI + NIRv), resulting in a total of 120 models. To compare the
+performance of the models we calculated the coefficient of determination (R2),
+the Root Mean Squared Error (RMSE), and the Mean Absolute Error (MAE)
 
 \newpage
 
 ## Results
 
 ### Analysis of GPP-Vegetation Index Relationships Using Linear Models
+
 <!-- ### Monthly GPP and VIs relations -->
 
-The @tbl-lm_monthly_results provides a summary of linear models used for GPP 
-estimation at each site, employing the vegetation indices as predictors. For 
-each site and predictor, the table includes the relevant model summary 
-statistics, such as R2, MAE, and RMSE. More metrics such as the 
-p-value, adjusted r-squared, the Akaike Information Criterion (AIC), and 
-Bayesian Information Criterion (BIC) are displayed in the @tbl-complete_lm_monthly_results
-for monthly results, @tbl-complete_lm_weekly_results for weekly results, and the
-@tbl-complete_lm_daily_results for daily outputs. A residuals distribution 
-for each of the models is in @fig-lm_residuals
+The @tbl-lm_monthly_results provides a summary of linear models used for GPP
+estimation at each site, employing the vegetation indices as predictors. For
+each site and predictor, the table includes the relevant model summary
+statistics, such as R2, MAE, and RMSE. More metrics such as the p-value,
+adjusted r-squared, the Akaike Information Criterion (AIC), and Bayesian
+Information Criterion (BIC) are displayed in the
+@tbl-complete_lm_monthly_results for monthly results,
+@tbl-complete_lm_weekly_results for weekly results, and the
+@tbl-complete_lm_daily_results for daily outputs. A residuals distribution for
+each of the models is in @fig-lm_residuals
 
 Our findings shows that when using all the indices as covariates within the
-linear model, the model's performance demonstrates better outcomes compared to 
-using any single index alone across all scenarios. In the assessment of 
-individual VI performance on a monthly basis, CCI tend to perform better than 
-EVI, NDVI, and NIRv. However it is important to note that for the Bartlett and 
+linear model, the model's performance demonstrates better outcomes compared to
+using any single index alone across all scenarios. In the assessment of
+individual VI performance on a monthly basis, CCI tend to perform better than
+EVI, NDVI, and NIRv. However it is important to note that for the Bartlett and
 Michigan sites, while CCI shows favourable predictive accuracy, its advantage
 over the NIRv and EVI is slightly better and mostly due to the MAE and RMSE
 results.
 
-The NDVI displays relatively diminished performance, indicating a 9% and 15% 
-reduction in predictive accuracy compared to CCI in the Bartlett and Michigan 
-sites, respectively. In contrast, EVI exhibits less favourable 
-predictive results for the Borden site and the aggregated sites category, although
-in the specific context of the Borden site, its performance aligns closely with
-NDVI and NIRv. Among the individual sites, Bartlett stands out with the most 
-favourable predictive outcomes, while the aggregated sites category yield the 
+The NDVI displays relatively diminished performance, indicating a 9% and 15%
+reduction in predictive accuracy compared to CCI in the Bartlett and Michigan
+sites, respectively. In contrast, EVI exhibits less favourable predictive
+results for the Borden site and the aggregated sites category, although in the
+specific context of the Borden site, its performance aligns closely with NDVI
+and NIRv. Among the individual sites, Bartlett stands out with the most
+favourable predictive outcomes, while the aggregated sites category yield the
 least favourable predictive results.
 
 In the case of the weekly models, NDVI records the least favourable results when
-assessed at the three individual sites, while EVI demonstrated its weakest 
+assessed at the three individual sites, while EVI demonstrated its weakest
 predictive capabilities when all sites were treated as a single entity. However,
 for this case, EVI shows marginal differences with respect to individual indices
 such as NDVI and NIRv (1% variance explained and no more than 0.02 in RMSE). The
 best performant individual indices were CCI for Borden and the aggregated sites,
-NIRv for  Michigan and EVI for Bartlett. Nonetheless, those superior performances 
-are subtle when compared with the other individual indices. On a weekly basis, 
-differences in variability explained between the best and least performing 
+NIRv for Michigan and EVI for Bartlett. Nonetheless, those superior performances
+are subtle when compared with the other individual indices. On a weekly basis,
+differences in variability explained between the best and least performing
 models range from 11% to 20%. Bartlett and Michigan sites consistently yield the
 most accurate predictive models.
 
@@ -594,27 +656,29 @@ On a daily basis, CCI outperforms the rest of the individual indices in 3 cases:
 for Bartlett by 2% in variance explanation compared with EVI, for Borden by 1%
 compared with EVI, and for the combined sites dataset by 10%. Nonetheless is
 worth to mention that the variance explained in any of the models by individual
-indices in Borden or the combined site is less than 50% in most of the cases
-and the error scores being the highest. In the case of Michigan, the best 
-performing individual index was EVI which outperformed the next best-performing 
-individual index NIRv by 3%. Generally, the Bartlett and Michigan sites
-consistently yielded the most accurate predictive models across various
-configurations. Conversely, the Borden site consistently exhibited the poorest 
-model performance across all scenarios.
+indices in Borden or the combined site is less than 50% in most of the cases and
+the error scores being the highest. In the case of Michigan, the best performing
+individual index was EVI which outperformed the next best-performing individual
+index NIRv by 3%. Generally, the Bartlett and Michigan sites consistently
+yielded the most accurate predictive models across various configurations.
+Conversely, the Borden site consistently exhibited the poorest model performance
+across all scenarios.
 
-Overall, when comparing individual indices, CCI consistently performed better 
-across different timeframes in terms of variance explainability and error 
+Overall, when comparing individual indices, CCI consistently performed better
+across different timeframes in terms of variance explainability and error
 metrics. Nonetheless, those differences are subtle compared to EVI and NIRv. In
-contrast, NDVI consistently performs less favorably across all evaluated 
-timeframes. Notably, models based on monthly values consistently exhibit better 
-performance than those based on weekly or daily values as ilustrated in @fig-lm_metrics.
+contrast, NDVI consistently performs less favorably across all evaluated
+timeframes. Notably, models based on monthly values consistently exhibit better
+performance than those based on weekly or daily values as ilustrated in
+@fig-lm_metrics.
 
+```{=tex}
 \begingroup
 \setlength{\LTleft}{0pt minus 500pt}
 \setlength{\LTright}{0pt minus 500pt}
 \fontsize{5pt}{7pt}\selectfont
 \addtolength{\tabcolsep}{-3pt}
-
+```
 ```{r lm_monthly}
 #| label: tbl-lm_monthly_results
 #| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
@@ -698,12 +762,12 @@ vis_site_glance_daily %>%
   create_metrics_table()
 ```
 
+```{=tex}
 \endgroup
-
-
+```
 ```{r lm_barplot_metrics}
 #| label: fig-lm_metrics
-#| fig-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
+#| fig-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis. MAE and RMSE metrics units are gC m⁻² d⁻¹"
 #| fig-width: 7
 #| fig-height: 9
 #| echo: false
@@ -722,7 +786,7 @@ create_metrics_plot <- function(timescale, y_var, ylim_range) {
     geom_col(position = "dodge") +
     coord_cartesian(ylim = ylim_range) +
     scale_fill_viridis_d() +
-    labs(x = "") +
+    labs(x = "", fill = "Index") +
     theme_minimal_hgrid(font_size = 12) +
     theme(axis.text.x = element_text(angle = 45, h = 1))
 }
@@ -747,15 +811,15 @@ daily_metrics_plots <- map2(response_vars,
 
 # Grid the plots as should go in the chapter
 lm_metrics_plots <- plot_grid(
-  monthly_metrics_plots[[1]] + theme(legend.position = "none"),
-  weekly_metrics_plots[[1]] + theme(legend.position = "none"),
-  daily_metrics_plots[[1]] + theme(legend.position = "none"),
-  monthly_metrics_plots[[2]] + theme(legend.position = "none"),
-  weekly_metrics_plots[[2]] + theme(legend.position = "none"),
-  daily_metrics_plots[[2]] + theme(legend.position = "none"),
-  monthly_metrics_plots[[3]] + theme(legend.position = "none"),
-  weekly_metrics_plots[[3]] + theme(legend.position = "none"),
-  daily_metrics_plots[[3]] + theme(legend.position = "none"),
+  monthly_metrics_plots[[1]] + labs(y = expression(R^{"2"})) + theme(legend.position = "none"),
+  weekly_metrics_plots[[1]] +  labs(y = expression(R^{"2"})) + theme(legend.position = "none"),
+  daily_metrics_plots[[1]] +   labs(y = expression(R^{"2"})) + theme(legend.position = "none"),
+  monthly_metrics_plots[[2]] + labs(y = "MAE") + theme(legend.position = "none"),
+  weekly_metrics_plots[[2]] +  labs(y = "MAE") + theme(legend.position = "none"),
+  daily_metrics_plots[[2]] +   labs(y = "MAE") + theme(legend.position = "none"),
+  monthly_metrics_plots[[3]] + labs(y = "RMSE") + theme(legend.position = "none"),
+  weekly_metrics_plots[[3]] +  labs(y = "RMSE") + theme(legend.position = "none"),
+  daily_metrics_plots[[3]] +   labs(y = "RMSE") + theme(legend.position = "none"),
   nrow = 3,
   ncol = 3,
   labels = c("A", "B", "C"))
@@ -772,66 +836,68 @@ rm(plot_legend)
 ### Analysis of GPP-Vegetation Index Relationships Using GAM Models
 
 In @tbl-gam_model_results, we present a summary of the results obtained from the
-GAM models used for GPP estimation at each site, employing the vegetation 
+GAM models used for GPP estimation at each site, employing the vegetation
 indices as predictors. To compare between the models, we include in the table
-relevant model summary statistics, such as R2, MAE, and RMSE. Furthermore, 
+relevant model summary statistics, such as R2, MAE, and RMSE. Furthermore,
 additional metrics such as the p-value, the F statistic (f), effective degrees
 of freedom (edf), and the Akaike Information Criterion (AIC), are displayed in
-the @tbl-gam_daily_model_results_complete_a, and @tbl-gam_daily_model_results_complete_b 
-for daily models, @tbl-gam_weekly_model_results_complete_a, and 
-@tbl-gam_weekly_model_results_complete_b for weekly outputs, and for monthly 
-results the @tbl-gam_monthly_model_results_complete_a, and 
-@tbl-gam_monthly_model_results_complete_b. A residuals distribution 
-for each of the models is in @fig-gam_residuals
+the @tbl-gam_daily_model_results_complete_a, and
+@tbl-gam_daily_model_results_complete_b for daily models,
+@tbl-gam_weekly_model_results_complete_a, and
+@tbl-gam_weekly_model_results_complete_b for weekly outputs, and for monthly
+results the @tbl-gam_monthly_model_results_complete_a, and
+@tbl-gam_monthly_model_results_complete_b. A residuals distribution for each of
+the models is in @fig-gam_residuals
 
 <!-- explains more x% variance than -->
+
 When using GAM models at a monthly basis, no single VI demonstrates consistent
 superiority over the others. For the all sites category, CCI have a 3% better
-variance explanation than NDVI, which is the second best model with a 75%. In 
-the case of Michigan EVI and NIRv were the best individual indices with a 96%
-of the variance in GPP, but EVI had slightly lower error metrics values in MAE 
-(0.01) and RMSE (0.02). Bartlett had a better model performance when using CCI 
+variance explanation than NDVI, which is the second best model with a 75%. In
+the case of Michigan EVI and NIRv were the best individual indices with a 96% of
+the variance in GPP, but EVI had slightly lower error metrics values in MAE
+(0.01) and RMSE (0.02). Bartlett had a better model performance when using CCI
 with a 91% of variance explained with the lowest error metrics among all the GAM
-monthly models. It's important to highlight that for Michigan and Bartlett, 
+monthly models. It's important to highlight that for Michigan and Bartlett,
 implementing a GAM model using all the VIs as covariates posed challenges due to
-limited observations for the model parameters, raising concerns of potential 
-overfitting. 
+limited observations for the model parameters, raising concerns of potential
+overfitting.
 
-Finally, it's noteworthy that NDVI on a monthly basis displayed suboptimal 
+Finally, it's noteworthy that NDVI on a monthly basis displayed suboptimal
 performance in two of the sites (Michigan and Bartlett) with a difference of 10%
-and 13% with the best performing models respectively, while EVI exhibited less 
+and 13% with the best performing models respectively, while EVI exhibited less
 favourable results in just the Borden site.
 
 On a weekly basis, models incorporating all VIs as covariates consistently
 obtained better performance compared to any individual VI, irrespective of the
 site. Specifically when evaluating the all sites category, the inclusion of all
 indices as covariates yielded a 7% increase in variance explanation compared
-with the best individual VI result CCI. Further, for Michigan, this improvement 
-amounted to 2% compared to EVI, 1% for Bartlett in contrast to EVI, and a 2% 
+with the best individual VI result CCI. Further, for Michigan, this improvement
+amounted to 2% compared to EVI, 1% for Bartlett in contrast to EVI, and a 2%
 enhancement for Borden when compared with EVI.
 
-Conversely, NDVI showed a diminished performance as an individual index when 
-compared with all the other individual VIs. In the context of all sites, NDVI 
-yielded 7% less variance explanation than CCI. Notably, for Michigan, NDVI's 
+Conversely, NDVI showed a diminished performance as an individual index when
+compared with all the other individual VIs. In the context of all sites, NDVI
+yielded 7% less variance explanation than CCI. Notably, for Michigan, NDVI's
 performance lagged by 17% compared to EVI, Bartlett an 18% reduction relative to
 EVI, and Borden exhibited a 9% deficit when contrasted with EVI.
 
 On a daily basis, when considering the all sites category, the model with all
 the VIs as covariates explained 4% more variance in GPP when compared with the
-best performing individual VI CCI. In the case of Bartlett, the increased was 
-also 4% but in this case the best individual performing VI was EVI. For Michigan,
-the model using all VIs as covariates outperformed EVI by 5% in GPP prediction, 
-and for Borden it was a 9% improvement when compared with NIRv.
+best performing individual VI CCI. In the case of Bartlett, the increased was
+also 4% but in this case the best individual performing VI was EVI. For
+Michigan, the model using all VIs as covariates outperformed EVI by 5% in GPP
+prediction, and for Borden it was a 9% improvement when compared with NIRv.
 
 Among the individual VIs, NDVI consistently demonstrated the poorest performance
 across al four cases. As an individual VI, EVI performed better in Bartlett,
-Michigan, and Borden. However is worth noting that for Borden the variance 
+Michigan, and Borden. However is worth noting that for Borden the variance
 explained was limited to 50%.
 
 In summary, among the three individual sites, Bartlett consistently produced the
-most favourable results in terms of models explaining variance and yielding lower
-residuals, followed by Michigan. In the case of Borden, when employing 
-individual indices, the models struggled to achieve a variance explanation 
+most favourable results in terms of models explaining variance and yielding
+lower residuals, followed by Michigan. In the case of Borden, when employing
+individual indices, the models struggled to achieve a variance explanation
 exceeding 50%.
 
 <!-- ### Daily and weekly GPP and VIs relations -->
@@ -839,34 +905,44 @@ exceeding 50%.
 <!-- **TODO: Single vs Individual GAM model** -->
 
 <!-- *This is a section under construction. Several models are presented in order -->
+
 <!-- to discuss which one will be better to describe the patterns found* -->
 
 <!-- Richard's suggestion is to create a single model using all indices as covariates. -->
+
 <!-- The notes are described also in the issue [Ref #49](https://github.com/ronnyhdez/thesis_msc/issues/49) -->
 
 <!-- **Single model** -->
 
 <!--  - Using all the indices that I have as multiple predictors will allow me to  -->
+
 <!--  explore the relation between GPP and each VI while also considering potential -->
+
 <!--  interactions. But this will be an examination of the combined effects of the  -->
+
 <!--  VIs on GPP and determine their relative importance. -->
 
 <!-- **Individual model** -->
 
 <!--  - A separate GAM model for each VI will allow me to explore the relation  -->
+
 <!--  between GPP and each VI separately, without the exploration of potential  -->
+
 <!--  interactions between the VIs.  -->
 
 <!--  - But, do I want to explore if there are interactions? If there is an  -->
+
 <!--  interaction, what would be the meaning of an interaction between indices? -->
 
 <!--  - With the individual GAM models, I think that I can uncover individual trends, that otherwise would be hidden among all the VIs. [**simpson's paradox**](https://en.wikipedia.org/wiki/Simpson%27s_paradox) -->
 
+```{=tex}
 \begingroup
 \setlength{\LTleft}{0pt minus 500pt}
 \setlength{\LTright}{0pt minus 500pt}
 \fontsize{5pt}{7pt}\selectfont
 \addtolength{\tabcolsep}{-3pt}
+```
 ```{r}
 #| label: tbl-gam_model_results
 #| tbl-cap: "Summary of GAM models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis." 
@@ -943,11 +1019,13 @@ all_sites_gam_daily %>%
   ) %>% 
   create_metrics_table()
 ```
-\endgroup
 
+```{=tex}
+\endgroup
+```
 ```{r gam_barplot_metrics}
 #| label: fig-gam_metrics
-#| fig-cap: "Summary of GAM models for GPP estimation using the vegetation indices. Column A represents the metrics for the monthly models, B the weekly, and C the daily metrics."
+#| fig-cap: "Summary of GAM models for GPP (gC m-² d-¹) estimation using the vegetation indices. Column A represents the metrics for the monthly models, B the weekly, and C the daily metrics. MAE and RMSE metrics units are gC m⁻² d⁻¹"
 #| fig-width: 7
 #| fig-height: 9
 #| echo: false
@@ -961,11 +1039,18 @@ create_metrics_plot <- function(timescale, y_var, ylim_range) {
     bind_rows(get(paste0("vis_sites_gam_", timescale)),
               get(paste0("all_sites_all_vis_gam_", timescale)),
               get(paste0("all_vis_gam_", timescale))) %>% 
+    mutate(index = case_when(
+      index == "evi_mean" ~ "EVI",
+      index == "ndvi_mean" ~ "NDVI",
+      index == "nirv_mean" ~ "NIRv",
+      index == "cci_mean" ~ "CCI",
+      .default = index
+    )) %>% 
     ggplot(aes(x = site, y = .data[[y_var]], fill = index)) +
     geom_col(position = "dodge") +
     coord_cartesian(ylim = ylim_range) +
     scale_fill_viridis_d() +
-    labs(x = "") +
+    labs(x = "", fill = "Index") +
     theme_minimal_hgrid(font_size = 12) +
     theme(axis.text.x = element_text(angle = 45, h = 1))
 }
@@ -990,15 +1075,15 @@ daily_metrics_plots <- map2(response_vars,
 
 # Grid the plots as should go in the chapter
 gam_metrics_plots <- plot_grid(
-  monthly_metrics_plots[[1]] + theme(legend.position = "none"),
-  weekly_metrics_plots[[1]] + theme(legend.position = "none"),
-  daily_metrics_plots[[1]] + theme(legend.position = "none"),
-  monthly_metrics_plots[[2]] + theme(legend.position = "none"),
-  weekly_metrics_plots[[2]] + theme(legend.position = "none"),
-  daily_metrics_plots[[2]] + theme(legend.position = "none"),
-  monthly_metrics_plots[[3]] + theme(legend.position = "none"),
-  weekly_metrics_plots[[3]] + theme(legend.position = "none"),
-  daily_metrics_plots[[3]] + theme(legend.position = "none"),
+  monthly_metrics_plots[[1]] + labs(y = expression(R^{"2"})) + theme(legend.position = "none"),
+  weekly_metrics_plots[[1]] +  labs(y = expression(R^{"2"})) + theme(legend.position = "none"),
+  daily_metrics_plots[[1]] +   labs(y = expression(R^{"2"})) + theme(legend.position = "none"),
+  monthly_metrics_plots[[2]] + labs(y = "MAE") + theme(legend.position = "none"),
+  weekly_metrics_plots[[2]] +  labs(y = "MAE") + theme(legend.position = "none"),
+  daily_metrics_plots[[2]] +   labs(y = "MAE") + theme(legend.position = "none"),
+  monthly_metrics_plots[[3]] + labs(y = "RMSE") + theme(legend.position = "none"),
+  weekly_metrics_plots[[3]] +  labs(y = "RMSE") + theme(legend.position = "none"),
+  daily_metrics_plots[[3]] +   labs(y = "RMSE") + theme(legend.position = "none"),
   nrow = 3,
   ncol = 3,
   labels = c("A", "B", "C"))
@@ -1014,18 +1099,18 @@ rm(plot_legend)
 
 ### LM vs GAM
 
-Monthly GAM applied in the context of Michigan exhibited a better performance
-when employing EVI and NIRv in comparison to LMs with all vegetation indices as
-covariates. Regarding weekly GAM models, they demonstrated improved performance
-compared to LM across all sites, except for Borden, where both models yielded 
-equivalent R² values. Notably, despite similar R² values, the GAM model 
-consistently displayed lower error metrics, suggesting its capacity to better 
-accommodate potential nonlinear relationships and produce more accurate 
-predictions. This adaptability was particularly evident when addressing the 
-daily, weekly, or monthly variations in GPP. Furthermore, it is crucial to
-highlight that monthly models, both in LM and GAM frameworks, consistently 
-exhibited superior metrics compared to their weekly and daily counterparts, as
-illustrated in @fig-gam_metrics and @fig-lm_metrics.
+Monthly GAM applied in the context of Michigan exhibited a
+better performance when employing EVI and NIRv in comparison to LMs with all
+vegetation indices as covariates. Regarding weekly GAM models, they demonstrated
+improved performance compared to LM across all sites, except for Borden, where
+both models yielded equivalent R² values. Notably, despite similar R² values,
+the GAM model consistently displayed lower error metrics, suggesting its
+capacity to better accommodate potential nonlinear relationships and produce
+more accurate predictions. This adaptability was particularly evident when
+addressing the daily, weekly, or monthly variations in GPP. Furthermore, it is
+crucial to highlight that monthly models, both in LM and GAM frameworks,
+consistently exhibited superior metrics compared to their weekly and daily
+counterparts, as illustrated in @fig-gam_metrics and @fig-lm_metrics.
 
 ```{r gpp_vi_realtions_all_sites}
 #| label: fig-gpp_vi_relation_daily
@@ -1073,7 +1158,6 @@ etiquetas <- c(
         strip.background = element_blank())
 ```
 
-
 ```{r gpp_vi_realtions_all_sites}
 #| label: fig-gpp_vi_relation_weekly
 #| fig-cap: "Scatterplot of MODIS 500m derived VIs and GPP with weekly values. Every observation corresponds to the observed GPP from a flux tower site. Total observations corresponds to the number of observations used to obtain the mean of the vegetation index (NDVI, NIRv, CCI and EVI). The red line indicates the GAM fit."
@@ -1105,7 +1189,6 @@ etiquetas <- c(
   theme(strip.text = element_text(size = 10, color = "black"),
         strip.background = element_blank())
 ```
-
 
 ```{r gpp_vi_realtions_all_sites}
 #| label: fig-gpp_vi_relation_monthly
@@ -1146,24 +1229,19 @@ etiquetas <- c(
 #           labels = c('A', 'B', 'C'))
 ```
 
-
-
-
 \newpage
 
 ## Discussion
 
-Based on the RMSE, NDVI performed less favourably  on 
-two out of the three sites compared with the other indices. However, the 
-performance difference among the sites was not substantial, with the Bartlett
-experimental forest exhibiting slightly better results on all of their GPP ~ VIs
-relations compared to the other sites. These findings suggest that while 
-NDVI may not be the optimal vegetation index for GPP estimation at these sites,
-there may still be variations in performance across different locations.
-
+Based on the RMSE, NDVI performed less favourably on two out of the three sites
+compared with the other indices. However, the performance difference among the
+sites was not substantial, with the Bartlett experimental forest exhibiting
+slightly better results on all of their GPP \~ VIs relations compared to the
+other sites. These findings suggest that while NDVI may not be the optimal
+vegetation index for GPP estimation at these sites, there may still be
+variations in performance across different locations.
 
 \newpage
-
 
 ## References
 
@@ -1172,4 +1250,3 @@ final references.**
 
 ::: {#refs}
 :::
-
