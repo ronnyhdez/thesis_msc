@@ -164,7 +164,7 @@ within each of the temporally aggregated models.
 ### AutoML
 
 To create a stacked ensemble of models and evaluate the performance, we utilized
-the H2O AutoML framework [@ledell2020h2o]. The AutoMl approach is designed to 
+the H2O AutoML framework [@ledell2020h2o]. The AutoML approach is designed to 
 identify the most optimal ML pipeline for a specific problem and available 
 training data by evaluating different combinations of data processing steps,
 ML models and hyperparameters settings. [@gaber2023using]
@@ -529,7 +529,8 @@ high_value <- rf_breakdown %>%
 plot_grid(low_value,
           high_value,
           nrow = 1,
-          labels = c('A', 'B'))
+          labels = c('A', 'B'),
+          vjust = 1)
 ```
 
 #### Weekly 500
@@ -735,7 +736,8 @@ high_value <- rf_breakdown %>%
 plot_grid(low_value,
           high_value,
           nrow = 1,
-          labels = c('A', 'B'))
+          labels = c('A', 'B'),
+          vjust = 1)
 ```
 
 #### Monthly
@@ -944,7 +946,8 @@ high_value <- rf_breakdown %>%
 plot_grid(low_value,
           high_value,
           nrow = 1,
-          labels = c('A', 'B'))
+          labels = c('A', 'B'),
+          vjust = 1)
 ```
 
 
