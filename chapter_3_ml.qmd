@@ -257,7 +257,7 @@ monthly_500_rf <- bind_rows(bor, bar, mich) %>%
   select(-kndvi_mean)
 ```
 
-#### Daily 500
+<!-- #### Daily 500 --> 
 
 ```{r xgboost_daily}
 #| echo: false
@@ -429,7 +429,7 @@ workflow() %>%
                               "sur_refl_b07_mean" = "B07"))
 ```
 
-```{r}
+```{r shapley_values_daily}
 #| label: fig-shap_daily_500_rf
 #| fig-cap: "Shapley values derived from the Random forest model for the daily values at 500 m spatial resolution model."
 #| echo: false
@@ -533,7 +533,7 @@ plot_grid(low_value,
           vjust = 1)
 ```
 
-#### Weekly 500
+<!-- #### Weekly 500 -->
 
 ```{r weekly_500_rf}
 #| echo: false
@@ -740,7 +740,7 @@ plot_grid(low_value,
           vjust = 1)
 ```
 
-#### Monthly
+<!-- #### Monthly -->
 
 ```{r monthly_500_rf}
 #| echo: false
@@ -955,7 +955,7 @@ plot_grid(low_value,
 
 ### The potential of AutoML approaches for GPP predictions
 
-#### Daily autoML
+<!-- #### Daily autoML -->
 
 ```{r}
 #| label: fig-predictions_automl_500
@@ -1001,7 +1001,7 @@ readRDS("models/automl_va_plot.rds") +
                               "sur_refl_b07_mean" = "B07"))
 ```
 
-#### Weekly autoML
+<!-- #### Weekly autoML -->
 
 ```{r}
 #| label: fig-predictions_automl_weekly_500
@@ -1047,7 +1047,7 @@ readRDS("models/automl_va_plot_weekly.rds") +
                               "sur_refl_b07_mean" = "B07"))
 ```
 
-#### Monthly autoML
+<!-- #### Monthly autoML -->
 
 ```{r}
 #| label: fig-predictions_automl_monthly_500
