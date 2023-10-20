@@ -21,6 +21,10 @@ Predicting dynamics in the biosphere is challenging given the biologically media
 
 These predictions can include many forms of uncertainty [@reichstein_deep_2019]. One is that individual ML methods can have different responses, specially when these models are applied beyond the conditions presented in the training dataset. [@jung_towards_2009; @papale_effect_2015]. A second one is that the explanatory variables used in ML methods derived from satellite remote sensing, are partial on the about the vegetation state [@tramontana_predicting_2016], and also lacks all the information to explain the complete variability in fluxes [@tramontana_uncertainty_2015]
 
+For this chapter, we evaluate how two different approaches such as regression
+random forest and AutoML can improve the predictions accuracy of GPP through
+data driven approaches with MODIS data.
+
 \newpage
 
 ## Methods
@@ -159,9 +163,29 @@ within each of the temporally aggregated models.
 
 ### AutoML
 
-Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id. Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi quis ipsa aut. Temporibus ut rerum ea a est voluptate.
+To create a stacked ensemble of models and evaluate the performance, we utilized
+the H2O AutoML framework [@ledell2020h2o]. The AutoML approach is designed to 
+identify the most optimal ML pipeline for a specific problem and available 
+training data by evaluating different combinations of data processing steps,
+ML models and hyperparameters settings. [@gaber2023using]
 
-Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta doloremque. Et reiciendis et animi ut enim. Fugiat consequatur hic laborum culpa blanditiis explicabo nobis quae. Quae pariatur quo et hic autem.
+For the data training and evaluation, we randomly split the dataset into a
+training and a test set, allocating 80% and 20% of the observations, respectively.
+We excluded the `total observations` and `site` variables from both datasets,
+while the remaining features (bands and VIs), were considered predictors. The
+response variable for prediction was GPP. We transformed the data into an H2O 
+frame to ensure compatibility with the AutoML process.
+
+After generating machine learning models and hyperparameter configurations,
+we imposed a time constraint of a maximum of 2 minutes for model training. The 
+best performing models were then selected and used to form an ensembre. This 
+trained ensemble model was used to generate predictions on the test set. Model
+performance was evaluated using metrics such as the coefficient of determination
+and the RMSE.
+
+To asses the variable importance, we determined the influence of each variable
+on the model's predictions. The results of this analysis were visually represented
+as heatmaps for each of the models within the ensemble.
 
 \newpage
 
@@ -233,7 +257,7 @@ monthly_500_rf <- bind_rows(bor, bar, mich) %>%
   select(-kndvi_mean)
 ```
 
-#### Daily 500
+<!-- #### Daily 500 --> 
 
 ```{r xgboost_daily}
 #| echo: false
@@ -358,6 +382,8 @@ if (fs::file_exists("models/daily_500_fit_site.rds") &
 ```{r predictions_plot_daily_500_rf}
 #| label: fig-daily_500_rf
 #| fig-cap: GPP observed and predicted values from the Random Forest model for all the sites at a daily basis. The red line represents a 1:1 relation.
+#| fig-width: 6
+#| fig-height: 4
 #| echo: false
 #| message: false
 #| warning: false
@@ -403,7 +429,7 @@ workflow() %>%
                               "sur_refl_b07_mean" = "B07"))
 ```
 
-```{r}
+```{r shapley_values_daily}
 #| label: fig-shap_daily_500_rf
 #| fig-cap: "Shapley values derived from the Random forest model for the daily values at 500 m spatial resolution model."
 #| echo: false
@@ -503,10 +529,11 @@ high_value <- rf_breakdown %>%
 plot_grid(low_value,
           high_value,
           nrow = 1,
-          labels = c('A', 'B'))
+          labels = c('A', 'B'),
+          vjust = 1)
 ```
 
-#### Weekly 500
+<!-- #### Weekly 500 -->
 
 ```{r weekly_500_rf}
 #| echo: false
@@ -563,6 +590,8 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
 ```{r predictions_plot_weekly_500_rf}
 #| label: fig-weekly_500_rf
 #| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a weekly basis. The red line represents a 1:1 relation."
+#| fig-width: 6
+#| fig-height: 4
 #| echo: false
 #| message: false
 #| warning: false
@@ -572,7 +601,7 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
 metrics <- collect_metrics(weekly_500_fit) 
 
 ## Collect predictions
-plot_predictions_rf(weekly_500_fit, metrics, 4, 4, 23, 25)
+plot_predictions_rf(weekly_500_fit, metrics, 5, 5, 18, 19)
 ```
 
 ```{r vip_plot_weekly_500_rf}
@@ -707,10 +736,11 @@ high_value <- rf_breakdown %>%
 plot_grid(low_value,
           high_value,
           nrow = 1,
-          labels = c('A', 'B'))
+          labels = c('A', 'B'),
+          vjust = 1)
 ```
 
-#### Monthly
+<!-- #### Monthly -->
 
 ```{r monthly_500_rf}
 #| echo: false
@@ -770,6 +800,8 @@ if (fs::file_exists("models/monthly_500_fit_site.rds")) {
 ```{r predictions_plot_monthly_500_rf}
 #| label: fig-monthly_500_rf
 #| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a monthly basis. The red line represents a 1:1 relation."
+#| fig-width: 6
+#| fig-height: 4
 #| echo: false
 #| message: false
 #| warning: false
@@ -779,7 +811,7 @@ if (fs::file_exists("models/monthly_500_fit_site.rds")) {
 metrics <- collect_metrics(monthly_500_fit) 
 
 ## Collect predictions
-plot_predictions_rf(monthly_500_fit, metrics, 5, 5, 16, 18)
+plot_predictions_rf(monthly_500_fit, metrics, 5, 5, 13, 14)
 ```
 
 ```{r vip_plot_monthly_500_rf}
@@ -914,20 +946,16 @@ high_value <- rf_breakdown %>%
 plot_grid(low_value,
           high_value,
           nrow = 1,
-          labels = c('A', 'B'))
+          labels = c('A', 'B'),
+          vjust = 1)
 ```
-
-
-
-
-
 
 
 \newpage
 
 ### The potential of AutoML approaches for GPP predictions
 
-#### Daily autoML
+<!-- #### Daily autoML -->
 
 ```{r}
 #| label: fig-predictions_automl_500
@@ -973,7 +1001,7 @@ readRDS("models/automl_va_plot.rds") +
                               "sur_refl_b07_mean" = "B07"))
 ```
 
-#### Weekly autoML
+<!-- #### Weekly autoML -->
 
 ```{r}
 #| label: fig-predictions_automl_weekly_500
@@ -1019,7 +1047,7 @@ readRDS("models/automl_va_plot_weekly.rds") +
                               "sur_refl_b07_mean" = "B07"))
 ```
 
-#### Monthly autoML
+<!-- #### Monthly autoML -->
 
 ```{r}
 #| label: fig-predictions_automl_monthly_500
