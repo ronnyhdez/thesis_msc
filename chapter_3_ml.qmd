@@ -21,6 +21,10 @@ Predicting dynamics in the biosphere is challenging given the biologically media
 
 These predictions can include many forms of uncertainty [@reichstein_deep_2019]. One is that individual ML methods can have different responses, specially when these models are applied beyond the conditions presented in the training dataset. [@jung_towards_2009; @papale_effect_2015]. A second one is that the explanatory variables used in ML methods derived from satellite remote sensing, are partial on the about the vegetation state [@tramontana_predicting_2016], and also lacks all the information to explain the complete variability in fluxes [@tramontana_uncertainty_2015]
 
+For this chapter, we evaluate how two different approaches such as regression
+random forest and AutoML can improve the predictions accuracy of GPP through
+data driven approaches with MODIS data.
+
 \newpage
 
 ## Methods
@@ -159,26 +163,29 @@ within each of the temporally aggregated models.
 
 ### AutoML
 
-To create an stacked ensemble of models and evaluate the performance, we use the
-H2O AutoML framework [xxx].
+To create a stacked ensemble of models and evaluate the performance, we utilized
+the H2O AutoML framework [@ledell2020h2o]. The AutoMl approach is designed to 
+identify the most optimal ML pipeline for a specific problem and available 
+training data by evaluating different combinations of data processing steps,
+ML models and hyperparameters settings. [@gaber2023using]
 
-For the data training and evaluation, we splitted randomly the dataset into a
-training and a test set with 80% and 20% of the observations respectively. The
-variable `total observations` and `site` were excluded from both datasets, while
-the rest of the features (bands and VIs) were considered predictors and GPP as 
-the response variable. The data was transformed into a H20 frame for 
-compatibility with the AutoML process.
+For the data training and evaluation, we randomly split the dataset into a
+training and a test set, allocating 80% and 20% of the observations, respectively.
+We excluded the `total observations` and `site` variables from both datasets,
+while the remaining features (bands and VIs), were considered predictors. The
+response variable for prediction was GPP. We transformed the data into an H2O 
+frame to ensure compatibility with the AutoML process.
 
-After the generation of machine learning models and hyperparameter configurations,
-were constrained to run for a maximum of 2 minutes, and the resulting best
-performing models were use as an ensemble. This trained model was used to generate
-the predictions with the test set. Model performance was evaluated by assesing
-metrics such as the coefficient of determination and the RMSE.
+After generating machine learning models and hyperparameter configurations,
+we imposed a time constraint of a maximum of 2 minutes for model training. The 
+best performing models were then selected and used to form an ensembre. This 
+trained ensemble model was used to generate predictions on the test set. Model
+performance was evaluated using metrics such as the coefficient of determination
+and the RMSE.
 
-To asses the variable importance, we determined the influence of each predictor
-variable on the model's predictions. The result of this was plotted as a heatmap
-for each of the models in the ensemble.
-
+To asses the variable importance, we determined the influence of each variable
+on the model's predictions. The results of this analysis were visually represented
+as heatmaps for each of the models within the ensemble.
 
 \newpage
 
