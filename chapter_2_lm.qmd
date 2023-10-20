@@ -681,7 +681,7 @@ performance than those based on weekly or daily values as ilustrated in
 ```
 ```{r lm_monthly}
 #| label: tbl-lm_monthly_results
-#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis."
+#| tbl-cap: "Summary of Linear models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis.  MAE and RMSE metrics units are gC m-⁻² d-⁻¹"
 #| tbl-colwidths: [50,50]
 #| echo: false
 #| message: false
@@ -945,7 +945,7 @@ exceeding 50%.
 ```
 ```{r}
 #| label: tbl-gam_model_results
-#| tbl-cap: "Summary of GAM models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis." 
+#| tbl-cap: "Summary of GAM models for GPP estimation using the vegetation indices on a monthly (a), weekly (b), and daily (c) basis.  MAE and RMSE metrics units are gC m-⁻² d-⁻¹" 
 #| echo: false
 #| message: false
 #| warning: false
