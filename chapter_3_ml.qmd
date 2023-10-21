@@ -193,6 +193,29 @@ as heatmaps for each of the models within the ensemble.
 
 ### Data-Driven GPP Prediction: A Regression Random Forest Approach 
 
+The best performing model, based on R² and RMSE was the monthly aggregated model,
+achieving a R² of 81% and an RMSE of 2.033 (see @fig-monthly_500_rf). The daily
+model exhibited the second best performance model with a RMSE of 3.164 and a R²
+of 69% (see @fig-daily_500_rf). However, the weekly model displayed comparatively
+lower performance, with an R² of 56% and an RMSE of 3.233 (see @fig-weekly_500_rf)
+
+Furthermore, in assesing the importance of predictor variables within each model,
+VIs variables were in all the models in the top positions, above any other band.
+CCI contributed most significantly to the predictive performance in two of the 
+models, specifically the weekly and monthly models (@fig-vip_weekly_500_rf 
+and @fig-vip_monthly_500_rf). In the case of the daily
+model, CCO emerged as the second most influential predictor variable. (@fig-vip_daily_500_rf)
+
+Despite NDVI being the second variable in importance for the monthly model, for
+the daily was the fifth one and for the weekly was the fourth one. In the case 
+of NIRv, in the three models was the third most influential predictor variable. 
+EVI had the most importance for the daily model, was the second most important 
+in the weekly model, but fourth in the monthly.
+
+
+
+
+
 ```{r data_preparation_rf}
 #| echo: false
 #| message: false
