@@ -17,15 +17,15 @@ essential for understanding land-atmosphere carbon exchange
 [@kohler_global_2018], ecosystem function, and ecosystem responses to climate
 change [@guan_comparison_2022; @brown_fiducial_2021; @myneni_relationship_1994].
 However, terrestrial GPP cannot be directly estimated due to the contribution of
-respiration to land carbon fluxes [@anav_spatiotemporal_2015]. Instead, GPP is
-only inferred by the net carbon exchange measurements at the ecosystem level, or
-at broarder scales using models that incorporate variour assumptions and
-limitations [@reichstein_separation_2005; @jung_towards_2009]. One widely used
-approach to approximate and quantify GPP is the data driven models of spectral
-vegetation indices [@ryu_what_2019] However, GPP estimation using spectral
-vegetation indices remain with high uncertainties and validation efforts are
-required to characterize these and improve accuracy. [@anav_spatiotemporal_2015;
-@brown_fiducial_2021]
+respiration to land carbon fluxes [@anav_spatiotemporal_2015]. Instead, GPP can
+be inferred in a nondestructive manner by the net carbon exchange measurements 
+at the ecosystem level, or at broarder scales using models that incorporate 
+various assumptions and limitations [@reichstein_separation_2005; @jung_towards_2009]. 
+One widely used approach for approximating and quantifying GPP involves employing
+data-driven models based on spectral vegetation indices (VIs) [@ryu_what_2019] 
+However, GPP estimation using spectral VIs remain with high uncertainties, 
+prompting the need for validation efforts are required to identify approaches to
+improve accuracy. [@anav_spatiotemporal_2015; @brown_fiducial_2021]
 
 There are several methods to calculate GPP that can be grouped into two broad
 categories: eddy covariance techniques, and satellite data-driven
