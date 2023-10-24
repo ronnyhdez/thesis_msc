@@ -1,25 +1,84 @@
+---
+editor: 
+  markdown: 
+    wrap: 80
+---
+
 # A data driven approach to predict GPP from VIs through machine learning methods
 
 ## Introduction
 
-The field of Earth Science has witnessed a transformative shift with the integration of Machine Learning (ML) methods, which had lead to a deeper understanding of our planet's complex ecosystems and processes [@reichstein_deep_2019]. ML methods have being used in recent years and are now well stablished in environmental sciences [@lary_machine_2016], harnessing the power of ML algorithms to explore diverse aspects of Earth's natural systems including research to understand vegetation characteristics and ecological patterns [@lehnert_retrieval_2015; @verrelst_machine_2012]
+The field of Earth Science has witnessed a transformative shift with the
+integration of Machine Learning (ML) methods, which had lead to a deeper
+understanding of our planet's complex ecosystems and processes
+[@reichstein_deep_2019]. ML methods have being used in recent years and are now
+well stablished in environmental sciences [@lary_machine_2016], harnessing the
+power of ML algorithms to explore diverse aspects of Earth's natural systems
+including research to understand vegetation characteristics and ecological
+patterns [@lehnert_retrieval_2015; @verrelst_machine_2012]
 
-The increasing number of EC sites [@tramontana_predicting_2016] couple with the continuously growing amount of Earth system data surpassing the dozens of petabytes [@reichstein_deep_2019], has lead to an emergence of purely data-driven methodologies. These approaches have been important to further develop the quantification of global terrestrial photosynthesis [@jung_global_2011; @tramontana_predicting_2016] and have demonstrated remarkable results in the regression estimation of biogeo-physical parameters using remotely sensed reflectance data, both at local and global scales [@coops_prediction_2003; @verrelst_retrieval_2012].
+The increasing number of EC sites [@tramontana_predicting_2016] couple with the
+continuously growing amount of Earth system data surpassing the dozens of
+petabytes [@reichstein_deep_2019], has lead to an emergence of purely
+data-driven methodologies. These approaches have been important to further
+develop the quantification of global terrestrial photosynthesis
+[@jung_global_2011; @tramontana_predicting_2016] and have demonstrated
+remarkable results in the regression estimation of biogeo-physical parameters
+using remotely sensed reflectance data, both at local and global scales
+[@coops_prediction_2003; @verrelst_retrieval_2012].
 
-Furthermore, these data-driven approaches have contributed significantly to the scientific community by providing spatial, seasonal, and interannual variations in predicted fluxes. These predictions, generated through machine learning methodologies, are now serving as important benchmarks for evaluating the performance of physical land-surface and climate models [@jung_recent_2010; @bonan_improving_2011; @anav_spatiotemporal_2015].
+Furthermore, these data-driven approaches have contributed significantly to the
+scientific community by providing spatial, seasonal, and interannual variations
+in predicted fluxes. These predictions, generated through machine learning
+methodologies, are now serving as important benchmarks for evaluating the
+performance of physical land-surface and climate models [@jung_recent_2010;
+@bonan_improving_2011; @anav_spatiotemporal_2015].
 
 Some of the differences between data driven models and process-based methods are
-the inherent observational character of data driven models and that functional relationships emerge from the patterns found in the data, rather than being stated before [@tramontana_predicting_2016]. So functional relationships between in-situ measured fluxes with the explanatory variables can emerge [@tramontana_predicting_2016]. This paradigm shift toward data-driven modeling to extract patterns represents an opportunity to come up with new ideas and questioning establisehd theories in earth system models.
+the inherent observational character of data driven models and that functional
+relationships emerge from the patterns found in the data, rather than being
+stated before [@tramontana_predicting_2016]. So functional relationships between
+in-situ measured fluxes with the explanatory variables can emerge
+[@tramontana_predicting_2016]. This paradigm shift toward data-driven modeling
+to extract patterns represents an opportunity to come up with new ideas and
+questioning establisehd theories in earth system models.
 
-One of the distinguishing characteristics between data-driven models and process-based methods lies in their fundamental approach. Data driven models inherently possess an observational nature where functional relationships emerge from the patterns found in the data, rather than being predefined, such as the relationships between in-situ measured fluxes and the explanatory variables. [@tramontana_predicting_2016]. This paradigm shift toward data-driven modeling to extract patterns, represents an opportunity to explore novel ideas and question established theories in earth system models [@reichstein_deep_2019].
+One of the distinguishing characteristics between data-driven models and
+process-based methods lies in their fundamental approach. Data driven models
+inherently possess an observational nature where functional relationships emerge
+from the patterns found in the data, rather than being predefined, such as the
+relationships between in-situ measured fluxes and the explanatory variables.
+[@tramontana_predicting_2016]. This paradigm shift toward data-driven modeling
+to extract patterns, represents an opportunity to explore novel ideas and
+question established theories in earth system models [@reichstein_deep_2019].
 
-For instance, the application of spatially explicit global data driven methods, has unveiled discrepancies in the estimation of photosynthesis within tropical rainforests when compared to climate models [@beer_terrestrial_2010]. This overestimation, has led to the creation of hypothesis for a better understanding of radiative transfer in vegetation canopies [@bonan_improving_2011] which can result in better photosynthesis estimates.
+For instance, the application of spatially explicit global data driven methods,
+has unveiled discrepancies in the estimation of photosynthesis within tropical
+rainforests when compared to climate models [@beer_terrestrial_2010]. This
+overestimation, has led to the creation of hypothesis for a better understanding
+of radiative transfer in vegetation canopies [@bonan_improving_2011] which can
+result in better photosynthesis estimates.
 
-To get the most of the Earth system data there are two major challenges. The first involves efficiently extracting valuable insights from the available data. The second is developing models that learn much more from data than traditional data assimilation approaches can, while still aligning with our evolving comprehension of nature's laws [@reichstein_deep_2019].
+To get the most of the Earth system data there are two major challenges. The
+first involves efficiently extracting valuable insights from the available data.
+The second is developing models that learn much more from data than traditional
+data assimilation approaches can, while still aligning with our evolving
+comprehension of nature's laws [@reichstein_deep_2019].
 
-Predicting dynamics in the biosphere is challenging given the biologically mediated processes [@reichstein_deep_2019]. "Prediction" term should not be confused with forecasting, given that most of the models are not aiming at predicting into the future, instead the focus is to predict in the past or the present times [@meyer_improving_2018]
+Predicting dynamics in the biosphere is challenging given the biologically
+mediated processes [@reichstein_deep_2019]. "Prediction" term should not be
+confused with forecasting, given that most of the models are not aiming at
+predicting into the future, instead the focus is to predict in the past or the
+present times [@meyer_improving_2018]
 
-These predictions can include many forms of uncertainty [@reichstein_deep_2019]. One is that individual ML methods can have different responses, specially when these models are applied beyond the conditions presented in the training dataset. [@jung_towards_2009; @papale_effect_2015]. A second one is that the explanatory variables used in ML methods derived from satellite remote sensing, are partial on the about the vegetation state [@tramontana_predicting_2016], and also lacks all the information to explain the complete variability in fluxes [@tramontana_uncertainty_2015]
+These predictions can include many forms of uncertainty [@reichstein_deep_2019].
+One is that individual ML methods can have different responses, specially when
+these models are applied beyond the conditions presented in the training
+dataset. [@jung_towards_2009; @papale_effect_2015]. A second one is that the
+explanatory variables used in ML methods derived from satellite remote sensing,
+are partial on the about the vegetation state [@tramontana_predicting_2016], and
+also lacks all the information to explain the complete variability in fluxes
+[@tramontana_uncertainty_2015]
 
 For this chapter, we evaluate how two different approaches such as regression
 random forest and AutoML can improve the predictions accuracy of GPP through
@@ -64,40 +123,52 @@ source("R/plot_exploratory.R")
 ```
 
 <!--  - Sites -->
+
 <!--  - ONEFlux for GPP -->
+
 <!--  - Satellite imagery -->
+
 <!--  - indices calculation -->
+
 <!--  - Here I'm using all the bands available -->
+
 <!--  - Cleaning satellite data -->
+
 <!--  - Filter -->
+
 <!--  - scaling -->
+
 <!--  - join -->
 
 ### Eddy Covariance sites
 
 For this study, we selected three deciduous broadleaf forest forests sites:
 University of Michigan Biological Station located in northern Michigan, USA
-(45°350 N 84°430 W), Bartlett experimental forest in New Hampshire, USA 
-(44°06 N, 71°3 W), and the Borden Forest Research Station (44°19 N, 79°56 W) in
-Ontario, Canada. 
+(45°350 N 84°430 W), Bartlett experimental forest in New Hampshire, USA (44°06
+N, 71°3 W), and the Borden Forest Research Station (44°19 N, 79°56 W) in
+Ontario, Canada.
 
-In-situ data such as GPP was obtained utilizing the ONEFlux estimation 
+In-situ data such as GPP was obtained utilizing the ONEFlux estimation
 processing by Ameriflux. Here, we selected GPP estimation done by the daytime
 method [@pastorello2020fluxnet2015] on a daily, weekly, and monthly basis.
 
 These sites were selected to ensure they represented a single ecosystem type,
 characterized by shared environmental features. This approach allowed us to
-treat the dataset as a representation of a specific vegetation type terrestrial ecosystem.
+treat the dataset as a representation of a specific vegetation type terrestrial
+ecosystem.
 
 To capture seasonal variations and long-term trends, GPP data was collected over
-a minimum of 2 years. Specifically, University of Michigan Biological Station 
+a minimum of 2 years. Specifically, University of Michigan Biological Station
 collected data spanned from January 2015 to January 2018, Bartlett experimental
-forest data ranges from January 2015 to December 2018, and Borden Forest 
+forest data ranges from January 2015 to December 2018, and Borden Forest
 Research Station from January 2015 to January 2022.
 
 <!-- From ameriflux: -->
+
 <!--  https://ameriflux.lbl.gov/sites/siteinfo/US-Bar -->
+
 <!--  https://ameriflux.lbl.gov/sites/siteinfo/CA-Cbo -->
+
 <!--  https://ameriflux.lbl.gov/sites/siteinfo/US-UMB -->
 
 <!-- All sites are Dfb -->
@@ -105,93 +176,150 @@ Research Station from January 2015 to January 2022.
 <!-- The code "Dfb" in the Köppen system refers to a specific climate type, which can be described as follows: -->
 
 <!-- "D" stands for the warm-summer continental or hemiboreal climate. -->
+
 <!-- "f" indicates that this climate has significant precipitation in all seasons. -->
+
 <!-- "b" indicates that the warmest month has an average temperature between 22°C and 28°C. -->
 
-### Satellite imagery 
+### Satellite imagery
 
-We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate 
-Resolution Imaging Spectroradiometer (MODIS), specifically the collection 
-MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding 
-the EC tower was defined for each of the study sites, and the complete data 
+We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate
+Resolution Imaging Spectroradiometer (MODIS), specifically the collection
+MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding
+the EC tower was defined for each of the study sites, and the complete data
 pixel values within this polygon was extracted for analysis.
 
-The MODIS collected data contains the surface spectral reflectance from bands 
-to 1 through 7 with a spatial resolution of 500m, with corrections for 
-atmospheric conditions such as aerosols, gasses and Rayleigh scattering [@vermote2021modis].
+The MODIS collected data contains the surface spectral reflectance from bands to
+1 through 7 with a spatial resolution of 500m, with corrections for atmospheric
+conditions such as aerosols, gasses and Rayleigh scattering [@vermote2021modis].
 
-We selected the highest quality pixels according to the `state_1km` 
-(@tbl-state_1km_bitstrings) and `qc_500m` (@tbl-qc_scan_bit_strings) bit 
-string variables. Once we had just the highest quality pixels, all the band
-values were scaled by a factor of 0.0001. If any value fell outside the range
-of 0 to 1 after the scaling, it was discarded.
+We selected the highest quality pixels according to the `state_1km`
+(@tbl-state_1km_bitstrings) and `qc_500m` (@tbl-qc_scan_bit_strings) bit string
+variables. Once we had just the highest quality pixels, all the band values were
+scaled by a factor of 0.0001. If any value fell outside the range of 0 to 1
+after the scaling, it was discarded.
 
 Once all the band values were scaled, we calculated 4 Vegetation Indices: NDVI,
-NIRv, EVI, and CCI. Then all the MODIS bands values and VIs were summarized in
-a daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux.
+NIRv, EVI, and CCI. Then all the MODIS bands values and VIs were summarized in a
+daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux.
 
 ### Random Forests
 
-Regression Random forests were used as an approach to predict GPP by 
+Regression Random forests were used as an approach to predict GPP by
 incorporating all available bands values (from B01 to B07) from the MODIS
 dataset and the calculated VIs. Three distinct models were developed, each one
 tailored for a specific time scale (daily, weekly, and monthly). This approach
-allowed us to assess the prediction performance of GPP at different time scales. 
+allowed us to assess the prediction performance of GPP at different time scales.
 
 To build and evaluate the model, we performed a random data splitting procedure,
 dividing the data into training set with 70% of the observations and a test set
-with the remaining 30%. We employed a stratified data split to ensure a 
-proportional representation of each site category in both sets. To ensure 
+with the remaining 30%. We employed a stratified data split to ensure a
+proportional representation of each site category in both sets. To ensure
 reproducibility, we use a random number generator state throughout the process.
 
-To implement the RF models, we use the `ranger` package in R [@wright_ranger_2017],
-utilizing 1000 trees within the forest ensemble. The models were trained using
-the bootstrap resampling technique with 100 folds, which helps to improve the
-robustness and accuracy of the predictions. 
+To implement the RF models, we use the `ranger` package in R
+[@wright_ranger_2017], utilizing 1000 trees within the forest ensemble. The
+models were trained using the bootstrap resampling technique with 100 folds,
+which helps to improve the robustness and accuracy of the predictions.
 
-We calculated the variable of importance (VIP) to understand which MODIS bands or
-VIs are driving the predictions in each of the regression random forest models.
-To measure the influence of each feature on the overall model's predictive
-performance, we quantify how this performance deteriorates when a particular 
-variable is permuted while keeping others constant. 
+We calculated the variable of importance (VIP) to understand which MODIS bands
+or VIs are driving the predictions in each of the regression random forest
+models. To measure the influence of each feature on the overall model's
+predictive performance, we quantify how this performance deteriorates when a
+particular variable is permuted while keeping others constant.
 
-To understand which features contributed the most in average to a particular 
-GPP prediction in different coalitions [@molnar2020interpretable], we calculated
-the Shapley values [@lundberg_unified_nodate]. These values were computed with
-the DALEX package in R [@biecek2018dalex] for both low GPP and high GPP scenarios
-within each of the temporally aggregated models. 
+To understand which features contributed the most in average to a particular GPP
+prediction in different coalitions [@molnar2020interpretable], we calculated the
+Shapley values [@lundberg_unified_nodate]. These values were computed with the
+DALEX package in R [@biecek2018dalex] for both low GPP and high GPP scenarios
+within each of the temporally aggregated models.
 
 ### AutoML
 
 To create a stacked ensemble of models and evaluate the performance, we utilized
-the H2O AutoML framework [@ledell2020h2o]. The AutoML approach is designed to 
-identify the most optimal ML pipeline for a specific problem and available 
-training data by evaluating different combinations of data processing steps,
-ML models and hyperparameters settings. [@gaber2023using]
+the H2O AutoML framework [@ledell2020h2o]. The AutoML approach is designed to
+identify the most optimal ML pipeline for a specific problem and available
+training data by evaluating different combinations of data processing steps, ML
+models and hyperparameters settings. [@gaber2023using]
 
 For the data training and evaluation, we randomly split the dataset into a
-training and a test set, allocating 80% and 20% of the observations, respectively.
-We excluded the `total observations` and `site` variables from both datasets,
-while the remaining features (bands and VIs), were considered predictors. The
-response variable for prediction was GPP. We transformed the data into an H2O 
-frame to ensure compatibility with the AutoML process.
+training and a test set, allocating 80% and 20% of the observations,
+respectively. We excluded the `total observations` and `site` variables from
+both datasets, while the remaining features (bands and VIs), were considered
+predictors. The response variable for prediction was GPP. We transformed the
+data into an H2O frame to ensure compatibility with the AutoML process.
 
-After generating machine learning models and hyperparameter configurations,
-we imposed a time constraint of a maximum of 2 minutes for model training. The 
-best performing models were then selected and used to form an ensembre. This 
-trained ensemble model was used to generate predictions on the test set. Model
+After generating machine learning models and hyperparameter configurations, we
+imposed a time constraint of a maximum of 2 minutes for model training. The best
+performing models were then selected and used to form an ensembre. This trained
+ensemble model was used to generate predictions on the test set. Model
 performance was evaluated using metrics such as the coefficient of determination
 and the RMSE.
 
 To asses the variable importance, we determined the influence of each variable
-on the model's predictions. The results of this analysis were visually represented
-as heatmaps for each of the models within the ensemble.
+on the model's predictions. The results of this analysis were visually
+represented as heatmaps for each of the models within the ensemble.
 
 \newpage
 
 ## Results
 
-### Data-Driven GPP Prediction: A Regression Random Forest Approach 
+### Data-Driven GPP Prediction: A Regression Random Forest Approach
+
+The best performing model, based on R² and RMSE was the monthly aggregated
+model, achieving a R² of 81% and an RMSE of 2.033 (see @fig-monthly_500_rf). The
+daily model exhibited the second best performance model with a RMSE of 3.164 and
+a R² of 69% (see @fig-daily_500_rf). However, the weekly model displayed
+comparatively lower performance, with an R² of 56% and an RMSE of 3.233 (see
+@fig-weekly_500_rf)
+
+Moreover, in assesing the importance of predictor variables within each model,
+VIs variables held top positions across all models, surpassing the importance of
+any other spectral bands alone. Specifically, the CCI contributed most
+significantly to the predictive performance in two of the models, the weekly and
+monthly models (@fig-vip_weekly_500_rf and @fig-vip_monthly_500_rf). In the case
+of the daily model, CCI emerged as the second most influential predictor
+variable (as shown in @fig-vip_daily_500_rf).
+
+Despite that NDVI being ranked as the second variable in importance for the
+monthly model, it was the fifth variable in importance for the daily model and
+the fourth one for the weekly model. Meanwhile, the NIRv consistently held the
+third most influential position across all models. EVI was found to be most
+important for the daily model, the second most important variable in the weekly
+model, but fourth in the monthly model.
+
+To evaluate how the predictor variables had an impact on the model's predictions,
+we employed the Shapley values. For each of the models created, we calculated the
+contributions to each variable in predicting GPP for two cases: for a known high
+GPP value and a known low GPP value from the test data set.
+
+In the case of the daily model, we chose a low GPP value from the test dataset,
+specifically 0.087 gC m⁻² d⁻¹, and obtained a model prediction of 
+0.599 gC m⁻² d⁻¹. Our Shapley value analysis showed that EVI, CCI and NIRv were
+the most influential attributes affecting the model prediction 
+(See @fig-shap_daily_500_rf **A**). Nonetheless, these VIs contribute
+negatively to the prediction, reducing the predicted GPP.
+
+Conversely, the high GPP value selected (16.21 gC m⁻² d⁻¹) from the test dataset,
+had a model prediction of 12.7 gC m⁻² d⁻¹. In this case the Shapley values 
+analysis indicated that the most influential variables were CCI and NIRv
+(See @fig-shap_daily_500_rf **B**). These variables contributed positively to
+the prediction.
+
+For the weekly model, we selected high and low GPP values of 1.214 gC m⁻² d⁻¹ 
+and 13.17 gC m⁻² d⁻¹, respectively, resulting in predictions of 1.59 gC m⁻² d⁻¹
+and 11.0 gC m⁻² d⁻¹. For the low GPP value, the most influential
+variables were CCI, EVI, NIRv and NDVI, all contributing negatively to the 
+prediction (see @fig-shap_weekly_500_rf **A**). Conversely, for the high GPP 
+value, CCI, EVI, NIRv, B02 and NDVI had the most influence in the prediction 
+positively (refer to @fig-shap_weekly_500_rf **B**).
+
+In the case of the monthly model, the low GPP value selected was 1.857 gC m⁻² d⁻¹
+and the high GPP value was 11.87 gC m⁻² d⁻¹, leading to predictions of 
+3.31 gC m⁻² d⁻¹ and 10.6 gC m⁻² d⁻¹ respectively. In both scenarios, CCI, NDVI, 
+and NIRv emerged as the most influential variables, albeit contributing 
+negatively to the low GPP value prediction (See @fig-shap_monthly_500_rf **A**) 
+and positively to the high GPP value prediction (See @fig-shap_monthly_500_rf **B**).
 
 ```{r data_preparation_rf}
 #| echo: false
@@ -257,7 +385,7 @@ monthly_500_rf <- bind_rows(bor, bar, mich) %>%
   select(-kndvi_mean)
 ```
 
-<!-- #### Daily 500 --> 
+<!-- #### Daily 500 -->
 
 ```{r xgboost_daily}
 #| echo: false
@@ -318,7 +446,6 @@ monthly_500_rf <- bind_rows(bor, bar, mich) %>%
 # plot_predictions_rf(xgb_last, metrics, 4, 4, 23.5, 22) 
 ```
 
-
 ```{r daily_500_rf}
 #| echo: false
 #| message: false
@@ -378,7 +505,6 @@ if (fs::file_exists("models/daily_500_fit_site.rds") &
 }
 ```
 
-
 ```{r predictions_plot_daily_500_rf}
 #| label: fig-daily_500_rf
 #| fig-cap: GPP observed and predicted values from the Random Forest model for all the sites at a daily basis. The red line represents a 1:1 relation.
@@ -395,7 +521,6 @@ metrics <- collect_metrics(daily_500_fit)
 ## Collect predictions
 plot_predictions_rf(daily_500_fit, metrics, 4, 4, 23.5, 22) 
 ```
-
 
 ```{r vip_plot_daily_500_rf}
 #| label: fig-vip_daily_500_rf
@@ -431,7 +556,7 @@ workflow() %>%
 
 ```{r shapley_values_daily}
 #| label: fig-shap_daily_500_rf
-#| fig-cap: "Shapley values derived from the Random forest model for the daily values at 500 m spatial resolution model."
+#| fig-cap: "Shapley values derived from the Random forest model for the daily values at 500 m spatial resolution model. Predicted value for the low GPP value is 0.59 (A) and 12.7 for the selected high GPP value (B)"
 #| echo: false
 #| message: false
 #| warning: false
@@ -450,6 +575,7 @@ explainer_rf <- explain_tidymodels(
 
 # Take a low gpp value
 low_gpp <- daily_500_train[71, ] 
+low_gpp_pred <- predict(daily_gpp_model, low_gpp)
 
 rf_breakdown <- predict_parts(explainer = explainer_rf, 
                               new_observation = low_gpp,
@@ -489,6 +615,7 @@ low_value <- rf_breakdown %>%
 
 # Take a high gpp value
 high_gpp <- daily_500_train[578, ] 
+high_gpp_pred <- predict(daily_gpp_model, high_gpp)
 
 rf_breakdown <- predict_parts(explainer = explainer_rf, 
                               new_observation = high_gpp,
@@ -657,6 +784,7 @@ explainer_rf <- explain_tidymodels(
 
 # Take a low gpp value
 low_gpp <- weekly_500_train[16, ] 
+low_gpp_pred <- predict(weekly_gpp_model, low_gpp)
 
 rf_breakdown <- predict_parts(explainer = explainer_rf, 
                               new_observation = low_gpp,
@@ -696,6 +824,7 @@ low_value <- rf_breakdown %>%
 
 # Take a high gpp value
 high_gpp <- weekly_500_train[167, ] 
+high_gpp_pred <- predict(weekly_gpp_model, high_gpp)
 
 rf_breakdown <- predict_parts(explainer = explainer_rf, 
                               new_observation = high_gpp,
@@ -867,6 +996,7 @@ explainer_rf <- explain_tidymodels(
 
 # Take a low gpp value
 low_gpp <- monthly_500_train[45, ] 
+low_gpp_pred <- predict(monthly_gpp_model, low_gpp)
 
 rf_breakdown <- predict_parts(explainer = explainer_rf, 
                               new_observation = low_gpp,
@@ -906,6 +1036,7 @@ low_value <- rf_breakdown %>%
 
 # Take a high gpp value
 high_gpp <- monthly_500_train[6, ] 
+high_gpp_pred <- predict(monthly_gpp_model, high_gpp)
 
 rf_breakdown <- predict_parts(explainer = explainer_rf, 
                               new_observation = high_gpp,
@@ -950,7 +1081,6 @@ plot_grid(low_value,
           vjust = 1)
 ```
 
-
 \newpage
 
 ### The potential of AutoML approaches for GPP predictions
@@ -972,7 +1102,6 @@ rmse <- h2o.rmse(perf)
 
 plot_predictions_automl(predictions_automl, rmse, rsq, 3, 3, 18, 20)
 ```
-
 
 ```{r automl_importance_variable}
 #| label: fig-vip_daily_500_automl
@@ -1018,7 +1147,6 @@ rmse <- h2o.rmse(perf)
 
 plot_predictions_automl(predictions_automl, rmse, rsq, 4, 4, 18, 20)
 ```
-
 
 ```{r automl_importance_variable_weekly}
 #| label: fig-vip_daily_500_automl_weekly
@@ -1090,21 +1218,30 @@ readRDS("models/automl_va_plot_monthly.rds") +
                               "sur_refl_b07_mean" = "B07"))
 ```
 
-
 \newpage
 
 ## Discussion
 
+Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis
+omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id.
+Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi
+quis ipsa aut. Temporibus ut rerum ea a est voluptate.
 
-Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id. Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi quis ipsa aut. Temporibus ut rerum ea a est voluptate.
+Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta
+doloremque. Et reiciendis et animi ut enim. Fugiat consequatur hic laborum culpa
+blanditiis explicabo nobis quae. Quae pariatur quo et hic autem.
 
-Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta doloremque. Et reiciendis et animi ut enim. Fugiat consequatur hic laborum culpa blanditiis explicabo nobis quae. Quae pariatur quo et hic autem.
+Sunt velit eos repellat inventore quia sunt. Et optio aut distinctio non
+expedita nulla sint. Explicabo sint tempore est in sunt dolores et. Modi sint
+earum veniam perspiciatis. Velit at beatae nam fugiat iusto.
 
-Sunt velit eos repellat inventore quia sunt. Et optio aut distinctio non expedita nulla sint. Explicabo sint tempore est in sunt dolores et. Modi sint earum veniam perspiciatis. Velit at beatae nam fugiat iusto.
+Sed velit ipsum in qui expedita praesentium. Neque vero optio qui cumque sint.
+Error possimus dolor quisquam vero aut.
 
-Sed velit ipsum in qui expedita praesentium. Neque vero optio qui cumque sint. Error possimus dolor quisquam vero aut.
-
-Autem non labore numquam. Eveniet facere id qui impedit. Sunt temporibus sit neque fugiat. Consequatur sit maiores dolorum libero provident a laudantium. Ipsum sit fugiat quis consectetur sed a provident veritatis. Consequuntur laudantium aut libero facere animi ipsum et hic.
+Autem non labore numquam. Eveniet facere id qui impedit. Sunt temporibus sit
+neque fugiat. Consequatur sit maiores dolorum libero provident a laudantium.
+Ipsum sit fugiat quis consectetur sed a provident veritatis. Consequuntur
+laudantium aut libero facere animi ipsum et hic.
 
 \newpage
 
