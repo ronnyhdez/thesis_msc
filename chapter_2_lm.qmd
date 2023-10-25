@@ -49,6 +49,15 @@ spatially constrained but can have more uncertainties than the EC techniques
 classified into Vegetation Index models (VI), Light Use Efficiency models (LUE),
 and process-based models [@xie_assessments_2020].
 
+Process-based models integrate climate, canopy and soils information derived
+from multiple sources, including satellite EO, into biophysical models of
+carbon, water, energy, and nutrient cycles with varying levels of 
+detail [@running_general_1988; @harris_global_2021]. While these models can be scaled 
+globally [@beer_terrestrial_2010; @jung_towards_2009] they require many 
+parameters that may not be readily available in changing landscapes or for fine
+scale studies.
+
+
 LUE models are based on the concept of radiation conversion efficiency, and take
 into consideration ecological processes [@liu1997process]. The radiation
 conversion efficiency represents the amount of carbon that a specific type of
