@@ -27,18 +27,19 @@ However, GPP estimation using spectral VIs remain with high uncertainties,
 prompting the need for validation efforts are required to identify approaches to
 improve accuracy. [@anav_spatiotemporal_2015; @brown_fiducial_2021]
 
-There are several methods to calculate GPP that can be grouped into two broad
-categories: eddy covariance techniques, and satellite data-driven
-[@guan_comparison_2022; @xie_assessments_2020] Eddy Covariance (EC) techniques
-are methods that allowed scientists to directly measure the carbon, water, and
-energy fluxes between vegetation canopies and the atmosphere since the 1990s
-[@baldocchi_how_2020; @ryu_what_2019]. This method to measure terrestrial
-fluxes, is the principal in-situ approach for quantifying the exchange of CO2
-between the land and atmosphere using advanced field instrumentation
-[@badgley_terrestrial_2019; @tramontana_predicting_2016]. Measurements provided
-using EC have a limited spatial resolution of less than \< 1km2 , which bring
-spatial constraints to estimations of ecosystem carbon and water fluxes at
-regional to global scales. [@badgley_canopy_2017].
+GPP estimations can be grouped into two broad categories: Eddy Covariance (EC) 
+techniques, and satellite data-driven methods [@guan_comparison_2022; @xie_assessments_2020].
+EC is the primary in-situ non-destructive method for measuring terrestrial
+fluxes, and specifically for quantifying the exchange of CO2 between land
+and the atmosphere, using advanced field instrumentation [@baldocchi_how_2020; @badgley_terrestrial_2019; @ryu_what_2019; @tramontana_predicting_2016]. However,
+EC EC measurements come with certain limitations, such as their relatively low 
+spatial resolution, typically less than \< 1km2 , which constrains the accuracy
+of estimating ecosystem carbon and water fluxes at regional and global scales. [@badgley_canopy_2017]. Additionally, it's important to note that EC techniques 
+directly measure Net Ecosystem Exchange (NEE), not GPP. Subsequently GPP must be
+estimated by both subtracting respiration using models and ancillary
+measurements while accounting for removal or deposition of carbon stocks due
+to natural or anthropogenic transport processes such as water flow, fires or
+harvest [@beer_terrestrial_2010; @reichstein_separation_2005].
 
 The second category of methods to estimate GPP is the satellite data-driven
 models. Because of their dependency on earth observation platforms, they are not
