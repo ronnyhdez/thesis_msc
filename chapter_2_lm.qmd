@@ -46,44 +46,55 @@ The second category of methods to estimate GPP is the satellite data-driven
 models. Because of their dependency on earth observation platforms, they are not
 spatially constrained but can have more uncertainties than the EC techniques
 [@ryu_what_2019; @wang_diagnosing_2011]. Satellite data-driven models can be
-classified into Vegetation Index models (VI), Light Use Efficiency models (LUE),
-and process-based models [@xie_assessments_2020].
+classified into process-based models, Light Use Efficiency models (LUE), and
+Vegetation Index models [@xie_assessments_2020].
 
 Process-based models integrate climate, canopy and soils information derived
 from multiple sources, including satellite EO, into biophysical models of
 carbon, water, energy, and nutrient cycles with varying levels of 
-detail [@running_general_1988; @harris_global_2021]. While these models can be scaled 
-globally [@beer_terrestrial_2010; @jung_towards_2009] they require many 
+detail [@running_general_1988; @harris_global_2021]. While these models can be 
+scaled globally [@beer_terrestrial_2010; @jung_towards_2009] they require many 
 parameters that may not be readily available in changing landscapes or for fine
 scale studies.
 
-
 LUE models are based on the concept of radiation conversion efficiency, and take
-into consideration ecological processes [@liu1997process]. The radiation
-conversion efficiency represents the amount of carbon that a specific type of
-vegetation can fix per unit of solar radiation [@monteith_solar_1972]. The
-Moderate Resolution Imaging Spectroradiometer (MODIS) GPP product uses an
-algorithm based on this radiation conversion efficiency concept, relating the
-absorbed photosynthetically active radiation (APAR) with the LUE term
-[@heinsch_evaluation_2006] as shown in @eq-gpp .
+into consideration ecological processes [@liu1997process; @heinsch_evaluation_2006].
+This efficiency signifies the amount of carbon a specific vegetation type can 
+fix per unit of solar radiation [@monteith_solar_1972]. Initially used for NPP
+estimation [@prince_model_1991], LUE models were subsequently adapted for GPP 
+and respiration calculations [@goetz_mapping_1999]. These models explicitly 
+account for the impact of environmental stress on plant physiological responses.
+The imposition of environmental stressors may lead to a reduction in the rates of 
+daily carbon assimilation, thereby diminishing overall efficiency. [@prince_model_1991; @running_general_1988]. 
+
+The GPP product from the Moderate Resolution Imaging Spectroradiometer (MODIS) 
+employs an algorithm based on the radiation conversion efficiency concept. This
+algorithm establishes a connection between absorbed photosynthetically active 
+radiation (APAR) and the LUE term [@heinsch_evaluation_2006] as shown in @eq-gpp.
 
 $$
 \small
 GPP = PAR \times fAPAR \times LUE
 $$ {#eq-gpp}
 
-Where PAR is the incident photosynthetically active radiation and fAPAR is the
-fraction of the PAR that is effectively absorbed by plants. fAPAR can be used to
-assess the primary productivity of canopies [GCOS, 2011;
-@running_continuous_2004]. LUE is the radiation use conversion efficiency term
-of the vegetation [@heinsch_evaluation_2006]
+Where `PAR` is the incident photosynthetically active radiation [@monteith2013principles] 
+and `fAPAR` is the fraction of the PAR that is effectively absorbed by 
+plants [@gcos200]. The `LUE` term depends on vegetation type but also 
+physiological conditions driven by water availability, temperature stress, and
+vapour pressure deficit [@goetz_mapping_1999; @running_general_1988]. Obtaining
+these variables for every vegetation type on Earth can be challenging, 
+introducing assumptions that amplify uncertainties [@goetz_mapping_1999].
+Nevertheless, under unstressed conditions, LUE remains constant for a given 
+vegetation type, requiring only PAR and fAPAR to assess primary 
+productivity [@running_continuous_2004].
 
-VIs are a summary of non-linear functions of surface bi-directional reflectance
-spectra [@myneni_relationship_1994] derived from optical sensors that are
-combined with climate variables to calculate GPP [@wu_predicting_2011]. This is
-usually done with some form of regression and physical methods that associate
-interactions between vegetation and incoming radiation
-[@fernandez-martinez_monitoring_2019]
+Satellite VIs have been used to apply @eq-gpp from regional to global extents 
+[@running_continuous_2004]. VIs are a summary of non-linear functions of surface
+bi-directional reflectance spectra [@myneni_relationship_1994] derived from 
+optical sensors that are combined with climate variables to calculate GPP 
+[@wu_predicting_2011]. This is usually done with some form of regression and 
+physical methods that associate interactions between vegetation and incoming 
+radiation [@fernandez-martinez_monitoring_2019]
 
 Well known VI's used to estimate GPP are normalized difference vegetation index
 (NDVI), enhanced vegetation index (EVI), Near-Infrared Reflectance Index (NIRv)
