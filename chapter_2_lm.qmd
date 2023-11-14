@@ -167,14 +167,16 @@ tower can serve as a reference point in which satellite images can be linked to
 a specific set of pixels and calculate the accuracy of the estimations provided
 by the indices [@chu_representativeness_2021].
 
-As such, the main objective of my M.Sc. thesis is the analysis of uncertainty
-associated with the VI/LUE models since they offer the potential for GPP
-estimation without requiring knowledge regarding canopy and soil properties
-other than measurements of reflected light and possibly a correction for soil
-contribution. We aim to quantify the uncertainty from some of the most used
-satellite vegetation indices with in-situ GPP data for multiple growing seasons
-from the Bartlett Experimental Forest (USA), the Borden Forest Research Station
-flux-site (Canada), and the University of Michigan Biological Station (USA).
+As such, the main objective of this M.Sc. thesis is the analysis of uncertainty
+associated with the VI/LUE models to estimate GPP. These models eliminate the 
+need for detailed knowledge about canopy and soil properties, relying instead
+on measurements of reflected light with potential corrections for soil 
+contribution. The focal point of my research is to quantify the uncertainty
+inherent in these models, particularly when the variation in environmental
+condictions (E) is controlled. This control is achieved by selecting sites that 
+share the same land cover, climate, and biome characteristics. By isolating
+these factors, I aim to provide nuanced understanding of the reliability and
+robustness of the VIs models in predicting GPP.
 
 \newpage
 
