@@ -96,7 +96,8 @@ optical sensors that are combined with climate variables to calculate GPP
 physical methods that associate interactions between vegetation and incoming 
 radiation [@fernandez-martinez_monitoring_2019]
 
-Well known VI's used to estimate GPP are normalized difference vegetation index
+VI's have been used to provide inputs to @eq-gpp related to fAPAR [@sellers_global_1994]
+or to directly estimate GPP such as normalized difference vegetation index
 (NDVI), enhanced vegetation index (EVI), Near-Infrared Reflectance Index (NIRv)
 and Chlorophyll/Carotenoid Index (CCI) among others. [@balzarolo_influence_2019;
 @rahman_potential_2005; @rahman_potential_2005; @xie_assessments_2020;
