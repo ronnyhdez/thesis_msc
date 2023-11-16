@@ -647,7 +647,8 @@ the Root Mean Squared Error (RMSE), and the Mean Absolute Error (MAE)
 The @tbl-lm_monthly_results provides a summary of linear models used for GPP
 estimation at each site, employing the vegetation indices as predictors. For
 each site and predictor, the table includes the relevant model summary
-statistics, such as R2, MAE, and RMSE. More metrics such as the p-value,
+statistics, such as  R2, MAE, and RMSE as indicators of the statistical 
+significant of the model fits. More metrics such as the p-value,
 adjusted r-squared, the Akaike Information Criterion (AIC), and Bayesian
 Information Criterion (BIC) are displayed in the
 @tbl-complete_lm_monthly_results for monthly results,
@@ -871,7 +872,7 @@ rm(plot_legend)
 In @tbl-gam_model_results, we present a summary of the results obtained from the
 GAM models used for GPP estimation at each site, employing the vegetation
 indices as predictors. To compare between the models, we include in the table
-relevant model summary statistics, such as R2, MAE, and RMSE. Furthermore,
+relevant model summary statistics, such as R², MAE, and RMSE. Furthermore,
 additional metrics such as the p-value, the F statistic (f), effective degrees
 of freedom (edf), and the Akaike Information Criterion (AIC), are displayed in
 the @tbl-gam_daily_model_results_complete_a, and
@@ -1143,7 +1144,10 @@ more accurate predictions. This adaptability was particularly evident when
 addressing the daily, weekly, or monthly variations in GPP. Furthermore, it is
 crucial to highlight that monthly models, both in LM and GAM frameworks,
 consistently exhibited superior metrics compared to their weekly and daily
-counterparts, as illustrated in @fig-gam_metrics and @fig-lm_metrics.
+counterparts, as illustrated in @fig-gam_metrics and @fig-lm_metrics. This can
+be an effect of reducing variance when summarizing values as it is shown in the
+daily @fig-gpp_vi_relation_daily, weekly @fig-gpp_vi_relation_weekly,
+and monthly @fig-gpp_vi_relation_monthly 
 
 ```{r gpp_vi_realtions_all_sites}
 #| label: fig-gpp_vi_relation_daily
