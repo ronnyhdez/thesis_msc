@@ -633,7 +633,7 @@ In total, per each site plus the category of all-sites we created 5 linear
 models and 5 GAM models for every timescale (daily, weekly, and monthly): one
 per each index (NDVI, CCI, EVI, NIRv) and one with all the indices as covariates
 (NDVI + CCI + EVI + NIRv), resulting in a total of 120 models. To compare the
-performance of the models we calculated the coefficient of determination (R2),
+performance of the models we calculated the coefficient of determination (R²),
 the Root Mean Squared Error (RMSE), and the Mean Absolute Error (MAE)
 
 \newpage
@@ -647,7 +647,7 @@ the Root Mean Squared Error (RMSE), and the Mean Absolute Error (MAE)
 The @tbl-lm_monthly_results provides a summary of linear models used for GPP
 estimation at each site, employing the vegetation indices as predictors. For
 each site and predictor, the table includes the relevant model summary
-statistics, such as  R2, MAE, and RMSE as indicators of the statistical 
+statistics, such as  R², MAE, and RMSE as indicators of the statistical 
 significant of the model fits. More metrics such as the p-value,
 adjusted r-squared, the Akaike Information Criterion (AIC), and Bayesian
 Information Criterion (BIC) are displayed in the
