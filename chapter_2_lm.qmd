@@ -17,64 +17,87 @@ essential for understanding land-atmosphere carbon exchange
 [@kohler_global_2018], ecosystem function, and ecosystem responses to climate
 change [@guan_comparison_2022; @brown_fiducial_2021; @myneni_relationship_1994].
 However, terrestrial GPP cannot be directly estimated due to the contribution of
-respiration to land carbon fluxes [@anav_spatiotemporal_2015]. Instead, GPP is
-only inferred by the net carbon exchange measurements at the ecosystem level, or
-at broarder scales using models that incorporate variour assumptions and
-limitations [@reichstein_separation_2005; @jung_towards_2009]. One widely used
-approach to approximate and quantify GPP is the data driven models of spectral
-vegetation indices [@ryu_what_2019] However, GPP estimation using spectral
-vegetation indices remain with high uncertainties and validation efforts are
-required to characterize these and improve accuracy. [@anav_spatiotemporal_2015;
-@brown_fiducial_2021]
+respiration to land carbon fluxes [@anav_spatiotemporal_2015]. Instead, GPP can
+be inferred in a nondestructive manner by the net carbon exchange measurements 
+at the ecosystem level, or at broarder scales using models that incorporate 
+various assumptions and limitations [@reichstein_separation_2005; @jung_towards_2009]. 
+One widely used approach for approximating and quantifying GPP involves employing
+data-driven models based on spectral vegetation indices (VIs) [@ryu_what_2019] 
+However, GPP estimation using spectral VIs remain with high uncertainties, 
+prompting the need for validation efforts are required to identify approaches to
+improve accuracy. [@anav_spatiotemporal_2015; @brown_fiducial_2021]
 
-There are several methods to calculate GPP that can be grouped into two broad
-categories: eddy covariance techniques, and satellite data-driven
-[@guan_comparison_2022; @xie_assessments_2020] Eddy Covariance (EC) techniques
-are methods that allowed scientists to directly measure the carbon, water, and
-energy fluxes between vegetation canopies and the atmosphere since the 1990s
-[@baldocchi_how_2020; @ryu_what_2019]. This method to measure terrestrial
-fluxes, is the principal in-situ approach for quantifying the exchange of CO2
-between the land and atmosphere using advanced field instrumentation
-[@badgley_terrestrial_2019; @tramontana_predicting_2016]. Measurements provided
-using EC have a limited spatial resolution of less than \< 1km2 , which bring
-spatial constraints to estimations of ecosystem carbon and water fluxes at
-regional to global scales. [@badgley_canopy_2017].
+GPP estimations can be grouped into two broad categories: Eddy Covariance (EC) 
+techniques, and satellite data-driven methods [@guan_comparison_2022; @xie_assessments_2020].
+EC is the primary in-situ non-destructive method for measuring terrestrial
+fluxes, and specifically for quantifying the exchange of CO2 between land
+and the atmosphere, using advanced field instrumentation [@baldocchi_how_2020; @badgley_terrestrial_2019; @ryu_what_2019; @tramontana_predicting_2016]. However,
+EC measurements come with certain limitations, such as their relatively low 
+spatial resolution, typically less than \< 1km2 , which constrains the accuracy
+of estimating ecosystem carbon and water fluxes at regional and global scales. [@badgley_canopy_2017].
 
-The second category of methods to estimate GPP is the satellite data-driven
-models. Because of their dependency on earth observation platforms, they are not
-spatially constrained but can have more uncertainties than the EC techniques
-[@ryu_what_2019; @wang_diagnosing_2011]. Satellite data-driven models can be
-classified into Vegetation Index models (VI), Light Use Efficiency models (LUE),
-and process-based models [@xie_assessments_2020].
+Additionally, it's important to note that EC techniques directly measure Net
+Ecosystem Exchange (NEE), not GPP. Subsequently GPP must be estimated by both
+subtracting respiration using models and ancillary measurements while accounting
+for removal or deposition of carbon stocks due to natural or anthropogenic
+transport processes such as water flow, fires or harvest [@beer_terrestrial_2010; @reichstein_separation_2005].
+
+The satellite data-driven models constitute the second category of methods to 
+estimate GPP.Because of their dependency on earth observation platforms, they 
+are not spatially constrained but can have greater uncertainties than the EC
+techniques [@ryu_what_2019; @wang_diagnosing_2011]. Satellite data-driven
+models can be classified into process-based models, Light Use Efficiency 
+models (LUE), and Vegetation Index models [@xie_assessments_2020].
+
+Process-based models integrate climate, canopy and soils information derived
+from multiple sources, including satellite EO, into biophysical models of
+carbon, water, energy, and nutrient cycles with varying levels of 
+detail [@running_general_1988; @harris_global_2021]. While these models can be 
+scaled globally [@beer_terrestrial_2010; @jung_towards_2009] they require many 
+parameters that may not be readily available in changing landscapes or for fine
+scale studies.
 
 LUE models are based on the concept of radiation conversion efficiency, and take
-into consideration ecological processes [@liu1997process]. The radiation
-conversion efficiency represents the amount of carbon that a specific type of
-vegetation can fix per unit of solar radiation [@monteith_solar_1972]. The
-Moderate Resolution Imaging Spectroradiometer (MODIS) GPP product uses an
-algorithm based on this radiation conversion efficiency concept, relating the
-absorbed photosynthetically active radiation (APAR) with the LUE term
-[@heinsch_evaluation_2006] as shown in @eq-gpp .
+into consideration ecological processes [@liu1997process; @heinsch_evaluation_2006].
+This efficiency signifies the amount of carbon a specific vegetation type can 
+fix per unit of solar radiation [@monteith_solar_1972]. Initially used for NPP
+estimation [@prince_model_1991], LUE models were subsequently adapted for GPP 
+and respiration calculations [@goetz_mapping_1999]. These models explicitly 
+account for the impact of environmental stress on plant physiological responses.
+The imposition of environmental stressors may lead to a reduction in the rates of 
+daily carbon assimilation, thereby diminishing overall efficiency. [@prince_model_1991; @running_general_1988]. 
+
+The GPP product from the Moderate Resolution Imaging Spectroradiometer (MODIS) 
+employs an algorithm based on the radiation conversion efficiency concept. This
+algorithm establishes a connection between absorbed photosynthetically active 
+radiation (APAR) and the LUE term [@heinsch_evaluation_2006] as shown in @eq-gpp.
 
 $$
 \small
 GPP = PAR \times fAPAR \times LUE
 $$ {#eq-gpp}
 
-Where PAR is the incident photosynthetically active radiation and fAPAR is the
-fraction of the PAR that is effectively absorbed by plants. fAPAR can be used to
-assess the primary productivity of canopies [GCOS, 2011;
-@running_continuous_2004]. LUE is the radiation use conversion efficiency term
-of the vegetation [@heinsch_evaluation_2006]
+Where `PAR` is the incident photosynthetically active radiation [@monteith2013principles] 
+and `fAPAR` is the fraction of the PAR that is effectively absorbed by 
+plants [@gcos200]. The `LUE` term depends on vegetation type but also 
+physiological conditions driven by water availability, temperature stress, and
+vapour pressure deficit [@goetz_mapping_1999; @running_general_1988]. Obtaining
+these variables for every vegetation type on Earth can be challenging, 
+introducing assumptions that amplify uncertainties [@goetz_mapping_1999].
+Nevertheless, under unstressed conditions, LUE remains constant for a given 
+vegetation type, requiring only PAR and fAPAR to assess primary 
+productivity [@running_continuous_2004].
 
-VIs are a summary of non-linear functions of surface bi-directional reflectance
-spectra [@myneni_relationship_1994] derived from optical sensors that are
-combined with climate variables to calculate GPP [@wu_predicting_2011]. This is
-usually done with some form of regression and physical methods that associate
-interactions between vegetation and incoming radiation
-[@fernandez-martinez_monitoring_2019]
+Satellite VIs have been used to apply @eq-gpp from regional to global extents 
+[@running_continuous_2004]. VIs are a summary of non-linear functions of surface
+bi-directional reflectance spectra [@myneni_relationship_1994] derived from 
+optical sensors that are combined with climate variables to calculate GPP 
+[@wu_predicting_2011]. This is usually done with some form of regression and 
+physical methods that associate interactions between vegetation and incoming 
+radiation [@fernandez-martinez_monitoring_2019]
 
-Well known VI's used to estimate GPP are normalized difference vegetation index
+VI's have been used to provide inputs to @eq-gpp related to fAPAR [@sellers_global_1994]
+or to directly estimate GPP such as normalized difference vegetation index
 (NDVI), enhanced vegetation index (EVI), Near-Infrared Reflectance Index (NIRv)
 and Chlorophyll/Carotenoid Index (CCI) among others. [@balzarolo_influence_2019;
 @rahman_potential_2005; @rahman_potential_2005; @xie_assessments_2020;
@@ -144,14 +167,21 @@ tower can serve as a reference point in which satellite images can be linked to
 a specific set of pixels and calculate the accuracy of the estimations provided
 by the indices [@chu_representativeness_2021].
 
-As such, the main objective of my M.Sc. thesis is the analysis of uncertainty
-associated with the VI/LUE models since they offer the potential for GPP
-estimation without requiring knowledge regarding canopy and soil properties
-other than measurements of reflected light and possibly a correction for soil
-contribution. We aim to quantify the uncertainty from some of the most used
-satellite vegetation indices with in-situ GPP data for multiple growing seasons
-from the Bartlett Experimental Forest (USA), the Borden Forest Research Station
-flux-site (Canada), and the University of Michigan Biological Station (USA).
+As such, the main objective of this M.Sc. thesis is the analysis of uncertainty
+associated with the VI/LUE models to estimate GPP. These models eliminate the 
+need for detailed knowledge about canopy and soil properties, relying instead
+on measurements of reflected light with potential corrections for soil 
+contribution. The focal point of my research is to quantify the uncertainty
+inherent in these models, particularly when the variation in environmental
+condictions (E) is controlled. This control is achieved by selecting sites that 
+share the same land cover, climate, and biome characteristics. However, 
+considering the reviewed studies, we hypothesize that the uncertainty of this
+approach will depend on the nature of the VI and the spatial and temporal
+aggregation of application. By isolating these factors, I aim to provide
+nuanced understanding of the reliability and robustness of the VIs models in 
+predicting GPP for multiple growing seasons from the Bartlett Experimental
+Forest (USA), the Borden Forest Research Station flux-site (Canada), and the
+University of Michigan Biological Station (USA).
 
 \newpage
 
@@ -205,7 +235,7 @@ obtain the difference with NEE and provide GPP. [@pastorello2020fluxnet2015].
 @fig-gpp_trends displays the GPP trends for the University of Michigan
 Biological Station, Bartlett experimental forest, and the Borden Forest Research
 Station. Additional details regarding the characteristics of these datasets can
-be found in Table @tbl-oneflux_datasets.
+be found in Table @tbl-oneflux_datasets. 
 
 | Site     | Data range available | Dataset name                                                | Reference                  |
 |--------------------|---------------------|---------------------|--------------------|
@@ -320,8 +350,9 @@ within this polygon was extracted for analysis.
 
 The MODIS contains the surface spectral reflectance from bands to 1 through 7
 with a spatial resolution of 500m, with corrections for atmospheric conditions
-such as aerosols, gasses and Rayleigh scattering [@vermote2021modis]. Bands used
-to derived the vegetation indices are shown in @tbl-MODIS_500_indices_bands
+such as aerosols, gasses and Rayleigh scattering [@vermote2021modis], and 
+validation of cloud-free pixels as well. Bands used to derived the vegetation
+indices are shown in @tbl-MODIS_500_indices_bands
 
 | **Name**    | **Description** | **Resolution** | **Wavelength** |
 |-------------|-----------------|----------------|----------------|
@@ -373,7 +404,8 @@ pixels for the complete period per each of the sites is shown in
 Once all the band values were scaled within the valid range, the vegetation
 indices such as `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi), and `CCI`
 (@eq-cci) were calculated and then matched with the corresponding date in the
-flux datasets. The resulting values used for the analysis are shown in
+flux datasets (Green, Red, and NIR correspond to the bands defined in 
+@tbl-MODIS_500_indices_bands). The resulting values used for the analysis are shown in
 @fig-quality_pixels
 
 <!-- However, since the -->
@@ -481,7 +513,8 @@ band values, and GPP over different time scales.
 
 The daily dataset included the VI values, band values only from the high quality
 pixels, and GPP measurements derived from the ONEFlux process collected on a
-daily basis. This dataset provided a high-resolution representation of the
+daily basis for the time period of available GPP at each site @tbl-oneflux_datasets. 
+This dataset provided a high-resolution representation of the
 variables, allowing for a detailed analysis of their daily fluctuations.
 
 The weekly and monthly datasets were derived from the corresponding daily
@@ -600,7 +633,7 @@ In total, per each site plus the category of all-sites we created 5 linear
 models and 5 GAM models for every timescale (daily, weekly, and monthly): one
 per each index (NDVI, CCI, EVI, NIRv) and one with all the indices as covariates
 (NDVI + CCI + EVI + NIRv), resulting in a total of 120 models. To compare the
-performance of the models we calculated the coefficient of determination (R2),
+performance of the models we calculated the coefficient of determination (R²),
 the Root Mean Squared Error (RMSE), and the Mean Absolute Error (MAE)
 
 \newpage
@@ -614,7 +647,8 @@ the Root Mean Squared Error (RMSE), and the Mean Absolute Error (MAE)
 The @tbl-lm_monthly_results provides a summary of linear models used for GPP
 estimation at each site, employing the vegetation indices as predictors. For
 each site and predictor, the table includes the relevant model summary
-statistics, such as R2, MAE, and RMSE. More metrics such as the p-value,
+statistics, such as  R², MAE, and RMSE as indicators of the statistical 
+significant of the model fits. More metrics such as the p-value,
 adjusted r-squared, the Akaike Information Criterion (AIC), and Bayesian
 Information Criterion (BIC) are displayed in the
 @tbl-complete_lm_monthly_results for monthly results,
@@ -838,7 +872,7 @@ rm(plot_legend)
 In @tbl-gam_model_results, we present a summary of the results obtained from the
 GAM models used for GPP estimation at each site, employing the vegetation
 indices as predictors. To compare between the models, we include in the table
-relevant model summary statistics, such as R2, MAE, and RMSE. Furthermore,
+relevant model summary statistics, such as R², MAE, and RMSE. Furthermore,
 additional metrics such as the p-value, the F statistic (f), effective degrees
 of freedom (edf), and the Akaike Information Criterion (AIC), are displayed in
 the @tbl-gam_daily_model_results_complete_a, and
@@ -1110,7 +1144,10 @@ more accurate predictions. This adaptability was particularly evident when
 addressing the daily, weekly, or monthly variations in GPP. Furthermore, it is
 crucial to highlight that monthly models, both in LM and GAM frameworks,
 consistently exhibited superior metrics compared to their weekly and daily
-counterparts, as illustrated in @fig-gam_metrics and @fig-lm_metrics.
+counterparts, as illustrated in @fig-gam_metrics and @fig-lm_metrics. This can
+be an effect of reducing variance when summarizing values as it is shown in the
+daily @fig-gpp_vi_relation_daily, weekly @fig-gpp_vi_relation_weekly,
+and monthly @fig-gpp_vi_relation_monthly 
 
 ```{r gpp_vi_realtions_all_sites}
 #| label: fig-gpp_vi_relation_daily
