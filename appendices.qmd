@@ -176,6 +176,8 @@ tribble(
   )
 ```
 
+\newpage
+
 ## Complete LM metrics
 
 ### Monthly LM metrics
@@ -358,6 +360,8 @@ vis_site_glance_daily %>%
   ) 
 ```
 
+\newpage
+
 ## Complete GAM metrics
 
 ```{r}
@@ -381,6 +385,7 @@ all_sites_gam_monthly_complete %>%
   gt()
 ```
 
+\newpage
 
 ```{r}
 #| label: tbl-gam_monthly_model_results_complete_b
@@ -394,6 +399,7 @@ all_vis_gam_monthly_complete %>%
   gt()
 ```
 
+\newpage
 
 ### Weekly GAM metrics
 
@@ -409,6 +415,8 @@ all_sites_gam_weekly_complete %>%
   gt()
 ```
 
+\newpage
+
 ```{r}
 #| label: tbl-gam_weekly_model_results_complete_b
 #| tbl-cap: "Summary of the GAM models output for weekly GPP estimation using the all VIs per site category as non-linear terms covariates"
@@ -420,6 +428,8 @@ all_vis_gam_weekly_complete %>%
   arrange(AIC) %>% 
   gt()
 ```
+
+\newpage
 
 ### Daily GAM metrics
 
@@ -500,6 +510,7 @@ all_sites_gam_daily_complete %>%
 <!-- } -->
 <!-- ``` -->
 
+\newpage
 
 ```{r complete_gam_table}
 #| label: tbl-gam_daily_model_results_complete_b
@@ -607,9 +618,9 @@ all_vis_gam_daily_complete %>%
 <!-- gratia::appraise(single_vis_daily) -->
 <!-- ``` -->
 
-## Residuals distributions
+\newpage
 
-### LM residuals
+## Residuals distributions
 
 ```{r lm_residuals_plots}
 #| label: fig-lm_residuals
@@ -701,8 +712,6 @@ plot_grid(monthly_residuals_plots[[1]] ,
           vjust = 1.5
   )
 ```
-
-### GAM residuals
 
 ```{r gam_residuals_plots}
 #| label: fig-gam_residuals
@@ -1209,3 +1218,4 @@ plot_grid(gam_monthly_residuals_plots[[1]] ,
 <!-- gratia::appraise(single_vis_weekly) -->
 <!-- ``` -->
 
+\newpage
