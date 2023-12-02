@@ -2,50 +2,46 @@
 
 The study and assessment of ecosystem dynamics have greatly benefited from the
 development and advances of the remote sensing field [@running_continuous_2004; @baldocchi_how_2020-1]
-coupled with the growing freely available remote sensing resources [@montero_standardized_2023]. Elements in the Earth
-surface exhibit distinctive spectral signatures arising from their physical
-properties and interactions with electromagnetic radiation. Environmental
-factors can affect these interactions modifying the spectral signatures which
-can provide insights about surface process [@montero_standardized_2023].
+coupled with the growing freely available remote sensing 
+resources [@montero_standardized_2023]. Elements in the Earth surface exhibit
+distinctive spectral signatures arising from their physical properties and
+interactions with electromagnetic radiation. Environmental factors can affect
+these interactions modifying the spectral signatures which can provide insights
+about surface process [@montero_standardized_2023].
 
 The launch in the 1970's of the  Earth Resources Technology Satellite (ERTS),
-later known as Landsat-1 [[Advances in remote sensing of vegetation function and
-traits|Houburg et al 2015]], initiated a new era in the remote sensing field of
-the terrestrial biosphere, with a special focus on vegetation monitoring [@montero_standardized_2023]. With information available
+later known as Landsat-1 [@houborg_advances_2015], initiated a new era in the 
+remote sensing field of the terrestrial biosphere, with a special focus on 
+vegetation monitoring [@montero_standardized_2023]. With information available
 about spectral bands, studies about their relations to biophysical
 characteristics became an object of study to estimate biomass and photosynthetic
 activity [[1-s2.0-S0304380019303230-main.pdf|Myneni et al 1997]]
 
 In fact, one application of remote sensing have been the development of
 vegetation indices to study the characteristics of vegetation canopies and
-functioning [[Advances in remote sensing of vegetation function and
-traits|Houburg et al 2015]] Vegetation indices can give us information about the
-status of the vegetation given the information derived from mathematical
+functioning [@houborg_advances_2015] Vegetation indices can give us information 
+about the status of the vegetation given the information derived from mathematical
 equations from the values of two or more spectral bands, typically derived from
-satellite images. [[Optical vegetation indices for monitoring terrestrial
-ecosystems globally|Zeng et al 2022]]. Their interpretation is based on the
-theoretical background about the interaction of the ligth with vegetation
-[[Optical vegetation indices for monitoring terrestrial ecosystems globally|Zeng
-et al 2022]]
+satellite images. [@zeng_optical_2022]. Their interpretation is based on the
+theoretical background about the interaction of the light with vegetation
+[@zeng_optical_2022]
 
 Early studies about spectral bands relations, lead to the development of the
 NDVI which showed how the NIR and Red ratio had advantages over other bands
-ratios for monitoring vegetation [[ Red and photographic Infrared linear
-combinations for monitoring vegetation|Tucker 1979]].  It rationale lays in the
+ratios for monitoring vegetation [@tucker1979red]. It rationale lays in the
 interplay of  the chlorophyll absorbing red spectral region with the
 non-absorbing leaf reflectance signal in the NIR region, that can give optical
 measurements of the vegetation greenness and other biophysical processes.
-[[MODISVI_Huete-etal2011book.pdf|Huete et al 2011]]
+[@ramachandran_modis_2010]
 
 One of the advantages of NDVI is that the ratio normalize values with large
-variances [[MODISVI_Huete-etal2011book.pdf|Huete et al 2011]]. Nonetheless, this
+variances [@ramachandran_modis_2010]. Nonetheless, this
 VI have disadvantages such as sensitivy to soil background and saturation at
-high biomass [[MODISVI_Huete-etal2011book.pdf|Huete et al 2002]]. To overcome
+high biomass [@huete_overview_2002]. To overcome
 this problem, the EVI was designed to improve vegetation characterizations such
 as canopy greenness without soil background sensitivity and aerosol variations
-by combining the blue, red, and NIR bands [[MODISVI_Huete-etal2011book.pdf|Huete
-et al 1988]]. EVI is also less prone to saturate at high biomass instances
-[[MODISVI_Huete-etal2011book.pdf|Gao et al 2000]]
+by combining the blue, red, and NIR bands [@huete1988soil]. EVI is also less 
+prone to saturate at high biomass instances [@gao_opticalbiophysical_2000]
 
 The ability to combine spectral regions, coupled with advancements and  the
 development of new sensor technologies introducing additional bands or different
@@ -54,14 +50,13 @@ the total number of indices have grown steadily [[s41597-023-02096-0.pdf|17,
 18]] [@montero_standardized_2023]. These equations
 can function as proxies for various vegetation canopy properties or enhance
 existing estimations across different ecosystems
-[[MODISVI_Huete-etal2011book.pdf|Huete et al 2011]].
+[@ramachandran_modis_2010].
 
 According to the Awesome Spectral Indices open community catalogue (version
 4.0.0), there are 127 spectral indices designed to monitor vegetation. The aim
 behind the ongoing development of new VIs is to achieve a more accurate mapping
 of ecosystem processes ~~such as GPP~~. [@montero_standardized_2023].  These indices can be classified into 3 main categories:
-biophysical, biochemical and physiological properties [[Optical vegetation
-indices for monitoring terrestrial ecosystems globally|Zeng et al 2022]]
+biophysical, biochemical and physiological properties [@zeng_optical_2022]
 ~~Describe the categories~~
 
 One important metric to understand ecosystems processes ~~and health~~ is GPP.
@@ -150,13 +145,11 @@ productivity.
 Despite the notable progress in VIs development and their user-friendly
 applications, their effective use demands a experience and a strong theoretical
 background to navigate potential pitfalls and ensure accurate and meaningful
-interpretations of the data [[Optical vegetation indices for monitoring
-terrestrial ecosystems globally|Zeng et al 2022]]. There is a consensus that no
+interpretations of the data [@zeng_optical_2022]. There is a consensus that no
 single VI can be universally applied to address every problem or situation.
 Thus, a meticulous understanding of the specific context and characteristics of
 the site is essential to derive more accurate and insightful information from
-the data [[Optical vegetation indices for monitoring terrestrial ecosystems
-globally|Zeng et al 2022]]
+the data [@zeng_optical_2022]
 
 Uncertainty poses additional challenges to remote sensing applications, with
 diverse sources affecting satellite-derived data, including atmospheric effects,
@@ -173,8 +166,7 @@ potential differences in dynamics between edge and interior environments
 Moreover, while emerging indices show promise as better proxies for
 physiological processes, ongoing technological developments have limitations in
 terms of spatial/temporal resolution which can still be not the best to conduct
-more studies that can be applied easily to more ecosystems [[Optical vegetation
-indices for monitoring terrestrial ecosystems globally|Zeng et al 2022]] One
+more studies that can be applied easily to more ecosystems [@zeng_optical_2022] One
 notable example is SIF, which holds the advantage of being directly related to
 photosynthetic activity [[buscar]]. In contrast, Vegetation Indices (VIs) are
 primarily associated with photosynthetic capacity [[Sellers 1985]]
@@ -183,7 +175,7 @@ Together with the advancement of new VIs, there has been a upsurge in data
 analysis methods, specifically Machine Learning (ML) approaches, has garnered
 significance in recent years. The capability of ML methods to navigate
 non-linear relationships proves crucial, particularly when predicting GPP from
-various predictors. However, despite their simplicity and effectiveness, ML
+various predictors [@meyer_importance_2019]. However, despite their simplicity and effectiveness, ML
 approaches encounter challenges, and the resulting flux estimates bear various
 sources of uncertainty. The distribution and quantity EC sites play a pivotal
 role in influencing the accuracy and variability of regional flux estimates
