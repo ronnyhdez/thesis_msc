@@ -4,3 +4,9 @@
 \tableofcontents
 \listoftables
 \listoffigures
+
+<!-- I want to thank my supervisor Arturo Sánchez who gave me the opportunity to -->
+<!-- come to Canada, but specially for encouraging me to purse grad studies. During -->
+<!-- my thesis and the ups and downs, Richard Fernandes was there to push me further -->
+<!-- and guide me through a research area that has turned into something really -->
+<!-- interesting to me. -->
