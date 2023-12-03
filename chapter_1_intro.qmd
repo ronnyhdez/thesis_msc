@@ -15,7 +15,7 @@ remote sensing field of the terrestrial biosphere, with a special focus on
 vegetation monitoring [@montero_standardized_2023]. With information available
 about spectral bands, studies about their relations to biophysical
 characteristics became an object of study to estimate biomass and photosynthetic
-activity [[1-s2.0-S0304380019303230-main.pdf|Myneni et al 1997]]
+activity [@myneni_estimation_1997]
 
 In fact, one application of remote sensing have been the development of
 vegetation indices to study the characteristics of vegetation canopies and
@@ -77,11 +77,11 @@ heterotrophic respiration, together determines Net Ecosystem Exchange (NEE)
 
 EC is a method used to measure the exchange of energy and materials between
 ecosystems and the atmosphere within an area that can range from a few hundred
-meters to a few kilometers [@pabon-moreno_potential_2022]. Specifically, EC systems
-measure NEE, which has to be break down into its parts: GPP and respiration
-~~for quantifycation~~ [@reichstein_separation_2005]. Despite being a more directly
-method to estimate GPP, EC systems have a spatial constrain that depends on the
-tower flux footprint [[Buscar]].
+meters to a few kilometers [@pabon-moreno_potential_2022]. Specifically, EC
+systems measure NEE, which has to be break down into its parts: GPP and
+respiration ~~for quantifycation~~ [@reichstein_separation_2005]. Despite being
+a more directly method to estimate GPP, EC systems have a spatial constrain that
+depends on the tower flux footprint [@baldocchi_how_2020-1].
 
 Since direct GPP measurements from satellites are not presently available, one
 of the primary objectives of remote sensing is to enhance GPP estimation
@@ -90,11 +90,11 @@ EC values prove invaluable as a comparative metric when contrasting VIs values
 with GPP inferred from flux towers [@ramachandran_modis_2010]. The utilization
 of EC measurements bridges the gap in GPP assessment, providing a practical
 means to evaluate and refine the reliability of remotely sensed data against
-ground-based observations [[Buscar]]. This methodological approach aligns with
-the overarching goal of leveraging remote sensing techniques to advance our
-understanding  of the magnitude, spatial patterns, inter annual variability and
-long-term trends of ecosystem Carbon dynamics at landscape, regional and global
-scales [@xiao_remote_2019].
+ground-based observations [@xiao_remote_2019]. This methodological approach
+aligns with the overarching goal of leveraging remote sensing techniques to
+advance our understanding  of the magnitude, spatial patterns, inter annual
+variability and long-term trends of ecosystem Carbon dynamics at landscape,
+regional and global scales [@xiao_remote_2019].
 
 Various methods exist for estimating GPP through satellite measurements.
 Satellite-derived VIs serve as commonly employed proxies for GPP, whereas
@@ -151,20 +151,22 @@ interior environments [@smith_piecing_2018].
 Moreover, while emerging indices show promise as better proxies for
 physiological processes, ongoing technological developments have limitations in
 terms of spatial/temporal resolution which can still be not the best to conduct
-more studies that can be applied easily to more ecosystems [@zeng_optical_2022] One
-notable example is SIF, which holds the advantage of being directly related to
-photosynthetic activity [[buscar]]. In contrast, Vegetation Indices (VIs) are
-primarily associated with photosynthetic capacity [@sellers_canopy_1985]
+more studies that can be applied easily to more ecosystems [@zeng_optical_2022].
+One notable example is SIF, which holds the advantage of being directly related
+to photosynthetic activity [@magney_mechanistic_2019]. In contrast, Vegetation
+Indices (VIs) are primarily associated with photosynthetic capacity
+[@sellers_canopy_1985]
 
 Together with the advancement of new VIs, there has been a upsurge in data
 analysis methods, specifically Machine Learning (ML) approaches, has garnered
 significance in recent years. The capability of ML methods to navigate
 non-linear relationships proves crucial, particularly when predicting GPP from
-various predictors [@meyer_importance_2019]. However, despite their simplicity and effectiveness, ML
-approaches encounter challenges, and the resulting flux estimates bear various
-sources of uncertainty. The distribution and quantity EC sites play a pivotal
-role in influencing the accuracy and variability of regional flux estimates
-derived from machine learning methods [@papale_effect_2015].
+various predictors [@meyer_importance_2019]. However, despite their simplicity
+and effectiveness, ML approaches encounter challenges, and the resulting flux
+estimates bear various sources of uncertainty. The distribution and quantity EC
+sites play a pivotal role in influencing the accuracy and variability of
+regional flux estimates derived from machine learning methods
+[@papale_effect_2015].
 
 In this study, I assess the advantages and contraints associated with the
 utilization of 4 widely employed VIs for estimating GPP. The study specifically
