@@ -46,91 +46,79 @@ prone to saturate at high biomass instances [@gao_opticalbiophysical_2000]
 The ability to combine spectral regions, coupled with advancements and  the
 development of new sensor technologies introducing additional bands or different
 spectral characteristics, has created opportunities to develop multiple VIs  and
-the total number of indices have grown steadily [[s41597-023-02096-0.pdf|17,
-18]] [@montero_standardized_2023]. These equations
-can function as proxies for various vegetation canopy properties or enhance
-existing estimations across different ecosystems
-[@ramachandran_modis_2010].
+the total number of indices have grown steadily [@zeng_optical_2022]. These 
+equations can function as proxies for various vegetation canopy properties or 
+enhance existing estimations across different ecosystems [@ramachandran_modis_2010].
 
 According to the Awesome Spectral Indices open community catalogue (version
 4.0.0), there are 127 spectral indices designed to monitor vegetation. The aim
 behind the ongoing development of new VIs is to achieve a more accurate mapping
-of ecosystem processes ~~such as GPP~~. [@montero_standardized_2023].  These indices can be classified into 3 main categories:
-biophysical, biochemical and physiological properties [@zeng_optical_2022]
-~~Describe the categories~~
+of ecosystem processes ~~such as GPP~~. [@montero_standardized_2023].  These 
+indices can be classified into 3 main categories: biophysical, biochemical and 
+physiological properties [@zeng_optical_2022] ~~Describe the categories~~
 
-One important metric to understand ecosystems processes ~~and health~~ is GPP.
-At the time, VIs derived from satellites cannot directly estimate GPP
-[[Gensheimer et al. - 2022 - A convolutional neural network for spatial
-downsca.pdf|Gensheimer et al 2022]] and instead, instruments like eddy
-covariance have been the traditional method to estimate GPP more directly
-[[Baldocchi 2019]].
+One important metric to understand ecosystems processes is GPP. At the time, VIs
+derived from satellites cannot directly estimate GPP [@gensheimer_convolutional_2022] 
+and instead, instruments like eddy covariance have been the traditional method 
+to estimate GPP more directly [@baldocchi_how_2020-1].
 
 GPP represents the overall quantity of leaf photosynthesis, playing a crucial
-role in the carbon cycle  [[Remote sensing of the terrestrial carbon cycle A
-review of advances over 50 years|Xiao et al 2019]]. GPP is responsive to a range
+role in the carbon cycle [@xiao_remote_2019]. GPP is responsive to a range
 of factors, including abiotic elements such as radiation, temperature, and
-precipitation  [[Pabon-Moreno et al_2022_On the potential of Sentinel-2 for
-estimating Gross Primary Production.pdf|2,3]], as well as biotic factors like
-vegetation type, leaf chemical traits, and species composition  [[Pabon-Moreno
-et al_2022_On the potential of Sentinel-2 for estimating Gross Primary
-Production.pdf|4]].
+precipitation [@beer_terrestrial_2010], as well as biotic factors like
+vegetation type, leaf chemical traits, and species composition [@musavi_stand_2017].
 
 Some of the carbon taken in by GPP is release back to the atmosphere through
 plant respiration (autotrophic respiration), and the difference between GPP and
-plant respiration  is called Net Primary Productivity (NPP) [Xiao et al., 2019].
+plant respiration  is called Net Primary Productivity (NPP) [@xiao_remote_2019].
 GPP, along with Ecosystem Respiration (ER), which includes both autotrophic and
 heterotrophic respiration, together determines Net Ecosystem Exchange (NEE)
-[Xiao et al., 2019].
+[@xiao_remote_2019].
 
 EC is a method used to measure the exchange of energy and materials between
 ecosystems and the atmosphere within an area that can range from a few hundred
 meters to a few kilometers [@pabon-moreno_potential_2022]. Specifically, EC systems
 measure NEE, which has to be break down into its parts: GPP and respiration
-~~for quantifycation~~ [Reichstein et al., 2005]. Despite being a more directly
-method to estimate GPP,  EC systems have a spatial constrain that depends on the
-tower flux footprint. [[Buscar]]
+~~for quantifycation~~ [@reichstein_separation_2005]. Despite being a more directly
+method to estimate GPP, EC systems have a spatial constrain that depends on the
+tower flux footprint [[Buscar]].
 
 Since direct GPP measurements from satellites are not presently available, one
 of the primary objectives of remote sensing is to enhance GPP estimation
-accuracy without the spatial constriction [[Remote sensing of the terrestrial
-carbon cycle A review of advances over 50 years|Xiao et al 2019]]. In this
-context, EC values prove invaluable as a comparative metric when contrasting VIs
-values with GPP inferred from flux towers [[Huete et al 2006]]. The utilization
+accuracy without the spatial constriction [@xiao_remote_2019]. In this context,
+EC values prove invaluable as a comparative metric when contrasting VIs values
+with GPP inferred from flux towers [@ramachandran_modis_2010]. The utilization
 of EC measurements bridges the gap in GPP assessment, providing a practical
 means to evaluate and refine the reliability of remotely sensed data against
 ground-based observations [[Buscar]]. This methodological approach aligns with
 the overarching goal of leveraging remote sensing techniques to advance our
-understanding  of the magnitude, spatial patterns, interannual variability and
+understanding  of the magnitude, spatial patterns, inter annual variability and
 long-term trends of ecosystem Carbon dynamics at landscape, regional and global
-scales.  [[Remote sensing of the terrestrial carbon cycle A review of advances
-over 50 years|Xiao et al 2019]]
+scales [@xiao_remote_2019].
 
 Various methods exist for estimating GPP through satellite measurements.
 Satellite-derived VIs serve as commonly employed proxies for GPP, whereas
 quantifying GPP more directly often involves the use of Light Use Efficiency
-(LUE) models,  and process-based models  [[Remote sensing of the terrestrial
-carbon cycle A review of advances over 50 years|Xiao et al 2019]] . These
-diverse methodologies cater to different aspects of GPP estimation, with
+(LUE) models,  and process-based models [@xiao_remote_2019]. These diverse
+methodologies cater to different aspects of GPP estimation, with 
 satellite-derived VIs offering a convenient indirect assessment, while LUE
 models, and process-based models provide more detailed and direct quantification
-[[Improved global estimations of gross primary productivity of natural
-vegetation types by incorporating plant functional type|Lin et al 2021]].
+[@lin_improved_2021].
 
 The concept of a more detailed and direct quantification of GPP achieved through
 LUE and process-based models can be attributed to the incorporation of a
 constant maximal light use efficiency, which is a plant functional type
 dependent parameter which is down regulated by stress factors such as
-temperature and vapor pressure deficit [@pabon-moreno_potential_2022]. This approach
-is then integrated with APAR derived from remote sensing data to estimate GPP in
-the case of LUE models  [@running_continuous_2004]. In contrast, process-based models distinguish
-themselves by prioritizing a mechanistic description of the photosynthetic
-biochemical processes at both leaf and canopy scales, incorporating the
-comprehensive theoretical underpinnings of photosynthesis  [[Improved global
-estimations of gross primary productivity of natural vegetation types by
-incorporating plant functional type|Ryu et al 2011]]. This methodology not only
-refines GPP quantification but also offers a more in-depth understanding of the
-underlying physiological processes governing vegetation productivity.
+temperature and vapor pressure deficit [@pabon-moreno_potential_2022]. This
+approach is then integrated with APAR derived from remote sensing data to
+estimate GPP in the case of LUE models  [@running_continuous_2004]. In contrast,
+process-based models distinguish themselves by prioritizing a mechanistic
+description of the photosynthetic biochemical processes at both leaf and canopy
+scales, incorporating the comprehensive theoretical underpinnings of
+photosynthesis [@ryu_integration_2011]. This methodology not only refines GPP
+quantification but also offers a more in-depth understanding of the underlying
+physiological processes governing vegetation productivity.
+
 However, both Light Use Efficiency (LUE) models and process-based models demand
 a multitude of inputs, some of which may not be readily available for all sites.
 In such cases, a data-driven approach becomes particularly advantageous, and VIs
