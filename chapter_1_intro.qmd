@@ -53,9 +53,9 @@ enhance existing estimations across different ecosystems [@ramachandran_modis_20
 According to the Awesome Spectral Indices open community catalogue (version
 4.0.0), there are 127 spectral indices designed to monitor vegetation. The aim
 behind the ongoing development of new VIs is to achieve a more accurate mapping
-of ecosystem processes ~~such as GPP~~. [@montero_standardized_2023].  These 
+of ecosystem processes **such as GPP**. [@montero_standardized_2023]. These 
 indices can be classified into 3 main categories: biophysical, biochemical and 
-physiological properties [@zeng_optical_2022] ~~Describe the categories~~
+physiological properties [@zeng_optical_2022] **Describe the categories**
 
 One important metric to understand ecosystems processes is GPP. At the time, VIs
 derived from satellites cannot directly estimate GPP [@gensheimer_convolutional_2022] 
@@ -79,7 +79,7 @@ EC is a method used to measure the exchange of energy and materials between
 ecosystems and the atmosphere within an area that can range from a few hundred
 meters to a few kilometers [@pabon-moreno_potential_2022]. Specifically, EC
 systems measure NEE, which has to be break down into its parts: GPP and
-respiration ~~for quantifycation~~ [@reichstein_separation_2005]. Despite being
+respiration **for quantifycation** [@reichstein_separation_2005]. Despite being
 a more directly method to estimate GPP, EC systems have a spatial constrain that
 depends on the tower flux footprint [@baldocchi_how_2020-1].
 
@@ -177,3 +177,10 @@ performance of these indices in estimating GPP. This methodological approach
 seeks to provide a nuanced understanding of the efficacy and limitations of the
 selected indices in capturing the complexities of ecosystem processes,
 particularly in the context of temperate broadleaf forests.
+
+\newpage
+
+## References
+
+::: {#refs}
+:::

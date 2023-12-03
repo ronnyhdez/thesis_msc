@@ -1247,8 +1247,5 @@ laudantium aut libero facere animi ipsum et hic.
 
 ## References
 
-**Just the references of this chapter, that also needs to be included in the
-final references.**
-
 ::: {#refs}
 :::
