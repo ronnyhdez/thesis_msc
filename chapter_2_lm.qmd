@@ -1282,8 +1282,5 @@ variations in performance across different locations.
 
 ## References
 
-**Just the references of this chapter, that also needs to be included in the
-final references.**
-
 ::: {#refs}
 :::

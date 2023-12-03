@@ -1089,7 +1089,7 @@ plot_grid(low_value,
 
 ```{r}
 #| label: fig-predictions_automl_500
-#| fig-cap: "Variable of importance derived from the autoML model for the daily values at 500 m spatial resolution model."
+#| fig-cap: "GPP observed and predicted values from the autoML for all the sites at a daily basis. The red line represents a 1:1 relation."
 #| echo: false
 #| message: false
 #| warning: false
@@ -1134,7 +1134,7 @@ readRDS("models/automl_va_plot.rds") +
 
 ```{r}
 #| label: fig-predictions_automl_weekly_500
-#| fig-cap: "Variable of importance derived from the autoML model for the weekly values at 500 m spatial resolution model."
+#| fig-cap: "GPP observed and predicted values from the autoML for all the sites at a weekly basis. The red line represents a 1:1 relation."
 #| echo: false
 #| message: false
 #| warning: false
@@ -1179,7 +1179,7 @@ readRDS("models/automl_va_plot_weekly.rds") +
 
 ```{r}
 #| label: fig-predictions_automl_monthly_500
-#| fig-cap: "Variable of importance derived from the autoML model for the monthly values at 500 m spatial resolution model."
+#| fig-cap: "GPP observed and predicted values from the autoML for all the sites at a monthly basis. The red line represents a 1:1 relation."
 #| echo: false
 #| message: false
 #| warning: false
@@ -1246,9 +1246,6 @@ laudantium aut libero facere animi ipsum et hic.
 \newpage
 
 ## References
-
-**Just the references of this chapter, that also needs to be included in the
-final references.**
 
 ::: {#refs}
 :::
