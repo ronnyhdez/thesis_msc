@@ -124,11 +124,9 @@ a multitude of inputs, some of which may not be readily available for all sites.
 In such cases, a data-driven approach becomes particularly advantageous, and VIs
 serve as effective proxies for GPP estimation. Notably, emerging VIs like NIRv
 demonstrate a capability to account for 68% of the monthly variability in GPP
-across fluxnet sites [[Pabon-Moreno et al_2022_On the potential of Sentinel-2
-for estimating Gross Primary Production.pdf|Badgley et al 2019]]. Additionally,
-indices such as CCI have exhibited proficiency as estimators of GPP in specific
-forest types, providing valuable insights into the dynamics of vegetation
-productivity.
+across fluxnet sites [@badgley_terrestrial_2019]. Additionally, indices such as
+CCI have exhibited proficiency as estimators of GPP in specific forest types,
+providing valuable insights into the dynamics of vegetation productivity.
 
 Despite the notable progress in VIs development and their user-friendly
 applications, their effective use demands a experience and a strong theoretical
@@ -137,19 +135,18 @@ interpretations of the data [@zeng_optical_2022]. There is a consensus that no
 single VI can be universally applied to address every problem or situation.
 Thus, a meticulous understanding of the specific context and characteristics of
 the site is essential to derive more accurate and insightful information from
-the data [@zeng_optical_2022]
+the data [@zeng_optical_2022].
 
 Uncertainty poses additional challenges to remote sensing applications, with
 diverse sources affecting satellite-derived data, including atmospheric effects,
-retrieval errors, cloud contamination, and sensor degradation [[Remote sensing
-of the terrestrial carbon cycle A review of advances over 50 years|van Leuween
-et al 2006; Fang et al 2012]]. Another contributing factor to uncertainties lies
-in the variations of carbon uptake and storage, which can be higher in forest
-edges. [[Reinmann and Hutrya 2017]] The prevalent practice of taking
-measurements primarily from intact forests introduces the risk of potentially
-misleading estimations for the broader forest being quantified, given the
-potential differences in dynamics between edge and interior environments
-[[smith et al 2018]].
+retrieval errors, cloud contamination, and sensor degradation
+[@van_leeuwen_multi-sensor_2006; @fang_theoretical_2012]. Another contributing
+factor to uncertainties lies in the variations of carbon uptake and storage,
+which can be higher in forest edges. [@reinmann_edge_2017] The prevalent
+practice of taking measurements primarily from intact forests introduces the
+risk of potentially misleading estimations for the broader forest being
+quantified, given the potential differences in dynamics between edge and
+interior environments [@smith_piecing_2018].
 
 Moreover, while emerging indices show promise as better proxies for
 physiological processes, ongoing technological developments have limitations in
@@ -157,7 +154,7 @@ terms of spatial/temporal resolution which can still be not the best to conduct
 more studies that can be applied easily to more ecosystems [@zeng_optical_2022] One
 notable example is SIF, which holds the advantage of being directly related to
 photosynthetic activity [[buscar]]. In contrast, Vegetation Indices (VIs) are
-primarily associated with photosynthetic capacity [[Sellers 1985]]
+primarily associated with photosynthetic capacity [@sellers_canopy_1985]
 
 Together with the advancement of new VIs, there has been a upsurge in data
 analysis methods, specifically Machine Learning (ML) approaches, has garnered
@@ -167,8 +164,7 @@ various predictors [@meyer_importance_2019]. However, despite their simplicity a
 approaches encounter challenges, and the resulting flux estimates bear various
 sources of uncertainty. The distribution and quantity EC sites play a pivotal
 role in influencing the accuracy and variability of regional flux estimates
-derived from machine learning methods [[Remote sensing of the terrestrial carbon
-cycle A review of advances over 50 years|Papale et al 2015]].
+derived from machine learning methods [@papale_effect_2015].
 
 In this study, I assess the advantages and contraints associated with the
 utilization of 4 widely employed VIs for estimating GPP. The study specifically
