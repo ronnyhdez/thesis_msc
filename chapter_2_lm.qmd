@@ -43,7 +43,7 @@ for removal or deposition of carbon stocks due to natural or anthropogenic
 transport processes such as water flow, fires or harvest [@beer_terrestrial_2010; @reichstein_separation_2005].
 
 The satellite data-driven models constitute the second category of methods to 
-estimate GPP.Because of their dependency on earth observation platforms, they 
+estimate GPP. Because of their dependency on earth observation platforms, they 
 are not spatially constrained but can have greater uncertainties than the EC
 techniques [@ryu_what_2019; @wang_diagnosing_2011]. Satellite data-driven
 models can be classified into process-based models, Light Use Efficiency 
@@ -1270,13 +1270,7 @@ etiquetas <- c(
 
 ## Discussion
 
-Based on the RMSE, NDVI performed less favourably on two out of the three sites
-compared with the other indices. However, the performance difference among the
-sites was not substantial, with the Bartlett experimental forest exhibiting
-slightly better results on all of their GPP \~ VIs relations compared to the
-other sites. These findings suggest that while NDVI may not be the optimal
-vegetation index for GPP estimation at these sites, there may still be
-variations in performance across different locations.
+
 
 \newpage
 
