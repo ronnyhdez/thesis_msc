@@ -70,7 +70,7 @@ vegetation type, leaf chemical traits, and species composition [@musavi_stand_20
 
 Some of the carbon taken in by GPP is release back to the atmosphere through
 plant respiration (autotrophic respiration), and the difference between GPP and
-plant respiration  is called Net Primary Productivity (NPP) [@xiao_remote_2019].
+plant respiration  is called Net Primary Productivity (NPP) [@lieth1975modeling; @xiao_remote_2019].
 GPP, along with Ecosystem Respiration (ER), which includes both autotrophic and
 heterotrophic respiration, together determines Net Ecosystem Exchange (NEE)
 [@xiao_remote_2019].
@@ -124,9 +124,11 @@ a multitude of inputs, some of which may not be readily available for all sites.
 In such cases, a data-driven approach becomes particularly advantageous, and VIs
 serve as effective proxies for GPP estimation. Notably, emerging VIs like NIRv
 demonstrate a capability to account for 68% of the monthly variability in GPP
-across fluxnet sites [@badgley_terrestrial_2019]. Additionally, indices such as
-CCI have exhibited proficiency as estimators of GPP in specific forest types,
-providing valuable insights into the dynamics of vegetation productivity.
+across fluxnet sites [@badgley_terrestrial_2019]. Additionally, indices like
+CCI, a pigment-based index designed to capture carotenoid/chlorophyll ratios
+during seasonal photosynthetic activity in evergreen leaves [@gamon_remotely_2016],
+have demonstrated proficiency as estimators of GPP in certain forest types. These
+indices offer valuable insights into the dynamics of vegetation productivity.
 
 Despite the notable progress in VIs development and their user-friendly
 applications, their effective use demands a experience and a strong theoretical
