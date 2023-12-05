@@ -229,16 +229,19 @@ source("R/plot_exploratory.R")
 ### Eddy Covariance sites
 
 We used three deciduous broadleaf forest sites located in the northern
-hemisphere with eddy covariance (EC) data collected by Ameriflux. For each site,
-we used the daily, weekly, and monthly GPP values (GPP_DT_VUT_REF variable)
-estimated using the ONEFlux workflow [@pastorello2020fluxnet2015]. The ONEFlux
-processing does the estimation of the CO~2~ fluxes into GPP and Ecosystem
-Respiration (RECO) from Net Ecosystem Exchange (NEE) through two methods known
-as daytime and nighttime. Here we selected the daytime method (DT) which uses
-daytime and nighttime to parameterize a model with two components: one based on
-light response curve and vapour pressure deficit and a second one using a
-respiration-temperature relationship to estimate RECO which in turn is used to
-obtain the difference with NEE and provide GPP. [@pastorello2020fluxnet2015].
+hemisphere (see @fig-sites_locations) with eddy covariance (EC) data collected
+by Ameriflux. For each site, we used the daily, weekly, and monthly GPP values
+(GPP_DT_VUT_REF variable) estimated using the ONEFlux workflow
+[@pastorello2020fluxnet2015]. The ONEFlux processing does the estimation of the
+CO~2~ fluxes into GPP and Ecosystem Respiration (RECO) from Net Ecosystem
+Exchange (NEE) through two methods known as daytime and nighttime. Here we
+selected the daytime method (DT) which uses daytime and nighttime to
+parameterize a model with two components: one based on light response curve and
+vapour pressure deficit and a second one using a respiration-temperature
+relationship to estimate RECO which in turn is used to obtain the difference
+with NEE and provide GPP. [@pastorello2020fluxnet2015].
+
+![Sites locations](img/ge_sites.jpg){#fig-sites_locations}
 
 @fig-gpp_trends displays the GPP trends for the University of Michigan
 Biological Station, Bartlett experimental forest, and the Borden Forest Research
@@ -277,15 +280,38 @@ offers valuable insights into the relationship between GPP and VIs. A tabular
 summary of site characteristics, guided by insights detailed in Teets
 [-@teets_coupling_2022], is presented in @tbl-site_summary.
 
-| Variable                       |      Bartlett       |        Michigan         |       Borden        |
-|---------------------|:-------------------:|:-----------------:|:-----------------:|
-| Mean annual temperature (°C)   |          6          |           5.5           |         7.4         |
-| Mean annual precipitation (mm) |        1,246        |           803           |         784         |
-| Elevation (m)                  |         272         |           234           |         209         |
-| Dominant genera                | Acer, Fagus, Betula | Populus, Quercus, Pinus | Acer, Pinus Populus |
-| Climate Koeppen                |         Dfb         |           Dfb           |         Dfb         |
+```{r}
+#| label: tbl-site_summary
+#| tbl-cap: "ONEFlux Site characteristics overview"
+#| tbl-colwidths: [50,50]
+#| echo: false
+#| message: false
+#| warning: false
+data <- data.frame(
+  Variable = c("Mean annual temperature (°C)", "Mean annual precipitation (mm)", "Elevation (m)", "Dominant genera", "Climate Koeppen"),
+  Bartlett = c(6, 1246, 272, "Acer, Fagus, Betula", "Dfb"),
+  Michigan = c(5.5, 803, 234, "Populus, Quercus, Pinus", "Dfb"),
+  Borden = c(7.4, 784, 209, "Acer, Pinus, Populus", "Dfb")
+)
 
-: ONEFlux Site characteristics overview {#tbl-site_summary}
+data %>%
+  gt() %>%
+  tab_spanner(
+    label = "Site",
+    columns = c("Bartlett", "Michigan", "Borden")
+  ) %>%
+  fmt_number(
+    columns = c("Bartlett", "Michigan", "Borden"),
+    decimals = 1
+  ) %>% 
+  tab_footnote(
+    footnote = md("**D** stands for the warm-summer continental or hemiboreal climate. 
+**f** indicates that this climate has significant precipitation in all seasons.
+**b** indicates that the warmest month has an average temperature between 22°C and 28°C."),
+locations = cells_body(columns = Variable, rows = 5)
+  )
+```
+
 
 ```{r}
 #| label: fig-gpp_trends
