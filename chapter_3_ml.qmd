@@ -276,10 +276,11 @@ represented as heatmaps for each of the models within the ensemble.
 ### Data-Driven GPP Prediction: A Regression Random Forest Approach
 
 The best performing model, based on R² and RMSE was the monthly aggregated
-model, achieving a R² of 81% and an RMSE of 2.033 (see @fig-monthly_500_rf). The
-daily model exhibited the second best performance model with a RMSE of 3.164 and
-a R² of 69% (see @fig-daily_500_rf). However, the weekly model displayed
-comparatively lower performance, with an R² of 56% and an RMSE of 3.233 (see
+model, achieving a R² of 81% and an RMSE of 2.033 gC m⁻² d⁻¹ (see
+@fig-monthly_500_rf). The daily model exhibited the second best performance
+model with a RMSE of 3.164 gC m⁻² d⁻¹ and a R² of 69% (see @fig-daily_500_rf).
+However, the weekly model displayed comparatively lower performance, with an R²
+of 56% and an RMSE of 3.233 gC m⁻² d⁻¹ (see
 @fig-weekly_500_rf)
 
 Moreover, in assesing the importance of predictor variables within each model,
@@ -297,10 +298,10 @@ third most influential position across all models. EVI was found to be most
 important for the daily model, the second most important variable in the weekly
 model, but fourth in the monthly model.
 
-To evaluate how the predictor variables had an impact on the model's predictions,
-we employed the Shapley values. For each of the models created, we calculated the
-contributions to each variable in predicting GPP for two cases: for a known high
-GPP value and a known low GPP value from the test data set.
+To evaluate how the predictor variables had an impact on the model's
+predictions, we employed the Shapley values. For each of the models created, we
+calculated the contributions to each variable in predicting GPP for two cases:
+for a known high GPP value and a known low GPP value from the test data set.
 
 In the case of the daily model, we chose a low GPP value from the test dataset,
 specifically 0.087 gC m⁻² d⁻¹, and obtained a model prediction of 
@@ -1093,6 +1094,37 @@ plot_grid(low_value,
 \newpage
 
 ### The potential of AutoML approaches for GPP predictions
+
+The AutoML approach yielded varying performance outcomes across different
+temporal scales as measured by R² and RMSE. The monthly prediction model
+@fig-predictions_automl_monthly_500 emerged as the top performer, with an R² of
+76% and a low RMSE of 1.835 gC m⁻² d⁻¹. Following this, the weekly model
+@fig-predictions_automl_weekly_500 demonstrated the second-highest explanatory
+power, capturing 72% of the GPP variability, albeit with a slightly elevated
+RMSE of 3.084 gC m⁻² d⁻¹. Conversely, the daily model
+@fig-predictions_automl_500 exhibited comparatively diminished
+performance, explaining 67% of the variability with the highest RMSE of 3.11 gC
+m⁻² d⁻¹.
+
+An examination of variable importance in the AutoML model revealed distinctive
+patterns in significant contributors to GPP prediction across temporal scales.
+In the daily prediction model, EVI and CCI emerged as most important
+@fig-vip_daily_500_automl. Moving to a weekly time frame, the importance of EVI
+and CCI persisted, with the addition of Band 02 (NIR band)
+@fig-vip_daily_500_automl_weekly. In the monthly prediction model, EVI once
+again took precedence, accompanied by Band 02 and NIRv
+@fig-vip_monthly_500_automl_monthly, highlighting the enduring importance of
+these variables.
+
+Additionally, a comparative assessment between the regression random forest
+model and the AutoML model, both applied to the same datasets, revealed nuanced
+differences in their predictive performance. While the regression random forest
+model exhibited superior R² values in daily and monthly predictions, indicating
+a better overall fit to the data, the AutoML model demonstrated lower RMSE.
+Conversely, for weekly predictions, the AutoML model outperformed in both
+metrics. These findings underscore the importance of considering multiple
+metrics and temporal scales when evaluating and selecting models for GPP
+predictions.
 
 <!-- #### Daily autoML -->
 
