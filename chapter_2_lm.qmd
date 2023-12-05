@@ -1319,6 +1319,87 @@ etiquetas <- c(
 
 ## Discussion
 
+In summary, our analysis demonstrates that the incorporation of all VIs as
+covariates in the model yields enhanced predictive accuracy for GPP. This
+observation suggests that the synergistic utilization of all indices
+collectively provides a better capacity to elucidate and capture the nuanced
+variations in GPP throughout the entire study duration when contrasted with the
+predictive power of any individual VI.
+
+Conversely, when aggregating all study sites indiscriminately to represent a
+unified ecosystem type, model metrics exhibit diminished performance compared to
+employing distinct models for each site. This diminished performance may be
+attributed to the introduction of variability inherent in the Borden site data,
+characterized by a substantial range in GPP values that proves challenging to
+encapsulate accurately. Further examination of GPP trends across Michigan and
+Bartlett, juxtaposed with those of Borden, reveals notably wider data ranges,
+particularly during periods of higher productivity @fig-gpp_trends.
+
+If such discrepancies arise when constructing models with identical
+specifications for various sites categorized under the same biotype ecosystem,
+it may indicate that, for global GPP models, exploring the use of diverse VIs is
+crucial. An approach like this one could open the possibility for a more
+accurate estimation of GPP by leveraging specific indices that might yield
+superior results for each distinct type of ecosystem potentially contributing to
+more robust and accurate global GPP estimations. For example, the study by [@lin_evaluating_2019] showed that Chlorophyll Index Red (CRI) had a better correlation with
+GPP, or CCI for evergreen conifers [@gamon_remotely_2016].
+
+The application of linear models, incorporating all Vegetation Indices (VIs) as
+covariates on a monthly basis, produced favorable outcomes in both model fit and
+residual metrics. This observation holds significance as, despite VIs serving as
+indicators of vegetation capacity rather than vegetation physiology, historical
+data records are predominantly derived from sensors equipped with bands for
+generating these VIs. Conversely, newer sensors capable of capturing additional
+bands to derive indices such as Solar-Induced Fluorescence (SIF) lack
+comprehensive historical records, hindering the feasibility of long-term studies
+that extend back to years preceding the 2000s.
+
+While NDVI is one of the most used VIs in EO [@@pabon-moreno_potential_2022],
+its performance, as measured by the RMSE, was comparatively less favorable on
+two out of the three sites when compared to other indices. However, the
+performance variation among the sites was not significant, with the Bartlett
+experimental forest showing slightly better results in all GPP ~ VIs
+relationships compared to the other sites. These findings suggest that, although
+NDVI may not be the most optimal vegetation index for GPP estimation at these
+specific sites, variations in performance across different locations are still
+noteworthy. 
+
+Considering the availability of data with daily, weekly, and monthly values, a
+pertinent question arises concerning the significance of the time range in GPP
+estimation. Our results indicate that models based on monthly data demonstrated
+better model fit for each model and smaller residuals metrics. This superiority
+may be attributed to reduced data variation, as daily values are aggregated into
+monthly summaries, leading to values more centralized around a mean. The
+performance of model fits and residuals metrics declined when transitioning from
+monthly to weekly and, subsequently, to daily values. Although the decrease in
+model fit was not substantial, the increase in residuals metrics suggests a
+potential for larger errors in predictions.
+
+When examining the data trends for GPP at each site and its relationship with
+Vegetation Indices (VIs), it becomes evident that at higher GPP values, the
+dispersion of the data is more pronounced. This observed pattern may be ascribed
+to the inherent limitation of these indices, which predominantly track the
+presence of green leaves. It is important to note, however, that the mere
+presence of green leaves does not consistently signify active photosynthesis.
+This discrepancy can arise for two reasons. Firstly, the photosynthetic process
+may undergo temporary suspension without any manifest changes in chlorophyll
+content or leaf abscission  [@camps-valls_unified_2021-2] Secondly, VIs relying
+on the NIR band face challenges in detecting photosynthesis in instances when a
+higher amount of healthy plant biomass is present. The increased biomass leads
+to greater scattering and reflection of NIR radiation, resulting in a saturation
+effect [@camps-valls_unified_2021-2].
+
+The application of both LM and GAM models to the dataset revealed some
+differences in model performance. The GAM model exhibited a slightly superior
+performance in capturing the underlying patterns within the weekly and daily
+data compared to the LM counterpart, but not in the monthly data. This was
+evident from assessments of model fit and residuals metrics. The GAM model's
+ability to flexibly capture non-linear relationships allowed for a more accurate
+representation of the complex structure inherent in the data. Consequently, the
+results suggest that the GAM framework may be more suitable for capturing the
+nuances present in the dataset, emphasizing the importance of considering model
+flexibility when analyzing non-linear relationships.
+
 \newpage
 
 ## References

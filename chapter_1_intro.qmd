@@ -7,7 +7,8 @@ resources [@montero_standardized_2023]. Elements in the Earth surface exhibit
 distinctive spectral signatures arising from their physical properties and
 interactions with electromagnetic radiation. Environmental factors can affect
 these interactions modifying the spectral signatures which can provide insights
-about surface process [@montero_standardized_2023].
+about surface process [@montero_standardized_2023] when measured by remote
+sensing instruments.
 
 The launch in the 1970's of the  Earth Resources Technology Satellite (ERTS),
 later known as Landsat-1 [@houborg_advances_2015], initiated a new era in the 
