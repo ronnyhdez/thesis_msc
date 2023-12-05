@@ -263,6 +263,23 @@ in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
 different succesional stages and a mean height of 2m. Mean annual temperature is
 around 5.5°C. [@gough_disturbanceaccelerated_2021]
 
+All sites have similar characteristics among them, making them comparable and
+also usable as a representation of an specific type of ecosystem which can 
+provide insights about the GPP and its relation with VIs. A summary of the
+characteristics is in @tbl-site_summary
+
+
+| Variable  | Bartlett  | Michigan | Borden |
+| --------- | --------- | -------- | ------ |
+| Mean annual temperature | 5.6 | 5.8 | 7.4 |
+| Mean annual precipitation | 1,246 | 803 | 784 |
+| Elevation | 272 | 234 | 209 |
+| Dominant genera | Acer, Fagus, Betula | Populus, Quercus, Pinus | Acer, Pinus Populus |
+| Climate Koeppen | Dfb | Dfb | Dfb |
+
+: ONEFlux summary of the sites characteristics {#tbl-site_summary}
+
+
 ```{r}
 #| label: fig-gpp_trends
 #| fig-cap: "GPP trends from the study sites on a daily (a), weekly (b), and monthly (c) basis for the University of Michigan Biological Station, Bartlett experimental forest, and the Borden Forest Research Station"

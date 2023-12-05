@@ -260,7 +260,7 @@ data into an H2O frame to ensure compatibility with the AutoML process.
 
 After generating machine learning models and hyperparameter configurations, we
 imposed a time constraint of a maximum of 2 minutes for model training. The best
-performing models were then selected and used to form an ensembre. This trained
+performing models were then selected and used to form an ensemble. This trained
 ensemble model was used to generate predictions on the test set. Model
 performance was evaluated using metrics such as the coefficient of determination
 and the RMSE.
