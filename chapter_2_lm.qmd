@@ -1354,7 +1354,7 @@ bands to derive indices such as Solar-Induced Fluorescence (SIF) lack
 comprehensive historical records, hindering the feasibility of long-term studies
 that extend back to years preceding the 2000s.
 
-While NDVI is one of the most used VIs in EO [@@pabon-moreno_potential_2022],
+While NDVI is one of the most used VIs in EO [@pabon-moreno_potential_2022],
 its performance, as measured by the RMSE, was comparatively less favorable on
 two out of the three sites when compared to other indices. However, the
 performance variation among the sites was not significant, with the Bartlett
