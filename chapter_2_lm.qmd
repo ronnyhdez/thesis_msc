@@ -429,14 +429,15 @@ indices are shown in @tbl-MODIS_500_indices_bands
 The data processing involved three main steps: selecting high-quality pixels,
 scaling band values, and calculating vegetation indices. MODIS product data have
 4 bit-encoded variables which provided information about the observation
-quality. From those variables, only the `state_1km` and `qc_500m` variables were
-used along with each of the bands bits quality indicators, as `q_scan` was not
-informative and `g_flags` had the same value for all observations. The
-bit-encoded variables were transformed into categorical strings, and only the
-categories indicating the best quality were selected to filter the pixels
-(@fig-quality_pixels). The specific bit strings selected for `state_1km` are
-shown in @tbl-state_1km_bitstrings and for `qc_500m` in
-@tbl-qc_scan_bit_strings.
+quality. From those variables, only the 1km Reflectance Data State QA
+(`state_1km`) and Surface Reflectance 500m Quality Assurance (`qc_500m`)
+variables were used along with each of the bands bits quality indicators, as
+250m scan value information (`q_scan`) was not informative and Geolocation flags
+(`g_flags`) had the same value for all observations. The bit-encoded variables
+were transformed into categorical strings, and only the categories indicating
+the best quality were selected to filter the pixels (@fig-quality_pixels). The
+specific bit strings selected for `state_1km` are shown in
+@tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
 
 In the second stage of the data processing, after selecting the highest quality
 pixels, all the bands values were scaled. For each observation, regardless of
