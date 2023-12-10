@@ -1283,7 +1283,7 @@ each instance and do not represent the entirety of potential predictions.
 However, when scrutinizing the graphs of predicted GPP values against observed
 GPP values, especially in the case of the daily model, it is noteworthy that the
 maximum predicted values hover around 16 gC m⁻² d⁻¹, whereas observed values can
-reach up to 24 gC m⁻² d⁻¹ (See @predictions_plot_daily_500_rf). Importantly,
+reach up to 24 gC m⁻² d⁻¹ (See @fig-daily_500_rf). Importantly,
 these values all belong to the Borden site, where GPP variability is notably
 higher compared to the other two sites.
 
