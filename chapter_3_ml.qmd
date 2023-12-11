@@ -203,7 +203,23 @@ discarded.
 
 Once all the band values were scaled, we calculated 4 Vegetation Indices: NDVI,
 NIRv, EVI, and CCI. Then all the MODIS bands values and VIs were summarized in a
-daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux.
+daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux. A
+description of the complete MODIS reflectance bands used is in @tbl-MODIS_500_complete_bands
+
+
+| **Name**    | **Description** | **Resolution** | **Wavelength** |
+|-------------|-----------------|----------------|----------------|
+| sur_refl_01 | Red             | 500 meters     | 620-670nm      |
+| sur_refl_02 | NIR             | 500 meters     | 841-876nm      |
+| sur_refl_03 | Blue            | 500 meters     | 459-479nm      |
+| sur_refl_04 | Green           | 500 meters     | 545-565nm      |
+| sur_refl_05 | Red Edge        | 500 meters     | 1230-1250nm    |
+| sur_refl_06 | SWIR 1          | 500 meters     | 1628-1652nm    |
+| sur_refl_07 | SWIR 2          | 500 meters     | 2105-2155nm    |
+
+: MODIS (MOD09GA.061 product) bands used for ML methods
+{#tbl-MODIS_500_complete_bands}
+
 
 ### Random Forests
 
