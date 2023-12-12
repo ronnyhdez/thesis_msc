@@ -1402,6 +1402,10 @@ results suggest that the GAM framework may be more suitable for capturing the
 nuances present in the dataset, emphasizing the importance of considering model
 flexibility when analyzing non-linear relationships.
 
+## Conclussions
+
+
+
 \newpage
 
 ## References
