@@ -394,9 +394,10 @@ gpp_trends
 
 We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate
 Resolution Imaging Spectroradiometer (MODIS), specifically the collection
-MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding
-the EC tower was defined for each site, and the complete data pixel values
-within this polygon was extracted for analysis.
+MOD09GA Version 6.1 product (MODIS/Terra Surface Reflectance Daily L2G Global 1
+km and 500 m SIN Grid). A square polygon with an area of 3km surrounding the EC
+tower was defined for each site, and the complete data pixel values within this
+polygon was extracted for analysis.
 
 The MODIS contains the surface spectral reflectance from bands to 1 through 7
 with a spatial resolution of 500m, with corrections for atmospheric conditions
@@ -429,14 +430,15 @@ indices are shown in @tbl-MODIS_500_indices_bands
 The data processing involved three main steps: selecting high-quality pixels,
 scaling band values, and calculating vegetation indices. MODIS product data have
 4 bit-encoded variables which provided information about the observation
-quality. From those variables, only the `state_1km` and `qc_500m` variables were
-used along with each of the bands bits quality indicators, as `q_scan` was not
-informative and `g_flags` had the same value for all observations. The
-bit-encoded variables were transformed into categorical strings, and only the
-categories indicating the best quality were selected to filter the pixels
-(@fig-quality_pixels). The specific bit strings selected for `state_1km` are
-shown in @tbl-state_1km_bitstrings and for `qc_500m` in
-@tbl-qc_scan_bit_strings.
+quality. From those variables, only the 1km Reflectance Data State QA
+(`state_1km`) and Surface Reflectance 500m Quality Assurance (`qc_500m`)
+variables were used along with each of the bands bits quality indicators, as
+250m scan value information (`q_scan`) was not informative and Geolocation flags
+(`g_flags`) had the same value for all observations. The bit-encoded variables
+were transformed into categorical strings, and only the categories indicating
+the best quality were selected to filter the pixels (@fig-quality_pixels). The
+specific bit strings selected for `state_1km` are shown in
+@tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
 
 In the second stage of the data processing, after selecting the highest quality
 pixels, all the bands values were scaled. For each observation, regardless of
@@ -1354,7 +1356,7 @@ bands to derive indices such as Solar-Induced Fluorescence (SIF) lack
 comprehensive historical records, hindering the feasibility of long-term studies
 that extend back to years preceding the 2000s.
 
-While NDVI is one of the most used VIs in EO [@@pabon-moreno_potential_2022],
+While NDVI is one of the most used VIs in EO [@pabon-moreno_potential_2022],
 its performance, as measured by the RMSE, was comparatively less favorable on
 two out of the three sites when compared to other indices. However, the
 performance variation among the sites was not significant, with the Bartlett

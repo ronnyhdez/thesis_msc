@@ -185,7 +185,8 @@ Research Station from January 2015 to January 2022.
 
 We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate
 Resolution Imaging Spectroradiometer (MODIS), specifically the collection
-MOD09GA Version 6.1 product. A square polygon with an area of 3km surrounding
+MOD09GA Version 6.1 product (MODIS/Terra Surface Reflectance Daily L2G Global 1
+km and 500 m SIN Grid). A square polygon with an area of 3km surrounding
 the EC tower was defined for each of the study sites, and the complete data
 pixel values within this polygon was extracted for analysis.
 
@@ -193,15 +194,32 @@ The MODIS collected data contains the surface spectral reflectance from bands to
 1 through 7 with a spatial resolution of 500m, with corrections for atmospheric
 conditions such as aerosols, gasses and Rayleigh scattering [@vermote2021modis].
 
-We selected the highest quality pixels according to the `state_1km`
-(@tbl-state_1km_bitstrings) and `qc_500m` (@tbl-qc_scan_bit_strings) bit string
-variables. Once we had just the highest quality pixels, all the band values were
-scaled by a factor of 0.0001. If any value fell outside the range of 0 to 1
-after the scaling, it was discarded.
+We selected the highest quality pixels according to the 1km Reflectance Data
+State QA (`state_1km`) (@tbl-state_1km_bitstrings)  and Surface Reflectance 500m
+Quality Assurance (`qc_500m`) (@tbl-qc_scan_bit_strings) variables. Once we had
+just the highest quality pixels, all the band values were scaled by a factor of
+0.0001. If any value fell outside the range of 0 to 1 after the scaling, it was
+discarded.
 
 Once all the band values were scaled, we calculated 4 Vegetation Indices: NDVI,
 NIRv, EVI, and CCI. Then all the MODIS bands values and VIs were summarized in a
-daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux.
+daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux. A
+description of the complete MODIS reflectance bands used is in @tbl-MODIS_500_complete_bands
+
+
+| **Name**    | **Description** | **Resolution** | **Wavelength** |
+|-------------|-----------------|----------------|----------------|
+| sur_refl_01 | Red             | 500 meters     | 620-670nm      |
+| sur_refl_02 | NIR             | 500 meters     | 841-876nm      |
+| sur_refl_03 | Blue            | 500 meters     | 459-479nm      |
+| sur_refl_04 | Green           | 500 meters     | 545-565nm      |
+| sur_refl_05 | Red Edge        | 500 meters     | 1230-1250nm    |
+| sur_refl_06 | SWIR 1          | 500 meters     | 1628-1652nm    |
+| sur_refl_07 | SWIR 2          | 500 meters     | 2105-2155nm    |
+
+: MODIS (MOD09GA.061 product) bands used for ML methods
+{#tbl-MODIS_500_complete_bands}
+
 
 ### Random Forests
 
@@ -276,10 +294,11 @@ represented as heatmaps for each of the models within the ensemble.
 ### Data-Driven GPP Prediction: A Regression Random Forest Approach
 
 The best performing model, based on R² and RMSE was the monthly aggregated
-model, achieving a R² of 81% and an RMSE of 2.033 (see @fig-monthly_500_rf). The
-daily model exhibited the second best performance model with a RMSE of 3.164 and
-a R² of 69% (see @fig-daily_500_rf). However, the weekly model displayed
-comparatively lower performance, with an R² of 56% and an RMSE of 3.233 (see
+model, achieving a R² of 81% and an RMSE of 2.033 gC m⁻² d⁻¹ (see
+@fig-monthly_500_rf). The daily model exhibited the second best performance
+model with a RMSE of 3.164 gC m⁻² d⁻¹ and a R² of 69% (see @fig-daily_500_rf).
+However, the weekly model displayed comparatively lower performance, with an R²
+of 56% and an RMSE of 3.233 gC m⁻² d⁻¹ (see
 @fig-weekly_500_rf)
 
 Moreover, in assesing the importance of predictor variables within each model,
@@ -297,10 +316,10 @@ third most influential position across all models. EVI was found to be most
 important for the daily model, the second most important variable in the weekly
 model, but fourth in the monthly model.
 
-To evaluate how the predictor variables had an impact on the model's predictions,
-we employed the Shapley values. For each of the models created, we calculated the
-contributions to each variable in predicting GPP for two cases: for a known high
-GPP value and a known low GPP value from the test data set.
+To evaluate how the predictor variables had an impact on the model's
+predictions, we employed the Shapley values. For each of the models created, we
+calculated the contributions to each variable in predicting GPP for two cases:
+for a known high GPP value and a known low GPP value from the test data set.
 
 In the case of the daily model, we chose a low GPP value from the test dataset,
 specifically 0.087 gC m⁻² d⁻¹, and obtained a model prediction of 
@@ -565,7 +584,7 @@ workflow() %>%
 
 ```{r shapley_values_daily}
 #| label: fig-shap_daily_500_rf
-#| fig-cap: "Shapley values derived from the Random forest model for the daily values at 500 m spatial resolution model. Predicted value for the low GPP value is 0.59 (A) and 12.7 for the selected high GPP value (B)"
+#| fig-cap: "Shapley values derived from the Random forest model for the daily values at 500 m spatial resolution model. Predicted value for the low GPP value is 0.59 (A) and 12.7 for the selected high GPP value (B)."
 #| echo: false
 #| message: false
 #| warning: false
@@ -774,7 +793,7 @@ workflow() %>%
 
 ```{r shapley_values_weekly}
 #| label: fig-shap_weekly_500_rf
-#| fig-cap: "Shapley values derived from the Random forest model for the weekly values at 500 m spatial resolution model."
+#| fig-cap: "Shapley values derived from the Random forest model for the weekly values at 500 m spatial resolution model. Predicted value for the low GPP value is 1.59 (A) and 11.0 for the selected high GPP value (B)."
 #| echo: false
 #| message: false
 #| warning: false
@@ -986,7 +1005,7 @@ workflow() %>%
 
 ```{r shapley_values_monthly}
 #| label: fig-shap_monthly_500_rf
-#| fig-cap: "Shapley values derived from the Random forest model for the monthly values at 500 m spatial resolution model."
+#| fig-cap: "Shapley values derived from the Random forest model for the monthly values at 500 m spatial resolution model. Predicted value for the low GPP value is 3.31 (A) and 10.6 for the selected high GPP value (B)."
 #| echo: false
 #| message: false
 #| warning: false
@@ -1093,6 +1112,37 @@ plot_grid(low_value,
 \newpage
 
 ### The potential of AutoML approaches for GPP predictions
+
+The AutoML approach yielded varying performance outcomes across different
+temporal scales as measured by R² and RMSE. The monthly prediction model
+@fig-predictions_automl_monthly_500 emerged as the top performer, with an R² of
+76% and a low RMSE of 1.835 gC m⁻² d⁻¹. Following this, the weekly model
+@fig-predictions_automl_weekly_500 demonstrated the second-highest explanatory
+power, capturing 72% of the GPP variability, albeit with a slightly elevated
+RMSE of 3.084 gC m⁻² d⁻¹. Conversely, the daily model
+@fig-predictions_automl_500 exhibited comparatively diminished
+performance, explaining 67% of the variability with the highest RMSE of 3.11 gC
+m⁻² d⁻¹.
+
+An examination of variable importance in the AutoML model revealed distinctive
+patterns in significant contributors to GPP prediction across temporal scales.
+In the daily prediction model, EVI and CCI emerged as most important
+@fig-vip_daily_500_automl. Moving to a weekly time frame, the importance of EVI
+and CCI persisted, with the addition of Band 02 (NIR band)
+@fig-vip_daily_500_automl_weekly. In the monthly prediction model, EVI once
+again took precedence, accompanied by Band 02 and NIRv
+@fig-vip_monthly_500_automl_monthly, highlighting the enduring importance of
+these variables.
+
+Additionally, a comparative assessment between the regression random forest
+model and the AutoML model, both applied to the same datasets, revealed nuanced
+differences in their predictive performance. While the regression random forest
+model exhibited superior R² values in daily and monthly predictions, indicating
+a better overall fit to the data, the AutoML model demonstrated lower RMSE.
+Conversely, for weekly predictions, the AutoML model outperformed in both
+metrics. These findings underscore the importance of considering multiple
+metrics and temporal scales when evaluating and selecting models for GPP
+predictions.
 
 <!-- #### Daily autoML -->
 
@@ -1231,26 +1281,78 @@ readRDS("models/automl_va_plot_monthly.rds") +
 
 ## Discussion
 
-Corporis cumque voluptate cum fuga consequuntur pariatur. Excepturi perspiciatis
-omnis dolores dolorum officiis a consequatur. Quae distinctio quae ullam sit id.
-Quasi minima voluptatibus nihil ut quibusdam aut tempore nam. Repudiandae quasi
-quis ipsa aut. Temporibus ut rerum ea a est voluptate.
+These results underscore the temporal variations in model performance, with the
+monthly models having the best performance metrics in both, the regression
+random forest and the autoML.  However, the lower RMSE of the AutoML model
+signifies a more precise prediction in terms of the absolute errors. The higher
+R² suggests that the regression random forest model captures a larger proportion
+of the variance in the dependent variable. This discrepancy underscores the
+importance of considering multiple evaluation metrics when assessing model
+performance. The choice between these models may depend on the specific goals of
+the analysis, weighing the trade-off between explaining variability and
+achieving precision in predictions.
 
-Corporis iusto necessitatibus aut rerum eum. Voluptatem repellendus soluta
-doloremque. Et reiciendis et animi ut enim. Fugiat consequatur hic laborum culpa
-blanditiis explicabo nobis quae. Quae pariatur quo et hic autem.
+Upon examining the six specific predictions analyzed through Shapley values for
+the Random Forest models across all timeframes, it became evident that
+high-predicted values of Gross Primary Productivity (GPP) were consistently
+underestimated, while low GPP values were overestimated. It is crucial to
+clarify that these particular predictions and Shapley values are specific to
+each instance and do not represent the entirety of potential predictions.
+However, when scrutinizing the graphs of predicted GPP values against observed
+GPP values, especially in the case of the daily model, it is noteworthy that the
+maximum predicted values hover around 16 gC m⁻² d⁻¹, whereas observed values can
+reach up to 24 gC m⁻² d⁻¹ (See @fig-daily_500_rf). Importantly,
+these values all belong to the Borden site, where GPP variability is notably
+higher compared to the other two sites.
 
-Sunt velit eos repellat inventore quia sunt. Et optio aut distinctio non
-expedita nulla sint. Explicabo sint tempore est in sunt dolores et. Modi sint
-earum veniam perspiciatis. Velit at beatae nam fugiat iusto.
+This discrepancy may arise from a potential lag between the change in
+photosynthetic rate and the concentration of photosynthetic pigments,
+particularly the change in chlorophyll. Since the predicted GPP values for the
+constructed models are solely based on reflectance values, the primary changes
+related to GPP that they can capture are APAR and, to some extent, chlorophyll
+concentration [@pabon-moreno_potential_2022]. Given that photosynthesis can
+change rapidly without significant alterations in pigment concentrations, there
+might be an overestimation of predicted values compared to observed and
+estimated GPP values at the site mediating EC. In situations of stress, the
+dynamics of GPP could shift unnoticed solely based on satellite reflectance
+values.
 
-Sed velit ipsum in qui expedita praesentium. Neque vero optio qui cumque sint.
-Error possimus dolor quisquam vero aut.
+Conversely, underestimation may be attributed to the well-known phenomenon of
+saturation. When using indices created with the NIR band for GPP estimation,
+challenges arise in scenarios where there is a substantial increase in
+vegetation biomass, that happens during summers in the study sites. In such
+situations, the dense biomass leads to increased scattering and reflection of
+radiation. While the NIR band is sensitive to changes in vegetation structure
+and density, it encounters limitations as the amount of biomass intensifies.
+This results in a phenomenon known as saturation, where the sensor reaches its
+maximum capacity to detect changes in reflectance values.
 
-Autem non labore numquam. Eveniet facere id qui impedit. Sunt temporibus sit
-neque fugiat. Consequatur sit maiores dolorum libero provident a laudantium.
-Ipsum sit fugiat quis consectetur sed a provident veritatis. Consequuntur
-laudantium aut libero facere animi ipsum et hic.
+Saturation occurs because the dense vegetation causes a greater proportion of
+the incoming radiation to be scattered or reflected, particularly in the NIR
+spectrum [@camps-valls_unified_2021-2]. As a consequence, the sensor becomes
+saturated, meaning that further increases in biomass or productivity do not
+translate proportionally into higher measured reflectance values. This limits
+the sensor's ability to capture and differentiate changes in the productivity of
+vegetation beyond a certain threshold.
+
+While, for the monthly model, AutoML demonstrates an acceptable percentage of
+explained variability, with Random Forest surpassing it by 5%, for the weekly
+and daily models, it appears that capturing the inherent variability in the data
+is challenging solely with the utilized indices and the entirety of MODIS bands.
+There seems to be a necessity to incorporate additional variables that possibly
+could further enhance predictive capabilities.
+
+Regarding the question of whether it is preferable to employ a Random Forest
+(RF) model or an AutoML model, the advantages revealed by the results of this
+study do not exhibit marked distinctions. The performances are comparable, with
+the only instance of a notable increase, a 17% improvement in explaining
+variance, observed in the weekly model by the AutoML model. In the monthly
+model, Random Forest demonstrates a 5% superiority in terms of explained
+variance compared to AutoML, although AutoML achieves a marginal improvement in
+error reduction by 0.198. These nuanced differences suggest that the choice
+between RF and AutoML may depend on specific considerations, emphasizing the
+importance of assessing both explanatory power and error metrics for
+comprehensive model evaluation.
 
 \newpage
 
