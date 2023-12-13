@@ -1405,7 +1405,23 @@ flexibility when analyzing non-linear relationships.
 
 ## Conclussions
 
+In conclusion, our analysis demonstrates that incorporating all VIs as
+covariates in our models yields a substantial improvement in predictive accuracy
+for GPP compared to using any single VI. Additionally, our research highlights
+the impact of time aggregation on prediction accuracy across different models.
+Monthly LM models exhibit the best performance metrics, while weekly and daily
+LM models present lower metrics, attributable to higher variability in
+observations that makes tracking GPP challenging. A similar pattern is observed
+when using GAM; however, weekly and daily GAM models outperform LM models.
 
+Notably, no single VI emerges as the universal best predictor for every site or
+time aggregation. Moreover, the impact of large variations in GPP ranges within
+a site is evident in the quality of predictions. These variations introduce
+complexities and uncertainties, emphasizing the necessity of accounting for
+local site characteristics and inherent heterogeneity when aiming for accurate
+predictions of GPP. Growing seasons exhibit the most pronounced variability,
+posing challenges for vegetation indices that saturate at high biomass
+concentrations, making it more difficult to track changes in GPP.
 
 \newpage
 
