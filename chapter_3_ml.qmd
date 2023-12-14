@@ -1356,6 +1356,28 @@ between RF and AutoML may depend on specific considerations, emphasizing the
 importance of assessing both explanatory power and error metrics for
 comprehensive model evaluation.
 
+## Conclussions
+
+In summary, the monthly models generated using both methods (RF and autoML)
+exhibited superior performance based on various metrics, surpassing the outcomes
+from weekly or daily temporal aggregations. Specifically, in the context of
+monthly modelling, although RF demonstrated a slightly higher variance
+explanation compared to autoML (by 5%), autoML showcased a lower RMSE,
+signifying more accurate predictions with minimal error. When incorporating VIs
+alongside all bands into the GPP prediction models (both RF and autoML), the VIs
+consistently demonstrated their significance as the most influential variables
+in the predictions, with CCI and EVI consistently having pivotal roles. Notably,
+among the bands, B02 (NIR) emerged as the most crucial for predictions,
+surpassing the importance of the remaining bands.
+
+Analyzing the RF model revealed interesting insights through Shapley values,
+indicating a tendency to underestimate high GPP values and overestimate low GPP
+values. This observation was consistent across scatterplots depicting predicted
+versus actual values for diverse temporal aggregations. When comparing both
+methods (RF and autoML), no definitive superiority emerges, as both exhibit
+nuanced distinctions, except for the weekly models where autoML outperforms with
+a 17% better variance explanation and a lower RMSE.
+
 \newpage
 
 ## References
