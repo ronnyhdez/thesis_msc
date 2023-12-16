@@ -1374,7 +1374,8 @@ better model fit for each model and smaller residuals metrics. This superiority
 may be attributed to reduced data variation, as daily values are aggregated into
 monthly summaries, leading to values more centralized around a mean. The
 performance of model fits and residuals metrics declined when transitioning from
-monthly to weekly and, subsequently, to daily values. Although the decrease in
+monthly to weekly and, subsequently, to daily values (See @fig-lm_residuals for
+LM residuals and @fig-gam_residuals for GAM residuals). Although the decrease in
 model fit was not substantial, the increase in residuals metrics suggests a
 potential for larger errors in predictions.
 

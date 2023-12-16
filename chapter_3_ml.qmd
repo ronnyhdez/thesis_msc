@@ -1356,6 +1356,8 @@ between RF and AutoML may depend on specific considerations, emphasizing the
 importance of assessing both explanatory power and error metrics for
 comprehensive model evaluation.
 
+\newpage
+
 ## Conclussions
 
 In summary, the monthly models generated using both methods (RF and autoML)

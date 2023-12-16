@@ -1,1 +1,56 @@
 # Conclusions and Future Work
+
+## Synthesis
+
+This research evaluated the advantages and limitations associated with
+estimating GPP using traditional VIs like NDVI, EVI, and recent ones like CCI
+and NIRv. Specifically, the study focused on VIs derived from MODIS, chosen for
+its extensive time records. To assess GPP estimates through the VIs, we employed
+traditional methods such as linear regression and GAM, as well as ML techniques.
+
+Traditional methods, such as LM and GAM, offer the advantage of being more
+straightforward to interpret in relation to their predictions and associated
+errors. In contrast, ML techniques like regression RF and autoML pursue
+predictions through methods that are harder to elucidate, a phenomenon referred
+to as "black model boxes." Despite their complexity, these ML methods have the
+potential to achieve superior accuracy in their predictions.
+
+To evaluate the capacity of VIs to estimate GPP,Productivity (GPP), our analysis
+spanned three temporal aggregations: daily, weekly, and monthly. This assessment
+considered the utilization of VIs individually or collectively as covariates in
+the model. For ML methods, the same temporal aggregations were employed, with an
+assessment involving all indices and the entire set of MODIS bands as
+predictors.
+
+The results indicate that, across all models, monthly temporal aggregation
+consistently yields better outcomes in comparison to weekly and daily
+aggregations. This superiority can be attributed to the reduced variation
+present in monthly aggregated data, resulting in lower errors in the models.
+According to LM and GAM,  incorporating all indices as covariates in the models
+enhances predictive capability, suggesting that a single VI in isolation may
+fall short of capturing the entire variation in the data.
+
+Examining the outcomes of models utilizing individual VIs reveals minimal
+differences. Nonetheless, VIs consistently displaying a slightly superior
+performance in terms of explained variation and lower error are typically EVI
+and CCI, whereas NDVI tends to exhibit lower performance. This trend is also
+evident in ML models, with EVI and CCI frequently occupying top positions in
+variable of importance rankings. In ML models, the inclusion of all bands as
+predictors highlights that B02 (NIR) often ranks among the top variables in
+importance over other bands.
+
+In comparing the various models and their configurations (LM and GAM with VIs as
+covariates; RF and autoML with VIs and complete bands as predictors), it becomes
+evident that ML methods exhibit a better performance across different time
+aggregations. For daily models, assessed by R² and RMSE metrics, RF surpassed
+autoML, GAM, and LM, in that sequence. For the weekly models, autoML led,
+followed by GAM, LM, and RF. Regarding the monthly models, RF had better
+performance, followed by LM, autoML, and GAM.
+
+
+
+## Limitations
+
+## Conclussions
+
+
