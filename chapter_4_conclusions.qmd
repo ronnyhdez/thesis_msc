@@ -55,4 +55,61 @@ performance, followed by LM, autoML, and GAM.
 
 ## Future work 
 
+As uncertainties persist in GPP estimation models relying on VIs as predictors,
+the potential for improvement lies in models that can consider critical stress
+factors influencing photosynthesis [@rogers_response_2020; @ryu_what_2019;
+@xiao_remote_2019]. While incorporating meteorological data can address this, it
+poses challenges in various regions around the globe. In such circumstances, a
+more advantageous approach involves the utilization and validation of VIs that
+demonstrate sensitivity to stress factors affecting photosynthetic activity, not
+just photosynthetic capacity. Remote sensing provides a means to achieve this by
+integrating data products such as thermal information, which can indirectly
+address water deficit in ecosystems, for example [@pabon-moreno_potential_2022].
+Despite potential uncertainties associated with these products, there is a
+prospect for enhanced estimations by incorporating considerations beyond
+traditional reflectance values.
 
+Addressing the inherent variability across ecosystems, it is essential to
+recognize that no single VI will be the best, and their representation of
+vegetation functioning has limitations [@zeng_optical_2022].  Nonetheless, the
+continual introduction of new VIs derived from both traditional and advanced
+sensors [@montero_standardized_2023] presents an opportunity to enhance the
+estimation of GPP on a global level. A potentially effective strategy would
+involve establishing a standardized guide of VIs or combinations tailored to
+different ecosystem types, providing researchers with a reliable foundation for
+accurate assessments. Furthermore, the field could benefit from adopting a
+qualitative rating of model performance, such as the one used by for the FAO
+model AquaCrop [@raes_aquacrop_fao]. This practice involves standardizing model
+evaluations based on their performance within specific research domains. Such
+standardized benchmarks can provide valuable guidance for researchers seeking
+optimal model selection and interpretation within their respective contexts.
+
+Given the growing reliance on ML methods to enhance GPP predictions in recent
+years, a notable challenge arises from their tendency to obscure the
+understanding of the underlying mechanisms explaining the relationship between
+VIs and GPP [@molnar2020interpretable]. Hence, it becomes crucial for new
+studies to articulate their research objectives with clarity and consistency.
+Specifically, researchers should explicitly state whether their primary focus is
+to explore mechanistic relationships between VIs or if their aim is to improve
+GPP predictions. This distinction is vital, whether the goal is to predict GPP
+in sites lacking validation data (flux towers) or to advance forecasting
+capabilities [@meyer_importance_2019].
+
+The implementation of explainable ML methods could enhance our understanding of
+the variables influencing predictions [@molnar2020interpretable]. Additionally,
+it is well-known that a prediction model's ability to generalize the rules it
+has learned from the training data set to a new (unseen) data set is poor.
+Diverse scenarios, such as droughts, intense rainfall, and vegetation mortality,
+among others, can affect predictive capacity. Therefore, consistent model
+predictive power assessment over time and retraining as necessary are crucial
+[@kuhn2022tidy]. This underscores the significance of having flux towers and
+extending their presence to underrepresented sites to acquire validation data.
+These efforts contribute to refining future global GPP estimation models on a
+broader scale [@meyer_importance_2019].
+
+\newpage
+
+## References
+
+::: {#refs}
+:::
