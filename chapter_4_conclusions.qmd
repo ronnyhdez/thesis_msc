@@ -1,1 +1,159 @@
 # Conclusions and Future Work
+
+## Synthesis
+
+This research evaluated the advantages and limitations associated with
+estimating GPP using traditional VIs like NDVI, EVI, and recent ones like CCI
+and NIRv. Specifically, the study focused on VIs derived from MODIS, chosen for
+its extensive time records. To assess GPP estimates through the VIs, we employed
+traditional methods such as linear regression and GAM, as well as ML techniques.
+
+Traditional methods, such as LM and GAM, offer the advantage of being more
+straightforward to interpret in relation to their predictions and associated
+errors. In contrast, ML techniques like regression RF and autoML pursue
+predictions through methods that are harder to elucidate, a phenomenon referred
+to as "black model boxes." Despite their complexity, these ML methods have the
+potential to achieve superior accuracy in their predictions.
+
+To evaluate the capacity of VIs to estimate GPP,Productivity (GPP), our analysis
+spanned three temporal aggregations: daily, weekly, and monthly. This assessment
+considered the utilization of VIs individually or collectively as covariates in
+the model. For ML methods, the same temporal aggregations were employed, with an
+assessment involving all indices and the entire set of MODIS bands as
+predictors.
+
+The results indicate that, across all models, monthly temporal aggregation
+consistently yields better outcomes in comparison to weekly and daily
+aggregations. This superiority can be attributed to the reduced variation
+present in monthly aggregated data, resulting in lower errors in the models.
+According to LM and GAM,  incorporating all indices as covariates in the models
+enhances predictive capability, suggesting that a single VI in isolation may
+fall short of capturing the entire variation in the data.
+
+Examining the outcomes of models utilizing individual VIs reveals minimal
+differences. Nonetheless, VIs consistently displaying a slightly superior
+performance in terms of explained variation and lower error are typically EVI
+and CCI, whereas NDVI tends to exhibit lower performance. This trend is also
+evident in ML models, with EVI and CCI frequently occupying top positions in
+variable of importance rankings. In ML models, the inclusion of all bands as
+predictors highlights that B02 (NIR) often ranks among the top variables in
+importance over other bands.
+
+In comparing the various models and their configurations (LM and GAM with VIs as
+covariates; RF and autoML with VIs and complete bands as predictors), it becomes
+evident that ML methods exhibit a better performance across different time
+aggregations. For daily models, assessed by R² and RMSE metrics, RF surpassed
+autoML, GAM, and LM, in that sequence. For the weekly models, autoML led,
+followed by GAM, LM, and RF. Regarding the monthly models, RF had better
+performance, followed by LM, autoML, and GAM.
+
+## Limitations
+
+The uncertainties in VIs, in this case, for GPP estimation, may be due to their
+inability to capture variations in GPP or inherent limitations falling into two
+categories:  artifacts or external factors. Artifacts originate from the sensors
+used for deriving VIs, encompassing calibration, quality control, or sensor
+degradation [@zeng_optical_2022]. In this study, we addressed these effects by
+excluding pixels with suboptimal quality using data from quality assurance (QA)
+and quality control (QC). These variables offer insights into the quality of
+each pixel, aiding in the selection of pixels potentially harboring erroneous
+values. However, the accuracy of these data may be compromised by the presence
+of pixels with poor quality not identified as such by postprocessing algorithms,
+or influenced by external factors such as clouds, cloud shadows, inaccuracies in
+snow detection, atmospheric pollution, or technical issues in image acquisition
+[@pesquer_spatial_2019].
+
+Another potential source of uncertainty in GPP estimates is related to the
+representation of the flux tower footprint within the pixel area. EC towers
+exhibit a flux footprint that can vary over time. The footprint is defined as
+the extent to which measurements taken at a specific time and location
+accurately reflect the actual flows in time and specific area. The monthly
+climatologies of the footprint can exhibit variations, usually falling within
+the range of 100 m to 450 m. [@chu_representativeness_2021]. The heterogeneity of
+the landscape beyond this footprint may affect flow conditions differently than
+those measured within the footprint. In our methodology, we established a square
+area of 3 km² around the EC tower to ensure that the flux footprint climatology
+aligns with this region, considering the homogeneity in land cover type.
+However, the resolution of MODIS might not be adequate for capturing nuanced
+fine-scale spatial variations [@robinson_terrestrial_2018].
+
+The limitations of the study include the unavailability of data from a sensor
+like Sentinel-2, which offers better spatial resolution compared to the MODIS
+product employed. This data could have allowed us to explore whether, despite
+estimating in areas with homogeneous land cover, it is feasible to capture
+nuanced fine-scale spatial variations. Such an exploration could potentially
+lead to improved GPP estimates, thereby reducing uncertainty. The restriction in
+using Sentinel-2 data stems from the fact that calibrated data is accessible
+only from 2017 onward. However, the GPP data processed by ONEFlux for each site
+commenced in 2015, concluding for Bartlett and Michigan in 2017 and 2018,
+respectively, thus resulting in the exclusion of a significant portion of the
+data.
+
+Finally, it is important to acknowledge that the sites selection can constitutes
+a potential limitation in this study. The focus on deciduous broadleaf forest
+sites in the northern hemisphere, encompassing only three locations, restricts
+the generalization of the findings to this specific ecosystem type. Expanding
+the scope to include more sites representing other various ecosystem types could
+further contribute to understanding which indices have limitations or can
+perform better in estimating GPP across a broader range of scenarios.
+
+## Future work 
+
+As uncertainties persist in GPP estimation models relying on VIs as predictors,
+the potential for improvement lies in models that can consider critical stress
+factors influencing photosynthesis [@rogers_response_2020; @ryu_what_2019;
+@xiao_remote_2019]. While incorporating meteorological data can address this, it
+poses challenges in various regions around the globe. In such circumstances, a
+more advantageous approach involves the utilization and validation of VIs that
+demonstrate sensitivity to stress factors affecting photosynthetic activity, not
+just photosynthetic capacity. Remote sensing provides a means to achieve this by
+integrating data products such as thermal information, which can indirectly
+address water deficit in ecosystems, for example [@pabon-moreno_potential_2022].
+Despite potential uncertainties associated with these products, there is a
+prospect for enhanced estimations by incorporating considerations beyond
+traditional reflectance values.
+
+Addressing the inherent variability across ecosystems, it is essential to
+recognize that no single VI will be the best, and their representation of
+vegetation functioning has limitations [@zeng_optical_2022].  Nonetheless, the
+continual introduction of new VIs derived from both traditional and advanced
+sensors [@montero_standardized_2023] presents an opportunity to enhance the
+estimation of GPP on a global level. A potentially effective strategy would
+involve establishing a standardized guide of VIs or combinations tailored to
+different ecosystem types, providing researchers with a reliable foundation for
+accurate assessments. Furthermore, the field could benefit from adopting a
+qualitative rating of model performance, such as the one used by for the FAO
+model AquaCrop [@raes_aquacrop_fao]. This practice involves standardizing model
+evaluations based on their performance within specific research domains. Such
+standardized benchmarks can provide valuable guidance for researchers seeking
+optimal model selection and interpretation within their respective contexts.
+
+Given the growing reliance on ML methods to enhance GPP predictions in recent
+years, a notable challenge arises from their tendency to obscure the
+understanding of the underlying mechanisms explaining the relationship between
+VIs and GPP [@molnar2020interpretable]. Hence, it becomes crucial for new
+studies to articulate their research objectives with clarity and consistency.
+Specifically, researchers should explicitly state whether their primary focus is
+to explore mechanistic relationships between VIs or if their aim is to improve
+GPP predictions. This distinction is vital, whether the goal is to predict GPP
+in sites lacking validation data (flux towers) or to advance forecasting
+capabilities [@meyer_importance_2019].
+
+The implementation of explainable ML methods could enhance our understanding of
+the variables influencing predictions [@molnar2020interpretable]. Additionally,
+it is well-known that a prediction model's ability to generalize the rules it
+has learned from the training data set to a new (unseen) data set is poor.
+Diverse scenarios, such as droughts, intense rainfall, and vegetation mortality,
+among others, can affect predictive capacity. Therefore, consistent model
+predictive power assessment over time and retraining as necessary are crucial
+[@kuhn2022tidy]. This underscores the significance of having flux towers and
+extending their presence to underrepresented sites to acquire validation data.
+These efforts contribute to refining future global GPP estimation models on a
+broader scale [@meyer_importance_2019].
+
+\newpage
+
+## References
+
+::: {#refs}
+:::

@@ -1334,7 +1334,7 @@ employing distinct models for each site. This diminished performance may be
 attributed to the introduction of variability inherent in the Borden site data,
 characterized by a substantial range in GPP values that proves challenging to
 encapsulate accurately. Further examination of GPP trends across Michigan and
-Bartlett, juxtaposed with those of Borden, reveals notably wider data ranges,
+Bartlett, compared with those of Borden, reveals notably wider data ranges,
 particularly during periods of higher productivity @fig-gpp_trends.
 
 If such discrepancies arise when constructing models with identical
@@ -1343,12 +1343,13 @@ it may indicate that, for global GPP models, exploring the use of diverse VIs is
 crucial. An approach like this one could open the possibility for a more
 accurate estimation of GPP by leveraging specific indices that might yield
 superior results for each distinct type of ecosystem potentially contributing to
-more robust and accurate global GPP estimations. For example, the study by [@lin_evaluating_2019] showed that Chlorophyll Index Red (CRI) had a better correlation with
-GPP, or CCI for evergreen conifers [@gamon_remotely_2016].
+more robust and accurate global GPP estimations. For example, the study by
+[@lin_evaluating_2019] showed that Chlorophyll Index Red (CRI) had a better
+correlation with GPP, or CCI for evergreen conifers [@gamon_remotely_2016].
 
-The application of linear models, incorporating all Vegetation Indices (VIs) as
-covariates on a monthly basis, produced favorable outcomes in both model fit and
-residual metrics. This observation holds significance as, despite VIs serving as
+The application of linear models, incorporating all VIs as covariates on a
+monthly basis, produced favourable outcomes in both model fit and residual
+metrics. This observation holds significance as, despite VIs serving as
 indicators of vegetation capacity rather than vegetation physiology, historical
 data records are predominantly derived from sensors equipped with bands for
 generating these VIs. Conversely, newer sensors capable of capturing additional
@@ -1373,23 +1374,24 @@ better model fit for each model and smaller residuals metrics. This superiority
 may be attributed to reduced data variation, as daily values are aggregated into
 monthly summaries, leading to values more centralized around a mean. The
 performance of model fits and residuals metrics declined when transitioning from
-monthly to weekly and, subsequently, to daily values. Although the decrease in
+monthly to weekly and, subsequently, to daily values (See @fig-lm_residuals for
+LM residuals and @fig-gam_residuals for GAM residuals). Although the decrease in
 model fit was not substantial, the increase in residuals metrics suggests a
 potential for larger errors in predictions.
 
 When examining the data trends for GPP at each site and its relationship with
-Vegetation Indices (VIs), it becomes evident that at higher GPP values, the
-dispersion of the data is more pronounced. This observed pattern may be ascribed
-to the inherent limitation of these indices, which predominantly track the
-presence of green leaves. It is important to note, however, that the mere
-presence of green leaves does not consistently signify active photosynthesis.
-This discrepancy can arise for two reasons. Firstly, the photosynthetic process
-may undergo temporary suspension without any manifest changes in chlorophyll
-content or leaf abscission  [@camps-valls_unified_2021-2] Secondly, VIs relying
-on the NIR band face challenges in detecting photosynthesis in instances when a
-higher amount of healthy plant biomass is present. The increased biomass leads
-to greater scattering and reflection of NIR radiation, resulting in a saturation
-effect [@camps-valls_unified_2021-2].
+VIs, it becomes evident that at higher GPP values, the dispersion of the data is
+more pronounced. This observed pattern may be ascribed to the inherent
+limitation of these indices, which predominantly track the presence of green
+leaves. It is important to note, however, that the mere presence of green leaves
+does not consistently signify active photosynthesis. This discrepancy can arise
+for two reasons. Firstly, the photosynthetic process may undergo temporary
+suspension without any manifest changes in chlorophyll content or leaf
+abscission  [@camps-valls_unified_2021-2] Secondly, VIs relying on the NIR band
+face challenges in detecting photosynthesis in instances when a higher amount of
+healthy plant biomass is present. The increased biomass leads to greater
+scattering and reflection of NIR radiation, resulting in a saturation effect
+[@camps-valls_unified_2021-2].
 
 The application of both LM and GAM models to the dataset revealed some
 differences in model performance. The GAM model exhibited a slightly superior
@@ -1401,6 +1403,26 @@ representation of the complex structure inherent in the data. Consequently, the
 results suggest that the GAM framework may be more suitable for capturing the
 nuances present in the dataset, emphasizing the importance of considering model
 flexibility when analyzing non-linear relationships.
+
+## Conclussions
+
+In conclusion, our analysis demonstrates that incorporating all VIs as
+covariates in our models yields a substantial improvement in predictive accuracy
+for GPP compared to using any single VI. Additionally, our research highlights
+the impact of time aggregation on prediction accuracy across different models.
+Monthly LM models exhibit the best performance metrics, while weekly and daily
+LM models present lower metrics, attributable to higher variability in
+observations that makes tracking GPP challenging. A similar pattern is observed
+when using GAM; however, weekly and daily GAM models outperform LM models.
+
+Notably, no single VI emerges as the universal best predictor for every site or
+time aggregation. Moreover, the impact of large variations in GPP ranges within
+a site is evident in the quality of predictions. These variations introduce
+complexities and uncertainties, emphasizing the necessity of accounting for
+local site characteristics and inherent heterogeneity when aiming for accurate
+predictions of GPP. Growing seasons exhibit the most pronounced variability,
+posing challenges for vegetation indices that saturate at high biomass
+concentrations, making it more difficult to track changes in GPP.
 
 \newpage
 
