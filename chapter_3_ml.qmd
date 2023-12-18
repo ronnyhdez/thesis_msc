@@ -294,11 +294,11 @@ represented as heatmaps for each of the models within the ensemble.
 ### Data-Driven GPP Prediction: A Regression Random Forest Approach
 
 The best performing model, based on R² and RMSE was the monthly aggregated
-model, achieving a R² of 81% and an RMSE of $2.033 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
+model, achieving a R² of 81% and an RMSE of $2.03 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
 (see @fig-monthly_500_rf). The daily model exhibited the second best performance
-model with a RMSE of $3.164 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and a R² of 69%
+model with a RMSE of $3.20 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and a R² of 69%
 (see @fig-daily_500_rf). However, the weekly model displayed comparatively lower
-performance, with an R² of 56% and an RMSE of $3.233 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ 
+performance, with an R² of 56% and an RMSE of $3.23 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ 
 (see @fig-weekly_500_rf)
 
 Moreover, in assesing the importance of predictor variables within each model,
@@ -322,31 +322,31 @@ calculated the contributions to each variable in predicting GPP for two cases:
 for a known high GPP value and a known low GPP value from the test data set.
 
 In the case of the daily model, we chose a low GPP value from the test dataset,
-specifically $0.087 \, \mathrm{gC \, m^{-2} \, d^{-1}}$and obtained a model 
-prediction of $0.599 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Our Shapley value 
+specifically $0.01 \, \mathrm{gC \, m^{-2} \, d^{-1}}$and obtained a model 
+prediction of $0.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Our Shapley value 
 analysis showed that EVI, CCI and NIRv were the most influential attributes 
 affecting the model prediction (See @fig-shap_daily_500_rf **A**). Nonetheless,
 these VIs contribute negatively to the prediction, reducing the predicted GPP.
 
 Conversely, the high GPP value selected ($16.21 \, \mathrm{gC \, m^{-2} \, d^{-1}}$)
-from the test dataset, had a model prediction of $12.7 \, \mathrm{gC \, m^{-2} \, d^{-1}}$.
+from the test dataset, had a model prediction of $12.70 \, \mathrm{gC \, m^{-2} \, d^{-1}}$.
 In this case the Shapley values analysis indicated that the most influential 
 variables were CCI and NIRv (See @fig-shap_daily_500_rf **B**). These variables
 contributed positively to the prediction.
 
-For the weekly model, we selected high and low GPP values of $1.214 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ 
+For the weekly model, we selected high and low GPP values of $1.21 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ 
 and $13.17 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, respectively, resulting in
-predictions of $1.59 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
+predictions of $1.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
 and $11.0 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. For the low GPP value, the most
 influential variables were CCI, EVI, NIRv and NDVI, all contributing negatively
 to the prediction (see @fig-shap_weekly_500_rf **A**). Conversely, for the high
 GPP value, CCI, EVI, NIRv, B02 and NDVI had the most influence in the prediction
 positively (refer to @fig-shap_weekly_500_rf **B**).
 
-In the case of the monthly model, the low GPP value selected was $1.857 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
+In the case of the monthly model, the low GPP value selected was $1.86 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
 and the high GPP value was $11.87 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, leading 
 to predictions of $3.31 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and  
-$10.6 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ respectively. In both scenarios, CCI,
+$10.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ respectively. In both scenarios, CCI,
 NDVI, and NIRv emerged as the most influential variables, albeit contributing 
 negatively to the low GPP value prediction (See @fig-shap_monthly_500_rf **A**) 
 and positively to the high GPP value prediction (See @fig-shap_monthly_500_rf **B**).
@@ -1118,10 +1118,10 @@ plot_grid(low_value,
 The AutoML approach yielded varying performance outcomes across different
 temporal scales as measured by R² and RMSE. The monthly prediction model
 (@fig-predictions_automl_monthly_500) emerged as the top performer, with an R² of
-76% and a low RMSE of $1.835 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Following 
+76% and a low RMSE of $1.84 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Following 
 this, the weekly model (@fig-predictions_automl_weekly_500) demonstrated the 
 second-highest explanatory power, capturing 72% of the GPP variability, albeit 
-with a slightly elevated RMSE of $3.084 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. 
+with a slightly elevated RMSE of $3.08 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. 
 Conversely, the daily model (@fig-predictions_automl_500) exhibited comparatively
 diminished performance, explaining 67% of the variability with the highest 
 RMSE of $3.11 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
