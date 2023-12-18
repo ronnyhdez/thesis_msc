@@ -49,9 +49,53 @@ performance, followed by LM, autoML, and GAM.
 
 ## Limitations
 
+The uncertainties in VIs, in this case, for GPP estimation, may be due to their
+inability to capture variations in GPP or inherent limitations falling into two
+categories:  artifacts or external factors. Artifacts originate from the sensors
+used for deriving VIs, encompassing calibration, quality control, or sensor
+degradation [@zeng_optical_2022]. In this study, we addressed these effects by
+excluding pixels with suboptimal quality using data from quality assurance (QA)
+and quality control (QC). These variables offer insights into the quality of
+each pixel, aiding in the selection of pixels potentially harboring erroneous
+values. However, the accuracy of these data may be compromised by the presence
+of pixels with poor quality not identified as such by postprocessing algorithms,
+or influenced by external factors such as clouds, cloud shadows, inaccuracies in
+snow detection, atmospheric pollution, or technical issues in image acquisition
+[@pesquer_spatial_2019].
 
+Another potential source of uncertainty in GPP estimates is related to the
+representation of the flux tower footprint within the pixel area. EC towers
+exhibit a flux footprint that can vary over time. The footprint is defined as
+the extent to which measurements taken at a specific time and location
+accurately reflect the actual flows in time and specific area. The monthly
+climatologies of the footprint can exhibit variations, usually falling within
+the range of 100 m to 450 m. [@chu_representativeness_2021]. The heterogeneity of
+the landscape beyond this footprint may affect flow conditions differently than
+those measured within the footprint. In our methodology, we established a square
+area of 3 km² around the EC tower to ensure that the flux footprint climatology
+aligns with this region, considering the homogeneity in land cover type.
+However, the resolution of MODIS might not be adequate for capturing nuanced
+fine-scale spatial variations [@robinson_terrestrial_2018].
 
+The limitations of the study include the unavailability of data from a sensor
+like Sentinel-2, which offers better spatial resolution compared to the MODIS
+product employed. This data could have allowed us to explore whether, despite
+estimating in areas with homogeneous land cover, it is feasible to capture
+nuanced fine-scale spatial variations. Such an exploration could potentially
+lead to improved GPP estimates, thereby reducing uncertainty. The restriction in
+using Sentinel-2 data stems from the fact that calibrated data is accessible
+only from 2017 onward. However, the GPP data processed by ONEFlux for each site
+commenced in 2015, concluding for Bartlett and Michigan in 2017 and 2018,
+respectively, thus resulting in the exclusion of a significant portion of the
+data.
 
+Finally, it is important to acknowledge that the sites selection can constitutes
+a potential limitation in this study. The focus on deciduous broadleaf forest
+sites in the northern hemisphere, encompassing only three locations, restricts
+the generalization of the findings to this specific ecosystem type. Expanding
+the scope to include more sites representing other various ecosystem types could
+further contribute to understanding which indices have limitations or can
+perform better in estimating GPP across a broader range of scenarios.
 
 ## Future work 
 

@@ -10,7 +10,7 @@ book:
       affiliations:
         - name: "University of Alberta"
           department: "Department of Earth and Atmospheric Sciences"
-  date: "01 September 2023"
+  date: "January 2024"
   date-format: "MMMM YYYY"
   chapters:
     - abstract.qmd
