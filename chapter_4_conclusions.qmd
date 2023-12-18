@@ -47,10 +47,12 @@ autoML, GAM, and LM, in that sequence. For the weekly models, autoML led,
 followed by GAM, LM, and RF. Regarding the monthly models, RF had better
 performance, followed by LM, autoML, and GAM.
 
-
-
 ## Limitations
 
-## Conclussions
+
+
+
+
+## Future work 
 
 
