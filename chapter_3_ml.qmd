@@ -1138,13 +1138,22 @@ these variables.
 
 Additionally, a comparative assessment between the regression random forest
 model and the AutoML model, both applied to the same datasets, revealed nuanced
-differences in their predictive performance. While the regression random forest
-model exhibited superior R² values in daily and monthly predictions, indicating
-a better overall fit to the data, the AutoML model demonstrated lower RMSE.
-Conversely, for weekly predictions, the AutoML model outperformed in both
-metrics. These findings underscore the importance of considering multiple
-metrics and temporal scales when evaluating and selecting models for GPP
-predictions.
+differences in their predictive performance @tbl-summary_ml_metrics. While the
+regression random forest model exhibited superior R² values in daily and monthly
+predictions, indicating a better overall fit to the data, the AutoML model
+demonstrated lower RMSE. Conversely, for weekly predictions, the AutoML model
+outperformed in both metrics. These findings underscore the importance of
+considering multiple metrics and temporal scales when evaluating and selecting
+models for GPP predictions.
+
+
+| Variable | RF R2 | RF RMSE | automl R2 | automl RMSE | 
+| -------- | ---| ------- | --- | ---- | 
+| Daily | 0.70 | 3.17 | 0.67 | 3.11 | 
+| Weekly | 0.55 | 3.23 | 0.72 | 3.08 | 
+| Monthly | 0.81 | 2.03 | 0.76 | 1.84 |
+
+: Summary ML metrics {#tbl-summary_ml_metrics}
 
 <!-- #### Daily autoML -->
 
