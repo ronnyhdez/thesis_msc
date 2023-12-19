@@ -39,7 +39,14 @@ tribble(
   "AIC", "Akaike Information Criterion", 
   "BIC", "Bayesian Information Criterion", 
   "NIR", "Near Infrared",
-  "CCI", "Chlorophyll/Carotenoid Index"
+  "CCI", "Chlorophyll/Carotenoid Index",
+  "CRI", "Chlorophyll Index Red",
+  "SIF", "Solar-Induced Fluorescence",
+  "EO", "Earth Observation",
+  "NIR", "Near Infrared",
+  "SWIR", "Short wave infrared",
+  "QA", "Quality Assurance",
+  "QC", "Quality Control"
 ) %>% 
   arrange(Abbreviation) %>% 
   gt() %>% 
