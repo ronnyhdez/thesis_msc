@@ -1,12 +1,48 @@
 # Acknowledgements {.unnumbered}
 
+Firstly, I would like to express my gratitude to Arturo Sánchez for providing me
+with the opportunity to contribute to the Tropi-dry project in Santa Rosa
+National Park, Costa Rica. Climbing the towers and delving into the remote
+sensing field for the first time was both a enjoyable and enriching experience.
+I am especially thankful for the encouragement to pursue graduate studies and
+the invaluable assistance in facilitating my journey to Canada, allowing me to
+become a part of the CEOS lab. Also, I want to thank Richard Fernandes whose
+guidance has been instrumental in pushing me further and navigating through a
+research area that has become truly fascinating to me. I appreciate your
+patience in answering my questions and explaining several concepts. Your
+mentorship has been incredibly helpful to me.
+
+Also, thanks to the many individuals who supported me before and during this
+journey. To my ixpantia colleagues, who generously took the time to assist me
+when I encountered coding puzzles, and specially to my friend Frans Van Dunné
+who took the time to not just explain me technical programming concepts, but
+also took the time for advising me on career path decisions and life. Your
+support was invaluable. To my CEOS lab partners, thank you for helping me
+navigate the various aspects of graduate studies and for all constructive
+feedback on my research.
+
+Finally, heartfelt thanks to my family, who believe in me more than I do. To
+María, a constant source of happiness and support despite the distance,
+navigating with me through all the ups and downs. To my mother, whom I strive to
+emulate in many aspects of my life. Your resilience in facing life, even in
+challenging moments, is truly admirable. Thank you for taking care of me, even
+when I knew you were carrying so much on your shoulders. Special thanks to my
+grandmother, Abi, who always encouraged me to study. She knew that, regardless
+of circumstances, education was our path to a better quality of life.
+
+My Master's culmination was made financially possible, thanks to the Canadian
+Centre for Remote Sensing through its Research Affiliate Program Bursary
+Agreement, and the Atmospheric Sciences Department, which supported me through
+teaching assistantships. Additionally, I had the opportunity to participate in
+the American Geophysical Union Fall Meeting 2022 to present my research, thanks
+to funding provided by the University of Alberta through the Mary Louise Imrie
+Graduate Student Award and the Graduate Students' Association Academic Travel
+Grant.
 
 \tableofcontents
 \listoftables
 \listoffigures
 
-<!-- I want to thank my supervisor Arturo Sánchez who gave me the opportunity to -->
-<!-- come to Canada, but specially for encouraging me to purse grad studies. During -->
-<!-- my thesis and the ups and downs, Richard Fernandes was there to push me further -->
-<!-- and guide me through a research area that has turned into something really -->
-<!-- interesting to me. -->
+
+
+
