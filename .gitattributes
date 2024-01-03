@@ -49,3 +49,6 @@ data_ard/bartlett_daily_500.rds filter=lfs diff=lfs merge=lfs -text
 data_ard/bartlett_montly_250.rds filter=lfs diff=lfs merge=lfs -text
 data_ard/bartlett_montly_500.rds filter=lfs diff=lfs merge=lfs -text
 data_ard/borden_daily_500.rds filter=lfs diff=lfs merge=lfs -text
+data/flux_borden_oneflux filter=lfs diff=lfs merge=lfs -text
+data/FLX_US-Bar_FLUXNET2015_FULLSET_2005-2017_beta-3 filter=lfs diff=lfs merge=lfs -text
+data/FLX_US-UMB_FLUXNET2015_FULLSET_2007-2017_beta-4 filter=lfs diff=lfs merge=lfs -text
