@@ -41,7 +41,6 @@ vignettes/*.pdf
 /.quarto/
 
 _book/
-data
 data_satellite_processed 
 
 # Folders created with outputs
