@@ -3,15 +3,15 @@
 The study and assessment of ecosystem dynamics have greatly benefited from the
 development and advances of the remote sensing field [@running_continuous_2004; @baldocchi_how_2020-1]
 coupled with the growing freely available remote sensing 
-resources [@montero_standardized_2023]. Elements in the Earth surface exhibit
+data [@xiao_remote_2019]. Elements on the Earth surface exhibit
 distinctive spectral signatures arising from their physical properties and
-interactions with electromagnetic radiation. Environmental factors can affect
-these interactions modifying the spectral signatures which can provide insights
-about surface process when measured by remote
-sensing instruments [@montero_standardized_2023].
+interactions with electromagnetic radiation [@montero_standardized_2023].
+Environmental factors (fires, floods, drought, etc) can affect these
+interactions modifying the spectral signatures which can provide insights about 
+surface process when measured by remote sensing instruments [@montero_standardized_2023].
 
 The launch in the 1970's of the  Earth Resources Technology Satellite (ERTS),
-later known as Landsat-1 [@houborg_advances_2015], initiated a new era in the 
+later known as Landsat-1 [@donato_landsat_nodate], initiated a new era in the 
 remote sensing field of the terrestrial biosphere, with a special focus on 
 vegetation monitoring [@montero_standardized_2023]. With information available
 about spectral bands, studies about their relations to biophysical
@@ -19,8 +19,8 @@ characteristics became an object of study to estimate biomass and photosynthetic
 activity [@myneni_estimation_1997]
 
 In fact, one application of remote sensing have been the development of
-vegetation indices to study the characteristics of vegetation canopies and
-functioning [@houborg_advances_2015] Vegetation indices can give us information 
+vegetation indices (VI) to study the characteristics of vegetation canopies and
+functioning [@houborg_advances_2015]. VIs contains information 
 about the status of the vegetation given the information derived from mathematical
 equations from the values of two or more spectral bands, typically derived from
 satellite images. [@zeng_optical_2022]. Their interpretation is based on the
