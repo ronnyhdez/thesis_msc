@@ -2,7 +2,7 @@
 
 Methods to quantify Gross Primary Production (GPP) are classified into two
 categories: Eddy Covariance techniques (EC) and satellite data-driven. EC
-techniques can measure carbon fluxes directly, albeit of spatial constraints.
+techniques can measure carbon fluxes directly, albeit with spatial constraints.
 Satellite data-driven methods are promising because they overcome spatial
 constraints associated with EC techniques. However, there are challenges
 associated with an increase in uncertainty when estimating GPP from
