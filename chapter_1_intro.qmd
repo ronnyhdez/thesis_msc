@@ -20,26 +20,27 @@ activity [@myneni_estimation_1997]
 
 In fact, one application of remote sensing have been the development of
 vegetation indices (VI) to study the characteristics of vegetation canopies and
-functioning [@houborg_advances_2015]. VIs contains information 
-about the status of the vegetation given the information derived from mathematical
-equations from the values of two or more spectral bands, typically derived from
-satellite images. [@zeng_optical_2022]. Their interpretation is based on the
-theoretical background about the interaction of the light with vegetation
-[@zeng_optical_2022]
+functioning [@houborg_advances_2015]. VIs are a function of two or more 
+spectral bands, typically derived from satellite images [@zeng_optical_2022]. 
+that can contain information about the status of the vegetation, biochemical
+characteristics, structural characteristics such as Leaf Area Index 
+(LAI), among others [@huete_overview_2002].
 
 Early studies about spectral bands relations, lead to the development of the
-NDVI which showed how the NIR and Red ratio had advantages over other bands
-ratios for monitoring vegetation [@tucker1979red]. It rationale lays in the
-interplay of  the chlorophyll absorbing red spectral region with the
-non-absorbing leaf reflectance signal in the NIR region, that can give optical
-measurements of the vegetation greenness and other biophysical processes.
-[@ramachandran_modis_2010]
+NDVI, which showed how the NIR and Red ratio had advantages over other bands
+ratios for monitoring vegetation biomass and structure given surface reflectance
+measurements in the shortwave spectrum [@tucker1979red; @richardson1977distinguishing].
+The basis of NDVI rests in the fact that chlorophyll absorption leads to a
+decrease in red reflectance with increasing green vegetation relative to the
+NIR reflectance, that is minimally impacted by chlrophyll absorption [@ramachandran_modis_2010].
 
-One of the advantages of NDVI is that the ratio normalize values with large
-variances [@ramachandran_modis_2010]. Nonetheless, this
-VI have disadvantages such as sensitivy to soil background and saturation at
-high biomass [@huete_overview_2002]. To overcome
-this problem, the EVI was designed to improve vegetation characterizations such
+The use of a relative indicator serves to reduce the effect of factors such as 
+canopy spatial structure and non-photosynthetic vegetation on relationships 
+between NDVI and biophysical variables such as biomass or absorbed 
+photosynthetically active radiation variances [@sellers_canopy_1987; @ramachandran_modis_2010].
+Nonetheless, this VI have disadvantages such as sensitivy to soil background and saturation at
+high biomass [@huete_overview_2002]. To overcome this problem, the Enhance
+Vegetation Index (EVI) was designed to improve vegetation characterizations such
 as canopy greenness without soil background sensitivity and aerosol variations
 by combining the blue, red, and NIR bands [@huete1988soil]. EVI is also less 
 prone to saturate at high biomass instances [@gao_opticalbiophysical_2000]
