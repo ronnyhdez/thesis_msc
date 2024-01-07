@@ -71,33 +71,33 @@ carbon from the atmosphere using only solar energy and nutrients [@xiao_remote_2
 GPP is responsive to a range of factors, including abiotic elements such as 
 radiation, temperature, and precipitation [@beer_terrestrial_2010], as well as biotic factors like
 vegetation type, leaf chemical traits, and species composition [@musavi_stand_2017].
+
 Some of the carbon taken in by GPP is release back to the atmosphere through
 plant respiration (autotrophic respiration), and the difference between GPP and
 plant respiration  is called Net Primary Productivity (NPP) [@lieth1975modeling; @xiao_remote_2019].
 GPP, along with Ecosystem Respiration (ER), which includes both autotrophic and
 heterotrophic respiration, together determines Net Ecosystem Exchange (NEE)
-[@xiao_remote_2019].
+[@xiao_remote_2019]. NEE is fundamental to the planetary carbon cycle as it 
+represents the net accumulation or loss of carbon by the ecosystem. Measurement 
+of GPP and NEE are critical to understanding the role of the biosphere in the 
+carbon cycle as well as the status and trends of vegetation productivity [@schimel_terrestrial_1995]
 
-EC is a method used to measure the exchange of energy and materials between
-ecosystems and the atmosphere within an area that can range from a few hundred
-meters to a few kilometers [@pabon-moreno_potential_2022]. Specifically, EC
-systems measure NEE, which has to be break down into its parts: GPP and
-respiration **for quantifycation** [@reichstein_separation_2005]. Despite being
-a more directly method to estimate GPP, EC systems have a spatial constrain that
-depends on the tower flux footprint [@baldocchi_how_2020-1].
+Eddy Covariance (EC) is a method used to measure the exchange of energy and 
+materials between ecosystems and the atmosphere within an area that can range 
+from a few hundred meters to a few kilometers [@pabon-moreno_potential_2022].
+Specifically, EC methods can estimate GPP in-situ at temporal resolution of 
+seconds, by subtracting estimates of respiration from chamber measurements or models
+from direct measurements of NEE [@reichstein_separation_2005]. However, EC 
+estimates are both, costly and limited in spatial coverage [@baldocchi_how_2020-1].
 
 Since direct GPP measurements from satellites are not presently available, one
-of the primary objectives of remote sensing is to enhance GPP estimation
-accuracy without the spatial constriction [@xiao_remote_2019]. In this context,
-EC values prove invaluable as a comparative metric when contrasting VIs values
+of the primary objectives of remote sensing is to enhance the spatial coverage
+of EC GPP estimates [@xiao_remote_2019]. In this context,
+EC values prove invaluable as information for calibrating VIs values
 with GPP inferred from flux towers [@ramachandran_modis_2010]. The utilization
 of EC measurements bridges the gap in GPP assessment, providing a practical
 means to evaluate and refine the reliability of remotely sensed data against
-ground-based observations [@xiao_remote_2019]. This methodological approach
-aligns with the overarching goal of leveraging remote sensing techniques to
-advance our understanding  of the magnitude, spatial patterns, inter annual
-variability and long-term trends of ecosystem Carbon dynamics at landscape,
-regional and global scales [@xiao_remote_2019].
+ground-based observations [@xiao_remote_2019]. 
 
 Various methods exist for estimating GPP through satellite measurements.
 Satellite-derived VIs serve as commonly employed proxies for GPP, whereas
@@ -125,10 +125,10 @@ physiological processes governing vegetation productivity.
 However, both Light Use Efficiency (LUE) models and process-based models demand
 a multitude of inputs, some of which may not be readily available for all sites.
 In such cases, a data-driven approach becomes particularly advantageous, and VIs
-serve as effective proxies for GPP estimation. Notably, emerging VIs like NIRv
-demonstrate a capability to account for 68% of the monthly variability in GPP
-across fluxnet sites [@badgley_terrestrial_2019]. Additionally, indices like
-CCI, a pigment-based index designed to capture carotenoid/chlorophyll ratios
+serve as effective proxies for GPP estimation. Notably, emerging VIs like 
+the Near-Infrared Reflectance Index (NIRv) demonstrate a capability to account 
+for 68% of the monthly variability in GPP across 105 fluxnet sites [@badgley_terrestrial_2019]. 
+Additionally, indices like CCI, a pigment-based index designed to capture carotenoid/chlorophyll ratios
 during seasonal photosynthetic activity in evergreen leaves [@gamon_remotely_2016],
 have demonstrated proficiency as estimators of GPP in certain forest types. These
 indices offer valuable insights into the dynamics of vegetation productivity.
