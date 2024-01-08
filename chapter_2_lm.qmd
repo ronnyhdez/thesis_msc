@@ -21,12 +21,7 @@ respiration to land carbon fluxes [@anav_spatiotemporal_2015]. Instead, GPP can
 be inferred in a nondestructive manner by the net carbon exchange measurements
 at the ecosystem level, or at broarder scales using models that incorporate
 various assumptions and limitations [@reichstein_separation_2005;
-@jung_towards_2009]. One widely used approach for approximating and quantifying
-GPP involves employing data-driven models based on spectral vegetation indices
-(VIs) [@ryu_what_2019] However, GPP estimation using spectral VIs remain with
-high uncertainties, prompting the need for validation efforts are required to
-identify approaches to improve accuracy. [@anav_spatiotemporal_2015;
-@brown_fiducial_2021]
+@jung_towards_2009].
 
 GPP estimations can be grouped into two broad categories: Eddy Covariance (EC)
 techniques, and satellite data-driven methods [@guan_comparison_2022;
@@ -84,9 +79,9 @@ $$
 GPP = PAR \times fAPAR \times LUE
 $$ {#eq-gpp}
 
-Where `PAR` is the incident photosynthetically active radiation
+Where PAR is the incident photosynthetically active radiation
 [@monteith2013principles] and `fAPAR` is the fraction of the PAR that is
-effectively absorbed by plants [@gcos200]. The `LUE` term depends on vegetation
+effectively absorbed by plants [@gcos200]. The LUE term depends on vegetation
 type but also physiological conditions driven by water availability, temperature
 stress, and vapour pressure deficit [@goetz_mapping_1999;
 @running_general_1988]. Obtaining these variables for every vegetation type on
@@ -115,7 +110,7 @@ between the red and near-infrared regions of the electromagnetic spectrum
 photosynthetically active radiation (fAPAR) and LUE on
 productivity.[@myneni_relationship_1994]
 
-Nonetheless, even when estimating GPP from satellite remote sensing methods is
+Nonetheless, while estimating GPP from satellite remote sensing methods is
 promising to overcome limitations as temporal and spatial scale, there are some
 challenges involved in the process. The first constraint is the use of images
 needed to address the problem of mixed-pixels, which requires determining the
@@ -167,13 +162,12 @@ during stress conditions [@monteith_solar_1972].
 Despite these efforts, relying solely on these remote satellite VIs presents a
 challenge. The assumptions accompanying VI models suggest the importance of
 systematically quantify their predictive capacity for GPP across various growing
-seasons and locations. Therefore, there is a demand to make efforts to validate
-and quantify their accuracy [@brown_fiducial_2021]. In-situ eddy-covariance flux
-measurements represent a solution given that they represent site-level
-observations. With the calculation of the flux footprint, the area from the flux
-tower can serve as a reference point in which satellite images can be linked to
-a specific set of pixels and calculate the accuracy of the estimations provided
-by the indices [@chu_representativeness_2021].
+seasons and locations. Therefore, there is a need to validate and improve their
+accuracy [@anav_spatiotemporal_2015; @brown_fiducial_2021]. In-situ
+eddy-covariance flux measurements coupled with locally calibrated models for
+respiration [@baldocchi_how_2020] represent a a suitable reference GPP for
+validation solution given that they represent site-level observations
+[@chu_representativeness_2021].
 
 As such, the main objective of this M.Sc. thesis is the analysis of uncertainty
 associated with the VI/LUE models to estimate GPP. These models eliminate the
