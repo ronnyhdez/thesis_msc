@@ -16,7 +16,7 @@ by plants through photosynthesis [@badgley_terrestrial_2019]. Quantifying GPP is
 essential for understanding land-atmosphere carbon exchange
 [@kohler_global_2018], ecosystem function, and ecosystem responses to climate
 change [@guan_comparison_2022; @brown_fiducial_2021; @myneni_relationship_1994].
-However, terrestrial GPP cannot be directly estimated due to the contribution of
+However, terrestrial GPP cannot be directly measured due to the contribution of
 respiration to land carbon fluxes [@anav_spatiotemporal_2015]. Instead, GPP can
 be inferred in a nondestructive manner by the net carbon exchange measurements
 at the ecosystem level, or at broarder scales using models that incorporate
