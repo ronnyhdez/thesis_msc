@@ -89,6 +89,12 @@ Specifically, EC methods can estimate GPP in-situ at temporal resolution of
 seconds, by subtracting estimates of respiration from chamber measurements or models
 from direct measurements of NEE [@reichstein_separation_2005]. However, EC 
 estimates are both, costly and limited in spatial coverage [@baldocchi_how_2020-1].
+Also, uncertainties from this method lies in the typical increase in spatial and temporal 
+variability in GPP over heteregeneous landscapes such as forest boundaries [@reinmann_edge_2017].
+The prevalent practice of taking measurements primarily from intact forests 
+introduces the risk of potentially misleading estimations for the broader forest 
+being quantified, given the potential differences in dynamics between edge and
+interior environments [@smith_piecing_2018].
 
 Since direct GPP measurements from satellites are not presently available, one
 of the primary objectives of remote sensing is to enhance the spatial coverage
@@ -134,33 +140,16 @@ have demonstrated proficiency as estimators of GPP in certain forest types. Thes
 indices offer valuable insights into the dynamics of vegetation productivity.
 
 Despite the notable progress in VIs development and their user-friendly
-applications, their effective use demands a experience and a strong theoretical
-background to navigate potential pitfalls and ensure accurate and meaningful
-interpretations of the data [@zeng_optical_2022]. There is a consensus that no
-single VI can be universally applied to address every problem or situation.
-Thus, a meticulous understanding of the specific context and characteristics of
-the site is essential to derive more accurate and insightful information from
-the data [@zeng_optical_2022].
-
-Uncertainty poses additional challenges to remote sensing applications, with
+applications there is a consensus that no single VI can be universally applied 
+to address every GPP estimation across 
+species and time periods, even for a single biome [@zeng_optical_2022].
+VI measurement error poses additional challenges to remote sensing applications, with
 diverse sources affecting satellite-derived data, including atmospheric effects,
 retrieval errors, cloud contamination, and sensor degradation
-[@van_leeuwen_multi-sensor_2006; @fang_theoretical_2012]. Another contributing
-factor to uncertainties lies in the variations of carbon uptake and storage,
-which can be higher in forest edges. [@reinmann_edge_2017] The prevalent
-practice of taking measurements primarily from intact forests introduces the
-risk of potentially misleading estimations for the broader forest being
-quantified, given the potential differences in dynamics between edge and
-interior environments [@smith_piecing_2018].
-
-Moreover, while emerging indices show promise as better proxies for
-physiological processes, ongoing technological developments have limitations in
-terms of spatial/temporal resolution which can still be not the best to conduct
-more studies that can be applied easily to more ecosystems [@zeng_optical_2022].
-One notable example is SIF, which holds the advantage of being directly related
-to photosynthetic activity [@magney_mechanistic_2019]. In contrast, Vegetation
-Indices (VIs) are primarily associated with photosynthetic capacity
-[@sellers_canopy_1985]
+[@van_leeuwen_multi-sensor_2006; @fang_theoretical_2012]. Thus, a quantitative 
+and rigorous understanding of the specific context and 
+characteristics of multiple sites is essential to understand the potential and 
+limits of VIs for GPP estimation over large extents of space and time. [@zeng_optical_2022].
 
 Together with the advancement of new VIs, there has been a upsurge in data
 analysis methods, specifically Machine Learning (ML) approaches, has garnered
@@ -173,10 +162,14 @@ sites play a pivotal role in influencing the accuracy and variability of
 regional flux estimates derived from machine learning methods
 [@papale_effect_2015].
 
-In this study, I assess the advantages and contraints associated with the
-utilization of 4 widely employed VIs for estimating GPP. The study specifically
-focuses on VIs derived from the MODIS, which have long standing temporal records
-and acceptable spatial resolution to study extended forest areas. The analysis
+The goal of this study is to assess the advantages and contraints associated with the
+utilization of 4 widely employed VIs for estimating GPP. The study is limited 
+to temperate broadleaf forests of Eastern United States of America and Canada 
+as it required consistent multi-annual EC GPP measurements over multiple sites 
+to quantify uncertainty related to spatial location of calibration data. The 
+VIs are derived from the Moderate Resolution Imaging Spectroradiometer (MODIS),
+which have long standing temporal records and acceptable spatial resolution to 
+study extended forest areas. The analysis
 employs both traditional regression methods and ML techniques to evaluate the
 performance of these indices in estimating GPP. This methodological approach
 seeks to provide a nuanced understanding of the efficacy and limitations of the
