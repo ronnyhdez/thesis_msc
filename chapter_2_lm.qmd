@@ -90,54 +90,46 @@ Earth can be challenging, introducing assumptions that amplify uncertainties
 constant for a given vegetation type, requiring only PAR and fAPAR to assess
 primary productivity [@running_continuous_2004].
 
-Satellite VIs have been used to apply @eq-gpp from regional to global extents
-[@running_continuous_2004]. VIs are a summary of non-linear functions of surface
-bi-directional reflectance spectra [@myneni_relationship_1994] derived from
-optical sensors that are combined with climate variables to calculate GPP
-[@wu_predicting_2011]. This is usually done with some form of regression and
-physical methods that associate interactions between vegetation and incoming
-radiation [@fernandez-martinez_monitoring_2019]
+VIs are the Satellite data-driven models third approach. VIs are a summary of
+non-linear functions of surface bi-directional reflectance spectra
+[@myneni_relationship_1994] derived from optical sensors that are combined with
+climate variables to calculate GPP [@wu_predicting_2011]. This is usually done
+with some form of regression and physical methods that associate interactions
+between vegetation and incoming radiation [@fernandez-martinez_monitoring_2019].
 
-VI's have been used to provide inputs to @eq-gpp related to fAPAR
-[@sellers_global_1994] or to directly estimate GPP such as normalized difference
-vegetation index (NDVI), enhanced vegetation index (EVI), Near-Infrared
-Reflectance Index (NIRv) and Chlorophyll/Carotenoid Index (CCI) among others.
-[@balzarolo_influence_2019; @rahman_potential_2005; @rahman_potential_2005;
+VIs have been used to provide inputs to @eq-gpp related to fAPAR from regional
+to global extents or to estimate GPP [@sellers_global_1994;
+@running_continuous_2004]. Some of the most common VIs to estimate GPP are the
+Normalized Difference Vegetation Index (NDVI), the Enhanced Vegetation Index
+(EVI), the Near-Infrared Reflectance Index (NIRv) or the Chlorophyll/Carotenoid
+Index (CCI) among others. [@balzarolo_influence_2019;
+@rahman_potential_2005; @rahman_potential_2005;
 @xie_assessments_2020; @badgley_terrestrial_2019; @zhang_potential_2020;
-@sellers_global_1994] These VIs are based on a spectral reflectance ratio
+@sellers_global_1994]. These VIs are based on a spectral reflectance ratio
 between the red and near-infrared regions of the electromagnetic spectrum
 [@glenn_relationship_2008] which tracks an integrated impact of fraction of
 photosynthetically active radiation (fAPAR) and LUE on
-productivity.[@myneni_relationship_1994]
+productivity [@myneni_relationship_1994].
 
-Nonetheless, while estimating GPP from satellite remote sensing methods is
-promising to overcome limitations as temporal and spatial scale, there are some
-challenges involved in the process. The first constraint is the use of images
-needed to address the problem of mixed-pixels, which requires determining the
-fraction of the vegetated surface and its attributable signal
-[@badgley_canopy_2017]. A second challenge is that photosynthesis regulation can
-occur with no major changes in canopy structure or leaf pigments that can
-undergo without being detected with reflectance data
-[@pabon-moreno_potential_2022; @pierrat_diurnal_2022], and this could imply that
-temporal aggregation may be critical for VI models.
-
-The accuracy of GPP estimation through the use of VIs can be affected due to
-their limitation to predict spatial, temporal, interannual variability and
-trends. [@fernandez-martinez_monitoring_2019]. An index such as NDVI is good for
-detecting changes in seasonal variability, but it becomes saturated with high
-biomass conditions [@badgley_canopy_2017]. Other indices such as EVI can
-overcome this problem and be better suited for predicting GPP in large biomass
-forests [@badgley_canopy_2017] but it has been evaluated in a narrow range of
+An index such as NDVI is good for detecting structural vegetation changes in
+seasonal variability, but it becomes saturated with high biomass conditions
+[@badgley_canopy_2017]. Other indices such as EVI can overcome the soil and
+atmospheric effects by adding the blue band [@xxxhuete] and may be
+better suited for predicting GPP in large biomass forests
+[@badgley_canopy_2017]. Nonetheless, it has been evaluated in a narrow range of
 ecosystems and needs inputs of start and end dates of the growing seasons which
-can increase uncertainties [@shi_assessing_2017].
+can increase uncertainties [@shi_assessing_2017]. For specific types of
+ecosystems such as evergreen conifers, CCI can track the seasonality of daily
+GPP due to its sensibility to the chlorophyll/carotenoid pigment ratios [@gamon_remotely_2016]. 
 
-To overcome these problems, other indices have been formulated in recent years.
-One of these VIs is near-infrared reflectance index (NIRv)
-[@badgley_terrestrial_2019] NIRv is defined as the fraction of reflected NIR
+Other indices such as near-infrared reflectance index (NIRv) have been
+formulated to address the mixed-pixel effect (pixel with vegetated and
+non-vegetated features) and to determine the vegetation photsyntetic capacity
+[@badgley_terrestrial_2019]. NIRv is defined as the fraction of reflected NIR
 light that originates from vegetation. NIRv was originally proposed as a
 replacement for fPAR in LUE models in that the NIR and PAR reflectance of
 vegetation are correlated and the scaling by NDVI corrects for soil
-contributions in the signal [@badgley_terrestrial_2019] NIRv has been shown to
+contributions in the signal [@badgley_terrestrial_2019]. NIRv has been shown to
 have a stronger correlation to GPP at flux towers and on a regional basis than
 fAPAR notwithstanding the fact that GPP is directly related to fAPAR. NIRv has
 been extended to include a weighting with PAR [@dechant_nirvp_2022] and
@@ -146,44 +138,48 @@ of these approaches have been shown to have even stronger correlations with GPP
 than NIRv as could be expected since they either directly or indirectly weight
 the NIRv with PAR.
 
-The stronger correlation between the NIR indices to GPP versus indices based on
-fAPAR seemingly contradicts the hypotheses in the LUE model that GPP should be
-linearly related to fAPAR. There are two explanations: i. Many of the reported
-comparative studies use fAPAR based on VIs and not APAR. We hypothesize that the
-NIR indices are simply better estimators of APAR than these VI approximations
-due to lower measurement error for the NIR indices or a stronger physical
-relationship between them and APAR versus the historical VIs. ii. The strength
-of correlation between APAR and GPP depends on LUE having a linear relationship
-to observed APAR. While this may hold in some circumstances (e.g. early seasonal
-measurements for vegetation such as crops where leaf chlorophyll concentration
-increases during the growth phase) it is not the case in general and definitely
-during stress conditions [@monteith_solar_1972].
+The stronger correlation between the NIRv index to GPP in comparison to the
+correlation between VIs related to fAPAR and GPP seemingly contradicts the
+hypotheses in the LUE model that GPP should be linearly related to fAPAR. There
+are two explanations: i. Many of the reported comparative studies use fAPAR
+based on VIs and not APAR. We hypothesize that the NIR indices are simply better
+estimators of APAR than these VI approximations due to lower measurement error
+for the NIR indices or a stronger physical relationship between them and APAR
+versus the historical VIs. ii. The strength of correlation between APAR and GPP
+depends on LUE having a linear relationship to observed APAR. While this may
+hold in some circumstances (e.g. early seasonal measurements for vegetation such
+as crops where leaf chlorophyll concentration increases during the growth phase)
+it is not the case in general and definitely during stress conditions
+[@monteith_solar_1972].
 
-Despite these efforts, relying solely on these remote satellite VIs presents a
+Despite these efforts, relying solely on remote satellite VIs presents a
 challenge. The assumptions accompanying VI models suggest the importance of
-systematically quantify their predictive capacity for GPP across various growing
-seasons and locations. Therefore, there is a need to validate and improve their
-accuracy [@anav_spatiotemporal_2015; @brown_fiducial_2021]. In-situ
-eddy-covariance flux measurements coupled with locally calibrated models for
-respiration [@baldocchi_how_2020] represent a a suitable reference GPP for
-validation solution given that they represent site-level observations
-[@chu_representativeness_2021].
+systematically quantify their predictive capacity for GPP to validate and
+improve their accuracy [@anav_spatiotemporal_2015;
+@brown_fiducial_2021] across various growing seasons and locations. This is
+particularly crucial because photosynthesis regulation can occur with no major
+changes in canopy structure or leaf pigments that can undergo without being
+detected with reflectance data [@pabon-moreno_potential_2022;
+@pierrat_diurnal_2022], implying that temporal aggregation may be critical for
+VI models. In-situ eddy-covariance flux measurements coupled with locally
+calibrated models for respiration [@baldocchi_how_2020] represent a suitable
+reference GPP for validation solution given that they represent site-level
+observations [@chu_representativeness_2021].
 
-As such, the main objective of this M.Sc. thesis is the analysis of uncertainty
-associated with the VI/LUE models to estimate GPP. These models eliminate the
-need for detailed knowledge about canopy and soil properties, relying instead on
-measurements of reflected light with potential corrections for soil
-contribution. The focal point of my research is to quantify the uncertainty
-inherent in these models, particularly when the variation in environmental
-condictions (E) is controlled. This control is achieved by selecting sites that
-share the same land cover, climate, and biome characteristics. However,
-considering the reviewed studies, we hypothesize that the uncertainty of this
-approach will depend on the nature of the VI and the spatial and temporal
-aggregation of application. By isolating these factors, I aim to provide nuanced
-understanding of the reliability and robustness of the VIs models in predicting
-GPP for multiple growing seasons from the Bartlett Experimental Forest (USA),
-the Borden Forest Research Station flux-site (Canada), and the University of
-Michigan Biological Station (USA).
+As such, the main objective of this M.Sc. thesis chapter is to quantify and
+compare the uncertainty associated with the VI/LUE models to estimate GPP. To
+control for variability in environmental conditions (E), sites are selected that
+share the same land cover, climate, and biome characteristics. VIs models are
+evaluated by comparison to EC based estimates of GPP for multiple growing
+seasons from the Bartlett Experimental Forest (USA), the Borden Forest Research
+Station flux-site (Canada), and the University of Michigan Biological Station
+(USA). Considering the reviewed studies, we hypothesize that the uncertainty of
+this approach will depend on the nature of the VI and the spatial and temporal
+aggregation of application.
+
+
+
+
 
 \newpage
 
