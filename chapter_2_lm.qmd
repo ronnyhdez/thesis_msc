@@ -175,11 +175,11 @@ seasons from the Bartlett Experimental Forest (USA), the Borden Forest Research
 Station flux-site (Canada), and the University of Michigan Biological Station
 (USA). Considering the reviewed studies, we hypothesize that the uncertainty of
 this approach will depend on the nature of the VI and the spatial and temporal
-aggregation of application.
-
-
-
-
+aggregation of application. Specifically, we expect that i. the NIRv and CCI
+indices will consistently demonstrate a stronger correlation and lower
+prediction uncertainty for GPP compared to NDVI and EVI across the tested sites.
+ii. larger temporal aggregations will result in improved predictions due to the
+reduction in observation variability.
 
 \newpage
 
