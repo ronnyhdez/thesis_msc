@@ -306,7 +306,7 @@ locations = cells_body(columns = Variable, rows = 5)
 
 ```{r}
 #| label: fig-gpp_trends
-#| fig-cap: "GPP trends from the study sites on a daily (a), weekly (b), and monthly (c) basis for the University of Michigan Biological Station, Bartlett experimental forest, and the Borden Forest Research Station"
+#| fig-cap: "Reference in-situ GPP time series from the study sites on a daily (a), weekly (b), and monthly (c) basis for the University of Michigan Biological Station, Bartlett experimental forest, and the Borden Forest Research Station"
 #| fig-width: 11
 #| fig-height: 12
 #| echo: false
@@ -383,12 +383,13 @@ gpp_trends
 
 ### Satellite imagery
 
-We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate
-Resolution Imaging Spectroradiometer (MODIS), specifically the collection
-MOD09GA Version 6.1 product (MODIS/Terra Surface Reflectance Daily L2G Global 1
-km and 500 m SIN Grid). A square polygon with an area of 3km surrounding the EC
-tower was defined for each site, and the complete data pixel values within this
-polygon was extracted for analysis.
+We used data from the Terra Moderate Resolution Imaging Spectroradiometer
+(MODIS), specifically the collection MOD09GA Version 6.1 product (MODIS/Terra
+Surface Reflectance Daily L2G Global 1 km and 500 m SIN Grid) chosen for its
+daily sampling and broad temporal coverage. Data retrieval was performed using
+Google Earth Engine (GEE). For each site, a square polygon with an area of 3 km
+surrounding the EC tower was defined, and the pixel values within this polygon
+were extracted for comprehensive analysis.
 
 The MODIS contains the surface spectral reflectance from bands to 1 through 7
 with a spatial resolution of 500m, with corrections for atmospheric conditions
