@@ -114,7 +114,7 @@ productivity [@myneni_relationship_1994].
 An index such as NDVI is good for detecting structural vegetation changes in
 seasonal variability, but it becomes saturated with high biomass conditions
 [@badgley_canopy_2017]. Other indices such as EVI can overcome the soil and
-atmospheric effects by adding the blue band [@xxxhuete] and may be
+atmospheric effects by adding the blue band [@huete1988soil] and may be
 better suited for predicting GPP in large biomass forests
 [@badgley_canopy_2017]. Nonetheless, it has been evaluated in a narrow range of
 ecosystems and needs inputs of start and end dates of the growing seasons which
@@ -256,13 +256,14 @@ The second flux site is Borden Forest Research Station located in Ontario
 (44°19′N, 79°56′W), Canada. This is one of the largest patches of forest in
 Southern Ontario which has been collecting EC data since 1996
 [@rogers_response_2020]. This site has a forest cover of over 60% with a height
-that exceeds 2 m. It's a deciduous broadleaf natural re-growth forest dominated
-by woody vegetation. [@lee_long-term_1999].
+that exceeds 2 m. It's a deciduous broadleaf natural re-growth forest since 1916
+dominated by woody vegetation. [@lee_long-term_1999].
 
 The third site is the University of Michigan Biological Station which is located
 in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
-different succesional stages and a mean height of 2m. Mean annual temperature is
-around 5.5°C. [@gough_disturbanceaccelerated_2021]
+different succesional stages, with an average stand age of 90 years
+[@gough_wood_2010], and a mean height of 2m. Mean annual temperature is around
+5.5°C. [@gough_disturbanceaccelerated_2021]
 
 The three sites exhibit similar characteristics, indicating their representation
 of a specific ecosystem type. This uniformity enables meaningful comparisons and
