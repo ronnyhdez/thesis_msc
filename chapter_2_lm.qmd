@@ -667,9 +667,11 @@ distinction.
 In total, per each site plus the category of all-sites we created 5 linear
 models and 5 GAM models for every timescale (daily, weekly, and monthly): one
 per each index (NDVI, CCI, EVI, NIRv) and one with all the indices as covariates
-(NDVI + CCI + EVI + NIRv), resulting in a total of 120 models. To compare the
-performance of the models we calculated the coefficient of determination (R²),
-the Root Mean Squared Error (RMSE), and the Mean Absolute Error (MAE)
+(NDVI + CCI + EVI + NIRv), resulting in a total of 120 models. To assess and
+compare the models' performance, we calculated the coefficient of determination
+(R²) to measure the correlation between the actual observations and predictions.
+Additionally, we used the Root Mean Squared Error (RMSE) and the Mean Absolute
+Error (MAE) as indicators of the model estimation error.
 
 \newpage
 
