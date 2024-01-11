@@ -643,27 +643,26 @@ daily_plot_500 %>%
 
 ### Data Analysis
 
-Two distinct modelling approaches were employed to estimate GPP by utilizing the
-calculated VIs: a linear model and a Generalized Additive Model (GAM). These
-models were created to evaluate the performance of individual indices as well as
-their collective performance, while simultaneously considering the effects of
-individual site characteristics and the aggregation of sites across various
-temporal scales.
+To address the potential non-linearity of the lowest uncertainty data-driven
+model across different temporal aggregation scales or for specific VIs, we
+employed two distinct modelling approaches: a Linear Model (LM) and a
+Generalized Additive Model (GAM). GAM models allows a better fit for those cases
+where the distribution and variability observed in the data is greater, due to
+the varying temporal scales. We aimed to evaluate whether this variance could be
+better explained by this type of model, that might not be optimal to capture
+with a linear relationship, potentially leading to greater residuals. Both
+model's approaches were applied individually to test our hypothesis regarding VI
+predictive uncertainty. Additionally, a single model was applied to assess
+whether a combination of VIs could improve GPP estimation uncertainty.
 
 This facilitated a comparative analysis of how each individual index
-independently explains the variation in GPP per site. Additionally, with the
-uniform nature of the three examined forest sites, an evaluation was performed
-to explore the GPP relationship without the distinction of the specific sites,
-considering each vegetation index individually. Another step of the analysis was
-the examination of the relationship between GPP and all indices functioning as
-covariates, both on an individual site basis and without site distinction.
-
-We applied the same methodology to the GAM models which allows a better fit for
-those cases where the distribution and variability observed in the data is
-greater, due to the varying temporal scales. We aimed to evaluate if this
-variance could be better explained by this type of model, that might not be
-optimal to capture with a linear relationship, potentially leading to greater
-residuals.
+independently explains the variation in GPP per site. Additionally, the
+performance of each VI was also evaluated using models calibrated using all
+sites to assess their robustness to spatial variability within the selected
+temperate broadleaf biome across various temporal scales. Another step of the
+analysis was the examination of the relationship between GPP and all indices
+functioning as covariates, both on an individual site basis and without site
+distinction.
 
 In total, per each site plus the category of all-sites we created 5 linear
 models and 5 GAM models for every timescale (daily, weekly, and monthly): one
