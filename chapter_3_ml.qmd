@@ -81,10 +81,10 @@ values only until later when the stress conditions persist [@tramontana_uncertai
 This chapter evaluates data drive approaches for estimating GPP given MODIS
 surface reflectance data for temperate broadleaf forests in North America.  Two
 state of the art approaches previously used for GPP estimation are tested:
-regression random forests (xx) and AutoML (xx) to understand how the ML
-algorithm impacts prediction uncertainty.  Both approaches tested locally and
-using pooled data from three sites to quantify their ability to be applied over
-larger spatial extents.
+regression random forests [@sohil_introduction_2022] and AutoML [@ledell2020h2o]
+to understand how the ML algorithm impacts prediction uncertainty.  Both
+approaches tested locally and using pooled data from three sites to quantify
+their ability to be applied over larger spatial extents.
 
 \newpage
 
@@ -148,16 +148,14 @@ For this study, we selected three deciduous broadleaf forest forests sites:
 University of Michigan Biological Station located in northern Michigan, USA
 (45°350 N 84°430 W), Bartlett experimental forest in New Hampshire, USA (44°06
 N, 71°3 W), and the Borden Forest Research Station (44°19 N, 79°56 W) in
-Ontario, Canada.
+Ontario, Canada. These sites were selected to ensure they represented a single
+ecosystem type, characterized by shared environmental features. This approach
+allowed us to treat the dataset as a representation of a specific vegetation
+type terrestrial ecosystem.
 
 In-situ data such as GPP was obtained utilizing the ONEFlux estimation
 processing by Ameriflux. Here, we selected GPP estimation done by the daytime
 method [@pastorello2020fluxnet2015] on a daily, weekly, and monthly basis.
-
-These sites were selected to ensure they represented a single ecosystem type,
-characterized by shared environmental features. This approach allowed us to
-treat the dataset as a representation of a specific vegetation type terrestrial
-ecosystem.
 
 To capture seasonal variations and long-term trends, GPP data was collected over
 a minimum of 2 years. Specifically, University of Michigan Biological Station
@@ -185,16 +183,18 @@ Research Station from January 2015 to January 2022.
 
 ### Satellite imagery
 
-We used Google Earth Engine (GEE) to retrieve data from the Terra Moderate
-Resolution Imaging Spectroradiometer (MODIS), specifically the collection
-MOD09GA Version 6.1 product (MODIS/Terra Surface Reflectance Daily L2G Global 1
-km and 500 m SIN Grid). A square polygon with an area of 3km surrounding
-the EC tower was defined for each of the study sites, and the complete data
-pixel values within this polygon was extracted for analysis.
+We used Google Earth Engine (GEE) to retrieve the Terra Moderate Resolution
+Imaging Spectroradiometer (MODIS), specifically the collection MOD09GA Version
+6.1 daily 500m resolution surface reflectance products (MODIS/Terra Surface
+Reflectance Daily L2G Global 1 km and 500 m SIN Grid). A square polygon with an
+area of 3km surrounding the EC tower was defined for each of the study sites,
+and all daily data pixel values within this polygon was extracted for
+analysis.
 
-The MODIS collected data contains the surface spectral reflectance from bands to
-1 through 7 with a spatial resolution of 500m, with corrections for atmospheric
-conditions such as aerosols, gasses and Rayleigh scattering [@vermote2021modis].
+MOD09GA contains the surface spectral reflectance from bands to 1 through 7
+(@tbl-MODIS_500_complete_bands) with a spatial resolution of 500m, with
+corrections for atmospheric conditions such as aerosols, gasses and Rayleigh
+scattering [@vermote2021modis].
 
 We selected the highest quality pixels according to the 1km Reflectance Data
 State QA (`state_1km`) (@tbl-state_1km_bitstrings)  and Surface Reflectance 500m
@@ -203,10 +203,10 @@ just the highest quality pixels, all the band values were scaled by a factor of
 0.0001. If any value fell outside the range of 0 to 1 after the scaling, it was
 discarded.
 
-Once all the band values were scaled, we calculated 4 Vegetation Indices: NDVI,
-NIRv, EVI, and CCI. Then all the MODIS bands values and VIs were summarized in a
-daily, weekly, and monthly basis to be merge with the GPP values from ONEFlux. A
-description of the complete MODIS reflectance bands used is in @tbl-MODIS_500_complete_bands
+Once all the band values were scaled, we calculated 4 Vegetation Indices: `NDVI`
+(@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi), and `CCI` (@eq-cci). Then all
+the MODIS bands values and VIs were summarized in a daily, weekly, and monthly
+basis to be merge with the GPP values from ONEFlux.
 
 
 | **Name**    | **Description** | **Resolution** | **Wavelength** |
@@ -228,23 +228,27 @@ description of the complete MODIS reflectance bands used is in @tbl-MODIS_500_co
 A random forest is an ensemble learning technique that leverages the power of
 multiple decision trees to improve predictive accuracy and robustness. It
 combines regression and classification trees, constructing each tree from random
-subsets of both trained data and features. The final prediction is obtained by
-aggregating individual tree predictions, which are then averaged to produce the
-ultimate estimate. Additionally, at each split, the best predictor from the
-random subset is selected to effectively partition the 
-data [@sohil_introduction_2022; @meyer_improving_2018].
+subsets of both trained data and features [@sohil_introduction_2022]. The final
+prediction is obtained by aggregating individual tree predictions, which are
+then averaged to produce the ultimate estimate. Additionally, at each split, the
+best predictor from the random subset is selected to effectively partition the
+data and in the case of the regression random forest, the process is adapted
+to predict a continuous numeric outcome[@sohil_introduction_2022;
+@meyer_improving_2018].
 
-Regression Random forests were used as an approach to predict GPP by
-incorporating all available bands values (from B01 to B07) from the MODIS
-dataset and the calculated VIs. Three distinct models were developed, each one
-tailored for a specific time scale (daily, weekly, and monthly). This approach
-allowed us to assess the prediction performance of GPP at different time scales.
+Regression random forests were used as an approach to predict GPP as a function
+of all available MOD09GA bands values (from B01 to B07) and the calculated VIs.
+Three distinct models were developed, each one tailored for a specific time
+scale (daily, weekly, and monthly). This approach allowed us to assess the
+prediction performance of GPP at different time scales.
 
-To build and evaluate the model, we performed a random data splitting procedure,
-dividing the data into training set with 70% of the observations and a test set
-with the remaining 30%. We employed a stratified data split to ensure a
+Each model was calibrated using a random data splitting procedure, dividing the
+data into a training set with 70% of the observations and a test set with the
+remaining 30%. Due to the varying number of observations for each site, to avoid
+an imbalanced training dataset, we employed a stratified data split to ensure a
 proportional representation of each site category in both sets. To ensure
-reproducibility, we use a random number generator state throughout the process.
+reproducibility, we used a consistent random number generator state throughout
+the process.
 
 To implement the RF models, we use the `ranger` package in R
 [@wright_ranger_2017], utilizing 1000 trees within the forest ensemble. The
@@ -265,11 +269,11 @@ within each of the temporally aggregated models.
 
 ### AutoML
 
-To create a stacked ensemble of models and evaluate the performance, we utilized
-the H2O AutoML framework [@ledell2020h2o]. The AutoML approach is designed to
-identify the most optimal ML pipeline for a specific problem and available
-training data by evaluating different combinations of data processing steps, ML
-models and hyperparameters settings. [@gaber2023using]
+The AutoML approach is designed to identify the most optimal ML pipeline for a
+specific problem and available training data by evaluating different
+combinations of data processing steps, ML models and hyperparameters settings
+[@gaber2023using]. To create a stacked ensemble of models and evaluate the
+performance, we utilized the H2O AutoML framework [@ledell2020h2o].
 
 For the data training and evaluation, we randomly split the dataset into a
 training and a test set, allocating 80% and 20% of the observations,
@@ -280,10 +284,10 @@ data into an H2O frame to ensure compatibility with the AutoML process.
 
 After generating machine learning models and hyperparameter configurations, we
 imposed a time constraint of a maximum of 2 minutes for model training. The best
-performing models were then selected and used to form an ensemble. This trained
-ensemble model was used to generate predictions on the test set. Model
-performance was evaluated using metrics such as the coefficient of determination
-and the RMSE.
+performing models were then selected in terms of lower predictions erros and
+used to form an ensemble. This trained ensemble model was used to generate
+predictions on the test set. Model performance was evaluated using metrics such
+as the coefficient of determination and the RMSE.
 
 To asses the variable importance, we determined the influence of each variable
 on the model's predictions. The results of this analysis were visually
