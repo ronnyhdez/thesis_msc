@@ -328,11 +328,11 @@ calculated the contributions to each variable in predicting GPP for two cases:
 for a known high GPP value and a known low GPP value from the test data set.
 
 In the case of the daily model, we chose a low GPP value from the test dataset,
-specifically $0.01 \, \mathrm{gC \, m^{-2} \, d^{-1}}$and obtained a model 
-prediction of $0.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Our Shapley value 
-analysis showed that EVI, CCI and NIRv were the most influential attributes 
-affecting the model prediction (See @fig-shap_daily_500_rf **A**). Nonetheless,
-these VIs contribute negatively to the prediction, reducing the predicted GPP.
+specifically $0.01 \, \mathrm{gC \, m^{-2} \, d^{-1}}$and obtained a model
+prediction of $0.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Our Shapley value
+analysis showed that EVI, CCI and NIRv were the most influential attributes
+affecting the model prediction (See @fig-shap_daily_500_rf **A**). These VIs
+contribute negatively to the prediction, reducing the predicted GPP.
 
 Conversely, the high GPP value selected ($16.21 \, \mathrm{gC \, m^{-2} \, d^{-1}}$)
 from the test dataset, had a model prediction of $12.70 \, \mathrm{gC \, m^{-2} \, d^{-1}}$.
@@ -1299,15 +1299,15 @@ readRDS("models/automl_va_plot_monthly.rds") +
 ## Discussion
 
 These results underscore the temporal variations in model performance, with the
-monthly models having the best performance metrics in both, the regression
-random forest and the autoML.  However, the lower RMSE of the AutoML model
-signifies a more precise prediction in terms of the absolute errors. Given the
-higher R², regression RF captures a larger proportion of the variance in the
-dependent variable than the autoML. This discrepancy underscores the importance
-of considering multiple evaluation metrics when assessing model performance. The
-choice between these models may depend on the specific goals of the analysis,
-weighing the trade-off between explaining variability and achieving precision in
-predictions.
+monthly models having the best performance metrics for both, the regression
+random forest and the autoML.  The lower RMSE of the AutoML model indicates it
+can potentially result in lower uncertainty for monthly predictions than RF.
+Given the higher R², regression RF captures a larger proportion of the variance
+in the dependent variable than the autoML. This discrepancy underscores the
+importance of considering multiple evaluation metrics when assessing model
+performance. The choice between these models may depend on the specific goals of
+the analysis, weighing the trade-off between explaining variability and
+achieving precision in predictions.
 
 Upon examining the six specific predictions analyzed through Shapley values for
 the Random Forest models across all timeframes, it became evident that
@@ -1320,19 +1320,20 @@ GPP values, especially in the case of the daily model, it is noteworthy that the
 maximum predicted values hover around $16 \, \mathrm{gC \, m^{-2} \, d^{-1}}$,
 whereas observed values can reach up to $24 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
 (See @fig-daily_500_rf). Importantly, these values all belong to the Borden
-site, where GPP variability is notably higher compared to the other two sites.
+site, where the range on observed GPP  is notably higher compared to the other
+two sites.
 
-This discrepancy may arise from a potential lag between the change in
-photosynthetic rate and the concentration of photosynthetic pigments,
-particularly the change in chlorophyll. Since the predicted GPP values for the
-constructed models are solely based on reflectance values, the primary changes
-related to GPP that they can capture are APAR and, to some extent, chlorophyll
-concentration [@pabon-moreno_potential_2022]. Given that photosynthesis can
-change rapidly without significant alterations in pigment concentrations, there
-might be an overestimation of predicted values compared to observed and
-estimated GPP values at the site mediating EC. In situations of stress, the
-dynamics of GPP could shift unnoticed solely based on satellite reflectance
-values.
+The discrepancy between the observed values and the predicted values may arise
+from a potential lag between the change in photosynthetic rate and the
+concentration of photosynthetic pigments, particularly the change in
+chlorophyll. Since the predicted GPP values for the constructed models are
+solely based on reflectance values, the primary changes related to GPP that they
+can capture are APAR and, to some extent, chlorophyll concentration
+[@pabon-moreno_potential_2022]. Given that photosynthesis can change rapidly
+without significant alterations in pigment concentrations, there might be an
+overestimation of predicted values compared to observed and estimated GPP values
+at the site mediating EC. In situations of stress, the dynamics of GPP could
+shift unnoticed solely based on satellite reflectance values.
 
 Conversely, underestimation may be attributed to the well-known phenomenon of
 saturation. When using indices created with the NIR band for GPP estimation,
