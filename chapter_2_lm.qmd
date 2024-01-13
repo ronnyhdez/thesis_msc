@@ -685,7 +685,7 @@ The @tbl-lm_monthly_results provides a summary of linear models used for GPP
 estimation at each site, employing the vegetation indices as predictors. For
 each site and predictor, the table includes the relevant model summary
 statistics, such as R², MAE, and RMSE as indicators of the statistical
-significant of the model fits. More metrics such as the p-value, adjusted
+significant of the model fits. All models add p-values < 0.05More metrics such as the p-value, adjusted
 r-squared, the Akaike Information Criterion (AIC), and Bayesian Information
 Criterion (BIC) are displayed in the @tbl-complete_lm_monthly_results for
 monthly results, @tbl-complete_lm_weekly_results for weekly results, and the
@@ -1306,21 +1306,27 @@ etiquetas <- c(
 
 ## Discussion
 
-In summary, our analysis demonstrates that the incorporation of all VIs as
-covariates in the model yields enhanced predictive accuracy for GPP. This
-observation suggests that the synergistic utilization of all indices
-collectively provides a better capacity to elucidate and capture the nuanced
-variations in GPP throughout the entire study duration when contrasted with the
-predictive power of any individual VI.
+In summary, our LM results demonstrate that incorporating all VIs as covariates
+in the model enhances predictive accuracy for GPP compared to models using
+single VIs. This holds true across the three temporal scales and for each of the
+sites individually or when considered as part of the same biotype. This
+observation suggests that the relationship is really non-linear, and combining
+different VIs allows to use of a LM to capture non-linear patterns throughout
+the entire study duration, contrasting with the predictive power of any
+individual VI. Additionally, VIs exhibit different noise sensitivities
+[@zeng_optical_2022], which explains why using a single VI is insufficient to
+capture nuanced variations in GPP.
 
 Conversely, when aggregating all study sites indiscriminately to represent a
 unified ecosystem type, model metrics exhibit diminished performance compared to
-employing distinct models for each site. This diminished performance may be
-attributed to the introduction of variability inherent in the Borden site data,
-characterized by a substantial range in GPP values that proves challenging to
-encapsulate accurately. Further examination of GPP trends across Michigan and
-Bartlett, compared with those of Borden, reveals notably wider data ranges,
-particularly during periods of higher productivity @fig-gpp_trends.
+employing distinct models for each individual site. This decline in performance
+may be attributed to the introduction of variability inherent in the Borden
+site. The Borden site presents larger ranges of GPP values (see Figure
+@fig-gpp_trends) than the Bartlett and Michigan sites. Incorporating the Borden
+values together with those from the Bartlett and Michigan sites to represent a
+single ecosystem type in a model introduces higher GPP values that contribute to
+variability. This variability cannot be accurately tracked by the vegetation
+indices, resulting in a reduction in RMSE and R2.
 
 If such discrepancies arise when constructing models with identical
 specifications for various sites categorized under the same biotype ecosystem,
@@ -1329,8 +1335,12 @@ crucial. An approach like this one could open the possibility for a more
 accurate estimation of GPP by leveraging specific indices that might yield
 superior results for each distinct type of ecosystem potentially contributing to
 more robust and accurate global GPP estimations. For example, the study by
-[@lin_evaluating_2019] showed that Chlorophyll Index Red (CRI) had a better
-correlation with GPP, or CCI for evergreen conifers [@gamon_remotely_2016].
+[@lin_evaluating_2019] showed that Chlorophyll Index Red (CRI) had a betterThis
+hypothesis could be further elucidated through standardized processes for
+calculating GPP with in-situ data across all sites with flux towers available; a
+task currently in development by FLUXNET [@pastorello2020fluxnet2015].
+Standardized GPP values obtained through this process could then be used to
+train models and assess which VIs have the lowest errors when predicting GPP.
 
 The application of linear models, incorporating all VIs as covariates on a
 monthly basis, produced favourable outcomes in both model fit and residual
