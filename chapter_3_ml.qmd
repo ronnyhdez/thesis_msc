@@ -65,18 +65,18 @@ estimates or enable the use of reflectance values to predict GPP when no in-situ
 data is available in the present times [@meyer_improving_2018].
 
 These predictions can include many forms of uncertainty [@reichstein_deep_2019].
-One is that individual ML methods can have different responses, specially when
-these models are applied beyond the conditions presented in the training
-dataset. [@jung_towards_2009; @papale_effect_2015]. A second one is that the
-explanatory variables used in ML methods derived from satellite remote sensing,
-are partial on the about the vegetation state [@tramontana_predicting_2016], and
-subsequently lacks information required to explain the complete variability in
-fluxes [@tramontana_uncertainty_2015]
-
-
-
-
-
+One form is that individual ML methods can have different responses, specially
+when these models are applied beyond the conditions presented in the training
+dataset. [@jung_towards_2009; @papale_effect_2015]. Another form is related to
+the explanatory variables used in ML methods derived from satellite remote
+sensing, which are partial in providing information about the vegetation state
+[@tramontana_predicting_2016]. Consequently, they lack the information required
+to explain the complete variability in fluxes [@tramontana_uncertainty_2015].
+For instance, if a model is created using only reflectance data to estimate GPP
+without meteorological data, phenomena such as drought could lead to predicted
+values with large errors, given that stomata closure during water deficit have
+an immediate effect on the fluxes that can not be detected by the reflectance
+values only until later when the stress conditions persist [@tramontana_uncertainty_2015].
 
 This chapter evaluates data drive approaches for estimating GPP given MODIS
 surface reflectance data for temperate broadleaf forests in North America.  Two
@@ -85,9 +85,6 @@ regression random forests (xx) and AutoML (xx) to understand how the ML
 algorithm impacts prediction uncertainty.  Both approaches tested locally and
 using pooled data from three sites to quantify their ability to be applied over
 larger spatial extents.
-
-
-
 
 \newpage
 
