@@ -11,21 +11,23 @@ editor:
 The field of Earth Science has witnessed a transformative shift with the
 integration of Machine Learning (ML) methods, which had lead to a deeper
 understanding of our planet's complex ecosystems and processes
-[@reichstein_deep_2019]. ML methods have being used in recent years and are now
-well stablished in environmental sciences [@lary_machine_2016], harnessing the
-power of ML algorithms to explore diverse aspects of Earth's natural systems
-including research to understand vegetation characteristics and ecological
-patterns [@lehnert_retrieval_2015; @verrelst_machine_2012]
+[@reichstein_deep_2019]. ML methods are now well established in environmental
+sciences [@lary_machine_2016], including their use within studies aimed at
+mapping and quantifying  vegetation characteristics and ecological processes 
+such as [@lehnert_retrieval_2015; @verrelst_machine_2012]
 
-The increasing number of EC sites [@tramontana_predicting_2016] couple with the
+
+
+
+The increasing number of EC sites [@tramontana_predicting_2016] coupled with the
 continuously growing amount of Earth system data surpassing the dozens of
 petabytes [@reichstein_deep_2019], has lead to an emergence of purely
-data-driven methodologies. These approaches have been important to further
-develop the quantification of global terrestrial photosynthesis
-[@jung_global_2011; @tramontana_predicting_2016] and have demonstrated
-remarkable results in the regression estimation of biogeo-physical parameters
-using remotely sensed reflectance data, both at local and global scales
-[@coops_prediction_2003; @verrelst_retrieval_2012].
+data-driven methodologies for quantifying ecosystem status and  fluxes. These
+approaches have been important to further develop the quantification of global
+terrestrial photosynthesis [@jung_global_2011; @tramontana_predicting_2016] and
+have resulted in good progress in the regression estimation of biogeo-physical
+parameters using remotely sensed reflectance data, both at local and global
+scales [@coops_prediction_2003; @verrelst_retrieval_2012].
 
 Furthermore, these data-driven approaches have contributed significantly to the
 scientific community by providing spatial, seasonal, and interannual variations
@@ -58,12 +60,6 @@ rainforests when compared to climate models [@beer_terrestrial_2010]. This
 overestimation, has led to the creation of hypothesis for a better understanding
 of radiative transfer in vegetation canopies [@bonan_improving_2011] which can
 result in better photosynthesis estimates.
-
-To get the most of the Earth system data there are two major challenges. The
-first involves efficiently extracting valuable insights from the available data.
-The second is developing models that learn much more from data than traditional
-data assimilation approaches can, while still aligning with our evolving
-comprehension of nature's laws [@reichstein_deep_2019].
 
 Predicting dynamics in the biosphere is challenging given the biologically
 mediated processes [@reichstein_deep_2019]. "Prediction" term should not be
@@ -1367,7 +1363,7 @@ comprehensive model evaluation.
 
 \newpage
 
-## Conclussions
+## Conclusions
 
 In summary, the monthly models generated using both methods (RF and autoML)
 exhibited superior performance based on various metrics, surpassing the outcomes
