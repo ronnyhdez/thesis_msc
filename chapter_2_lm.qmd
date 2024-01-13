@@ -1342,18 +1342,21 @@ task currently in development by FLUXNET [@pastorello2020fluxnet2015].
 Standardized GPP values obtained through this process could then be used to
 train models and assess which VIs have the lowest errors when predicting GPP.
 
-The application of linear models, incorporating all VIs as covariates on a
-monthly basis, produced favourable outcomes in both model fit and residual
-metrics. This observation holds significance as, despite VIs serving as
-indicators of vegetation capacity rather than vegetation physiology, historical
-data records are predominantly derived from sensors equipped with bands for
-generating these VIs. Conversely, newer sensors capable of capturing additional
-bands to derive indices such as Solar-Induced Fluorescence (SIF) lack
-comprehensive historical records, hindering the feasibility of long-term studies
-that extend back to years preceding the 2000s.
+Considering the availability of data with daily, weekly, and monthly values, a
+pertinent question arises about the temporal scale's impact on GPP estimation.
+Our results indicate that models based on monthly data demonstrated better model
+fit for each model and smaller residuals metrics. This superiority may be
+attributed to reduced data variation, as daily values are aggregated into
+monthly summaries, leading to values more centralized around a mean which can
+reduce the measurement noise and concurrently mitigate the saturation effect of
+VIs for daily peaks. The performance of model fits and residuals metrics
+declined when transitioning from monthly to weekly and, subsequently, to daily
+values (See @fig-lm_residuals for LM residuals and @fig-gam_residuals for GAM
+residuals). Although the decrease in model fit was not substantial, the increase
+in residuals metrics suggests a potential for larger errors in predictions.
 
 While NDVI is one of the most used VIs in EO [@pabon-moreno_potential_2022],
-its performance, as measured by the RMSE, was comparatively less favorable on
+its performance, as measured by the GPP RMSE, was comparatively less favorable on
 two out of the three sites when compared to other indices. However, the
 performance variation among the sites was not significant, with the Bartlett
 experimental forest showing slightly better results in all GPP ~ VIs
@@ -1361,18 +1364,6 @@ relationships compared to the other sites. These findings suggest that, although
 NDVI may not be the most optimal vegetation index for GPP estimation at these
 specific sites, variations in performance across different locations are still
 noteworthy. 
-
-Considering the availability of data with daily, weekly, and monthly values, a
-pertinent question arises concerning the significance of the time range in GPP
-estimation. Our results indicate that models based on monthly data demonstrated
-better model fit for each model and smaller residuals metrics. This superiority
-may be attributed to reduced data variation, as daily values are aggregated into
-monthly summaries, leading to values more centralized around a mean. The
-performance of model fits and residuals metrics declined when transitioning from
-monthly to weekly and, subsequently, to daily values (See @fig-lm_residuals for
-LM residuals and @fig-gam_residuals for GAM residuals). Although the decrease in
-model fit was not substantial, the increase in residuals metrics suggests a
-potential for larger errors in predictions.
 
 When examining the data trends for GPP at each site and its relationship with
 VIs, it becomes evident that at higher GPP values, the dispersion of the data is
@@ -1388,6 +1379,14 @@ healthy plant biomass is present. The increased biomass leads to greater
 scattering and reflection of NIR radiation, resulting in a saturation effect
 [@camps-valls_unified_2021-2].
 
+This observation holds significance as, despite VIs serving as
+indicators of vegetation capacity rather than vegetation physiology, historical
+data records are predominantly derived from sensors equipped with bands for
+generating these VIs. Conversely, newer sensors capable of capturing additional
+bands to derive indices such as Solar-Induced Fluorescence (SIF) lack
+comprehensive historical records, hindering the feasibility of long-term studies
+that extend back to years preceding the 2000s.
+
 The application of both LM and GAM models to the dataset revealed some
 differences in model performance. The GAM model exhibited a slightly superior
 performance in capturing the underlying patterns within the weekly and daily
@@ -1399,7 +1398,18 @@ results suggest that the GAM framework may be more suitable for capturing the
 nuances present in the dataset, emphasizing the importance of considering model
 flexibility when analyzing non-linear relationships.
 
-## Conclussions
+It is worth noticing that using a GAM model with only CCI as a predictor,
+performs almost as well as the GAM model with all the VIs as covariates. This
+could imply that the limitation in using a single VI with a LM arises from its
+to capture the non-linear nature of the relationship. A selection of a
+proficient VI with a non-linear model could better estimate GPP without the need
+of creating models with multiple predictors. In this scenario, the GAM model
+with CCI to estimate GPP emerges as a potentially adequate choice among
+generalized linear fits. However, this assessment does not address the question
+of whether combining diverse models could offer more robustness, as such an
+approach might implicitly incorporate spatial variability to a certain degree.
+
+## Conclusions
 
 In conclusion, our analysis demonstrates that incorporating all VIs as
 covariates in our models yields a substantial improvement in predictive accuracy
@@ -1411,13 +1421,15 @@ observations that makes tracking GPP challenging. A similar pattern is observed
 when using GAM; however, weekly and daily GAM models outperform LM models.
 
 Notably, no single VI emerges as the universal best predictor for every site or
-time aggregation. Moreover, the impact of large variations in GPP ranges within
-a site is evident in the quality of predictions. These variations introduce
-complexities and uncertainties, emphasizing the necessity of accounting for
-local site characteristics and inherent heterogeneity when aiming for accurate
-predictions of GPP. Growing seasons exhibit the most pronounced variability,
-posing challenges for vegetation indices that saturate at high biomass
-concentrations, making it more difficult to track changes in GPP.
+time aggregation, but CCI with a GAM model emerges as a potentially adequate
+choice among generalized linear fits. Moreover, the impact of large variations
+in GPP ranges within a site is evident in the quality of predictions. These
+variations introduce complexities and uncertainties, emphasizing the necessity
+of accounting for local site characteristics and inherent heterogeneity when
+aiming for accurate predictions of GPP. Growing seasons exhibit the most
+pronounced variability, posing challenges for vegetation indices that saturate
+at high biomass concentrations, making it more difficult to track changes in
+GPP.
 
 \newpage
 
