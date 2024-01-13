@@ -16,12 +16,12 @@ remote sensing field of the terrestrial biosphere, with a special focus on
 vegetation monitoring [@montero_standardized_2023]. With information available
 about spectral bands, studies about their relations to biophysical
 characteristics became an object of study to estimate biomass and photosynthetic
-activity [@myneni_estimation_1997]
+activity [@myneni_estimation_1997].
 
 In fact, one application of remote sensing have been the development of
 vegetation indices (VI) to study the characteristics of vegetation canopies and
 functioning [@houborg_advances_2015]. VIs are a function of two or more spectral
-bands, typically derived from satellite images [@zeng_optical_2022]. that can
+bands, typically derived from satellite images [@zeng_optical_2022] that can
 contain information about the status of the vegetation, biochemical
 characteristics, structural characteristics such as Leaf Area Index (LAI), among
 others [@huete_overview_2002].
@@ -45,7 +45,7 @@ Enhance Vegetation Index (EVI) was designed to improve vegetation
 characterizations such as canopy greenness without soil background sensitivity
 and aerosol variations by combining the blue, red, and NIR bands
 [@huete1988soil]. EVI is also less prone to saturate at high biomass instances
-[@gao_opticalbiophysical_2000]
+[@gao_opticalbiophysical_2000].
 
 The ability to combine reflectance from multiple spectral bands, coupled with
 advancements and  the development of new sensor technologies introducing
@@ -60,7 +60,7 @@ According to the Awesome Spectral Indices open community catalogue (version
 behind the ongoing development of new VIs is to achieve a more accurate mapping
 of ecosystem variables such as GPP. [@montero_standardized_2023]. These 
 indices can be classified into 3 main categories: biophysical, biochemical and 
-physiological properties [@zeng_optical_2022] **Describe the categories**
+physiological properties [@zeng_optical_2022].
 
 One important variable to understand ecosystems processes is GPP. At present,
 VIs derived from satellites cannot directly estimate GPP
@@ -86,7 +86,7 @@ Ecosystem Exchange (NEE) [@xiao_remote_2019]. NEE is fundamental to the
 planetary carbon cycle as it represents the net accumulation or loss of carbon
 by the ecosystem. Measurement of GPP and NEE are critical to understanding the
 role of the biosphere in the carbon cycle as well as the status and trends of
-vegetation productivity [@schimel_terrestrial_1995]
+vegetation productivity [@schimel_terrestrial_1995].
 
 Eddy Covariance (EC) is a method used to measure the exchange of energy and
 materials between ecosystems and the atmosphere within an area that can range
@@ -157,7 +157,7 @@ contamination, and sensor degradation [@van_leeuwen_multi-sensor_2006;
 @fang_theoretical_2012]. Thus, a quantitative and rigorous understanding of the
 specific context and characteristics of multiple sites is essential to
 understand the potential and limits of VIs for GPP estimation over large extents
-of space and time. [@zeng_optical_2022].
+of space and time [@zeng_optical_2022].
 
 Together with the advancement of new VIs, there has been a upsurge in data
 analysis methods, specifically Machine Learning (ML) approaches, has garnered

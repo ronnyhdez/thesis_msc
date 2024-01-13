@@ -76,13 +76,14 @@ For instance, if a model is created using only reflectance data to estimate GPP
 without meteorological data, phenomena such as drought could lead to predicted
 values with large errors, given that stomata closure during water deficit have
 an immediate effect on the fluxes that can not be detected by the reflectance
-values only until later when the stress conditions persist [@tramontana_uncertainty_2015].
+values only until later when the stress conditions persist
+[@tramontana_uncertainty_2015].
 
 This chapter evaluates data drive approaches for estimating GPP given MODIS
-surface reflectance data for temperate broadleaf forests in North America.  Two
+surface reflectance data for temperate broadleaf forests in North America. Two
 state of the art approaches previously used for GPP estimation are tested:
 regression random forests [@sohil_introduction_2022] and AutoML [@ledell2020h2o]
-to understand how the ML algorithm impacts prediction uncertainty.  Both
+to understand how the ML algorithm impacts prediction uncertainty. Both
 approaches tested locally and using pooled data from three sites to quantify
 their ability to be applied over larger spatial extents.
 
@@ -188,8 +189,7 @@ Imaging Spectroradiometer (MODIS), specifically the collection MOD09GA Version
 6.1 daily 500m resolution surface reflectance products (MODIS/Terra Surface
 Reflectance Daily L2G Global 1 km and 500 m SIN Grid). A square polygon with an
 area of 3km surrounding the EC tower was defined for each of the study sites,
-and all daily data pixel values within this polygon was extracted for
-analysis.
+and all daily data pixel values within this polygon was extracted for analysis.
 
 MOD09GA contains the surface spectral reflectance from bands to 1 through 7
 (@tbl-MODIS_500_complete_bands) with a spatial resolution of 500m, with
@@ -197,7 +197,7 @@ corrections for atmospheric conditions such as aerosols, gasses and Rayleigh
 scattering [@vermote2021modis].
 
 We selected the highest quality pixels according to the 1km Reflectance Data
-State QA (`state_1km`) (@tbl-state_1km_bitstrings)  and Surface Reflectance 500m
+State QA (`state_1km`) (@tbl-state_1km_bitstrings) and Surface Reflectance 500m
 Quality Assurance (`qc_500m`) (@tbl-qc_scan_bit_strings) variables. Once we had
 just the highest quality pixels, all the band values were scaled by a factor of
 0.0001. If any value fell outside the range of 0 to 1 after the scaling, it was
@@ -207,7 +207,6 @@ Once all the band values were scaled, we calculated 4 Vegetation Indices: `NDVI`
 (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi), and `CCI` (@eq-cci). Then all
 the MODIS bands values and VIs were summarized in a daily, weekly, and monthly
 basis to be merge with the GPP values from ONEFlux.
-
 
 | **Name**    | **Description** | **Resolution** | **Wavelength** |
 |-------------|-----------------|----------------|----------------|
@@ -222,7 +221,6 @@ basis to be merge with the GPP values from ONEFlux.
 : MODIS (MOD09GA.061 product) bands used for ML methods
 {#tbl-MODIS_500_complete_bands}
 
-
 ### Random Forests
 
 A random forest is an ensemble learning technique that leverages the power of
@@ -232,8 +230,8 @@ subsets of both trained data and features [@sohil_introduction_2022]. The final
 prediction is obtained by aggregating individual tree predictions, which are
 then averaged to produce the ultimate estimate. Additionally, at each split, the
 best predictor from the random subset is selected to effectively partition the
-data and in the case of the regression random forest, the process is adapted
-to predict a continuous numeric outcome[@sohil_introduction_2022;
+data and in the case of the regression random forest, the process is adapted to
+predict a continuous numeric outcome[@sohil_introduction_2022;
 @meyer_improving_2018].
 
 Regression random forests were used as an approach to predict GPP as a function
@@ -300,12 +298,13 @@ represented as heatmaps for each of the models within the ensemble.
 ### Data-Driven GPP Prediction: A Regression Random Forest Approach
 
 The best performing model, based on R² and RMSE was the monthly aggregated
-model, achieving a R² of 81% and an RMSE of $2.03 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
-(see @fig-monthly_500_rf). The daily model exhibited the second best performance
-model with a RMSE of $3.20 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and a R² of 69%
-(see @fig-daily_500_rf). However, the weekly model displayed comparatively lower
-performance, with an R² of 56% and an RMSE of $3.23 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ 
-(see @fig-weekly_500_rf)
+model, achieving a R² of 81% and an RMSE of
+$2.03 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ (see @fig-monthly_500_rf). The daily
+model exhibited the second best performance model with a RMSE of
+$3.20 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and a R² of 69% (see
+@fig-daily_500_rf). However, the weekly model displayed comparatively lower
+performance, with an R² of 56% and an RMSE of
+$3.23 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ (see @fig-weekly_500_rf)
 
 Moreover, in assesing the importance of predictor variables within each model,
 VIs variables held top positions across all models, surpassing the importance of
@@ -328,34 +327,38 @@ calculated the contributions to each variable in predicting GPP for two cases:
 for a known high GPP value and a known low GPP value from the test data set.
 
 In the case of the daily model, we chose a low GPP value from the test dataset,
-specifically $0.01 \, \mathrm{gC \, m^{-2} \, d^{-1}}$and obtained a model 
-prediction of $0.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Our Shapley value 
-analysis showed that EVI, CCI and NIRv were the most influential attributes 
-affecting the model prediction (See @fig-shap_daily_500_rf **A**). Nonetheless,
-these VIs contribute negatively to the prediction, reducing the predicted GPP.
+specifically $0.01 \, \mathrm{gC \, m^{-2} \, d^{-1}}$and obtained a model
+prediction of $0.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Our Shapley value
+analysis showed that EVI, CCI and NIRv were the most influential attributes
+affecting the model prediction (See @fig-shap_daily_500_rf **A**). These VIs
+contribute negatively to the prediction, reducing the predicted GPP.
 
-Conversely, the high GPP value selected ($16.21 \, \mathrm{gC \, m^{-2} \, d^{-1}}$)
-from the test dataset, had a model prediction of $12.70 \, \mathrm{gC \, m^{-2} \, d^{-1}}$.
-In this case the Shapley values analysis indicated that the most influential 
-variables were CCI and NIRv (See @fig-shap_daily_500_rf **B**). These variables
-contributed positively to the prediction.
+Conversely, the high GPP value selected
+($16.21 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) from the test dataset, had a model
+prediction of $12.70 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. In this case the
+Shapley values analysis indicated that the most influential variables were CCI
+and NIRv (See @fig-shap_daily_500_rf **B**). These variables contributed
+positively to the prediction.
 
-For the weekly model, we selected high and low GPP values of $1.21 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ 
-and $13.17 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, respectively, resulting in
-predictions of $1.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
-and $11.0 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. For the low GPP value, the most
+For the weekly model, we selected high and low GPP values of
+$1.21 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and
+$13.17 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, respectively, resulting in
+predictions of $1.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and
+$11.0 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. For the low GPP value, the most
 influential variables were CCI, EVI, NIRv and NDVI, all contributing negatively
 to the prediction (see @fig-shap_weekly_500_rf **A**). Conversely, for the high
 GPP value, CCI, EVI, NIRv, B02 and NDVI had the most influence in the prediction
 positively (refer to @fig-shap_weekly_500_rf **B**).
 
-In the case of the monthly model, the low GPP value selected was $1.86 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
-and the high GPP value was $11.87 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, leading 
-to predictions of $3.31 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and  
+In the case of the monthly model, the low GPP value selected was
+$1.86 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and the high GPP value was
+$11.87 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, leading to predictions of
+$3.31 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and\
 $10.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ respectively. In both scenarios, CCI,
-NDVI, and NIRv emerged as the most influential variables, albeit contributing 
-negatively to the low GPP value prediction (See @fig-shap_monthly_500_rf **A**) 
-and positively to the high GPP value prediction (See @fig-shap_monthly_500_rf **B**).
+NDVI, and NIRv emerged as the most influential variables, albeit contributing
+negatively to the low GPP value prediction (See @fig-shap_monthly_500_rf **A**)
+and positively to the high GPP value prediction (See @fig-shap_monthly_500_rf
+**B**).
 
 ```{r data_preparation_rf}
 #| echo: false
@@ -543,7 +546,7 @@ if (fs::file_exists("models/daily_500_fit_site.rds") &
 
 ```{r predictions_plot_daily_500_rf}
 #| label: fig-daily_500_rf
-#| fig-cap: GPP observed and predicted values from the Random Forest model for all the sites at a daily basis. The red line represents a 1:1 relation.
+#| fig-cap: GPP observed and predicted values from the Random Forest model for all the sites at a daily basis. The red line represents a 1:1 relation. Metrics units are gC m⁻² d⁻¹
 #| fig-width: 6
 #| fig-height: 4
 #| echo: false
@@ -752,7 +755,7 @@ if (fs::file_exists("models/weekly_500_fit_site.rds")) {
 
 ```{r predictions_plot_weekly_500_rf}
 #| label: fig-weekly_500_rf
-#| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a weekly basis. The red line represents a 1:1 relation."
+#| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a weekly basis. The red line represents a 1:1 relation. Metrics units are gC m⁻² d⁻¹"
 #| fig-width: 6
 #| fig-height: 4
 #| echo: false
@@ -964,7 +967,7 @@ if (fs::file_exists("models/monthly_500_fit_site.rds")) {
 
 ```{r predictions_plot_monthly_500_rf}
 #| label: fig-monthly_500_rf
-#| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a monthly basis. The red line represents a 1:1 relation."
+#| fig-cap: "GPP observed and predicted values from the Random Forest for all the sites at a monthly basis. The red line represents a 1:1 relation. Metrics units are gC m⁻² d⁻¹"
 #| fig-width: 6
 #| fig-height: 4
 #| echo: false
@@ -1123,20 +1126,20 @@ plot_grid(low_value,
 
 The AutoML approach yielded varying performance outcomes across different
 temporal scales as measured by R² and RMSE. The monthly prediction model
-(@fig-predictions_automl_monthly_500) emerged as the top performer, with an R² of
-76% and a low RMSE of $1.84 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Following 
-this, the weekly model (@fig-predictions_automl_weekly_500) demonstrated the 
-second-highest explanatory power, capturing 72% of the GPP variability, albeit 
-with a slightly elevated RMSE of $3.08 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. 
-Conversely, the daily model (@fig-predictions_automl_500) exhibited comparatively
-diminished performance, explaining 67% of the variability with the highest 
-RMSE of $3.11 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
+(@fig-predictions_automl_monthly_500) emerged as the top performer, with an R²
+of 76% and a low RMSE of $1.84 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Following
+this, the weekly model (@fig-predictions_automl_weekly_500) demonstrated the
+second-highest explanatory power, capturing 72% of the GPP variability, albeit
+with a slightly elevated RMSE of $3.08 \, \mathrm{gC \, m^{-2} \, d^{-1}}$.
+Conversely, the daily model (@fig-predictions_automl_500) exhibited
+comparatively diminished performance, explaining 67% of the variability with the
+highest RMSE of $3.11 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
 
 An examination of variable importance in the AutoML model revealed distinctive
 patterns in significant contributors to GPP prediction across temporal scales.
 In the daily prediction model, EVI and CCI emerged as most important
-(@fig-vip_daily_500_automl). Moving to a weekly time frame, the importance of EVI
-and CCI persisted, with the addition of Band 02 (NIR band)
+(@fig-vip_daily_500_automl). Moving to a weekly time frame, the importance of
+EVI and CCI persisted, with the addition of Band 02 (NIR band)
 (@fig-vip_daily_500_automl_weekly). In the monthly prediction model, EVI once
 again took precedence, accompanied by Band 02 and NIRv
 (@fig-vip_monthly_500_automl_monthly), highlighting the enduring importance of
@@ -1152,20 +1155,19 @@ outperformed in both metrics. These findings underscore the importance of
 considering multiple metrics and temporal scales when evaluating and selecting
 models for GPP predictions.
 
+| Variable | RF R2 | RF RMSE | automl R2 | automl RMSE |
+|----------|-------|---------|-----------|-------------|
+| Daily    | 0.70  | 3.17    | 0.67      | 3.11        |
+| Weekly   | 0.55  | 3.23    | 0.72      | 3.08        |
+| Monthly  | 0.81  | 2.03    | 0.76      | 1.84        |
 
-| Variable | RF R2 | RF RMSE | automl R2 | automl RMSE | 
-| -------- | ---| ------- | --- | ---- | 
-| Daily | 0.70 | 3.17 | 0.67 | 3.11 | 
-| Weekly | 0.55 | 3.23 | 0.72 | 3.08 | 
-| Monthly | 0.81 | 2.03 | 0.76 | 1.84 |
-
-: Summary ML metrics {#tbl-summary_ml_metrics}
+: Summary ML metrics in gC m^-2^ d^-1^{#tbl-summary_ml_metrics}
 
 <!-- #### Daily autoML -->
 
 ```{r}
 #| label: fig-predictions_automl_500
-#| fig-cap: "GPP observed and predicted values from the autoML for all the sites at a daily basis. The red line represents a 1:1 relation."
+#| fig-cap: "GPP observed and predicted values from the autoML for all the sites at a daily basis. The red line represents a 1:1 relation. Metrics units are gC m⁻² d⁻¹"
 #| echo: false
 #| message: false
 #| warning: false
@@ -1210,7 +1212,7 @@ readRDS("models/automl_va_plot.rds") +
 
 ```{r}
 #| label: fig-predictions_automl_weekly_500
-#| fig-cap: "GPP observed and predicted values from the autoML for all the sites at a weekly basis. The red line represents a 1:1 relation."
+#| fig-cap: "GPP observed and predicted values from the autoML for all the sites at a weekly basis. The red line represents a 1:1 relation. Metrics units are gC m⁻² d⁻¹"
 #| echo: false
 #| message: false
 #| warning: false
@@ -1255,7 +1257,7 @@ readRDS("models/automl_va_plot_weekly.rds") +
 
 ```{r}
 #| label: fig-predictions_automl_monthly_500
-#| fig-cap: "GPP observed and predicted values from the autoML for all the sites at a monthly basis. The red line represents a 1:1 relation."
+#| fig-cap: "GPP observed and predicted values from the autoML for all the sites at a monthly basis. The red line represents a 1:1 relation. Metrics units are gC m⁻² d⁻¹"
 #| echo: false
 #| message: false
 #| warning: false
@@ -1299,15 +1301,15 @@ readRDS("models/automl_va_plot_monthly.rds") +
 ## Discussion
 
 These results underscore the temporal variations in model performance, with the
-monthly models having the best performance metrics in both, the regression
-random forest and the autoML.  However, the lower RMSE of the AutoML model
-signifies a more precise prediction in terms of the absolute errors. Given the
-higher R², regression RF captures a larger proportion of the variance in the
-dependent variable than the autoML. This discrepancy underscores the importance
-of considering multiple evaluation metrics when assessing model performance. The
-choice between these models may depend on the specific goals of the analysis,
-weighing the trade-off between explaining variability and achieving precision in
-predictions.
+monthly models having the best performance metrics for both, the regression
+random forest and the autoML. The lower RMSE of the AutoML model indicates it
+can potentially result in lower uncertainty for monthly predictions than RF.
+Given the higher R², regression RF captures a larger proportion of the variance
+in the dependent variable than the autoML. This discrepancy underscores the
+importance of considering multiple evaluation metrics when assessing model
+performance. The choice between these models may depend on the specific goals of
+the analysis, weighing the trade-off between explaining variability and
+achieving precision in predictions.
 
 Upon examining the six specific predictions analyzed through Shapley values for
 the Random Forest models across all timeframes, it became evident that
@@ -1320,19 +1322,20 @@ GPP values, especially in the case of the daily model, it is noteworthy that the
 maximum predicted values hover around $16 \, \mathrm{gC \, m^{-2} \, d^{-1}}$,
 whereas observed values can reach up to $24 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
 (See @fig-daily_500_rf). Importantly, these values all belong to the Borden
-site, where GPP variability is notably higher compared to the other two sites.
+site, where the range on observed GPP is notably higher compared to the other
+two sites.
 
-This discrepancy may arise from a potential lag between the change in
-photosynthetic rate and the concentration of photosynthetic pigments,
-particularly the change in chlorophyll. Since the predicted GPP values for the
-constructed models are solely based on reflectance values, the primary changes
-related to GPP that they can capture are APAR and, to some extent, chlorophyll
-concentration [@pabon-moreno_potential_2022]. Given that photosynthesis can
-change rapidly without significant alterations in pigment concentrations, there
-might be an overestimation of predicted values compared to observed and
-estimated GPP values at the site mediating EC. In situations of stress, the
-dynamics of GPP could shift unnoticed solely based on satellite reflectance
-values.
+The discrepancy between the observed values and the predicted values may arise
+from a potential lag between the change in photosynthetic rate and the
+concentration of photosynthetic pigments, particularly the change in
+chlorophyll. Since the predicted GPP values for the constructed models are
+solely based on reflectance values, the primary changes related to GPP that they
+can capture are APAR and, to some extent, chlorophyll concentration
+[@pabon-moreno_potential_2022]. Given that photosynthesis can change rapidly
+without significant alterations in pigment concentrations, there might be an
+overestimation of predicted values compared to observed and estimated GPP values
+at the site mediating EC. In situations of stress, the dynamics of GPP could
+shift unnoticed solely based on satellite reflectance values.
 
 Conversely, underestimation may be attributed to the well-known phenomenon of
 saturation. When using indices created with the NIR band for GPP estimation,
