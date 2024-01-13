@@ -11,21 +11,21 @@ editor:
 The field of Earth Science has witnessed a transformative shift with the
 integration of Machine Learning (ML) methods, which had lead to a deeper
 understanding of our planet's complex ecosystems and processes
-[@reichstein_deep_2019]. ML methods have being used in recent years and are now
-well stablished in environmental sciences [@lary_machine_2016], harnessing the
-power of ML algorithms to explore diverse aspects of Earth's natural systems
-including research to understand vegetation characteristics and ecological
-patterns [@lehnert_retrieval_2015; @verrelst_machine_2012]
+[@reichstein_deep_2019]. ML methods are now well established in environmental
+sciences [@lary_machine_2016], including their use within studies aimed at
+mapping and quantifying vegetation characteristics and ecological processes such
+as vegetation cover, structure, disturbances, among others
+[@lehnert_retrieval_2015; @verrelst_machine_2012].
 
-The increasing number of EC sites [@tramontana_predicting_2016] couple with the
-continuously growing amount of Earth system data surpassing the dozens of
-petabytes [@reichstein_deep_2019], has lead to an emergence of purely
-data-driven methodologies. These approaches have been important to further
-develop the quantification of global terrestrial photosynthesis
-[@jung_global_2011; @tramontana_predicting_2016] and have demonstrated
-remarkable results in the regression estimation of biogeo-physical parameters
-using remotely sensed reflectance data, both at local and global scales
-[@coops_prediction_2003; @verrelst_retrieval_2012].
+The increasing number of EC sites [@tramontana_predicting_2016] coupled with the
+continuously growing amount of Earth system data surpassing dozens of petabytes
+[@reichstein_deep_2019], has led to an emergence of purely data-driven
+methodologies for quantifying ecosystem status and fluxes. These approaches have
+shown promise for the quantification of global terrestrial photosynthesis
+[@jung_global_2011; @tramontana_predicting_2016] and have resulted in good
+progress in the estimation of biogeo-physical parameters using remotely sensed
+reflectance data, both at local and global scales [@coops_prediction_2003;
+@verrelst_retrieval_2012].
 
 Furthermore, these data-driven approaches have contributed significantly to the
 scientific community by providing spatial, seasonal, and interannual variations
@@ -43,46 +43,48 @@ in-situ measured fluxes with the explanatory variables can emerge
 to extract patterns represents an opportunity to come up with new ideas and
 questioning establisehd theories in earth system models.
 
-One of the distinguishing characteristics between data-driven models and
-process-based methods lies in their fundamental approach. Data driven models
-inherently possess an observational nature where functional relationships emerge
-from the patterns found in the data, rather than being predefined, such as the
-relationships between in-situ measured fluxes and the explanatory variables.
-[@tramontana_predicting_2016]. This paradigm shift toward data-driven modeling
-to extract patterns, represents an opportunity to explore novel ideas and
-question established theories in earth system models [@reichstein_deep_2019].
+In contrast to process based models, data driven models inherently possess an
+observational nature where functional relationships emerge from the patterns
+found in the data, rather than being predefined, such as the relationships
+between in-situ measured fluxes and the explanatory variables.
+[@tramontana_predicting_2016]. For example, the application of spatially
+explicit global data driven methods, has unveiled discrepancies in the
+estimation of photosynthesis within tropical rainforests when compared to
+climate models [@beer_terrestrial_2010]. This overestimation, has led to the
+creation of hypothesis for a better understanding of radiative transfer in
+vegetation canopies [@bonan_improving_2011] which can result in better
+photosynthesis estimates. This paradigm shift toward data-driven modeling to
+extract patterns, represents an opportunity to explore novel ideas and question
+established theories in earth system models [@reichstein_deep_2019].
 
-For instance, the application of spatially explicit global data driven methods,
-has unveiled discrepancies in the estimation of photosynthesis within tropical
-rainforests when compared to climate models [@beer_terrestrial_2010]. This
-overestimation, has led to the creation of hypothesis for a better understanding
-of radiative transfer in vegetation canopies [@bonan_improving_2011] which can
-result in better photosynthesis estimates.
-
-To get the most of the Earth system data there are two major challenges. The
-first involves efficiently extracting valuable insights from the available data.
-The second is developing models that learn much more from data than traditional
-data assimilation approaches can, while still aligning with our evolving
-comprehension of nature's laws [@reichstein_deep_2019].
-
-Predicting dynamics in the biosphere is challenging given the biologically
-mediated processes [@reichstein_deep_2019]. "Prediction" term should not be
-confused with forecasting, given that most of the models are not aiming at
-predicting into the future, instead the focus is to predict in the past or the
-present times [@meyer_improving_2018]
+Predicting dynamics in the biosphere is challenging due to biologically mediated
+processes [@reichstein_deep_2019]. The term "prediction" should not be confused
+with forecasting, as most models are not aiming at predicting into the future.
+Instead, the focus of these data-driven models is to improve historical
+estimates or enable the use of reflectance values to predict GPP when no in-situ
+data is available in the present times [@meyer_improving_2018].
 
 These predictions can include many forms of uncertainty [@reichstein_deep_2019].
-One is that individual ML methods can have different responses, specially when
-these models are applied beyond the conditions presented in the training
-dataset. [@jung_towards_2009; @papale_effect_2015]. A second one is that the
-explanatory variables used in ML methods derived from satellite remote sensing,
-are partial on the about the vegetation state [@tramontana_predicting_2016], and
-also lacks all the information to explain the complete variability in fluxes
-[@tramontana_uncertainty_2015]
+One form is that individual ML methods can have different responses, specially
+when these models are applied beyond the conditions presented in the training
+dataset. [@jung_towards_2009; @papale_effect_2015]. Another form is related to
+the explanatory variables used in ML methods derived from satellite remote
+sensing, which are partial in providing information about the vegetation state
+[@tramontana_predicting_2016]. Consequently, they lack the information required
+to explain the complete variability in fluxes [@tramontana_uncertainty_2015].
+For instance, if a model is created using only reflectance data to estimate GPP
+without meteorological data, phenomena such as drought could lead to predicted
+values with large errors, given that stomata closure during water deficit have
+an immediate effect on the fluxes that can not be detected by the reflectance
+values only until later when the stress conditions persist [@tramontana_uncertainty_2015].
 
-For this chapter, we evaluate how two different approaches such as regression
-random forest and AutoML can improve the predictions accuracy of GPP through
-data driven approaches with MODIS data.
+This chapter evaluates data drive approaches for estimating GPP given MODIS
+surface reflectance data for temperate broadleaf forests in North America.  Two
+state of the art approaches previously used for GPP estimation are tested:
+regression random forests (xx) and AutoML (xx) to understand how the ML
+algorithm impacts prediction uncertainty.  Both approaches tested locally and
+using pooled data from three sites to quantify their ability to be applied over
+larger spatial extents.
 
 \newpage
 
@@ -1367,7 +1369,7 @@ comprehensive model evaluation.
 
 \newpage
 
-## Conclussions
+## Conclusions
 
 In summary, the monthly models generated using both methods (RF and autoML)
 exhibited superior performance based on various metrics, surpassing the outcomes
