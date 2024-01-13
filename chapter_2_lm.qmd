@@ -925,8 +925,6 @@ results the @tbl-gam_monthly_model_results_complete_a, and
 @tbl-gam_monthly_model_results_complete_b. A residuals distribution for each of
 the models is in @fig-gam_residuals
 
-<!-- explains more x% variance than -->
-
 When using GAM models at a monthly basis, no single VI demonstrates consistent
 superiority over the others. For the all sites category, CCI have a R² = 3%
 better variance explanation than NDVI, which is the second best model with a R²
@@ -943,7 +941,9 @@ parameters, raising concerns of potential overfitting.
 Finally, it's noteworthy that NDVI on a monthly basis displayed suboptimal
 performance in two of the sites (Michigan and Bartlett) with a difference of R²
 = 10% and R² = 13% with the best performing models respectively, while EVI
-exhibited less favourable results in just the Borden site.
+exhibited less favourable results in just the Borden site with
+MAE $1.92 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) and 
+RMSE $2.54 \, \mathrm{gC \, m^{-2} \, d^{-1}}$).
 
 On a weekly basis, models incorporating all VIs as covariates consistently
 obtained better performance compared to any individual VI, irrespective of the
