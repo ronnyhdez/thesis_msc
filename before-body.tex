@@ -1,6 +1,11 @@
 $if(has-frontmatter)$
 \frontmatter
 $endif$
+
+% Add the following lines to set roman page numbering for the front matter
+% \pagenumbering{roman}
+% \pagestyle{plain}
+
 $if(title)$
 \cleardoublepage
 \thispagestyle{empty}
@@ -31,7 +36,6 @@ $endif$%
 {\bfseries\large $date$ \par}
 \vspace{12ex}
 }
-$endfor$$endfor$%
+$endfor$$endfor$
 $endif$
-\let\mainmatterreal\mainmatter
-\let\mainmatter\relax
+
