@@ -1,3 +1,5 @@
+\begin{doublespacing}
+
 # Abstract {.unnumbered}
 
 Methods to quantify Gross Primary Production (GPP) are classified into two
@@ -17,3 +19,5 @@ methods such as EC measurements. We conduct this study on three different sites:
 University of Michigan Biological Station (USA), the Borden Forest Research
 Station flux-site (Canada) and Bartlett Experimental Forest (USA) using
 traditional regression methods and ML approaches.
+
+\end{doublespacing}
