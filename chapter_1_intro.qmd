@@ -1,3 +1,5 @@
+\pagenumbering{arabic}
+
 # Introduction
 
 The study and assessment of ecosystem dynamics have greatly benefited from the
