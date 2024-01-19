@@ -640,7 +640,7 @@ where the distribution and variability observed in the data is greater, due to
 the varying temporal scales. We aimed to evaluate whether this variance could be
 better explained by this type of model, which might not be optimal to capture
 with a linear relationship, potentially leading to greater residuals. Both
-models’  approaches were applied individually to test our hypothesis regarding VI
+models’ approaches were applied individually to test our hypothesis regarding VI
 predictive uncertainty. Additionally, a single model was applied to assess
 whether a combination of VIs could improve GPP estimation uncertainty.
 
@@ -674,7 +674,7 @@ The @tbl-lm_monthly_results provides a summary of linear models used for GPP
 estimation at each site, employing the vegetation indices as predictors. For
 each site and predictor, the table includes the relevant model summary
 statistics, such as R², MAE, and RMSE as indicators of the statistical
-significant of the model fits. All models add p-values \< 0.05 More metrics such
+significance of the model fit. All models add p-values \< 0.05 More metrics such
 as the p-value, adjusted r-squared, the Akaike Information Criterion (AIC), and
 Bayesian Information Criterion (BIC) are displayed in the
 @tbl-complete_lm_monthly_results for monthly results,
@@ -682,7 +682,7 @@ Bayesian Information Criterion (BIC) are displayed in the
 @tbl-complete_lm_daily_results for daily outputs. A residuals distribution for
 each of the models is in @fig-lm_residuals
 
-Our findings shows that when using all the indices as covariates within the
+Our findings show that when using all the indices as covariates within the
 linear model, the model's performance demonstrates better outcomes compared to
 using any single index alone across all scenarios. In the assessment of
 individual VI performance on a monthly basis, CCI tend to perform better than
@@ -703,18 +703,18 @@ $2.54 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) for the Borden site and the
 aggregated sites category, although in the specific context of the Borden site,
 its performance aligns closely with NDVI and NIRv. Among the individual sites,
 Bartlett has the most favourable predictive outcomes in terms of R², MAE, and
-RMSE for every individual VI model, while the aggregated sites category yield
+RMSE for every individual VI model, while the aggregated sites category yields
 the least favourable predictive results in the same scenarios.
 
 In the case of the weekly models, NDVI records the least favourable results in
 terms of R², MAE, and RMSE when assessed at the three individual sites, while
 EVI demonstrated its weakest predictive capabilities when all sites were treated
-as a single entity. However, for this case, EVI shows marginal differences with
-respect to individual indices such as NDVI and NIRv (R² = 1% variance explained
-and no more than $0.02 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ in RMSE). The best
-performant individual indices were CCI in terms of R², MAE, and RMSE for Borden
-and the aggregated sites, NIRv for Michigan and EVI for Bartlett. Nonetheless,
-those superior performances are subtle when compared with the other individual
+as a single entity. However, for this case, EVI shows marginal differences for
+individual indices such as NDVI and NIRv (R² = 1% variance explained and no more
+than $0.02 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ in RMSE). The best performant
+individual indices were CCI in terms of R², MAE, and RMSE for Borden and the
+aggregated sites, NIRv for Michigan and EVI for Bartlett. Nonetheless, those
+superior performances are subtle when compared with the other individual
 indices. On a weekly basis, differences in variability explained between the
 best and least performing models range from R² = 11% to R² = 20%. Bartlett and
 Michigan sites consistently yield the most accurate predictive models.
@@ -722,9 +722,9 @@ Michigan sites consistently yield the most accurate predictive models.
 On a daily basis, CCI outperforms the rest of the individual indices in 3 cases:
 for Bartlett by R² = 2% in variance explanation compared with EVI, for Borden by
 R² = 1% compared with EVI, and for the combined sites dataset by R² = 10%.
-Nonetheless is worth to mention that the variance explained in any of the models
+Nonetheless is worth mentioning that the variance explained in any of the models
 by individual indices in Borden or the combined site is less than R² = 50% in
-most of the cases and the error scores being the highest. In the case of
+most of the cases and the error scores are the highest. In the case of
 Michigan, the best performing individual index was EVI which outperformed the
 next best-performing individual index NIRv by R² = 3%. Generally, the Bartlett
 and Michigan sites consistently yielded the most accurate predictive models
@@ -734,7 +734,7 @@ exhibited the poorest model performance across all scenarios.
 Overall, when comparing individual indices, CCI consistently performed better
 across different timeframes in terms of variance explainability and error
 metrics. Nonetheless, those differences are subtle compared to EVI and NIRv. In
-contrast, NDVI consistently performs less favorably across all evaluated
+contrast, NDVI consistently performs less mentioning across all evaluated
 timeframes. Notably, models based on monthly values consistently exhibit better
 performance than those based on weekly or daily values as ilustrated in
 @fig-lm_metrics.
@@ -908,7 +908,7 @@ indices as predictors. To compare between the models, we include in the table
 relevant model summary statistics, such as R², MAE, and RMSE. Furthermore,
 additional metrics such as the p-value, the F statistic (f), effective degrees
 of freedom (edf), and the Akaike Information Criterion (AIC), are displayed in
-the @tbl-gam_daily_model_results_complete_a, and
+@tbl-gam_daily_model_results_complete_a, and
 @tbl-gam_daily_model_results_complete_b for daily models,
 @tbl-gam_weekly_model_results_complete_a, and
 @tbl-gam_weekly_model_results_complete_b for weekly outputs, and for monthly
@@ -916,14 +916,14 @@ results the @tbl-gam_monthly_model_results_complete_a, and
 @tbl-gam_monthly_model_results_complete_b. A residuals distribution for each of
 the models is in @fig-gam_residuals
 
-When using GAM models at a monthly basis, no single VI demonstrates consistent
-superiority over the others. For the all sites category, CCI have a R² = 3%
-better variance explanation than NDVI, which is the second best model with a R²
+When using GAM models on a monthly basis, no single VI demonstrates consistent
+superiority over the others. For the all sites category, CCI has an R² = 3%
+better variance explanation than NDVI, which is the second best model with an R²
 = 75%. In the case of Michigan EVI and NIRv were the best individual indices
-with a R² = 96% of the variance in GPP, but EVI had slightly lower error metrics
+with an R² = 96% of the variance in GPP, but EVI had slightly lower error metrics
 values in MAE ($0.01 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) and RMSE
 ($0.02 \, \mathrm{gC \, m^{-2} \, d^{-1}}$). Bartlett had a better model
-performance when using CCI with a R² = 91% of variance explained with the lowest
+performance when using CCI with an R² = 91% of variance explained with the lowest
 error metrics among all the GAM monthly models. It's important to highlight that
 for Michigan and Bartlett, implementing a GAM model using all the VIs as
 covariates posed challenges due to limited observations for the model
@@ -939,28 +939,28 @@ $2.54 \, \mathrm{gC \, m^{-2} \, d^{-1}}$).
 On a weekly basis, models incorporating all VIs as covariates consistently
 obtained better performance compared to any individual VI, irrespective of the
 site. Specifically when evaluating the all sites category, the inclusion of all
-indices as covariates yielded a R² = 7% increase in variance explanation
+indices as covariates yielded an R² = 7% increase in variance explanation
 compared with the best individual VI result CCI. Further, for Michigan, this
 improvement amounted to R² = 2% compared to EVI, R² = 1% for Bartlett in
-contrast to EVI, and a R² = 2% enhancement for Borden when compared with EVI.
+contrast to EVI, and an R² = 2% enhancement for Borden when compared with EVI.
 
 Conversely, NDVI showed a diminished performance as an individual index when
 compared with all the other individual VIs. In the context of all sites, NDVI
 yielded R² = 7% less variance explanation than CCI. Notably, for Michigan,
 NDVI's performance lagged by R² = 17% compared to EVI, Bartlett an R² = 18%
-reduction relative to EVI, and Borden exhibited a R² = 9% deficit when
+reduction relative to EVI, and Borden exhibited an R² = 9% deficit when
 contrasted with EVI.
 
 On a daily basis, when considering the all sites category, the model with all
 the VIs as covariates explained R² = 4% more variance in GPP when compared with
-the best performing individual VI CCI. In the case of Bartlett, the increased
-was also R² = 4% but in this case the best individual performing VI was EVI. For
+the best performing individual VI CCI. In the case of Bartlett, the increase was
+also R² = 4% but in this case, the best individual performing VI was EVI. For
 Michigan, the model using all VIs as covariates outperformed EVI by R² = 5% in
-GPP prediction, and for Borden it was a R² = 9% improvement when compared with
+GPP prediction, and for Borden, it was an R² = 9% improvement when compared with
 NIRv.
 
 Among the individual VIs, NDVI consistently demonstrated the poorest performance
-across al four cases. As an individual VI, EVI performed better in Bartlett,
+across all four cases. As an individual VI, EVI performed better in Bartlett,
 Michigan, and Borden. However is worth noting that for Borden the variance
 explained was limited to R² = 50%.
 
@@ -1311,7 +1311,7 @@ in the model enhances predictive accuracy for GPP compared to models using
 single VIs. This holds true across the three temporal scales and for each of the
 sites individually or when considered as part of the same biotype. This
 observation suggests that the relationship is really non-linear, and combining
-different VIs allows to use of a LM to capture non-linear patterns throughout
+different VIs allows to use of an LM to capture non-linear patterns throughout
 the entire study duration, contrasting with the predictive power of any
 individual VI. Additionally, VIs exhibit different noise sensitivities
 [@zeng_optical_2022], which explains why using a single VI is insufficient to
@@ -1401,9 +1401,9 @@ flexibility when analyzing non-linear relationships.
 It is worth noticing that using a GAM model with only CCI as a predictor,
 performs almost as well as the GAM model with all the VIs as covariates. This
 could imply that the limitation in using a single VI with a LM arises from its
-to capture the non-linear nature of the relationship. A selection of a
+inability to capture the non-linear nature of the relationship. A selection of a
 proficient VI with a non-linear model could better estimate GPP without the need
-of creating models with multiple predictors. In this scenario, the GAM model
+to create models with multiple predictors. In this scenario, the GAM model
 with CCI to estimate GPP emerges as a potentially adequate choice among
 generalized linear fits. However, this assessment does not address the question
 of whether combining diverse models could offer more robustness, as such an
