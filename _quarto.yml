@@ -25,12 +25,13 @@ book:
     - bibliography.qmd
   appendices:
     - appendices.qmd
-
-bibliography: 
- - rap_v002.bib
+   
 
 format:
   pdf:
+    include-in-header:
+      - text: |
+          \newcommand*\NewPage{\newpage\null\thispagestyle{empty}\newpage}
     template-partials:
       - before-body.tex
       - toc.tex
@@ -54,9 +55,11 @@ format:
       - ignorefoot
       - heightrounded
     linestretch: 1.5
+    # section-refs-bibliography: rap_v002.bib
     filters:
-     - section-refs.lua # needs pandoc version >= 2.11 to work
-
+      - section-bibliographies.lua # needs pandoc version >= 2.11 to work
+    bibliography: rap_v002.bib
+    citeproc: true 
 
     
 

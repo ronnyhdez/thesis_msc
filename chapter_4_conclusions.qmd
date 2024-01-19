@@ -155,5 +155,5 @@ broader scale [@meyer_importance_2019].
 
 ## References
 
-::: {#refs}
-:::
+<!-- ::: {#refs} -->
+<!-- ::: -->
