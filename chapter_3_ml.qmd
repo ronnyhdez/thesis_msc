@@ -314,7 +314,7 @@ monthly models (@fig-vip_weekly_500_rf and @fig-vip_monthly_500_rf). In the case
 of the daily model, CCI emerged as the second most influential predictor
 variable (as shown in @fig-vip_daily_500_rf).
 
-Despite that NDVI being ranked as the second variable in importance for the
+Despite NDVI being ranked as the second variable in importance for the
 monthly model, it was the fifth variable in importance for the daily model and
 the fourth one for the weekly model. Meanwhile, the NIRv consistently held the
 third most influential position across all models. EVI was found to be most
@@ -345,9 +345,9 @@ $1.21 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and
 $13.17 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, respectively, resulting in
 predictions of $1.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and
 $11.0 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. For the low GPP value, the most
-influential variables were CCI, EVI, NIRv and NDVI, all contributing negatively
+influential variables were CCI, EVI, NIRv, and NDVI, all contributing negatively
 to the prediction (see @fig-shap_weekly_500_rf **A**). Conversely, for the high
-GPP value, CCI, EVI, NIRv, B02 and NDVI had the most influence in the prediction
+GPP value, CCI, EVI, NIRv, B02 and NDVI had the most influence on the prediction
 positively (refer to @fig-shap_weekly_500_rf **B**).
 
 In the case of the monthly model, the low GPP value selected was
@@ -1137,7 +1137,7 @@ highest RMSE of $3.11 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
 
 An examination of variable importance in the AutoML model revealed distinctive
 patterns in significant contributors to GPP prediction across temporal scales.
-In the daily prediction model, EVI and CCI emerged as most important
+In the daily prediction model, EVI and CCI emerged as the most important
 (@fig-vip_daily_500_automl). Moving to a weekly time frame, the importance of
 EVI and CCI persisted, with the addition of Band 02 (NIR band)
 (@fig-vip_daily_500_automl_weekly). In the monthly prediction model, EVI once
@@ -1322,7 +1322,7 @@ GPP values, especially in the case of the daily model, it is noteworthy that the
 maximum predicted values hover around $16 \, \mathrm{gC \, m^{-2} \, d^{-1}}$,
 whereas observed values can reach up to $24 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
 (See @fig-daily_500_rf). Importantly, these values all belong to the Borden
-site, where the range on observed GPP is notably higher compared to the other
+site, where the range of observed GPP is notably higher compared to the other
 two sites.
 
 The discrepancy between the observed values and the predicted values may arise
@@ -1340,7 +1340,7 @@ shift unnoticed solely based on satellite reflectance values.
 Conversely, underestimation may be attributed to the well-known phenomenon of
 saturation. When using indices created with the NIR band for GPP estimation,
 challenges arise in scenarios where there is a substantial increase in
-vegetation biomass, that happens during summers in the study sites. In such
+vegetation biomass, which happens during summers in the study sites. In such
 situations, the dense biomass leads to increased scattering and reflection of
 radiation. While the NIR band is sensitive to changes in vegetation structure
 and density, it encounters limitations as the amount of biomass intensifies.
