@@ -1,9 +1,10 @@
+--- section-bibliographies - chapter-wise reference sections
+---
+--- Copyright: © 2018 Jesse Rosenthal, 2020–2023 Albert Krewinkel
+--- License: MIT – see LICENSE for details
+
 -- pandoc.utils.make_sections exists since pandoc 2.8
-if PANDOC_VERSION == nil then -- if pandoc_version < 2.1
-  error("ERROR: pandoc >= 2.8 required for section-refs filter")
-else
-  PANDOC_VERSION:must_be_at_least {2,8}
-end
+PANDOC_VERSION:must_be_at_least {2,8}
 
 local utils = require 'pandoc.utils'
 local run_json_filter = utils.run_json_filter
@@ -53,7 +54,9 @@ local function adjust_refs_components (div)
 end
 
 local function run_citeproc (doc)
-  if PANDOC_VERSION >= '2.11' then
+  if PANDOC_VERSION >= '2.19.1' then
+    return pandoc.utils.citeproc(doc)
+  elseif PANDOC_VERSION >= '2.11' then
     local args = {'--from=json', '--to=json', '--citeproc'}
     return run_json_filter(doc, 'pandoc', args)
   else
@@ -128,9 +131,9 @@ end
 function setup_document (doc)
   -- save meta for other filter functions
   meta = doc.meta
-  section_refs_level = tonumber(meta["section-refs-level"]) or 1
+  section_refs_level = tonumber(meta["section-bibs-level"]) or 1
   orig_bibliography = meta.bibliography
-  meta.bibliography = meta['section-refs-bibliography'] or meta.bibliography
+  meta.bibliography = meta['section-bibs-bibliography'] or meta.bibliography
   local sections = utils.make_sections(true, nil, doc.blocks)
   return pandoc.Pandoc(sections, doc.meta)
 end

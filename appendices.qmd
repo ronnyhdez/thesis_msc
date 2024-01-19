@@ -1,4 +1,4 @@
-# Appendices
+# Appendices {.appendix}
 
 <!-- | **Name** | **Description** | **Resolution** | **Wavelength**                | **Scale** | -->
 <!-- |----------------|----------------|----------------|----------------|----------------| -->

@@ -2,7 +2,7 @@ project:
   type: book
 
 book:
-  title: "Assesing uncertanties related to the use of satellite remote sensing indices to estimate Gross Primary Production"
+  title: "Assessing uncertainties related to the use of satellite remote sensing indices to estimate Gross Primary Production"
   subtitle: "By"
   author: 
     - name: "Ronny A. Hernández Mora"
@@ -25,9 +25,7 @@ book:
     - bibliography.qmd
   appendices:
     - appendices.qmd
-
-bibliography: 
- - rap_v002.bib
+   
 
 format:
   pdf:
@@ -55,8 +53,9 @@ format:
       - heightrounded
     linestretch: 1.5
     filters:
-     - section-refs.lua # needs pandoc version >= 2.11 to work
-
+      - section-bibliographies.lua # needs pandoc version >= 2.11 to work
+    bibliography: rap_v002.bib
+    citeproc: true 
 
     
 
