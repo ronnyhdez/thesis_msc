@@ -9,12 +9,12 @@ editor:
 ## Introduction
 
 The field of Earth Science has witnessed a transformative shift with the
-integration of Machine Learning (ML) methods, which had lead to a deeper
+integration of Machine Learning (ML) methods, which has led to a deeper
 understanding of our planet's complex ecosystems and processes
 [@reichstein_deep_2019]. ML methods are now well established in environmental
 sciences [@lary_machine_2016], including their use within studies aimed at
 mapping and quantifying vegetation characteristics and ecological processes such
-as vegetation cover, structure, disturbances, among others
+as vegetation cover, structure, and disturbances, among others
 [@lehnert_retrieval_2015; @verrelst_machine_2012].
 
 The increasing number of EC sites [@tramontana_predicting_2016] coupled with the
@@ -41,7 +41,7 @@ stated before [@tramontana_predicting_2016]. So functional relationships between
 in-situ measured fluxes with the explanatory variables can emerge
 [@tramontana_predicting_2016]. This paradigm shift toward data-driven modeling
 to extract patterns represents an opportunity to come up with new ideas and
-questioning establisehd theories in earth system models.
+question established theories in earth system models.
 
 In contrast to process based models, data driven models inherently possess an
 observational nature where functional relationships emerge from the patterns
@@ -65,7 +65,7 @@ estimates or enable the use of reflectance values to predict GPP when no in-situ
 data is available in the present times [@meyer_improving_2018].
 
 These predictions can include many forms of uncertainty [@reichstein_deep_2019].
-One form is that individual ML methods can have different responses, specially
+One form is that individual ML methods can have different responses, especially
 when these models are applied beyond the conditions presented in the training
 dataset. [@jung_towards_2009; @papale_effect_2015]. Another form is related to
 the explanatory variables used in ML methods derived from satellite remote
@@ -81,11 +81,11 @@ values only until later when the stress conditions persist
 
 This chapter evaluates data drive approaches for estimating GPP given MODIS
 surface reflectance data for temperate broadleaf forests in North America. Two
-state of the art approaches previously used for GPP estimation are tested:
+state-of-the-art approaches previously used for GPP estimation are tested:
 regression random forests [@sohil_introduction_2022] and AutoML [@ledell2020h2o]
 to understand how the ML algorithm impacts prediction uncertainty. Both
-approaches tested locally and using pooled data from three sites to quantify
-their ability to be applied over larger spatial extents.
+approaches were tested locally and using pooled data from three sites to
+quantify their ability to be applied over larger spatial extents.
 
 \newpage
 
@@ -189,11 +189,11 @@ Imaging Spectroradiometer (MODIS), specifically the collection MOD09GA Version
 6.1 daily 500m resolution surface reflectance products (MODIS/Terra Surface
 Reflectance Daily L2G Global 1 km and 500 m SIN Grid). A square polygon with an
 area of 3km surrounding the EC tower was defined for each of the study sites,
-and all daily data pixel values within this polygon was extracted for analysis.
+and all daily data pixel values within this polygon were extracted for analysis.
 
-MOD09GA contains the surface spectral reflectance from bands to 1 through 7
+MOD09GA contains the surface spectral reflectance from bands 1 through 7
 (@tbl-MODIS_500_complete_bands) with a spatial resolution of 500m, with
-corrections for atmospheric conditions such as aerosols, gasses and Rayleigh
+corrections for atmospheric conditions such as aerosols, gasses, and Rayleigh
 scattering [@vermote2021modis].
 
 We selected the highest quality pixels according to the 1km Reflectance Data
@@ -205,8 +205,8 @@ discarded.
 
 Once all the band values were scaled, we calculated 4 Vegetation Indices: `NDVI`
 (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi), and `CCI` (@eq-cci). Then all
-the MODIS bands values and VIs were summarized in a daily, weekly, and monthly
-basis to be merge with the GPP values from ONEFlux.
+the MODIS bands values and VIs were summarized on a daily, weekly, and monthly
+basis to be merged with the GPP values from ONEFlux.
 
 | **Name**    | **Description** | **Resolution** | **Wavelength** |
 |-------------|-----------------|----------------|----------------|
@@ -259,7 +259,7 @@ models. To measure the influence of each feature on the overall model's
 predictive performance, we quantify how this performance deteriorates when a
 particular variable is permuted while keeping others constant.
 
-To understand which features contributed the most in average to a particular GPP
+To understand which features contributed the most on average to a particular GPP
 prediction in different coalitions [@molnar2020interpretable], we calculated the
 Shapley values [@lundberg_unified_nodate]. These values were computed with the
 DALEX package in R [@biecek2018dalex] for both low GPP and high GPP scenarios
@@ -269,7 +269,7 @@ within each of the temporally aggregated models.
 
 The AutoML approach is designed to identify the most optimal ML pipeline for a
 specific problem and available training data by evaluating different
-combinations of data processing steps, ML models and hyperparameters settings
+combinations of data processing steps, ML models, and hyperparameters settings
 [@gaber2023using]. To create a stacked ensemble of models and evaluate the
 performance, we utilized the H2O AutoML framework [@ledell2020h2o].
 
@@ -314,7 +314,7 @@ monthly models (@fig-vip_weekly_500_rf and @fig-vip_monthly_500_rf). In the case
 of the daily model, CCI emerged as the second most influential predictor
 variable (as shown in @fig-vip_daily_500_rf).
 
-Despite that NDVI being ranked as the second variable in importance for the
+Despite NDVI being ranked as the second variable in importance for the
 monthly model, it was the fifth variable in importance for the daily model and
 the fourth one for the weekly model. Meanwhile, the NIRv consistently held the
 third most influential position across all models. EVI was found to be most
@@ -345,9 +345,9 @@ $1.21 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and
 $13.17 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, respectively, resulting in
 predictions of $1.60 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and
 $11.0 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. For the low GPP value, the most
-influential variables were CCI, EVI, NIRv and NDVI, all contributing negatively
+influential variables were CCI, EVI, NIRv, and NDVI, all contributing negatively
 to the prediction (see @fig-shap_weekly_500_rf **A**). Conversely, for the high
-GPP value, CCI, EVI, NIRv, B02 and NDVI had the most influence in the prediction
+GPP value, CCI, EVI, NIRv, B02 and NDVI had the most influence on the prediction
 positively (refer to @fig-shap_weekly_500_rf **B**).
 
 In the case of the monthly model, the low GPP value selected was
@@ -1137,7 +1137,7 @@ highest RMSE of $3.11 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
 
 An examination of variable importance in the AutoML model revealed distinctive
 patterns in significant contributors to GPP prediction across temporal scales.
-In the daily prediction model, EVI and CCI emerged as most important
+In the daily prediction model, EVI and CCI emerged as the most important
 (@fig-vip_daily_500_automl). Moving to a weekly time frame, the importance of
 EVI and CCI persisted, with the addition of Band 02 (NIR band)
 (@fig-vip_daily_500_automl_weekly). In the monthly prediction model, EVI once
@@ -1322,7 +1322,7 @@ GPP values, especially in the case of the daily model, it is noteworthy that the
 maximum predicted values hover around $16 \, \mathrm{gC \, m^{-2} \, d^{-1}}$,
 whereas observed values can reach up to $24 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
 (See @fig-daily_500_rf). Importantly, these values all belong to the Borden
-site, where the range on observed GPP is notably higher compared to the other
+site, where the range of observed GPP is notably higher compared to the other
 two sites.
 
 The discrepancy between the observed values and the predicted values may arise
@@ -1340,7 +1340,7 @@ shift unnoticed solely based on satellite reflectance values.
 Conversely, underestimation may be attributed to the well-known phenomenon of
 saturation. When using indices created with the NIR band for GPP estimation,
 challenges arise in scenarios where there is a substantial increase in
-vegetation biomass, that happens during summers in the study sites. In such
+vegetation biomass, which happens during summers in the study sites. In such
 situations, the dense biomass leads to increased scattering and reflection of
 radiation. While the NIR band is sensitive to changes in vegetation structure
 and density, it encounters limitations as the amount of biomass intensifies.
