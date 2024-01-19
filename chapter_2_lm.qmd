@@ -1,13 +1,4 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
-editor: 
-  markdown: 
-    wrap: 80
----
-
-# Assesing uncertanties related to satellite remote sensing indices to estimate Gross Primary Production
+# Assessing uncertainties related to satellite remote sensing indices to estimate Gross Primary Production
 
 ## Introduction
 
@@ -18,8 +9,8 @@ essential for understanding land-atmosphere carbon exchange
 change [@guan_comparison_2022; @brown_fiducial_2021; @myneni_relationship_1994].
 However, terrestrial GPP cannot be directly measured due to the contribution of
 respiration to land carbon fluxes [@anav_spatiotemporal_2015]. Instead, GPP can
-be inferred in a nondestructive manner by the net carbon exchange measurements
-at the ecosystem level, or at broarder scales using models that incorporate
+be inferred in a non-destructive manner by the net carbon exchange measurements
+at the ecosystem level, or at broader scales using models that incorporate
 various assumptions and limitations [@reichstein_separation_2005;
 @jung_towards_2009].
 
@@ -31,14 +22,14 @@ CO2 between land and the atmosphere, using advanced field instrumentation
 [@baldocchi_how_2020; @badgley_terrestrial_2019; @ryu_what_2019;
 @tramontana_predicting_2016]. However, EC measurements come with certain
 limitations, such as their relatively low spatial resolution, typically less
-than \< 1km2 , which constrains the accuracy of estimating ecosystem carbon and
-water fluxes at regional and global scales. [@badgley_canopy_2017].
+than \< 1km^2^ , which constrains the accuracy of estimating ecosystem carbon
+and water fluxes at regional and global scales. [@badgley_canopy_2017].
 
 Additionally, it's important to note that EC techniques directly measure Net
-Ecosystem Exchange (NEE), not GPP. Subsequently GPP must be estimated by both
+Ecosystem Exchange (NEE), not GPP. Subsequently, GPP must be estimated by both
 subtracting respiration using models and ancillary measurements while accounting
-for removal or deposition of carbon stocks due to natural or anthropogenic
-transport processes such as water flow, fires or harvest
+for the removal or deposition of carbon stocks due to natural or anthropogenic
+transport processes such as water flow, fires, or harvest
 [@beer_terrestrial_2010; @reichstein_separation_2005].
 
 The satellite data-driven models constitute the second category of methods to
@@ -48,15 +39,15 @@ techniques [@ryu_what_2019; @wang_diagnosing_2011]. Satellite data-driven models
 can be classified into process-based models, Light Use Efficiency models (LUE),
 and Vegetation Index models [@xie_assessments_2020].
 
-Process-based models integrate climate, canopy and soils information derived
+Process-based models integrate climate, canopy, and soil information derived
 from multiple sources, including satellite EO, into biophysical models of
 carbon, water, energy, and nutrient cycles with varying levels of detail
 [@running_general_1988; @harris_global_2021]. While these models can be scaled
 globally [@beer_terrestrial_2010; @jung_towards_2009] they require many
-parameters that may not be readily available in changing landscapes or for fine
-scale studies.
+parameters that may not be readily available in changing landscapes or for 
+fine-scale studies.
 
-LUE models are based on the concept of radiation conversion efficiency, and take
+LUE models are based on the concept of radiation conversion efficiency and take
 into consideration ecological processes [@liu1997process;
 @heinsch_evaluation_2006]. This efficiency signifies the amount of carbon a
 specific vegetation type can fix per unit of solar radiation
@@ -82,15 +73,15 @@ $$ {#eq-gpp}
 Where PAR is the incident photosynthetically active radiation
 [@monteith2013principles] and `fAPAR` is the fraction of the PAR that is
 effectively absorbed by plants [@gcos200]. The LUE term depends on vegetation
-type but also physiological conditions driven by water availability, temperature
-stress, and vapour pressure deficit [@goetz_mapping_1999;
+type but also physiological conditions are driven by water availability,
+temperature stress, and vapour pressure deficit [@goetz_mapping_1999;
 @running_general_1988]. Obtaining these variables for every vegetation type on
 Earth can be challenging, introducing assumptions that amplify uncertainties
 [@goetz_mapping_1999]. Nevertheless, under unstressed conditions, LUE remains
 constant for a given vegetation type, requiring only PAR and fAPAR to assess
 primary productivity [@running_continuous_2004].
 
-VIs are the Satellite data-driven models third approach. VIs are a summary of
+VIs are the Satellite data-driven models' third approach. VIs are a summary of
 non-linear functions of surface bi-directional reflectance spectra
 [@myneni_relationship_1994] derived from optical sensors that are combined with
 climate variables to calculate GPP [@wu_predicting_2011]. This is usually done
@@ -101,30 +92,29 @@ VIs have been used to provide inputs to @eq-gpp related to fAPAR from regional
 to global extents or to estimate GPP [@sellers_global_1994;
 @running_continuous_2004]. Some of the most common VIs to estimate GPP are the
 Normalized Difference Vegetation Index (NDVI), the Enhanced Vegetation Index
-(EVI), the Near-Infrared Reflectance Index (NIRv) or the Chlorophyll/Carotenoid
-Index (CCI) among others. [@balzarolo_influence_2019;
-@rahman_potential_2005; @rahman_potential_2005;
-@xie_assessments_2020; @badgley_terrestrial_2019; @zhang_potential_2020;
-@sellers_global_1994]. These VIs are based on a spectral reflectance ratio
-between the red and near-infrared regions of the electromagnetic spectrum
-[@glenn_relationship_2008] which tracks an integrated impact of fraction of
-photosynthetically active radiation (fAPAR) and LUE on
+(EVI), the Near-Infrared Reflectance Index (NIRv), or the Chlorophyll/Carotenoid
+Index (CCI) among others. [@balzarolo_influence_2019; @rahman_potential_2005;
+@rahman_potential_2005; @xie_assessments_2020; @badgley_terrestrial_2019;
+@zhang_potential_2020; @sellers_global_1994]. These VIs are based on a spectral
+reflectance ratio between the red and near-infrared regions of the
+electromagnetic spectrum [@glenn_relationship_2008] which tracks an integrated
+impact of fraction of photosynthetically active radiation (fAPAR) and LUE on
 productivity [@myneni_relationship_1994].
 
 An index such as NDVI is good for detecting structural vegetation changes in
 seasonal variability, but it becomes saturated with high biomass conditions
 [@badgley_canopy_2017]. Other indices such as EVI can overcome the soil and
-atmospheric effects by adding the blue band [@huete1988soil] and may be
-better suited for predicting GPP in large biomass forests
-[@badgley_canopy_2017]. Nonetheless, it has been evaluated in a narrow range of
-ecosystems and needs inputs of start and end dates of the growing seasons which
-can increase uncertainties [@shi_assessing_2017]. For specific types of
-ecosystems such as evergreen conifers, CCI can track the seasonality of daily
-GPP due to its sensibility to the chlorophyll/carotenoid pigment ratios [@gamon_remotely_2016]. 
+atmospheric effects by adding the blue band [@huete1988soil] and may be better
+suited for predicting GPP in large biomass forests [@badgley_canopy_2017].
+Nonetheless, it has been evaluated in a narrow range of ecosystems and needs
+inputs of start and end dates of the growing seasons which can increase
+uncertainties [@shi_assessing_2017]. For specific types of ecosystems such as
+evergreen conifers, CCI can track the seasonality of daily GPP due to its
+sensibility to the chlorophyll/carotenoid pigment ratios [@gamon_remotely_2016].
 
-Other indices such as near-infrared reflectance index (NIRv) have been
+Other indices such as the near-infrared reflectance index (NIRv) have been
 formulated to address the mixed-pixel effect (pixel with vegetated and
-non-vegetated features) and to determine the vegetation photsyntetic capacity
+non-vegetated features) and to determine the vegetation photosyntetic capacity
 [@badgley_terrestrial_2019]. NIRv is defined as the fraction of reflected NIR
 light that originates from vegetation. NIRv was originally proposed as a
 replacement for fPAR in LUE models in that the NIR and PAR reflectance of
@@ -132,11 +122,11 @@ vegetation are correlated and the scaling by NDVI corrects for soil
 contributions in the signal [@badgley_terrestrial_2019]. NIRv has been shown to
 have a stronger correlation to GPP at flux towers and on a regional basis than
 fAPAR notwithstanding the fact that GPP is directly related to fAPAR. NIRv has
-been extended to include a weighting with PAR [@dechant_nirvp_2022] and
-replacing the NIR reflectance with NIRv radiance [@wu_radiance-based_2020]. Both
-of these approaches have been shown to have even stronger correlations with GPP
-than NIRv as could be expected since they either directly or indirectly weight
-the NIRv with PAR.
+been extended to include weighting with PAR [@dechant_nirvp_2022] and replacing
+the NIR reflectance with NIRv radiance [@wu_radiance-based_2020]. Both of these
+approaches have been shown to have even stronger correlations with GPP than NIRv
+as could be expected since they either directly or indirectly weight the NIRv
+with PAR.
 
 The stronger correlation between the NIRv index to GPP in comparison to the
 correlation between VIs related to fAPAR and GPP seemingly contradicts the
@@ -145,8 +135,8 @@ are two explanations: i. Many of the reported comparative studies use fAPAR
 based on VIs and not APAR. We hypothesize that the NIR indices are simply better
 estimators of APAR than these VI approximations due to lower measurement error
 for the NIR indices or a stronger physical relationship between them and APAR
-versus the historical VIs. ii. The strength of correlation between APAR and GPP
-depends on LUE having a linear relationship to observed APAR. While this may
+versus the historical VIs. ii. The strength of the correlation between APAR and
+GPP depends on LUE having a linear relationship to observed APAR. While this may
 hold in some circumstances (e.g. early seasonal measurements for vegetation such
 as crops where leaf chlorophyll concentration increases during the growth phase)
 it is not the case in general and definitely during stress conditions
@@ -154,17 +144,17 @@ it is not the case in general and definitely during stress conditions
 
 Despite these efforts, relying solely on remote satellite VIs presents a
 challenge. The assumptions accompanying VI models suggest the importance of
-systematically quantify their predictive capacity for GPP to validate and
-improve their accuracy [@anav_spatiotemporal_2015;
-@brown_fiducial_2021] across various growing seasons and locations. This is
-particularly crucial because photosynthesis regulation can occur with no major
-changes in canopy structure or leaf pigments that can undergo without being
-detected with reflectance data [@pabon-moreno_potential_2022;
-@pierrat_diurnal_2022], implying that temporal aggregation may be critical for
-VI models. In-situ eddy-covariance flux measurements coupled with locally
-calibrated models for respiration [@baldocchi_how_2020] represent a suitable
-reference GPP for validation solution given that they represent site-level
-observations [@chu_representativeness_2021].
+systematically quantifying their predictive capacity for GPP to validate and
+improve their accuracy [@anav_spatiotemporal_2015; @brown_fiducial_2021] across
+various growing seasons and locations. This is particularly crucial because
+photosynthesis regulation can occur with no major changes in canopy structure or
+leaf pigments that can undergo without being detected with reflectance data
+[@pabon-moreno_potential_2022; @pierrat_diurnal_2022], implying that temporal
+aggregation may be critical for VI models. In-situ eddy-covariance flux
+measurements coupled with locally calibrated models for respiration
+[@baldocchi_how_2020] represent a suitable reference GPP for validation solution
+given that they represent site-level observations
+[@chu_representativeness_2021].
 
 As such, the main objective of this M.Sc. thesis chapter is to quantify and
 compare the uncertainty associated with the VI/LUE models to estimate GPP. To
@@ -229,12 +219,12 @@ selected the daytime method (DT) which uses daytime and nighttime to
 parameterize a model with two components: one based on light response curve and
 vapour pressure deficit and a second one using a respiration-temperature
 relationship to estimate RECO which in turn is used to obtain the difference
-with NEE and provide GPP. [@pastorello2020fluxnet2015].
+with NEE and provide GPP [@pastorello2020fluxnet2015].
 
 ![Sites locations](img/ge_sites.jpg){#fig-sites_locations}
 
 @fig-gpp_trends displays the GPP trends for the University of Michigan
-Biological Station, Bartlett experimental forest, and the Borden Forest Research
+Biological Station, Bartlett Experimental Forest, and the Borden Forest Research
 Station. Additional details regarding the characteristics of these datasets can
 be found in Table @tbl-oneflux_datasets.
 
@@ -249,21 +239,21 @@ be found in Table @tbl-oneflux_datasets.
 The Bartlett experimental forest is located in New Hampshire, USA (44°06′N,
 71°3′W). This site is characterized by a forest with an average canopy height
 ranging from 20 to 22 meters with a mean annual temperature of 6°C. Despite
-events such as a hurricane in 1938 and small scale forest management, the forest
-mean stand age is around 120-125 years. [@ouimette_carbon_2018]
+events such as a hurricane in 1938 and small scale forest management, the
+forest's mean stand age is around 120-125 years [@ouimette_carbon_2018].
 
 The second flux site is Borden Forest Research Station located in Ontario
 (44°19′N, 79°56′W), Canada. This is one of the largest patches of forest in
 Southern Ontario which has been collecting EC data since 1996
 [@rogers_response_2020]. This site has a forest cover of over 60% with a height
 that exceeds 2 m. It's a deciduous broadleaf natural re-growth forest since 1916
-dominated by woody vegetation. [@lee_long-term_1999].
+dominated by woody vegetation [@lee_long-term_1999].
 
 The third site is the University of Michigan Biological Station which is located
-in northern Michigan, USA (45°350 N 84°430 W). The site have a forest with
+in northern Michigan, USA (45°350 N 84°430 W). The site has a forest with
 different succesional stages, with an average stand age of 90 years
-[@gough_wood_2010], and a mean height of 2m. Mean annual temperature is around
-5.5°C. [@gough_disturbanceaccelerated_2021]
+[@gough_wood_2010], and a mean height of 2m. The mean annual temperature is
+around 5.5°C [@gough_disturbanceaccelerated_2021].
 
 The three sites exhibit similar characteristics, indicating their representation
 of a specific ecosystem type. This uniformity enables meaningful comparisons and
@@ -302,7 +292,6 @@ data %>%
 locations = cells_body(columns = Variable, rows = 5)
   )
 ```
-
 
 ```{r}
 #| label: fig-gpp_trends
@@ -391,10 +380,10 @@ Google Earth Engine (GEE). For each site, a square polygon with an area of 3 km
 surrounding the EC tower was defined, and the pixel values within this polygon
 were extracted for comprehensive analysis.
 
-The MODIS contains the surface spectral reflectance from bands to 1 through 7
+The MODIS contains the surface spectral reflectance from bands 1 through 7
 with a spatial resolution of 500m, with corrections for atmospheric conditions
-such as aerosols, gasses and Rayleigh scattering [@vermote2021modis], and
-validation of cloud-free pixels as well. Bands used to derived the vegetation
+such as aerosols, gasses, and Rayleigh scattering [@vermote2021modis], and
+validation of cloud-free pixels as well. Bands used to derive the vegetation
 indices are shown in @tbl-MODIS_500_indices_bands
 
 | **Name**    | **Description** | **Resolution** | **Wavelength** |
@@ -421,24 +410,24 @@ indices are shown in @tbl-MODIS_500_indices_bands
 
 The data processing involved three main steps: selecting high-quality pixels,
 scaling band values, and calculating vegetation indices. MODIS product data have
-4 bit-encoded variables which provided information about the observation
+4 bit-encoded variables which provide information about the observation
 quality. From those variables, only the 1km Reflectance Data State QA
 (`state_1km`) and Surface Reflectance 500m Quality Assurance (`qc_500m`)
-variables were used along with each of the bands bits quality indicators, as
+variables were used along with each of the band's bits quality indicators, as
 250m scan value information (`q_scan`) was not informative and Geolocation flags
 (`g_flags`) had the same value for all observations. The bit-encoded variables
 were transformed into categorical strings, and only the categories indicating
 the best quality were selected to filter the pixels (@fig-quality_pixels). The
 specific bit strings selected for `state_1km` are shown in
 @tbl-state_1km_bitstrings and for `qc_500m` in @tbl-qc_scan_bit_strings.
-Subsequently the surface reflectance for each filtered pixel was determined by
+Subsequently, the surface reflectance for each filtered pixel was determined by
 scaling the digital number recorded by `0.0001`.
 
 Following the MODIS Collection 6.1 (C61) LSR Product User Guide
 [@vermote2021modis], any scaled value that fell outside the range of `0` to `1`
 was considered a fill value or uncorrected Level 1B data and was subsequently
 discarded. These values were deemed unreliable or lacking meaningful information
-for the analysis. The number of high quality surface reflectance observation was
+for the analysis. The number of high-quality surface reflectance observations was
 summarized on a monthly basis for each site (@fig-complete_quality_pixels)
 
 The VIs `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi), and `CCI`
@@ -546,11 +535,11 @@ all %>%
 
 Three datasets were prepared for each site: a daily, a weekly, and a monthly
 dataset. These datasets were generated from the satellite imagery data with the
-selected high quality pixels and the ONEFluxprocess data in order to capture
+selected high-quality pixels and the ONEFluxprocess data in order to capture
 variations in vegetation indices (VI), band values, and GPP over different time
 scales.
 
-The daily dataset included the VI values, band values only from the high quality
+The daily dataset included the VI values, band values only from the high-quality
 pixels, and GPP measurements derived from the ONEFlux process collected on a
 daily basis for the time period of available GPP at each site
 @tbl-oneflux_datasets. This dataset provided a high-resolution representation of
@@ -579,7 +568,7 @@ below the detection limit or insufficient to make a significant contribution to
 the overall analysis, particularly in representing meaningful vegetation
 productivity. This process aimed to refine the dataset and focus on values
 within a range considered more pertinent to the growing season. The final number
-of observations per site after selecting the high quality pixels and GPP
+of observations per site after selecting the high-quality pixels and GPP
 observations are shown in @fig-obs_used_analysis.
 
 ```{r}
@@ -645,13 +634,13 @@ daily_plot_500 %>%
 
 To address the potential non-linearity of the lowest uncertainty data-driven
 model across different temporal aggregation scales or for specific VIs, we
-employed two distinct modelling approaches: a Linear Model (LM) and a
-Generalized Additive Model (GAM). GAM models allows a better fit for those cases
+employed two distinct modeling approaches: a Linear Model (LM) and a
+Generalized Additive Model (GAM). GAM models allow a better fit for those cases
 where the distribution and variability observed in the data is greater, due to
 the varying temporal scales. We aimed to evaluate whether this variance could be
-better explained by this type of model, that might not be optimal to capture
+better explained by this type of model, which might not be optimal to capture
 with a linear relationship, potentially leading to greater residuals. Both
-model's approaches were applied individually to test our hypothesis regarding VI
+models’  approaches were applied individually to test our hypothesis regarding VI
 predictive uncertainty. Additionally, a single model was applied to assess
 whether a combination of VIs could improve GPP estimation uncertainty.
 
@@ -685,10 +674,11 @@ The @tbl-lm_monthly_results provides a summary of linear models used for GPP
 estimation at each site, employing the vegetation indices as predictors. For
 each site and predictor, the table includes the relevant model summary
 statistics, such as R², MAE, and RMSE as indicators of the statistical
-significant of the model fits. All models add p-values < 0.05 More metrics such as the p-value, adjusted
-r-squared, the Akaike Information Criterion (AIC), and Bayesian Information
-Criterion (BIC) are displayed in the @tbl-complete_lm_monthly_results for
-monthly results, @tbl-complete_lm_weekly_results for weekly results, and the
+significant of the model fits. All models add p-values \< 0.05 More metrics such
+as the p-value, adjusted r-squared, the Akaike Information Criterion (AIC), and
+Bayesian Information Criterion (BIC) are displayed in the
+@tbl-complete_lm_monthly_results for monthly results,
+@tbl-complete_lm_weekly_results for weekly results, and the
 @tbl-complete_lm_daily_results for daily outputs. A residuals distribution for
 each of the models is in @fig-lm_residuals
 
@@ -696,24 +686,25 @@ Our findings shows that when using all the indices as covariates within the
 linear model, the model's performance demonstrates better outcomes compared to
 using any single index alone across all scenarios. In the assessment of
 individual VI performance on a monthly basis, CCI tend to perform better than
-EVI, NDVI, and NIRv. Although all models were statistically significant (p <
+EVI, NDVI, and NIRv. Although all models were statistically significant (p \<
 0.05), it is important to note that for the Bartlett and Michigan sites, while
 CCI shows favourable predictive accuracy, its advantage over the NIRv and EVI is
-slightly better and mostly due to the MAE ($0.86 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ 
-for Bartlett and $1.02 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ for Michigan) and 
-RMSE  ($1.05 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ for Bartlett and 
+slightly better and mostly due to the MAE
+($0.86 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ for Bartlett and
+$1.02 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ for Michigan) and RMSE
+($1.05 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ for Bartlett and
 $1.29 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ for Michigan) results.
 
 The NDVI displays relatively diminished performance, indicating a 9% and 15%
 reduction in the R² compared to CCI in the Bartlett and Michigan sites,
 respectively. In contrast, EVI exhibits less favourable predictive results (R² =
-75%, MAE = $1.92 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, 
-RMSE = $2.54 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) for the Borden site and the 
+75%, MAE = $1.92 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, RMSE =
+$2.54 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) for the Borden site and the
 aggregated sites category, although in the specific context of the Borden site,
 its performance aligns closely with NDVI and NIRv. Among the individual sites,
-Bartlett has the most favourable predictive outcomes in terms of R²,
-MAE, and RMSE for every individual VI model, while the aggregated sites category
-yield the least favourable predictive results in the same scenarios.
+Bartlett has the most favourable predictive outcomes in terms of R², MAE, and
+RMSE for every individual VI model, while the aggregated sites category yield
+the least favourable predictive results in the same scenarios.
 
 In the case of the weekly models, NDVI records the least favourable results in
 terms of R², MAE, and RMSE when assessed at the three individual sites, while
@@ -930,8 +921,8 @@ superiority over the others. For the all sites category, CCI have a R² = 3%
 better variance explanation than NDVI, which is the second best model with a R²
 = 75%. In the case of Michigan EVI and NIRv were the best individual indices
 with a R² = 96% of the variance in GPP, but EVI had slightly lower error metrics
-values in MAE ($0.01 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) and 
-RMSE ($0.02 \, \mathrm{gC \, m^{-2} \, d^{-1}}$). Bartlett had a better model 
+values in MAE ($0.01 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) and RMSE
+($0.02 \, \mathrm{gC \, m^{-2} \, d^{-1}}$). Bartlett had a better model
 performance when using CCI with a R² = 91% of variance explained with the lowest
 error metrics among all the GAM monthly models. It's important to highlight that
 for Michigan and Bartlett, implementing a GAM model using all the VIs as
@@ -941,9 +932,9 @@ parameters, raising concerns of potential overfitting.
 Finally, it's noteworthy that NDVI on a monthly basis displayed suboptimal
 performance in two of the sites (Michigan and Bartlett) with a difference of R²
 = 10% and R² = 13% with the best performing models respectively, while EVI
-exhibited less favourable results in just the Borden site with
-MAE $1.92 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) and 
-RMSE $2.54 \, \mathrm{gC \, m^{-2} \, d^{-1}}$).
+exhibited less favourable results in just the Borden site with MAE
+$1.92 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) and RMSE
+$2.54 \, \mathrm{gC \, m^{-2} \, d^{-1}}$).
 
 On a weekly basis, models incorporating all VIs as covariates consistently
 obtained better performance compared to any individual VI, irrespective of the
@@ -1364,15 +1355,15 @@ values (See @fig-lm_residuals for LM residuals and @fig-gam_residuals for GAM
 residuals). Although the decrease in model fit was not substantial, the increase
 in residuals metrics suggests a potential for larger errors in predictions.
 
-While NDVI is one of the most used VIs in EO [@pabon-moreno_potential_2022],
-its performance, as measured by the GPP RMSE, was comparatively less favorable on
+While NDVI is one of the most used VIs in EO [@pabon-moreno_potential_2022], its
+performance, as measured by the GPP RMSE, was comparatively less favorable on
 two out of the three sites when compared to other indices. However, the
 performance variation among the sites was not significant, with the Bartlett
-experimental forest showing slightly better results in all GPP ~ VIs
+experimental forest showing slightly better results in all GPP \~ VIs
 relationships compared to the other sites. These findings suggest that, although
 NDVI may not be the most optimal vegetation index for GPP estimation at these
 specific sites, variations in performance across different locations are still
-noteworthy. 
+noteworthy.
 
 When examining the data trends for GPP at each site and its relationship with
 VIs, it becomes evident that at higher GPP values, the dispersion of the data is
@@ -1382,19 +1373,19 @@ leaves. It is important to note, however, that the mere presence of green leaves
 does not consistently signify active photosynthesis. This discrepancy can arise
 for two reasons. Firstly, the photosynthetic process may undergo temporary
 suspension without any manifest changes in chlorophyll content or leaf
-abscission  [@camps-valls_unified_2021-2] Secondly, VIs relying on the NIR band
+abscission [@camps-valls_unified_2021-2] Secondly, VIs relying on the NIR band
 face challenges in detecting photosynthesis in instances when a higher amount of
 healthy plant biomass is present. The increased biomass leads to greater
 scattering and reflection of NIR radiation, resulting in a saturation effect
 [@camps-valls_unified_2021-2].
 
-This observation holds significance as, despite VIs serving as
-indicators of vegetation capacity rather than vegetation physiology, historical
-data records are predominantly derived from sensors equipped with bands for
-generating these VIs. Conversely, newer sensors capable of capturing additional
-bands to derive indices such as Solar-Induced Fluorescence (SIF) lack
-comprehensive historical records, hindering the feasibility of long-term studies
-that extend back to years preceding the 2000s.
+This observation holds significance as, despite VIs serving as indicators of
+vegetation capacity rather than vegetation physiology, historical data records
+are predominantly derived from sensors equipped with bands for generating these
+VIs. Conversely, newer sensors capable of capturing additional bands to derive
+indices such as Solar-Induced Fluorescence (SIF) lack comprehensive historical
+records, hindering the feasibility of long-term studies that extend back to
+years preceding the 2000s.
 
 The application of both LM and GAM models to the dataset revealed some
 differences in model performance. The GAM model exhibited a slightly superior
