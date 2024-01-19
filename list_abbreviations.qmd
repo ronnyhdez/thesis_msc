@@ -38,7 +38,6 @@ tribble(
   "CRI", "Chlorophyll Index Red",
   "SIF", "Solar-Induced Fluorescence",
   "EO", "Earth Observation",
-  "NIR", "Near Infrared",
   "SWIR", "Short wave infrared",
   "QA", "Quality Assurance",
   "QC", "Quality Control"

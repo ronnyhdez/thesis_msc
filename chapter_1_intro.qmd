@@ -2,17 +2,17 @@
 
 # Introduction
 
-The study and assessment of ecosystem dynamics have greatly benefited from the
+The study and assessment of ecosystem dynamics has greatly benefited from the
 development and advances of the remote sensing field [@running_continuous_2004;
-@baldocchi_how_2020-1] coupled with the growing freely available remote sensing
-data [@xiao_remote_2019]. Elements on the Earth surface exhibit distinctive
-spectral signatures arising from their physical properties and interactions with
-electromagnetic radiation [@montero_standardized_2023]. Environmental factors
+@baldocchi_how_2020-1] coupled with the growing freely available remote sensing data
+[@xiao_remote_2019]. Elements on the Earth's surface exhibit distinctive spectral
+signatures arising from their physical and chemical properties and interactions
+with electromagnetic radiation [@montero_standardized_2023]. Environmental factors
 (fires, floods, drought, etc) can affect these interactions modifying the
-spectral signatures which can provide insights about surface process when
+spectral signatures which can provide insights about surface processes when
 measured by remote sensing instruments [@montero_standardized_2023].
 
-The launch in the 1970's of the  Earth Resources Technology Satellite (ERTS),
+The launch in the 1970s of the Earth Resources Technology Satellite (ERTS),
 later known as Landsat-1 [@donato_landsat_nodate], initiated a new era in the
 remote sensing field of the terrestrial biosphere, with a special focus on
 vegetation monitoring [@montero_standardized_2023]. With information available
@@ -20,22 +20,23 @@ about spectral bands, studies about their relations to biophysical
 characteristics became an object of study to estimate biomass and photosynthetic
 activity [@myneni_estimation_1997].
 
-In fact, one application of remote sensing have been the development of
+In fact, one application of remote sensing has been the development of
 vegetation indices (VI) to study the characteristics of vegetation canopies and
-functioning [@houborg_advances_2015]. VIs are a function of two or more spectral
-bands, typically derived from satellite images [@zeng_optical_2022] that can
-contain information about the status of the vegetation, biochemical
-characteristics, structural characteristics such as Leaf Area Index (LAI), among
-others [@huete_overview_2002].
+their functioning [@houborg_advances_2015]. VIs are a function of two or more
+spectral bands, typically derived from satellite images [@zeng_optical_2022]
+that can contain information about the status of the vegetation, biochemical
+characteristics, and structural characteristics such as Leaf Area Index (LAI),
+among others [@huete_overview_2002].
 
-Early studies about spectral bands relations, lead to the development of the
-NDVI, which showed how the NIR and Red ratio had advantages over other bands
-ratios for monitoring vegetation biomass and structure given surface reflectance
+Early studies about spectral bands relations, led to the development of the
+Normalized Difference Vegetation Index (NDVI), which showed how the Near
+Infrared (NIR) and Red ratio had advantages over other bands ratios for
+monitoring vegetation biomass and structure given surface reflectance
 measurements in the shortwave spectrum [@tucker1979red;
 @richardson1977distinguishing]. The basis of NDVI rests in the fact that
 chlorophyll absorption leads to a decrease in red reflectance with increasing
 green vegetation relative to the NIR reflectance, that is minimally impacted by
-chlrophyll absorption [@ramachandran_modis_2010].
+chlorophyll absorption [@ramachandran_modis_2010].
 
 The use of a relative indicator serves to reduce the effect of factors such as
 canopy spatial structure and non-photosynthetic vegetation on relationships
@@ -50,55 +51,55 @@ and aerosol variations by combining the blue, red, and NIR bands
 [@gao_opticalbiophysical_2000].
 
 The ability to combine reflectance from multiple spectral bands, coupled with
-advancements and  the development of new sensor technologies introducing
+advancements and the development of new sensor technologies introducing
 additional bands or different spectral characteristics, has created
-opportunities to develop multiple VIs  and the total number of indices have
-grown steadily [@zeng_optical_2022]. These equations can function as proxies for
+opportunities to develop multiple VIs and the total number of indices has grown
+steadily [@zeng_optical_2022]. These equations can function as proxies for
 various vegetation canopy properties or enhance existing estimations across
 different ecosystems [@ramachandran_modis_2010].
 
 According to the Awesome Spectral Indices open community catalogue (version
 4.0.0), there are 127 spectral indices designed to monitor vegetation. The aim
-behind the ongoing development of new VIs is to achieve a more accurate mapping
-of ecosystem variables such as GPP. [@montero_standardized_2023]. These 
-indices can be classified into 3 main categories: biophysical, biochemical and 
+behind the ongoing development of new VIs is to achieve a more accurate
+mapping of ecosystem variables such as GPP [@montero_standardized_2023]. These
+indices can be classified into 3 main categories: biophysical, biochemical and
 physiological properties [@zeng_optical_2022].
 
-One important variable to understand ecosystems processes is GPP. At present,
+One important variable in understanding ecosystem processes is GPP. At present,
 VIs derived from satellites cannot directly estimate GPP
 [@gensheimer_convolutional_2022] and instead, instruments like eddy covariance
 have been the traditional method to estimate GPP more directly
 [@baldocchi_how_2020-1].
 
-GPP represents the total amount of carbon compunds produced by plant
-photosynthesis in a given period of time [@ashton_managing_2012]. GPP plays a
-crucial role in the carbon cycle since it quantifies the ability of vegetation
-to fix carbon from the atmosphere using only solar energy and nutrients
+GPP represents the total amount of carbon compounds produced by plant
+photosynthesis in a given period [@ashton_managing_2012]. GPP plays a crucial
+role in the carbon cycle since it quantifies the ability of vegetation to fix
+carbon from the atmosphere using only solar energy and nutrients
 [@xiao_remote_2019]. GPP is responsive to a range of factors, including abiotic
 elements such as radiation, temperature, and precipitation
 [@beer_terrestrial_2010], as well as biotic factors like vegetation type, leaf
 chemical traits, and species composition [@musavi_stand_2017].
 
-Some of the carbon taken in by GPP is release back to the atmosphere through
+Some of the carbon taken in by GPP is released back to the atmosphere through
 plant respiration (autotrophic respiration), and the difference between GPP and
 plant respiration  is called Net Primary Productivity (NPP) [@lieth1975modeling;
 @xiao_remote_2019]. GPP, along with Ecosystem Respiration (ER), which includes
 both autotrophic and heterotrophic respiration, together determines Net
 Ecosystem Exchange (NEE) [@xiao_remote_2019]. NEE is fundamental to the
 planetary carbon cycle as it represents the net accumulation or loss of carbon
-by the ecosystem. Measurement of GPP and NEE are critical to understanding the
+by the ecosystem. Measurement of GPP and NEE is critical to understanding the
 role of the biosphere in the carbon cycle as well as the status and trends of
 vegetation productivity [@schimel_terrestrial_1995].
 
 Eddy Covariance (EC) is a method used to measure the exchange of energy and
 materials between ecosystems and the atmosphere within an area that can range
 from a few hundred meters to a few kilometers [@pabon-moreno_potential_2022].
-Specifically, EC methods can estimate GPP in-situ at temporal resolution of
+Specifically, EC methods can estimate GPP in-situ at a temporal resolution of
 seconds, by subtracting estimates of respiration from chamber measurements or
 models from direct measurements of NEE [@reichstein_separation_2005]. However,
 EC estimates are both, costly and limited in spatial coverage
-[@baldocchi_how_2020-1]. Also, uncertainties from this method lies in the
-typical increase in spatial and temporal variability in GPP over heteregeneous
+[@baldocchi_how_2020-1]. Also, uncertainties from this method lie in the
+typical increase in spatial and temporal variability in GPP over heterogeneous
 landscapes such as forest boundaries [@reinmann_edge_2017]. The prevalent
 practice of taking measurements primarily from intact forests introduces the
 risk of potentially misleading estimations for the broader forest being
@@ -126,7 +127,7 @@ models, and process-based models provide more detailed and direct quantification
 The concept of a more detailed and direct quantification of GPP achieved through
 LUE and process-based models can be attributed to the incorporation of a
 constant maximal light use efficiency, which is a plant functional type
-dependent parameter which is down regulated by stress factors such as
+dependent parameter that is downregulated by stress factors such as
 temperature and vapor pressure deficit [@pabon-moreno_potential_2022]. This
 approach is then integrated with APAR derived from remote sensing data to
 estimate GPP in the case of LUE models  [@running_continuous_2004]. In contrast,
@@ -151,40 +152,40 @@ indices offer valuable insights into the dynamics of vegetation productivity.
 
 Despite the notable progress in VIs development and their user-friendly
 applications there is a consensus that no single VI can be universally applied
-to address every GPP estimation across species and time periods, even for a
-single biome [@zeng_optical_2022]. VI measurement error poses additional
-challenges to remote sensing applications, with diverse sources affecting
-satellite-derived data, including atmospheric effects, retrieval errors, cloud
-contamination, and sensor degradation [@van_leeuwen_multi-sensor_2006;
+to address every GPP estimation across species and periods, even for a single
+biome [@zeng_optical_2022]. VI measurement error poses additional challenges to
+remote sensing applications, with diverse sources affecting satellite-derived
+data, including atmospheric effects, retrieval errors, cloud contamination, and
+sensor degradation [@van_leeuwen_multi-sensor_2006;
 @fang_theoretical_2012]. Thus, a quantitative and rigorous understanding of the
 specific context and characteristics of multiple sites is essential to
-understand the potential and limits of VIs for GPP estimation over large extents
-of space and time [@zeng_optical_2022].
+understanding the potential and limits of VIs for GPP estimation over large
+extents of space and time [@zeng_optical_2022].
 
-Together with the advancement of new VIs, there has been a upsurge in data
+Together with the advancement of new VIs, there has been an upsurge in data
 analysis methods, specifically Machine Learning (ML) approaches, has garnered
 significance in recent years. The capability of ML methods to navigate
 non-linear relationships proves crucial, particularly when predicting GPP from
 various predictors [@meyer_importance_2019]. However, despite their simplicity
-and effectiveness, ML approaches encounter challenges, and the resulting flux
-estimates bear various sources of uncertainty. The distribution and quantity EC
-sites play a pivotal role in influencing the accuracy and variability of
+and effectiveness, ML approaches encounter challenges, and the resulting fluxes
+estimates bear various sources of uncertainty. The distribution and quantity of
+EC sites play a pivotal role in influencing the accuracy and variability of
 regional flux estimates derived from machine learning methods
 [@papale_effect_2015].
 
-The goal of this study is to assess the advantages and contraints associated
+The goal of this study is to assess the advantages and constraints associated
 with the utilization of 4 widely employed VIs for estimating GPP. The study is
-limited to temperate broadleaf forests of Eastern United States of America and
-Canada as it required consistent multi-annual EC GPP measurements over multiple
-sites to quantify uncertainty related to spatial location of calibration data.
-The VIs are derived from the Moderate Resolution Imaging Spectroradiometer
-(MODIS), which have long standing temporal records and acceptable spatial
-resolution to study extended forest areas. The analysis employs both traditional
-regression methods and ML techniques to evaluate the performance of these
-indices in estimating GPP. This methodological approach seeks to provide a
-nuanced understanding of the efficacy and limitations of the selected indices in
-capturing the complexities of ecosystem processes, particularly in the context
-of temperate broadleaf forests.
+limited to temperate broadleaf forests of the Eastern United States of America
+and Canada as it required consistent multi-annual EC GPP measurements over
+multiple sites to quantify uncertainty related to the spatial location of
+calibration data. The VIs are derived from the Moderate Resolution Imaging
+Spectroradiometer (MODIS), which has long-standing temporal records and
+acceptable spatial resolution to study extended forest areas. The analysis
+employs both traditional regression methods and ML techniques to evaluate the
+performance of these indices in estimating GPP. This methodological approach
+seeks to provide a nuanced understanding of the eﬀicacy and limitations of the
+selected indices in capturing the complexities of ecosystem processes,
+particularly in the context of temperate broadleaf forests.
 
 \newpage
 

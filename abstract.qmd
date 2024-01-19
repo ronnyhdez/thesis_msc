@@ -11,13 +11,13 @@ have potentially greater uncertainty than EC methods for GPP estimation such as
 mixed pixels, cloud cover, and the ability of the sensor to retrieve vegetation
 under saturation conditions in high biomass environments. Therefore, an effort
 to analyze and quantify the uncertainty of GPP products derived from satellite
-platforms is needed. This study quatifies the uncertainty of commonly used
+platforms is needed. This study quantifies the uncertainty of commonly used
 satellite vegetation indices such as Normalized Difference Vegetation Index
 (NDVI), Enhance Vegetation Index (EVI), Chlorophyll/Carotenoid Index (CCI), and
 Near-Infrared Reflectance Index (NIRv) for GPP estimation compared with direct
 methods such as EC measurements. We conduct this study on three different sites:
-University of Michigan Biological Station (USA), the Borden Forest Research
-Station flux-site (Canada) and Bartlett Experimental Forest (USA) using
+the University of Michigan Biological Station (USA), the Borden Forest Research
+Station flux-site (Canada), and Bartlett Experimental Forest (USA) using
 traditional regression methods and ML approaches.
 
 \end{doublespacing}
