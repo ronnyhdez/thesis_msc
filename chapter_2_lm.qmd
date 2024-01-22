@@ -423,18 +423,55 @@ specific bit strings selected for `state_1km` are shown in
 Subsequently, the surface reflectance for each filtered pixel was determined by
 scaling the digital number recorded by `0.0001`.
 
+```{r}
+#| label: fig-quality_pixels
+#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis) per site."
+#| echo: false
+#| message: false
+#| warning: false
+source("scripts/quality_observations.R")
+
+all %>% 
+  ggplot(aes(x = site, fill = quality)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d(begin = 0.34, end = 0.8) +
+  labs(x = "Site", 
+       y = "Total observations (pixels)",
+       fill = "Quality") +
+  theme_bw(base_size = 12)
+```
+
 Following the MODIS Collection 6.1 (C61) LSR Product User Guide
 [@vermote2021modis], any scaled value that fell outside the range of `0` to `1`
 was considered a fill value or uncorrected Level 1B data and was subsequently
 discarded. These values were deemed unreliable or lacking meaningful information
-for the analysis. The number of high-quality surface reflectance observations was
-summarized on a monthly basis for each site (@fig-complete_quality_pixels)
+for the analysis. The number of high-quality surface reflectance observations
+was summarized on a monthly basis for each site (@fig-complete_quality_pixels)
+
+```{r}
+#| label: fig-complete_quality_pixels
+#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis)"
+#| echo: false
+#| message: false
+#| warning: false
+source("scripts/quality_observations.R")
+
+all %>%
+  filter(quality == "high") %>%
+  mutate(year_mon = zoo::as.yearmon(date)) %>%
+  ggplot(aes(x = year_mon, fill = site)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d(begin = 0.2, end = 0.8) +
+  labs(x = "Date",
+       y = "Total observations (pixels)",
+       fill = "Site") +
+  theme_bw(base_size = 12)
+```
 
 The VIs `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi), and `CCI`
 (@eq-cci) were calculated and then matched with the corresponding date in the
 flux datasets (Green, Red, and NIR correspond to the bands defined in
-@tbl-MODIS_500_indices_bands). The resulting values used for the analysis are
-shown in @fig-quality_pixels
+@tbl-MODIS_500_indices_bands). 
 
 <!-- However, since the -->
 
@@ -511,26 +548,6 @@ $$ {#eq-cci} \endgroup
 
 <!-- $$ {#eq-evis} -->
 
-```{r}
-#| label: fig-complete_quality_pixels
-#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis)"
-#| echo: false
-#| message: false
-#| warning: false
-source("scripts/quality_observations.R")
-
-all %>%
-  filter(quality == "high") %>%
-  mutate(year_mon = zoo::as.yearmon(date)) %>%
-  ggplot(aes(x = year_mon, fill = site)) +
-  geom_bar(position = "stack") +
-  scale_fill_viridis_d(begin = 0.2, end = 0.8) +
-  labs(x = "Date",
-       y = "Total observations (pixels)",
-       fill = "Site") +
-  theme_bw(base_size = 12)
-```
-
 ### Data Preparation
 
 Three datasets were prepared for each site: a daily, a weekly, and a monthly
@@ -570,24 +587,6 @@ productivity. This process aimed to refine the dataset and focus on values
 within a range considered more pertinent to the growing season. The final number
 of observations per site after selecting the high-quality pixels and GPP
 observations are shown in @fig-obs_used_analysis.
-
-```{r}
-#| label: fig-quality_pixels
-#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis) per site."
-#| echo: false
-#| message: false
-#| warning: false
-source("scripts/quality_observations.R")
-
-all %>% 
-  ggplot(aes(x = site, fill = quality)) +
-  geom_bar(position = "stack") +
-  scale_fill_viridis_d(begin = 0.34, end = 0.8) +
-  labs(x = "Site", 
-       y = "Total observations (pixels)",
-       fill = "Quality") +
-  theme_bw(base_size = 12)
-```
 
 ```{r}
 #| label: fig-obs_used_analysis
