@@ -246,13 +246,13 @@ The second flux site is Borden Forest Research Station located in Ontario
 (44°19′N, 79°56′W), Canada. This is one of the largest patches of forest in
 Southern Ontario which has been collecting EC data since 1996
 [@rogers_response_2020]. This site has a forest cover of over 60% with a height
-that exceeds 2 m. It's a deciduous broadleaf natural re-growth forest since 1916
+of approximately 22 m. It's a deciduous broadleaf natural re-growth forest since 1916
 dominated by woody vegetation [@lee_long-term_1999].
 
 The third site is the University of Michigan Biological Station which is located
 in northern Michigan, USA (45°350 N 84°430 W). The site has a forest with
 different succesional stages, with an average stand age of 90 years
-[@gough_wood_2010], and a mean height of 2m. The mean annual temperature is
+[@gough_wood_2010], and a mean height of 22m. The mean annual temperature is
 around 5.5°C [@gough_disturbanceaccelerated_2021].
 
 The three sites exhibit similar characteristics, indicating their representation
