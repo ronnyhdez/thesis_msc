@@ -298,12 +298,12 @@ represented as heatmaps for each of the models within the ensemble.
 ### Data-Driven GPP Prediction: A Regression Random Forest Approach
 
 The best performing model, based on R² and RMSE was the monthly aggregated
-model, achieving a R² of 81% and an RMSE of
+model, achieving a R² of 0.81 and an RMSE of
 $2.03 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ (see @fig-monthly_500_rf). The daily
 model exhibited the second best performance model with a RMSE of
-$3.20 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and a R² of 69% (see
+$3.20 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ and a R² of 0.69 (see
 @fig-daily_500_rf). However, the weekly model displayed comparatively lower
-performance, with an R² of 56% and an RMSE of
+performance, with an R² of 0.56 and an RMSE of
 $3.23 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ (see @fig-weekly_500_rf)
 
 Moreover, in assesing the importance of predictor variables within each model,
@@ -1127,12 +1127,12 @@ plot_grid(low_value,
 The AutoML approach yielded varying performance outcomes across different
 temporal scales as measured by R² and RMSE. The monthly prediction model
 (@fig-predictions_automl_monthly_500) emerged as the top performer, with an R²
-of 76% and a low RMSE of $1.84 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Following
+of 0.76 and a low RMSE of $1.84 \, \mathrm{gC \, m^{-2} \, d^{-1}}$. Following
 this, the weekly model (@fig-predictions_automl_weekly_500) demonstrated the
 second-highest explanatory power, capturing 72% of the GPP variability, albeit
 with a slightly elevated RMSE of $3.08 \, \mathrm{gC \, m^{-2} \, d^{-1}}$.
 Conversely, the daily model (@fig-predictions_automl_500) exhibited
-comparatively diminished performance, explaining 67% of the variability with the
+comparatively diminished performance, explaining 0.67 of the variability with the
 highest RMSE of $3.11 \, \mathrm{gC \, m^{-2} \, d^{-1}}$
 
 An examination of variable importance in the AutoML model revealed distinctive
@@ -1356,7 +1356,7 @@ the sensor's ability to capture and differentiate changes in the productivity of
 vegetation beyond a certain threshold.
 
 While, for the monthly model, AutoML demonstrates an acceptable percentage of
-explained variability, with Random Forest surpassing it by 5%, for the weekly
+explained variability, with Random Forest surpassing it by 0.05, for the weekly
 and daily models, it appears that capturing the inherent variability in the data
 is challenging solely with the utilized indices and the entirety of MODIS bands.
 There seems to be a necessity to incorporate additional variables that possibly
@@ -1382,7 +1382,7 @@ In summary, the monthly models generated using both methods (RF and autoML)
 exhibited superior performance based on various metrics, surpassing the outcomes
 from weekly or daily temporal aggregations. Specifically, in the context of
 monthly modelling, although RF demonstrated a slightly higher variance
-explanation compared to autoML (by 5%), autoML showcased a lower RMSE,
+explanation compared to autoML (by 0.05), autoML showcased a lower RMSE,
 signifying more accurate predictions with minimal error. When incorporating VIs
 alongside all bands into the GPP prediction models (both RF and autoML), the VIs
 consistently demonstrated their significance as the most influential variables
@@ -1396,7 +1396,7 @@ values. This observation was consistent across scatterplots depicting predicted
 versus actual values for diverse temporal aggregations. When comparing both
 methods (RF and autoML), no definitive superiority emerges, as both exhibit
 nuanced distinctions, except for the weekly models where autoML outperforms with
-a 17% better variance explanation and a lower RMSE.
+a 0.17 better variance explanation and a lower RMSE.
 
 \newpage
 
