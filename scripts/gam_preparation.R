@@ -489,28 +489,28 @@ single_vis_weekly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
 # **Daily models outputs**
 all_sites_all_vis_gam_weekly <- tribble(
   ~index, ~rsq, ~rmse, ~mae,
-  "All", summary(single_vis_daily)[["r.sq"]],
-  sqrt(mean((single_vis_daily[["residuals"]])^2)),
-  mean(abs(single_vis_daily[["residuals"]]))
+  "All", summary(single_vis_weekly)[["r.sq"]],
+  sqrt(mean((single_vis_weekly[["residuals"]])^2)),
+  mean(abs(single_vis_weekly[["residuals"]]))
 ) %>% 
   mutate(site = "All") %>% 
   select(index, site, rsq, rmse, mae)
 
 # Tabla metricas completas
 all_sites_all_vis_gam_weekly_complete <- 
-  summary(single_vis_daily)[["s.table"]] %>%
+  summary(single_vis_weekly)[["s.table"]] %>%
   as.data.frame() %>%
   janitor::clean_names()  %>% 
   mutate(index = "All",
          site = "All",
-         AIC = single_vis_daily[["aic"]]) %>%
+         AIC = single_vis_weekly[["aic"]]) %>%
   rownames_to_column("term") %>%
   select(site, index, term, edf, f, p_value, AIC) %>% 
   arrange(desc("AIC"))
 
 # Residuals
 all_sites_all_vis_gam_weekly_residuals <- 
-  single_vis_daily[["residuals"]] %>% 
+  single_vis_weekly[["residuals"]] %>% 
   as.data.frame(nm = "residuals") %>%
   mutate(index = "All",
          site = "All")
@@ -742,34 +742,34 @@ single_vis_monthly <- gam(gpp_dt_vut_ref ~ ndvi_mean +
                            s(evi_mean) +
                            s(nirv_mean) +
                            s(cci_mean),
-                         data = weekly_gam, 
+                         data = monthly_gam, 
                          method = 'REML')
 
 # **Monthly models outputs**
 all_sites_all_vis_gam_monthly <- tribble(
   ~index, ~rsq, ~rmse, ~mae,
-  "All", summary(single_vis_daily)[["r.sq"]],
-  sqrt(mean((single_vis_daily[["residuals"]])^2)),
-  mean(abs(single_vis_daily[["residuals"]]))
+  "All", summary(single_vis_monthly)[["r.sq"]],
+  sqrt(mean((single_vis_monthly[["residuals"]])^2)),
+  mean(abs(single_vis_monthly[["residuals"]]))
 ) %>% 
   mutate(site = "All") %>% 
   select(index, site, rsq, rmse, mae)
 
 # Tabla metricas completas
 all_sites_all_vis_gam_monthly_complete <- 
-  summary(single_vis_daily)[["s.table"]] %>%
+  summary(single_vis_monthly)[["s.table"]] %>%
   as.data.frame() %>%
   janitor::clean_names()  %>% 
   mutate(index = "All",
          site = "All",
-         AIC = single_vis_daily[["aic"]]) %>%
+         AIC = single_vis_monthly[["aic"]]) %>%
   rownames_to_column("term") %>%
   select(site, index, term, edf, f, p_value, AIC) %>% 
   arrange(desc("AIC"))
 
 # Residuals
 all_sites_all_vis_gam_monthly_residuals <- 
-  single_vis_daily[["residuals"]] %>% 
+  single_vis_monthly[["residuals"]] %>% 
   as.data.frame(nm = "residuals") %>%
   mutate(index = "All",
          site = "All")
