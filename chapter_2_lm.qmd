@@ -246,13 +246,13 @@ The second flux site is Borden Forest Research Station located in Ontario
 (44°19′N, 79°56′W), Canada. This is one of the largest patches of forest in
 Southern Ontario which has been collecting EC data since 1996
 [@rogers_response_2020]. This site has a forest cover of over 60% with a height
-that exceeds 2 m. It's a deciduous broadleaf natural re-growth forest since 1916
+of approximately 22 m. It's a deciduous broadleaf natural re-growth forest since 1916
 dominated by woody vegetation [@lee_long-term_1999].
 
 The third site is the University of Michigan Biological Station which is located
 in northern Michigan, USA (45°350 N 84°430 W). The site has a forest with
 different succesional stages, with an average stand age of 90 years
-[@gough_wood_2010], and a mean height of 2m. The mean annual temperature is
+[@gough_wood_2010], and a mean height of 22m. The mean annual temperature is
 around 5.5°C [@gough_disturbanceaccelerated_2021].
 
 The three sites exhibit similar characteristics, indicating their representation
@@ -423,18 +423,55 @@ specific bit strings selected for `state_1km` are shown in
 Subsequently, the surface reflectance for each filtered pixel was determined by
 scaling the digital number recorded by `0.0001`.
 
+```{r}
+#| label: fig-quality_pixels
+#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis) per site."
+#| echo: false
+#| message: false
+#| warning: false
+source("scripts/quality_observations.R")
+
+all %>% 
+  ggplot(aes(x = site, fill = quality)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d(begin = 0.34, end = 0.8) +
+  labs(x = "Site", 
+       y = "Total observations (pixels)",
+       fill = "Quality") +
+  theme_bw(base_size = 12)
+```
+
 Following the MODIS Collection 6.1 (C61) LSR Product User Guide
 [@vermote2021modis], any scaled value that fell outside the range of `0` to `1`
 was considered a fill value or uncorrected Level 1B data and was subsequently
 discarded. These values were deemed unreliable or lacking meaningful information
-for the analysis. The number of high-quality surface reflectance observations was
-summarized on a monthly basis for each site (@fig-complete_quality_pixels)
+for the analysis. The number of high-quality surface reflectance observations
+was summarized on a monthly basis for each site (@fig-complete_quality_pixels)
+
+```{r}
+#| label: fig-complete_quality_pixels
+#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis)"
+#| echo: false
+#| message: false
+#| warning: false
+source("scripts/quality_observations.R")
+
+all %>%
+  filter(quality == "high") %>%
+  mutate(year_mon = zoo::as.yearmon(date)) %>%
+  ggplot(aes(x = year_mon, fill = site)) +
+  geom_bar(position = "stack") +
+  scale_fill_viridis_d(begin = 0.2, end = 0.8) +
+  labs(x = "Date",
+       y = "Total observations (pixels)",
+       fill = "Site") +
+  theme_bw(base_size = 12)
+```
 
 The VIs `NDVI` (@eq-ndvi), `NIRv` (@eq-nirv), `EVI` (@eq-evi), and `CCI`
 (@eq-cci) were calculated and then matched with the corresponding date in the
 flux datasets (Green, Red, and NIR correspond to the bands defined in
-@tbl-MODIS_500_indices_bands). The resulting values used for the analysis are
-shown in @fig-quality_pixels
+@tbl-MODIS_500_indices_bands). 
 
 <!-- However, since the -->
 
@@ -511,26 +548,6 @@ $$ {#eq-cci} \endgroup
 
 <!-- $$ {#eq-evis} -->
 
-```{r}
-#| label: fig-complete_quality_pixels
-#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis)"
-#| echo: false
-#| message: false
-#| warning: false
-source("scripts/quality_observations.R")
-
-all %>%
-  filter(quality == "high") %>%
-  mutate(year_mon = zoo::as.yearmon(date)) %>%
-  ggplot(aes(x = year_mon, fill = site)) +
-  geom_bar(position = "stack") +
-  scale_fill_viridis_d(begin = 0.2, end = 0.8) +
-  labs(x = "Date",
-       y = "Total observations (pixels)",
-       fill = "Site") +
-  theme_bw(base_size = 12)
-```
-
 ### Data Preparation
 
 Three datasets were prepared for each site: a daily, a weekly, and a monthly
@@ -570,24 +587,6 @@ productivity. This process aimed to refine the dataset and focus on values
 within a range considered more pertinent to the growing season. The final number
 of observations per site after selecting the high-quality pixels and GPP
 observations are shown in @fig-obs_used_analysis.
-
-```{r}
-#| label: fig-quality_pixels
-#| fig-cap: "Total number of observations (pixels) from MODIS classified as high quality (used in the analysis) or other quality (filtered out from the analysis) per site."
-#| echo: false
-#| message: false
-#| warning: false
-source("scripts/quality_observations.R")
-
-all %>% 
-  ggplot(aes(x = site, fill = quality)) +
-  geom_bar(position = "stack") +
-  scale_fill_viridis_d(begin = 0.34, end = 0.8) +
-  labs(x = "Site", 
-       y = "Total observations (pixels)",
-       fill = "Quality") +
-  theme_bw(base_size = 12)
-```
 
 ```{r}
 #| label: fig-obs_used_analysis
@@ -698,7 +697,7 @@ $1.29 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ for Michigan) results.
 The NDVI displays relatively diminished performance, indicating a 9% and 15%
 reduction in the R² compared to CCI in the Bartlett and Michigan sites,
 respectively. In contrast, EVI exhibits less favourable predictive results (R² =
-75%, MAE = $1.92 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, RMSE =
+0.75, MAE = $1.92 \, \mathrm{gC \, m^{-2} \, d^{-1}}$, RMSE =
 $2.54 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) for the Borden site and the
 aggregated sites category, although in the specific context of the Borden site,
 its performance aligns closely with NDVI and NIRv. Among the individual sites,
@@ -710,23 +709,23 @@ In the case of the weekly models, NDVI records the least favourable results in
 terms of R², MAE, and RMSE when assessed at the three individual sites, while
 EVI demonstrated its weakest predictive capabilities when all sites were treated
 as a single entity. However, for this case, EVI shows marginal differences for
-individual indices such as NDVI and NIRv (R² = 1% variance explained and no more
+individual indices such as NDVI and NIRv (R² = 0.01 variance explained and no more
 than $0.02 \, \mathrm{gC \, m^{-2} \, d^{-1}}$ in RMSE). The best performant
 individual indices were CCI in terms of R², MAE, and RMSE for Borden and the
 aggregated sites, NIRv for Michigan and EVI for Bartlett. Nonetheless, those
 superior performances are subtle when compared with the other individual
 indices. On a weekly basis, differences in variability explained between the
-best and least performing models range from R² = 11% to R² = 20%. Bartlett and
+best and least performing models range from R² = 0.11 to R² = 0.2. Bartlett and
 Michigan sites consistently yield the most accurate predictive models.
 
 On a daily basis, CCI outperforms the rest of the individual indices in 3 cases:
-for Bartlett by R² = 2% in variance explanation compared with EVI, for Borden by
-R² = 1% compared with EVI, and for the combined sites dataset by R² = 10%.
+for Bartlett by R² = 0.02 in variance explanation compared with EVI, for Borden by
+R² = 0.01 compared with EVI, and for the combined sites dataset by R² = 0.1.
 Nonetheless is worth mentioning that the variance explained in any of the models
-by individual indices in Borden or the combined site is less than R² = 50% in
+by individual indices in Borden or the combined site is less than R² = 0.5 in
 most of the cases and the error scores are the highest. In the case of
 Michigan, the best performing individual index was EVI which outperformed the
-next best-performing individual index NIRv by R² = 3%. Generally, the Bartlett
+next best-performing individual index NIRv by R² = 0.03. Generally, the Bartlett
 and Michigan sites consistently yielded the most accurate predictive models
 across various configurations. Conversely, the Borden site consistently
 exhibited the poorest model performance across all scenarios.
@@ -917,13 +916,13 @@ results the @tbl-gam_monthly_model_results_complete_a, and
 the models is in @fig-gam_residuals
 
 When using GAM models on a monthly basis, no single VI demonstrates consistent
-superiority over the others. For the all sites category, CCI has an R² = 3%
+superiority over the others. For the all sites category, CCI has an R² = 0.03
 better variance explanation than NDVI, which is the second best model with an R²
-= 75%. In the case of Michigan EVI and NIRv were the best individual indices
-with an R² = 96% of the variance in GPP, but EVI had slightly lower error metrics
+= 0.75. In the case of Michigan EVI and NIRv were the best individual indices
+with an R² = 0.96 of the variance in GPP, but EVI had slightly lower error metrics
 values in MAE ($0.01 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) and RMSE
 ($0.02 \, \mathrm{gC \, m^{-2} \, d^{-1}}$). Bartlett had a better model
-performance when using CCI with an R² = 91% of variance explained with the lowest
+performance when using CCI with an R² = 0.91 of variance explained with the lowest
 error metrics among all the GAM monthly models. It's important to highlight that
 for Michigan and Bartlett, implementing a GAM model using all the VIs as
 covariates posed challenges due to limited observations for the model
@@ -931,7 +930,7 @@ parameters, raising concerns of potential overfitting.
 
 Finally, it's noteworthy that NDVI on a monthly basis displayed suboptimal
 performance in two of the sites (Michigan and Bartlett) with a difference of R²
-= 10% and R² = 13% with the best performing models respectively, while EVI
+= 0.1 and R² = 0.13 with the best performing models respectively, while EVI
 exhibited less favourable results in just the Borden site with MAE
 $1.92 \, \mathrm{gC \, m^{-2} \, d^{-1}}$) and RMSE
 $2.54 \, \mathrm{gC \, m^{-2} \, d^{-1}}$).
@@ -939,36 +938,36 @@ $2.54 \, \mathrm{gC \, m^{-2} \, d^{-1}}$).
 On a weekly basis, models incorporating all VIs as covariates consistently
 obtained better performance compared to any individual VI, irrespective of the
 site. Specifically when evaluating the all sites category, the inclusion of all
-indices as covariates yielded an R² = 7% increase in variance explanation
+indices as covariates yielded an R² = 0.07 increase in variance explanation
 compared with the best individual VI result CCI. Further, for Michigan, this
-improvement amounted to R² = 2% compared to EVI, R² = 1% for Bartlett in
-contrast to EVI, and an R² = 2% enhancement for Borden when compared with EVI.
+improvement amounted to R² = 0.02 compared to EVI, R² = 0.01 for Bartlett in
+contrast to EVI, and an R² = 0.02 enhancement for Borden when compared with EVI.
 
 Conversely, NDVI showed a diminished performance as an individual index when
 compared with all the other individual VIs. In the context of all sites, NDVI
-yielded R² = 7% less variance explanation than CCI. Notably, for Michigan,
-NDVI's performance lagged by R² = 17% compared to EVI, Bartlett an R² = 18%
-reduction relative to EVI, and Borden exhibited an R² = 9% deficit when
+yielded R² = 0.07 less variance explanation than CCI. Notably, for Michigan,
+NDVI's performance lagged by R² = 0.17 compared to EVI, Bartlett an R² = 0.18
+reduction relative to EVI, and Borden exhibited an R² = 0.09 deficit when
 contrasted with EVI.
 
 On a daily basis, when considering the all sites category, the model with all
-the VIs as covariates explained R² = 4% more variance in GPP when compared with
-the best performing individual VI CCI. In the case of Bartlett, the increase was
-also R² = 4% but in this case, the best individual performing VI was EVI. For
-Michigan, the model using all VIs as covariates outperformed EVI by R² = 5% in
-GPP prediction, and for Borden, it was an R² = 9% improvement when compared with
-NIRv.
+the VIs as covariates explained R² = 0.04 more variance in GPP when compared
+with the best performing individual VI CCI. In the case of Bartlett, the
+increase was also R² = 0.04 but in this case, the best individual performing VI
+was EVI. For Michigan, the model using all VIs as covariates outperformed EVI by
+R² = 0.05 in GPP prediction, and for Borden, it was an R² = 0.09 improvement
+when compared with NIRv.
 
 Among the individual VIs, NDVI consistently demonstrated the poorest performance
 across all four cases. As an individual VI, EVI performed better in Bartlett,
 Michigan, and Borden. However is worth noting that for Borden the variance
-explained was limited to R² = 50%.
+explained was limited to R² = 0.5.
 
 In summary, among the three individual sites, Bartlett consistently produced the
 most favourable results in terms of models explaining variance and yielding
 lower residuals, followed by Michigan. In the case of Borden, when employing
 individual indices, the models struggled to achieve a variance explanation
-exceeding R² = 50%.
+exceeding R² = 0.5.
 
 <!-- ### Daily and weekly GPP and VIs relations -->
 
