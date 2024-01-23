@@ -1179,7 +1179,7 @@ predictions. This adaptability was particularly evident when addressing the
 daily, weekly, or monthly variations in GPP. Furthermore, it is crucial to
 highlight that monthly models, both in LM and GAM frameworks, consistently
 exhibited superior metrics compared to their weekly and daily counterparts, as
-illustrated in @fig-gam_metrics and @fig-lm_metrics. This can be an effect of
+illustrated in @fig-lm_metrics and @fig-gam_metrics. This can be an effect of
 reducing variance when summarizing values as it is shown in the daily
 @fig-gpp_vi_relation_daily, weekly @fig-gpp_vi_relation_weekly, and monthly
 @fig-gpp_vi_relation_monthly
