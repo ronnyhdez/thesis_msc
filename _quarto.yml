@@ -22,9 +22,8 @@ book:
     - chapter_2_lm.qmd
     - chapter_3_ml.qmd
     - chapter_4_conclusions.qmd
-    - bibliography.qmd
-  appendices:
     - appendices.qmd
+    - bibliography.qmd
    
 
 format:
