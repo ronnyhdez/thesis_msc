@@ -6,19 +6,32 @@
  the code and text to produce my [thesis document](https://github.com/ronnyhdez/thesis_msc/blob/main/thesis_docs/Assessing-uncertainties-related-to-the-use-of-satellite-remote-sensing-indices-to-estimate-Gross-Primary-Production_v0.0.6.pdf).
  - This repository also contains my [slides](https://github.com/ronnyhdez/thesis_msc/blob/main/thesis_docs/thesis_presentation_v0.0.3.pdf) used in my MSc defense
 
+:warning: Thesis dissertation may differ from the official document submitted to
+the University of Alberta Faculty of Graduate Studies & Research in aspects such
+as  **text format**, **references section position**, or **first page structure**.
+However, these differences relate to formatting rather than content or data 
+analysis results.
 
-:warning: Thesis dissertation documentation can be different to the official 
-document submitted to 
-
-
-## Open Science Statement
+## :open_book: Open Science Statement
 
 All materials, data, and code required to reproduce my research and thesis are 
 made available here, to the best of my knowledge and abilities.
 
+If you encounter an error while attempting to replicate a part of the analysis, 
+please inform me by [creating an issue](https://github.com/ronnyhdez/thesis_msc/issues/new). 
+
 ## :twisted_rightwards_arrows: Data flow diagram
 
 To insert here diagram.
+
+## Citing my research
+
+ - If you are using just my thesis document as a reference, please use:
+ - If you are using the code included here, please use:
+
+## Acknowledgments
+
+My research and MSc was funded by:
 
 
 
