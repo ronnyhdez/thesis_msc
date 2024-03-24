@@ -86,14 +86,9 @@ state_1km_bitstring <- obtain_bit_qc_df(data = reflectance_500,
                                         variable = "state_1km", 
                                         bits = 16)
 
-qc_250_bitstring <- obtain_bit_qc_df(data = reflectance_250, 
-                                     variable = "qc_250m", 
-                                     bits = 16)
-
 ## Obtain quality descriptions
 qc_500_description <- obtain_qc_bit_description(qc_500_bitstring)
 state_1km_description <-  obtain_state_1km_description(state_1km_bitstring)
-qc_250_description <- obtain_qc_250_description(qc_250_bitstring)
 
 ## Preparing MODIS satellite data ----
 
@@ -146,7 +141,7 @@ rm(prepared_one_flux_daily,
 ## Check weeks in one flux weekly
 prepared_one_flux_weekly <- one_flux_weekly %>% 
   mutate(fapar = (ppfd_in - ppfd_out) / ppfd_in) %>% 
-  filter(gpp_dt_vut_ref > params$gpp) %>% 
+  filter(gpp_dt_vut_ref > 1) %>% 
   mutate(week_start = week(date_start),
          week_end = week(date_end),
          year = year(date_start)) %>% 
@@ -182,7 +177,7 @@ rm(weekly_reflectance_500,
 # Prepare oneflux monthly dataset
 prepared_one_flux_monthly <- one_flux_monthly %>% 
   mutate(fapar = (ppfd_in - ppfd_out) / ppfd_in) %>% 
-  filter(gpp_dt_vut_ref > params$gpp) 
+  filter(gpp_dt_vut_ref > 1) 
 
 # Prepare reflectance datasets
 
@@ -201,3 +196,15 @@ monthly_500 <- prepared_one_flux_monthly %>%
 # Remove objects
 rm(prepared_one_flux_monthly,
    monthly_reflectance_500)
+
+# Export analysis ready datasets ----
+
+# Export prepared datasets for poster plotting
+if (Sys.getenv("ENV") == "DEV") {
+  monthly_500 %>% 
+    mutate(date = as.Date(date)) %>% 
+    saveRDS("data_ard/bartlett_montly_500.rds")
+  
+  saveRDS(weekly_500, "data_ard/bartlett_weekly_500.rds")
+  saveRDS(daily_500, "data_ard/bartlett_daily_500.rds")
+}
