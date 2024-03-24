@@ -22,7 +22,8 @@ please inform me by [creating an issue](https://github.com/ronnyhdez/thesis_msc/
 
 ## :twisted_rightwards_arrows: Data flow diagram
 
-To insert here diagram.
+![Data flow diagram](img/data_workflows.jpg)
+
 
 ## Citing my research
 
