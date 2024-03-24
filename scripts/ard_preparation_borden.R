@@ -117,7 +117,7 @@ reflectance_500 <- filter_modis_pixels_500(data = reflectance_500,
 prepared_one_flux_daily <- one_flux_daily %>% 
   mutate(fapar = (ppfd_in - ppfd_out) / ppfd_in) %>% 
   # select(date, gpp_dt_vut_ref, gpp_nt_vut_ref, fapar) %>% 
-  filter(gpp_dt_vut_ref > params$gpp)
+  filter(gpp_dt_vut_ref > 1)
 
 # Prepare reflectance datasets
 
@@ -144,7 +144,7 @@ rm(prepared_one_flux_daily,
 ## Check weeks in one flux weekly
 prepared_one_flux_weekly <- one_flux_weekly %>% 
   mutate(fapar = (ppfd_in - ppfd_out) / ppfd_in) %>% 
-  filter(gpp_dt_vut_ref > params$gpp) %>% 
+  filter(gpp_dt_vut_ref > 1) %>% 
   mutate(week_start = week(date_start),
          week_end = week(date_end),
          year = year(date_start)) %>% 
@@ -180,7 +180,7 @@ rm(weekly_reflectance_500,
 # Prepare oneflux daily dataset
 prepared_one_flux_monthly <- one_flux_monthly %>% 
   mutate(fapar = (ppfd_in - ppfd_out) / ppfd_in) %>% 
-  filter(gpp_dt_vut_ref > params$gpp) 
+  filter(gpp_dt_vut_ref > 1) 
 
 # Prepare reflectance datasets
 
@@ -210,16 +210,9 @@ if (Sys.getenv("ENV") == "DEV") {
   monthly_500 %>% 
     mutate(date = as.Date(date)) %>% 
     saveRDS("data_ard/borden_montly_500.rds")
-  
-  monthly_250 %>% 
-    mutate(date = as.Date(date)) %>% 
-    saveRDS("data_ard/borden_montly_250.rds")
-  
+
   saveRDS(weekly_500, "data_ard/borden_weekly_500.rds")
-  saveRDS(weekly_250, "data_ard/borden_weekly_250.rds")
-  
   saveRDS(daily_500, "data_ard/borden_daily_500.rds")
-  saveRDS(daily_250, "data_ard/borden_daily_250.rds")
-  
+
 }
 
