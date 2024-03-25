@@ -48,3 +48,9 @@ from the Canada Centre for Remote Sensing.
 ![](img/UA_Logo_Green_RGB.png)
 ![](img/ceos.jpeg)
 
+<p float="left">
+  <img src="img/nrcan.png" width="33%" />
+  <img src="img/UA_Logo_Green_RGB.png" width="33%" />
+  <img src="img/ceos.jpeg" width="33%" />
+</p>
+
