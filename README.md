@@ -45,8 +45,8 @@ from the Canada Centre for Remote Sensing.
  - Arturo Sánchez Azofeifa. Department of Earth & Atmospheric Sciences, University of Alberta
  
 <p float="left">
-  <img src="img/nrcan.png" width="30%" />
-  <img src="img/UA_Logo_Green_RGB.png" width="30%" />
+  <img src="img/nrcan.png" width="33%" />
+  <img src="img/UA_Logo_Green_RGB.png" width="33%" />
   <img src="img/ceos.jpeg" width="30%" />
 </p>
 
