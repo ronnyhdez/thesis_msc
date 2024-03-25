@@ -44,13 +44,9 @@ from the Canada Centre for Remote Sensing.
  - Richard Fernandes. Canada Centre for Remote Sensing, Natural Resources Canada
  - Arturo Sánchez Azofeifa. Department of Earth & Atmospheric Sciences, University of Alberta
  
-![](img/nrcan.png)
-![](img/UA_Logo_Green_RGB.png)
-![](img/ceos.jpeg)
-
 <p float="left">
-  <img src="img/nrcan.png" width="33%" />
-  <img src="img/UA_Logo_Green_RGB.png" width="33%" />
-  <img src="img/ceos.jpeg" width="33%" />
+  <img src="img/nrcan.png" width="30%" />
+  <img src="img/UA_Logo_Green_RGB.png" width="30%" />
+  <img src="img/ceos.jpeg" width="30%" />
 </p>
 
