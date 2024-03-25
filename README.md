@@ -32,7 +32,19 @@ please inform me by [creating an issue](https://github.com/ronnyhdez/thesis_msc/
 
 ## Acknowledgments
 
-My research and MSc was funded by:
+**My research and MSc was funded by**:
 
+ - Earth Observations for Regional Cumulative Effects - Research Affiliate Program
+from the Canada Centre for Remote Sensing.
+ - Graduate Students' Association Academic Travel Grant (University of Alberta)
+ - Mary Louise Imrie Graduate Student Award (University of Alberta)
 
+**Supervised by**
+
+ - Richard Fernandes. Canada Centre for Remote Sensing, Natural Resources Canada
+ - Arturo Sánchez Azofeifa. Department of Earth & Atmospheric Sciences, University of Alberta
+ 
+<p float="center">
+  <img src="img/logos.png" width="99%" />
+</p>
 
