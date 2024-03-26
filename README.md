@@ -1,6 +1,9 @@
 # Assessing uncertainties related to the use of satellite remote sensing indices to estimate Gross Primary Production
 
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/ronnyhdez/thesis_msc) 
+![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10882134.svg)](https://doi.org/10.5281/zenodo.10882134)
+
+
 
  - This is a repository by [Ronny A. Hernández Mora](https://ronnyale.com/) that contains all
  the code and text to produce my [thesis document](https://github.com/ronnyhdez/thesis_msc/blob/main/thesis_docs/Assessing-uncertainties-related-to-the-use-of-satellite-remote-sensing-indices-to-estimate-Gross-Primary-Production_v0.0.6.pdf).
@@ -27,8 +30,13 @@ please inform me by [creating an issue](https://github.com/ronnyhdez/thesis_msc/
 
 ## Citing my research
 
- - If you are using just my thesis document as a reference, please use:
- - If you are using the code included here, please use:
+If you are using the code included here, please use:
+
+> Hernández Mora, R. A. (2024). Assessing uncertainties related to the use of satellite remote sensing indices to estimate Gross Primary Production: Code and source files. (v0.0.7). Zenodo. https://doi.org/10.5281/zenodo.10882134
+
+If you are using just my thesis document as a reference, please use:
+
+> pending update
 
 ## Acknowledgments
 
