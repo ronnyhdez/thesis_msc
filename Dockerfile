@@ -1,17 +1,22 @@
-FROM rocker/r-base:4.2.1
+FROM rocker/r-ver:4.2.1
 
-ARG QUARTO_VERSION="1.3.450"
+RUN apt-get update \
+   && apt-get install -y \
+   libxml2 \
+   wget
 
-FROM ghcr.io/quarto-dev/quarto:${QUARTO_VERSION} AS builder
+# Download the latest version of Quarto
+RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.3.450/quarto-1.3.450-linux-amd64.deb -O ~/quarto.deb
 
-Rscript -e 'pak::pkg_install("renv")'
+# Install the latest version of Quarto
+RUN dpkg -i ~/quarto.deb
 
-# Install packages from renv
-## Copy files created with renv
-# RUN mkdir -p renv
-# COPY .Rprofile .Rprofile
-# COPY renv/activate.R renv/activate.R
-# COPY renv/settings.json renv/settings.json
+# Remove the installer
+RUN rm ~/quarto.deb
+
+RUN quarto install tinytex
+
+RUN Rscript -e 'install.packages("renv")'
 
 COPY . /app
 WORKDIR /app
@@ -19,5 +24,3 @@ RUN Rscript -e "renv::restore()"
 
 # RUN quarto render .
 
-## Install packages
-# RUN R -e "renv::restore()"
