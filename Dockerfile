@@ -22,5 +22,5 @@ COPY . /app
 WORKDIR /app
 RUN Rscript -e "renv::restore()"
 
-# RUN quarto render .
+# RUN quarto preview .
 
